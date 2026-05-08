@@ -455,8 +455,6 @@ function vizLogisticRegression(container) {
   const { canvas, ctx, w, h } = setupCanvas(container);
   const bar = makeBar(container);
   let slopeW = 1;
-  makeSlider(bar, 'w (slope)', 0.1, 5, 0.1, slopeW, v => { slopeW = v; });
-
   let animT = 0;
   const gdDots = [], newtonDots = [];
 
@@ -470,7 +468,7 @@ function vizLogisticRegression(container) {
   const pad = { t: 30, r: 20, b: 40, l: 50 };
 
   function draw(time) {
-    animT = Math.min(1, animT + 0.008);
+    if (animT < 1) animT = Math.min(1, animT + 0.008);
     const halfW = w / 2;
     ctx.clearRect(0, 0, w, h);
     ctx.fillStyle = THEME.bg; ctx.fillRect(0, 0, w, h);
@@ -558,10 +556,13 @@ function vizLogisticRegression(container) {
     ctx.font = '11px system-ui'; ctx.fillStyle = THEME.muted;
     ctx.fillText('Iteration', rx + rw / 2, ly + lh + 16);
 
-    if (animT < 1) requestAnimationFrame(draw);
+    requestAnimationFrame(draw);
   }
 
   requestAnimationFrame(draw);
+
+  // Slider triggers redraw
+  makeSlider(bar, 'w (slope)', 0.1, 5, 0.1, slopeW, v => { slopeW = v; });
 }
 
 /* ─── 5. Max Entropy ───────────────────────────────────────────── */
