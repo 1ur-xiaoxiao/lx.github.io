@@ -130,14 +130,14 @@ nav .logo {
   letter-spacing: 0.02em;
 }
 
-nav .nav-links {
+nav ul {
   display: flex;
   align-items: center;
   gap: 1.75rem;
   list-style: none;
 }
 
-nav .nav-links a {
+nav ul a {
   color: var(--muted);
   font-size: 0.9rem;
   font-weight: 500;
@@ -146,7 +146,7 @@ nav .nav-links a {
   transition: color var(--transition);
 }
 
-nav .nav-links a::after {
+nav ul a::after {
   content: '';
   position: absolute;
   bottom: -2px;
@@ -158,22 +158,22 @@ nav .nav-links a::after {
   transition: width var(--transition);
 }
 
-nav .nav-links a:hover,
-nav .nav-links a.active {
+nav ul a:hover,
+nav ul a.active {
   color: #fff;
 }
 
-nav .nav-links a:hover::after,
-nav .nav-links a.active::after {
+nav ul a:hover::after,
+nav ul a.active::after {
   width: 100%;
 }
 
 /* Dropdown menu for chapters */
-nav .nav-dropdown {
+nav .dropdown {
   position: relative;
 }
 
-nav .nav-dropdown .dropdown-toggle {
+nav .dropdown > a {
   display: flex;
   align-items: center;
   gap: 0.35rem;
@@ -187,21 +187,21 @@ nav .nav-dropdown .dropdown-toggle {
   transition: color var(--transition);
 }
 
-nav .nav-dropdown .dropdown-toggle:hover {
+nav .dropdown > a:hover {
   color: #fff;
 }
 
-nav .nav-dropdown .dropdown-toggle .arrow {
+nav .dropdown > a .arrow {
   display: inline-block;
   font-size: 0.65rem;
   transition: transform var(--transition);
 }
 
-nav .nav-dropdown.open .dropdown-toggle .arrow {
+nav .dropdown.open .dropdown-toggle .arrow {
   transform: rotate(180deg);
 }
 
-nav .nav-dropdown .dropdown-menu {
+nav .dropdown .dropdown-menu {
   position: absolute;
   top: calc(100% + 12px);
   left: 50%;
@@ -218,14 +218,14 @@ nav .nav-dropdown .dropdown-menu {
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
 }
 
-nav .nav-dropdown.open .dropdown-menu {
+nav .dropdown.open .dropdown-menu {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
   transform: translateX(-50%) translateY(0);
 }
 
-nav .nav-dropdown .dropdown-menu a {
+nav .dropdown .dropdown-menu a {
   display: flex;
   align-items: center;
   gap: 0.6rem;
@@ -235,12 +235,12 @@ nav .nav-dropdown .dropdown-menu a {
   transition: background var(--transition), color var(--transition);
 }
 
-nav .nav-dropdown .dropdown-menu a:hover {
+nav .dropdown .dropdown-menu a:hover {
   background: var(--math-bg);
   color: #fff;
 }
 
-nav .nav-dropdown .dropdown-menu a .ch-num {
+nav .dropdown .dropdown-menu a .ch-num {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -341,7 +341,7 @@ nav .hamburger.active span:nth-child(3) {
   animation: fadeUp 0.8s ease-out both;
 }
 
-.hero .hero-subtitle {
+.hero .subtitle {
   font-size: clamp(1rem, 2.2vw, 1.35rem);
   color: var(--muted);
   max-width: 600px;
@@ -440,7 +440,7 @@ section.chapter + section.chapter {
   margin-bottom: 3rem;
 }
 
-.ch-header .ch-number {
+.ch-header .ch-num {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1298,7 +1298,7 @@ footer .footer-links {
     padding: 0 1rem;
   }
 
-  nav .nav-links {
+  nav ul {
     position: fixed;
     top: var(--nav-h);
     left: 0;
@@ -1316,16 +1316,16 @@ footer .footer-links {
     overflow-y: auto;
   }
 
-  nav .nav-links.open {
+  nav ul.open {
     transform: translateX(0);
   }
 
-  nav .nav-links li {
+  nav ul li {
     border-bottom: 1px solid var(--border-subtle);
   }
 
-  nav .nav-links a,
-  nav .nav-dropdown .dropdown-toggle {
+  nav ul a,
+  nav .dropdown > a {
     display: block;
     padding: 0.85rem 0.5rem;
     font-size: 1rem;
@@ -1336,7 +1336,7 @@ footer .footer-links {
   }
 
   /* Dropdown – static on mobile */
-  nav .nav-dropdown .dropdown-menu {
+  nav .dropdown .dropdown-menu {
     position: static;
     transform: none;
     box-shadow: none;
@@ -1350,7 +1350,7 @@ footer .footer-links {
     visibility: hidden;
   }
 
-  nav .nav-dropdown.open .dropdown-menu {
+  nav .dropdown.open .dropdown-menu {
     max-height: 500px;
     opacity: 1;
     visibility: visible;
@@ -1366,7 +1366,7 @@ footer .footer-links {
     font-size: 2rem;
   }
 
-  .hero .hero-subtitle {
+  .hero .subtitle {
     font-size: 0.95rem;
   }
 
@@ -1465,7 +1465,7 @@ footer .footer-links {
     font-size: 1.65rem;
   }
 
-  .ch-header .ch-number {
+  .ch-header .ch-num {
     width: 36px;
     height: 36px;
     font-size: 0.95rem;

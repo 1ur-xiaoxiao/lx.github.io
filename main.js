@@ -22,6 +22,8 @@
     initDropdown();
     initChapterAnimations();
     initVizLazyLoad();
+    // Initialize highlight.js for code syntax highlighting
+    if (typeof hljs !== 'undefined') hljs.highlightAll();
   });
 
   /* ================================================================
@@ -31,13 +33,11 @@
     var hero = document.querySelector('.hero');
     if (!hero) return;
 
-    // Create and insert the canvas
-    var canvas = document.createElement('canvas');
-    canvas.id = 'hero-canvas';
-    // Position behind hero content
+    // Use the canvas already in HTML
+    var canvas = document.getElementById('hero-canvas');
+    if (!canvas) return;
     canvas.style.cssText =
       'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;';
-    hero.insertBefore(canvas, hero.firstChild);
 
     var ctx = canvas.getContext('2d');
 
@@ -374,7 +374,7 @@
      8. initChapterAnimations — per-chapter entrance animations
      ================================================================ */
   function initChapterAnimations() {
-    var chapters = document.querySelectorAll('.ch');
+    var chapters = document.querySelectorAll('.chapter');
     if (!chapters.length) return;
 
     // Initially hide chapter children for staggered entrance
@@ -427,7 +427,7 @@
       ch03: 'vizKNN',
       ch04: 'vizNaiveBayes',
       ch05: 'vizLogisticRegression',
-      ch06: 'vizMaximumEntropy',
+      ch06: 'vizMaxEntropy',
       ch07: 'vizDecisionTree',
       ch08: 'vizPerceptron',
       ch09: 'vizSVM',
