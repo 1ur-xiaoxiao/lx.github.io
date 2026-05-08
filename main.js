@@ -343,23 +343,29 @@
      7. initDropdown — chapter dropdown menu in nav
      ================================================================ */
   function initDropdown() {
-    var dropdown = document.querySelector('.dropdown');
-    if (!dropdown) return;
+    var dropdowns = document.querySelectorAll('.dropdown');
+    if (!dropdowns.length) return;
 
-    var toggle = dropdown.querySelector('.dropdown-toggle') || dropdown.querySelector('a');
+    dropdowns.forEach(function (dropdown) {
+      var toggle = dropdown.querySelector('.dropdown-toggle') || dropdown.querySelector('a');
 
-    // Click to toggle
-    toggle.addEventListener('click', function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      dropdown.classList.toggle('open');
+      // Click to toggle
+      toggle.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        // Close other dropdowns first
+        dropdowns.forEach(function (d) { if (d !== dropdown) d.classList.remove('open'); });
+        dropdown.classList.toggle('open');
+      });
     });
 
-    // Close on click outside
+    // Close all dropdowns on click outside
     document.addEventListener('click', function (e) {
-      if (!dropdown.contains(e.target)) {
-        dropdown.classList.remove('open');
-      }
+      dropdowns.forEach(function (dropdown) {
+        if (!dropdown.contains(e.target)) {
+          dropdown.classList.remove('open');
+        }
+      });
     });
   }
 

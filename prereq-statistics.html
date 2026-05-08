@@ -110,9 +110,9 @@ MathJax = {
 
   <div class="math-bridge">
     <h3>与数据挖掘的联系</h3>
-    <p><strong>Ch02 线性回归</strong>：岭回归 / Lasso 的正则化参数 $\lambda$ 直接控制偏差-方差权衡；通过交叉验证选择最优 $\lambda$ 本质上是在偏差-方差曲线上寻找最优点。</p>
-    <p><strong>Ch07 决策树</strong>：剪枝（预剪枝 / 后剪枝）通过限制树深度降低方差（偏差相应增加）；未剪枝的深层树偏差低但方差极高。</p>
-    <p><strong>Ch11 Bagging</strong>：Bagging 对 $M$ 个高方差模型取平均，在不改变偏差的前提下显著降低方差——这是集成学习的理论基石。</p>
+    <p><a href="index.html#ch02"><strong>Ch02 线性回归</strong></a>：岭回归 / Lasso 的正则化参数 $\lambda$ 直接控制偏差-方差权衡；通过交叉验证选择最优 $\lambda$ 本质上是在偏差-方差曲线上寻找最优点。</p>
+    <p><a href="index.html#ch07"><strong>Ch07 决策树</strong></a>：剪枝（预剪枝 / 后剪枝）通过限制树深度降低方差（偏差相应增加）；未剪枝的深层树偏差低但方差极高。</p>
+    <p><a href="index.html#ch11"><strong>Ch11 Bagging</strong></a>：Bagging 对 $M$ 个高方差模型取平均，在不改变偏差的前提下显著降低方差——这是集成学习的理论基石。</p>
   </div>
 </section>
 
@@ -193,8 +193,8 @@ MathJax = {
 
   <div class="math-bridge">
     <h3>与数据挖掘的联系</h3>
-    <p><strong>Ch05 逻辑回归</strong>：逻辑回归的参数通过 MLE 估计。Newton-Raphson 迭代 $\theta^{(t+1)} = \theta^{(t)} + H^{-1}\nabla\ell$ 直接利用 Fisher 信息矩阵（或其观测版本）作为二阶信息。Fisher 信息矩阵的逆给出了参数估计的协方差矩阵，用于计算置信区间和假设检验。</p>
-    <p><strong>Ch10 EM 算法</strong>：EM 算法的收敛速率与"缺失信息"比例有关——由 Fisher 信息矩阵的完整数据版本和观测数据版本的差异决定。EM 的 M 步本质上在优化期望对数似然，其曲率由 Fisher 信息矩阵刻画。</p>
+    <p><a href="index.html#ch05"><strong>Ch05 逻辑回归</strong></a>：逻辑回归的参数通过 MLE 估计。Newton-Raphson 迭代 $\theta^{(t+1)} = \theta^{(t)} + H^{-1}\nabla\ell$ 直接利用 Fisher 信息矩阵（或其观测版本）作为二阶信息。Fisher 信息矩阵的逆给出了参数估计的协方差矩阵，用于计算置信区间和假设检验。</p>
+    <p><a href="index.html#ch10"><strong>Ch10 EM 算法</strong></a>：EM 算法的收敛速率与"缺失信息"比例有关——由 Fisher 信息矩阵的完整数据版本和观测数据版本的差异决定。EM 的 M 步本质上在优化期望对数似然，其曲率由 Fisher 信息矩阵刻画。</p>
   </div>
 </section>
 
@@ -272,8 +272,8 @@ MathJax = {
 
   <div class="math-bridge">
     <h3>与数据挖掘的联系</h3>
-    <p><strong>Ch04 朴素贝叶斯</strong>：朴素贝叶斯的类条件概率 $P(x_j|y=c)$ 需要从训练数据估计。对离散特征使用频率估计（MLE），对连续特征假设高斯分布后估计 $\mu_{jc}$ 和 $\sigma_{jc}^2$——这些都是参数估计的基本应用。充分统计量的概念解释了为什么仅需保存 $\bar{x}$ 和 $S^2$ 而非全部训练数据。</p>
-    <p><strong>Ch05 逻辑回归</strong>：逻辑回归通过极大似然估计参数 $\beta$。MLE 的一致性保证了在大样本下 $\hat{\beta} \to \beta_0$；Fisher 信息矩阵的逆给出了 $\hat{\beta}$ 的协方差矩阵，从而可以构造 Wald 检验统计量 $z = \hat{\beta}_j / \text{se}(\hat{\beta}_j)$，用于判断特征是否显著。</p>
+    <p><a href="index.html#ch04"><strong>Ch04 朴素贝叶斯</strong></a>：朴素贝叶斯的类条件概率 $P(x_j|y=c)$ 需要从训练数据估计。对离散特征使用频率估计（MLE），对连续特征假设高斯分布后估计 $\mu_{jc}$ 和 $\sigma_{jc}^2$——这些都是参数估计的基本应用。充分统计量的概念解释了为什么仅需保存 $\bar{x}$ 和 $S^2$ 而非全部训练数据。</p>
+    <p><a href="index.html#ch05"><strong>Ch05 逻辑回归</strong></a>：逻辑回归通过极大似然估计参数 $\beta$。MLE 的一致性保证了在大样本下 $\hat{\beta} \to \beta_0$；Fisher 信息矩阵的逆给出了 $\hat{\beta}$ 的协方差矩阵，从而可以构造 Wald 检验统计量 $z = \hat{\beta}_j / \text{se}(\hat{\beta}_j)$，用于判断特征是否显著。</p>
   </div>
 </section>
 
@@ -359,8 +359,8 @@ MathJax = {
 
   <div class="math-bridge">
     <h3>与数据挖掘的联系</h3>
-    <p><strong>Ch07 随机森林</strong>：随机森林的方差公式 $\text{Var}(\bar{f}) = \rho\sigma^2 + \frac{1-\rho}{M}\sigma^2$ 直接解释了两个关键超参数的作用——(1) 增加树的数量 $M$ 可降低第二项（但存在边际递减效应）；(2) 减少每棵树的特征子集大小 $k$ 可降低 $\rho$，从而更有效地缩减方差。</p>
-    <p><strong>Ch11 集成学习</strong>：AdaBoost 的训练误差上界 $\prod_{t=1}^T Z_t$（$Z_t$ 为归一化因子）保证了指数收敛；GBDT 通过梯度下降视角统一了各种损失函数下的 Boosting 算法；XGBoost 进一步引入正则化项 $\Omega(h_t) = \gamma T + \frac{1}{2}\lambda\|w\|^2$，在偏差-方差权衡中加入了结构正则化。Ambiguity 分解为理解这些方法为何有效提供了统一的理论框架。</p>
+    <p><a href="index.html#ch07"><strong>Ch07 随机森林</strong></a>：随机森林的方差公式 $\text{Var}(\bar{f}) = \rho\sigma^2 + \frac{1-\rho}{M}\sigma^2$ 直接解释了两个关键超参数的作用——(1) 增加树的数量 $M$ 可降低第二项（但存在边际递减效应）；(2) 减少每棵树的特征子集大小 $k$ 可降低 $\rho$，从而更有效地缩减方差。</p>
+    <p><a href="index.html#ch11"><strong>Ch11 集成学习</strong></a>：AdaBoost 的训练误差上界 $\prod_{t=1}^T Z_t$（$Z_t$ 为归一化因子）保证了指数收敛；GBDT 通过梯度下降视角统一了各种损失函数下的 Boosting 算法；XGBoost 进一步引入正则化项 $\Omega(h_t) = \gamma T + \frac{1}{2}\lambda\|w\|^2$，在偏差-方差权衡中加入了结构正则化。Ambiguity 分解为理解这些方法为何有效提供了统一的理论框架。</p>
   </div>
 </section>
 

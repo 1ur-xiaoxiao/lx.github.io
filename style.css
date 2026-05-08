@@ -1606,6 +1606,21 @@ footer .footer-links {
   font-size: 0.85rem;
 }
 
+/* Prerequisite label in chapter pills (non-clickable indicator) */
+.prereq-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent3);
+  background: rgba(0, 212, 170, 0.08);
+  border: 1px solid rgba(0, 212, 170, 0.2);
+  letter-spacing: 0.02em;
+  opacity: 0.85;
+}
+
 /* Prerequisite page hero (simplified) */
 .hero.prereq-hero {
   min-height: 35vh;

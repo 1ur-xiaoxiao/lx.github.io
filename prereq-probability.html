@@ -103,8 +103,8 @@ MathJax = {
     <h3>1.6 与数据挖掘的桥梁</h3>
     <div class="math-bridge">
       <ul>
-        <li><strong>Ch04 朴素贝叶斯</strong>：分类时计算 $P(C_k \mid \boldsymbol{x}) \propto P(\boldsymbol{x} \mid C_k)P(C_k)$，朴素假设在给定类别 $C_k$ 下各特征条件独立，即 $P(\boldsymbol{x} \mid C_k) = \prod_j P(x_j \mid C_k)$。</li>
-        <li><strong>Ch10 EM 算法</strong>：含隐变量 $z$ 时，E 步计算后验 $P(z \mid x, \theta^{(t)})$，正是贝叶斯公式的直接应用。</li>
+        <li><a href="index.html#ch04"><strong>Ch04 朴素贝叶斯</strong></a>：分类时计算 $P(C_k \mid \boldsymbol{x}) \propto P(\boldsymbol{x} \mid C_k)P(C_k)$，朴素假设在给定类别 $C_k$ 下各特征条件独立，即 $P(\boldsymbol{x} \mid C_k) = \prod_j P(x_j \mid C_k)$。</li>
+        <li><a href="index.html#ch10"><strong>Ch10 EM 算法</strong></a>：含隐变量 $z$ 时，E 步计算后验 $P(z \mid x, \theta^{(t)})$，正是贝叶斯公式的直接应用。</li>
       </ul>
     </div>
   </div>
@@ -211,10 +211,10 @@ MathJax = {
     <h3>2.5 与数据挖掘的桥梁</h3>
     <div class="math-bridge">
       <ul>
-        <li><strong>Ch02 线性回归</strong>：假设噪声 $\varepsilon \sim N(0, \sigma^2)$，则最小二乘等价于正态 MLE。</li>
-        <li><strong>Ch04 高斯朴素贝叶斯</strong>：特征在各类别下服从正态分布。</li>
-        <li><strong>Ch05 逻辑回归</strong>：输出为 Bernoulli 分布，损失函数即负对数似然。</li>
-        <li><strong>Ch11 Boosting</strong>：指数损失 $\ell(y,f)=e^{-yf}$ 与伯努利模型密切相关。</li>
+        <li><a href="index.html#ch02"><strong>Ch02 线性回归</strong></a>：假设噪声 $\varepsilon \sim N(0, \sigma^2)$，则最小二乘等价于正态 MLE。</li>
+        <li><a href="index.html#ch04"><strong>Ch04 高斯朴素贝叶斯</strong></a>：特征在各类别下服从正态分布。</li>
+        <li><a href="index.html#ch05"><strong>Ch05 逻辑回归</strong></a>：输出为 Bernoulli 分布，损失函数即负对数似然。</li>
+        <li><a href="index.html#ch11"><strong>Ch11 Boosting</strong></a>：指数损失 $\ell(y,f)=e^{-yf}$ 与伯努利模型密切相关。</li>
       </ul>
     </div>
   </div>
@@ -292,9 +292,9 @@ MathJax = {
     <h3>3.6 与数据挖掘的桥梁</h3>
     <div class="math-bridge">
       <ul>
-        <li><strong>Ch02 线性回归</strong>：假设 $y = \boldsymbol{w}^T\boldsymbol{x} + \varepsilon$，$\varepsilon \sim N(0, \sigma^2)$，最小化 MSE $\Leftrightarrow$ 最大化正态似然。</li>
-        <li><strong>Ch04 朴素贝叶斯</strong>：类别先验 $P(C_k)$ 和条件概率 $P(x_j \mid C_k)$ 均由 MLE 估计（频率计数）。</li>
-        <li><strong>Ch05 逻辑回归</strong>：$P(y=1 \mid \boldsymbol{x}) = \sigma(\boldsymbol{w}^T\boldsymbol{x})$，训练即对 Bernoulli 似然做 MLE，等价于最小化交叉熵损失。</li>
+        <li><a href="index.html#ch02"><strong>Ch02 线性回归</strong></a>：假设 $y = \boldsymbol{w}^T\boldsymbol{x} + \varepsilon$，$\varepsilon \sim N(0, \sigma^2)$，最小化 MSE $\Leftrightarrow$ 最大化正态似然。</li>
+        <li><a href="index.html#ch04"><strong>Ch04 朴素贝叶斯</strong></a>：类别先验 $P(C_k)$ 和条件概率 $P(x_j \mid C_k)$ 均由 MLE 估计（频率计数）。</li>
+        <li><a href="index.html#ch05"><strong>Ch05 逻辑回归</strong></a>：$P(y=1 \mid \boldsymbol{x}) = \sigma(\boldsymbol{w}^T\boldsymbol{x})$，训练即对 Bernoulli 似然做 MLE，等价于最小化交叉熵损失。</li>
       </ul>
     </div>
   </div>
@@ -376,10 +376,10 @@ MathJax = {
     <h3>4.5 与数据挖掘的桥梁</h3>
     <div class="math-bridge">
       <ul>
-        <li><strong>Ch05 逻辑回归 &amp; 神经网络</strong>：训练损失为交叉熵 $H(P_{data}, P_{model})$，最小化它等价于让模型分布逼近数据分布。</li>
-        <li><strong>Ch06 最大熵原理</strong>：在已知约束下选择熵最大的分布，避免引入额外假设。</li>
-        <li><strong>Ch07 决策树</strong>：信息增益 $IG = H(\text{parent}) - \sum_k \frac{|D_k|}{|D|} H(D_k)$ 本质上是互信息 $I(Y; X_{\text{split}})$。</li>
-        <li><strong>Ch09 聚类</strong>：NMI（归一化互信息）作为聚类评价指标。</li>
+        <li><a href="index.html#ch05"><strong>Ch05 逻辑回归 &amp; 神经网络</strong></a>：训练损失为交叉熵 $H(P_{data}, P_{model})$，最小化它等价于让模型分布逼近数据分布。</li>
+        <li><a href="index.html#ch06"><strong>Ch06 最大熵原理</strong></a>：在已知约束下选择熵最大的分布，避免引入额外假设。</li>
+        <li><a href="index.html#ch07"><strong>Ch07 决策树</strong></a>：信息增益 $IG = H(\text{parent}) - \sum_k \frac{|D_k|}{|D|} H(D_k)$ 本质上是互信息 $I(Y; X_{\text{split}})$。</li>
+        <li><a href="index.html#ch09"><strong>Ch09 聚类</strong></a>：NMI（归一化互信息）作为聚类评价指标。</li>
       </ul>
     </div>
   </div>
@@ -457,14 +457,14 @@ MathJax = {
     <h3>5.6 与数据挖掘的桥梁</h3>
     <div class="math-bridge">
       <ul>
-        <li><strong>Ch10 EM 算法</strong>：
+        <li><a href="index.html#ch10"><strong>Ch10 EM 算法</strong></a>：
           <ul>
             <li><strong>E 步</strong>：计算 $Q(Z) = P(Z \mid X, \theta^{(t)})$，即后验分布（隐变量的条件期望）。</li>
             <li><strong>M 步</strong>：最大化 $E_{Z \sim Q}[\log P(X, Z \mid \theta)]$，利用全期望公式保证似然单调递增。</li>
             <li>GMM 是 EM 的经典应用：E 步算 $\gamma_k$，M 步更新 $\pi_k, \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k$。</li>
           </ul>
         </li>
-        <li><strong>Ch09 聚类</strong>：GMM 可视为"软聚类"，每个数据点以概率 $\gamma_k$ 属于第 $k$ 个簇，相比 K-Means 的硬分配更灵活。</li>
+        <li><a href="index.html#ch09"><strong>Ch09 聚类</strong></a>：GMM 可视为"软聚类"，每个数据点以概率 $\gamma_k$ 属于第 $k$ 个簇，相比 K-Means 的硬分配更灵活。</li>
       </ul>
     </div>
   </div>
