@@ -22,10 +22,13 @@ MathJax = {
 <!-- NAV -->
 <nav>
   <div class="logo">Data Mining</div>
+  <button class="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
   <ul>
     <li><a href="#intro">课程简介</a></li>
     <li class="dropdown">
-      <a href="#ch02">章节内容 ▾</a>
+      <a href="#ch02">章节内容 <span class="arrow">▾</span></a>
       <div class="dropdown-menu">
         <a href="#ch02">Ch02 线性回归</a><a href="#ch03">Ch03 K近邻</a>
         <a href="#ch04">Ch04 朴素贝叶斯</a><a href="#ch05">Ch05 逻辑回归</a>
@@ -42,11 +45,13 @@ MathJax = {
 <!-- HERO -->
 <div class="hero">
   <canvas id="hero-canvas"></canvas>
-  <h1>数据挖掘</h1>
-  <p class="subtitle">数学系 · 机器学习中的统计思想</p>
-  <p class="author">董平 著 · Python 实现</p>
-  <p class="desc">从线性回归到提升方法，以统计学的视角重新审视机器学习的经典算法。每一章都从数学原理出发，用 Python 代码将理论落地。</p>
-  <div class="scroll-hint">&#8595;</div>
+  <div class="hero-content">
+    <h1>数据挖掘</h1>
+    <p class="subtitle">数学系 · 机器学习中的统计思想</p>
+    <p class="author">董平 著 · Python 实现</p>
+    <p class="desc">从线性回归到提升方法，以统计学的视角重新审视机器学习的经典算法。每一章都从数学原理出发，用 Python 代码将理论落地。</p>
+    <div class="scroll-hint"><span class="arrow-down"></span></div>
+  </div>
 </div>
 
 <!-- INTRO -->
@@ -307,7 +312,7 @@ def _soft_threshold(z, gamma):
         <li><strong>数学分析</strong>：凸函数判定、Taylor 展开、Hessian 矩阵、极值条件</li>
         <li><strong>高等代数</strong>：正定/半正定矩阵、矩阵求逆</li>
         <li><strong>概率论</strong>：伯努利分布、指数族、典型连接函数</li>
-        <li><strong>数理统计</strong>：极大似然估计、Fisher 信息量 $I(w) = -E[H]$</li>
+        <li><strong>数理统计</strong>：极大似然估计、Fisher 信息量 $I(w) = E[H]$</li>
       </ul>
     </div>
   </div>
@@ -700,7 +705,7 @@ self.alpha_[i] += y[i]*y[j]*(alpha_j_old - self.alpha_[j])</code></pre>
       <p>更新：$f_t(x) = f_{t-1}(x) + \eta \cdot h_t(x)$</p>
       <p><strong>4. XGBoost：二阶 Taylor 展开</strong></p>
       $$\text{Obj}_t \approx \sum_i \left[g_i h_t(x_i) + \frac{1}{2}h_i h_t(x_i)^2\right] + \gamma T + \frac{1}{2}\lambda\sum_j w_j^2$$
-      <p>其中 $g_i = \partial L/\partial f_{t-1}$，$h_i = \partial^2 L/\partial f_{t-2}^2$。</p>
+      <p>其中 $g_i = \partial L/\partial f_{t-1}$，$h_i = \partial^2 L/\partial f_{t-1}^2$。</p>
     </div>
     <div class="math-bridge">
       <strong>与数学系课程的联系：</strong>

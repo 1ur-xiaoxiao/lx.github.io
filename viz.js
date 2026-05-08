@@ -384,7 +384,7 @@ function vizNaiveBayes(container) {
   function gaussProb(x, y, mu, sx, sy) {
     const a = (x - mu[0]) ** 2 / (sx ** 2 + alpha);
     const b2 = (y - mu[1]) ** 2 / (sy ** 2 + alpha);
-    return Math.exp(-0.5 * (a + b2)) / (2 * Math.PI * Math.sqrt(sx * sy + alpha));
+    return Math.exp(-0.5 * (a + b2)) / (2 * Math.PI * (sx * sy + alpha));
   }
 
   function draw() {
@@ -556,13 +556,13 @@ function vizLogisticRegression(container) {
     ctx.font = '11px system-ui'; ctx.fillStyle = THEME.muted;
     ctx.fillText('Iteration', rx + rw / 2, ly + lh + 16);
 
-    requestAnimationFrame(draw);
+    if (animT < 1) requestAnimationFrame(draw);
   }
 
   requestAnimationFrame(draw);
 
-  // Slider triggers redraw
-  makeSlider(bar, 'w (slope)', 0.1, 5, 0.1, slopeW, v => { slopeW = v; });
+  // Slider triggers redraw — reset animation
+  makeSlider(bar, 'w (slope)', 0.1, 5, 0.1, slopeW, v => { slopeW = v; animT = 0; requestAnimationFrame(draw); });
 }
 
 /* ─── 5. Max Entropy ───────────────────────────────────────────── */
@@ -835,8 +835,8 @@ function vizPerceptron(container) {
     if (Math.abs(w2) > 0.001) {
       ctx.strokeStyle = '#00d4aa'; ctx.lineWidth = 3;
       ctx.beginPath();
-      ctx.moveTo(toX(-range), toY(-(-w1 * (-range) - b) / w2));
-      ctx.lineTo(toX(range), toY(-(-w1 * (range) - b) / w2));
+      ctx.moveTo(toX(-range), toY(-(w1 * (-range) + b) / w2));
+      ctx.lineTo(toX(range), toY(-(w1 * range + b) / w2));
       ctx.stroke();
     }
 
@@ -1177,7 +1177,7 @@ function vizBoosting(container) {
   const bar = makeBar(container);
   let nStumps = 1;
   const stumpSlider = makeSlider(bar, '弱学习器数', 1, 50, 1, nStumps, v => { nStumps = v; draw(); });
-  makeBtn(bar, '添加弱学习器', () => { nStumps = Math.min(50, nStumps + 1); stumpSlider.value = nStumps; draw(); });
+  makeBtn(bar, '添加弱学习器', () => { nStumps = Math.min(50, nStumps + 1); stumpSlider.value = nStumps; stumpSlider.dispatchEvent(new Event('input')); });
 
   const pad = { t: 30, r: 20, b: 30, l: 40 };
   const range = 5;
@@ -1185,13 +1185,51 @@ function vizBoosting(container) {
   function toX(v) { return pad.l + (v + range) / (2 * range) * (w - pad.l - pad.r); }
   function toY(v) { return pad.t + (1 - (v + range) / (2 * range)) * (h - pad.t - pad.b); }
 
-  // Pre-generate stump rules (axis-aligned)
+  // AdaBoost with decision stumps
   const stumps = [];
-  for (let i = 0; i < 50; i++) {
-    const axis = Math.random() < 0.5 ? 'x' : 'y';
-    const threshold = (Math.random() - 0.5) * 6;
-    const polarity = Math.random() < 0.5 ? 1 : -1;
-    stumps.push({ axis, threshold, polarity, alpha: 0.5 + Math.random() * 0.5 });
+  const weights = new Array(N).fill(1 / N);
+
+  function trainStump() {
+    let bestErr = 1, bestStump = null;
+    // Try axis-aligned stumps on both x and y axes
+    for (const axis of ['x', 'y']) {
+      const vals = pts.map(p => axis === 'x' ? p.x : p.y);
+      const sorted = vals.slice().sort((a, b) => a - b);
+      const thresholds = [];
+      for (let i = 0; i < sorted.length - 1; i++) {
+        thresholds.push((sorted[i] + sorted[i + 1]) / 2);
+      }
+      for (const threshold of thresholds) {
+        for (const polarity of [1, -1]) {
+          let err = 0;
+          for (let i = 0; i < N; i++) {
+            const pred = polarity * (vals[i] > threshold ? 1 : -1);
+            if (pred !== pts[i].label) err += weights[i];
+          }
+          if (err < bestErr) {
+            bestErr = err;
+            bestStump = { axis, threshold, polarity };
+          }
+        }
+      }
+    }
+    return { stump: bestStump, err: bestErr };
+  }
+
+  // Train all 50 stumps upfront
+  for (let t = 0; t < 50; t++) {
+    const { stump, err } = trainStump();
+    if (!stump || err >= 0.5) break;
+    const alpha = 0.5 * Math.log((1 - err) / Math.max(err, 1e-10));
+    stumps.push({ ...stump, alpha });
+    // Update weights
+    let Z = 0;
+    for (let i = 0; i < N; i++) {
+      const pred = stump.polarity * ((stump.axis === 'x' ? pts[i].x : pts[i].y) > stump.threshold ? 1 : -1);
+      weights[i] *= Math.exp(-alpha * pts[i].label * pred);
+      Z += weights[i];
+    }
+    for (let i = 0; i < N; i++) weights[i] /= Z;
   }
 
   function stumpPredict(s, x, y) {

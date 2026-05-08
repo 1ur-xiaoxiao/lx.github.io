@@ -197,7 +197,7 @@ nav .dropdown > a .arrow {
   transition: transform var(--transition);
 }
 
-nav .dropdown.open .dropdown-toggle .arrow {
+nav .dropdown.open > a .arrow {
   transform: rotate(180deg);
 }
 
@@ -314,8 +314,7 @@ nav .hamburger.active span:nth-child(3) {
 }
 
 /* Canvas background placeholder */
-.hero canvas#hero-bg,
-.hero .hero-canvas {
+.hero canvas#hero-canvas {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -417,6 +416,100 @@ nav .hamburger.active span:nth-child(3) {
   border-bottom: 2px solid var(--muted);
   transform: rotate(45deg);
   animation: bounce 2s ease-in-out infinite;
+}
+
+/* ============================================================
+   2b. HERO SUB-ELEMENTS & MISC UNSTYLED CLASSES
+   ============================================================ */
+.hero .author {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+  animation: fadeUp 0.8s 0.25s ease-out both;
+}
+
+.hero .desc {
+  font-size: 1rem;
+  color: var(--muted);
+  max-width: 600px;
+  margin: 0 auto 1.5rem;
+  line-height: 1.7;
+  animation: fadeUp 0.8s 0.35s ease-out both;
+}
+
+.lead {
+  font-size: 1.08rem;
+  color: var(--muted);
+  line-height: 1.8;
+  max-width: 800px;
+  margin-bottom: 2rem;
+}
+
+.ch-overview {
+  margin-bottom: 2.5rem;
+}
+
+.ch-overview p {
+  font-size: 1rem;
+  color: var(--muted);
+  line-height: 1.8;
+  max-width: 900px;
+}
+
+.ch-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.math-content {
+  margin-top: 1rem;
+}
+
+.math-content p,
+.math-content li {
+  margin-bottom: 0.6rem;
+  line-height: 1.8;
+}
+
+.math-bridge {
+  margin-top: 1.2rem;
+  padding: 1rem 1.2rem;
+  border-left: 3px solid var(--accent2);
+  background: rgba(108, 99, 255, 0.04);
+  border-radius: 0 8px 8px 0;
+  font-size: 0.92rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.code-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.02em;
+}
+
+.viz-hint {
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 0.8rem;
+  font-style: italic;
+}
+
+.t-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-right: 0.4rem;
 }
 
 /* ============================================================
@@ -856,7 +949,7 @@ section.chapter + section.chapter {
   opacity: 1;
 }
 
-.intro-card .card-icon {
+.intro-card .icon {
   font-size: 2rem;
   margin-bottom: 1rem;
 }
@@ -965,7 +1058,7 @@ section.chapter + section.chapter {
   transform: translateY(-2px);
 }
 
-.tool-badge .badge-icon {
+.tool-badge .t-icon {
   font-size: 1rem;
 }
 
@@ -1017,14 +1110,6 @@ footer .footer-links {
   opacity: 1;
   transform: translateY(0);
 }
-
-/* Stagger children */
-.reveal-stagger > .reveal:nth-child(1) { transition-delay: 0s; }
-.reveal-stagger > .reveal:nth-child(2) { transition-delay: 0.1s; }
-.reveal-stagger > .reveal:nth-child(3) { transition-delay: 0.2s; }
-.reveal-stagger > .reveal:nth-child(4) { transition-delay: 0.3s; }
-.reveal-stagger > .reveal:nth-child(5) { transition-delay: 0.35s; }
-.reveal-stagger > .reveal:nth-child(6) { transition-delay: 0.4s; }
 
 /* ============================================================
    14. SIDE DOTS – Desktop-only fixed side navigation

@@ -20,6 +20,7 @@
     initSideDots();
     initCodeCopy();
     initDropdown();
+    initHamburger();
     initChapterAnimations();
     initVizLazyLoad();
     // Initialize highlight.js for code syntax highlighting
@@ -193,21 +194,19 @@
           }
         }
 
-        // Update nav links
-        var navLinks = document.querySelectorAll('nav a');
+        // Update nav links (top-level only, not dropdown menu items)
+        var navLinks = document.querySelectorAll('nav > ul > li > a');
         navLinks.forEach(function (link) {
           var href = link.getAttribute('href');
           if (href === '#' + currentId) {
             link.classList.add('active');
-            link.style.color = '#6c63ff';
           } else {
             link.classList.remove('active');
-            link.style.color = '';
           }
         });
 
         // Update side-dots
-        var dots = document.querySelectorAll('.side-dots .dot-link');
+        var dots = document.querySelectorAll('.side-dots .dot');
         dots.forEach(function (dot) {
           var target = dot.getAttribute('data-target');
           if (target === currentId) {
@@ -263,8 +262,9 @@
 
     validIds.forEach(function (id) {
       var dot = document.createElement('a');
-      dot.className = 'dot-link';
+      dot.className = 'dot';
       dot.setAttribute('data-target', id);
+      dot.setAttribute('data-label', labels[id] || id);
       dot.setAttribute('title', labels[id] || id);
       dot.href = '#' + id;
       dot.style.cssText =
@@ -277,14 +277,7 @@
     document.body.appendChild(container);
 
     // Inject minimal CSS for the active state
-    var style = document.createElement('style');
-    style.textContent =
-      '.side-dots .dot-link.active{' +
-      'background:#6c63ff;border-color:#6c63ff;' +
-      'box-shadow:0 0 8px rgba(108,99,255,.5);transform:scale(1.3);}' +
-      '.side-dots .dot-link:hover{' +
-      'background:rgba(108,99,255,.6);transform:scale(1.2);}';
-    document.head.appendChild(style);
+    // Active/hover styles are defined in style.css
   }
 
   /* ================================================================
@@ -371,7 +364,29 @@
   }
 
   /* ================================================================
-     8. initChapterAnimations — per-chapter entrance animations
+     8. initHamburger — mobile menu toggle
+     ================================================================ */
+  function initHamburger() {
+    var hamburger = document.querySelector('.hamburger');
+    var navUl = document.querySelector('nav ul');
+    if (!hamburger || !navUl) return;
+
+    hamburger.addEventListener('click', function () {
+      hamburger.classList.toggle('active');
+      navUl.classList.toggle('open');
+    });
+
+    // Close menu when clicking a link
+    navUl.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        hamburger.classList.remove('active');
+        navUl.classList.remove('open');
+      });
+    });
+  }
+
+  /* ================================================================
+     9. initChapterAnimations — per-chapter entrance animations
      ================================================================ */
   function initChapterAnimations() {
     var chapters = document.querySelectorAll('.chapter');
