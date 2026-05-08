@@ -4,269 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>数据挖掘 — 董平·机器学习中的统计思想</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
-
-  :root {
-    --bg: #0f0f13;
-    --surface: #1a1a24;
-    --card: #22223a;
-    --accent: #6c63ff;
-    --accent2: #ff6584;
-    --text: #e8e6f0;
-    --muted: #9896a8;
-    --glow: rgba(108,99,255,.25);
-  }
-
-  * { margin:0; padding:0; box-sizing:border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'Noto Sans SC', system-ui, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
-
-  /* ====== NAV ====== */
-  nav {
-    position: fixed; top:0; left:0; width:100%; z-index:100;
-    display: flex; align-items:center; justify-content:space-between;
-    padding: 1rem 3rem;
-    background: rgba(15,15,19,.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(108,99,255,.15);
-  }
-  nav .logo {
-    font-family: 'Noto Serif SC', serif;
-    font-weight: 700; font-size: 1.25rem;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  }
-  nav ul { list-style:none; display:flex; gap:2rem; }
-  nav a {
-    color: var(--muted); text-decoration:none; font-size:.9rem;
-    font-weight: 500; transition: color .3s;
-  }
-  nav a:hover { color: var(--accent); }
-
-  /* ====== HERO ====== */
-  .hero {
-    min-height: 100vh;
-    display: flex; flex-direction:column;
-    align-items:center; justify-content:center;
-    text-align:center; padding: 6rem 2rem 4rem;
-    position: relative;
-  }
-  .hero::before {
-    content:'';
-    position:absolute; inset:0;
-    background:
-      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(108,99,255,.18), transparent),
-      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(255,101,132,.1), transparent);
-    pointer-events:none;
-  }
-  .hero h1 {
-    font-family: 'Noto Serif SC', serif;
-    font-size: clamp(2.4rem, 5vw, 4.2rem);
-    font-weight: 700;
-    background: linear-gradient(135deg, #fff 30%, var(--accent) 70%, var(--accent2));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    margin-bottom: .6rem;
-    animation: fadeUp .8s ease-out;
-  }
-  .hero .subtitle {
-    font-size: 1.15rem; color: var(--muted);
-    margin-bottom: .4rem;
-    animation: fadeUp .8s ease-out .15s both;
-  }
-  .hero .author {
-    font-size: 1rem; color: var(--accent);
-    font-weight: 500; margin-bottom: 2.5rem;
-    animation: fadeUp .8s ease-out .25s both;
-  }
-  .hero .desc {
-    max-width: 640px; font-size: 1rem; color: var(--muted);
-    animation: fadeUp .8s ease-out .35s both;
-  }
-  .hero .scroll-hint {
-    margin-top: 3rem;
-    animation: bounce 2s infinite;
-    color: var(--accent); font-size: 1.4rem;
-  }
-
-  @keyframes fadeUp {
-    from { opacity:0; transform:translateY(24px); }
-    to   { opacity:1; transform:translateY(0); }
-  }
-  @keyframes bounce {
-    0%,100% { transform:translateY(0); }
-    50%     { transform:translateY(8px); }
-  }
-
-  /* ====== SECTIONS ====== */
-  section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
-  section h2 {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 1.8rem; margin-bottom: 1rem;
-    display:flex; align-items:center; gap:.6rem;
-  }
-  section h2 .dot {
-    width:10px; height:10px; border-radius:50%;
-    background: var(--accent); flex-shrink:0;
-  }
-  section .lead {
-    color: var(--muted); max-width: 700px; margin-bottom: 2.5rem;
-    font-size: .98rem;
-  }
-
-  /* ====== INTRO CARDS ====== */
-  .intro-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem; margin-top: 2rem;
-  }
-  .intro-card {
-    background: var(--surface);
-    border: 1px solid rgba(108,99,255,.12);
-    border-radius: 14px; padding: 1.8rem;
-    transition: transform .3s, box-shadow .3s;
-  }
-  .intro-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 30px var(--glow);
-  }
-  .intro-card .icon { font-size: 2rem; margin-bottom: .8rem; }
-  .intro-card h3 { font-size: 1.1rem; margin-bottom: .5rem; }
-  .intro-card p  { font-size: .9rem; color: var(--muted); }
-
-  /* ====== CHAPTER TIMELINE ====== */
-  .timeline { position: relative; padding-left: 2.5rem; }
-  .timeline::before {
-    content:'';
-    position:absolute; left: 8px; top:0; bottom:0;
-    width: 2px;
-    background: linear-gradient(180deg, var(--accent), var(--accent2));
-    border-radius: 2px;
-  }
-  .ch {
-    position: relative;
-    margin-bottom: 2.5rem;
-    background: var(--surface);
-    border: 1px solid rgba(108,99,255,.1);
-    border-radius: 14px;
-    padding: 1.6rem 1.8rem;
-    transition: transform .3s, box-shadow .3s;
-  }
-  .ch:hover {
-    transform: translateX(6px);
-    box-shadow: 0 4px 24px var(--glow);
-  }
-  .ch::before {
-    content:'';
-    position:absolute; left: -2.15rem; top: 1.8rem;
-    width: 14px; height: 14px;
-    border-radius: 50%;
-    background: var(--accent);
-    border: 3px solid var(--bg);
-    box-shadow: 0 0 0 3px var(--accent);
-  }
-  .ch .num {
-    display: inline-block;
-    font-size: .75rem; font-weight: 700;
-    color: var(--accent);
-    background: rgba(108,99,255,.12);
-    padding: .15rem .6rem; border-radius: 6px;
-    margin-bottom: .5rem;
-  }
-  .ch h3 {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 1.2rem; margin-bottom: .4rem;
-  }
-  .ch .en { color: var(--muted); font-size: .85rem; margin-bottom: .6rem; }
-  .ch p { font-size: .9rem; color: var(--muted); line-height: 1.65; }
-  .ch .tags { margin-top: .8rem; display:flex; flex-wrap:wrap; gap:.4rem; }
-  .ch .tag {
-    font-size: .75rem; padding: .2rem .6rem;
-    border-radius: 6px;
-    background: rgba(108,99,255,.1);
-    color: var(--accent);
-    border: 1px solid rgba(108,99,255,.2);
-  }
-
-  /* ====== CONCEPT SECTION ====== */
-  .concept-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-  }
-  .concept-card {
-    background: linear-gradient(135deg, var(--card), var(--surface));
-    border: 1px solid rgba(108,99,255,.1);
-    border-radius: 14px; padding: 2rem;
-    position: relative; overflow: hidden;
-  }
-  .concept-card::after {
-    content:'';
-    position:absolute; top:-50%; right:-50%;
-    width:100%; height:100%;
-    background: radial-gradient(circle, rgba(108,99,255,.08), transparent 70%);
-    pointer-events:none;
-  }
-  .concept-card h3 {
-    font-size: 1.1rem; margin-bottom: .6rem;
-    display:flex; align-items:center; gap:.5rem;
-  }
-  .concept-card p { font-size: .9rem; color: var(--muted); position:relative; }
-
-  /* ====== TOOLS ====== */
-  .tools-row {
-    display:flex; flex-wrap:wrap; gap:1rem; margin-top:1.5rem;
-  }
-  .tool-badge {
-    display:flex; align-items:center; gap:.5rem;
-    background: var(--surface);
-    border: 1px solid rgba(108,99,255,.12);
-    border-radius: 10px; padding: .8rem 1.2rem;
-    font-size: .9rem; font-weight: 500;
-    transition: border-color .3s;
-  }
-  .tool-badge:hover { border-color: var(--accent); }
-  .tool-badge .t-icon {
-    width:32px; height:32px; border-radius:8px;
-    display:flex; align-items:center; justify-content:center;
-    font-size: 1.1rem;
-  }
-
-  /* ====== FOOTER ====== */
-  footer {
-    text-align:center; padding: 3rem 2rem;
-    color: var(--muted); font-size: .85rem;
-    border-top: 1px solid rgba(108,99,255,.1);
-    max-width: 1100px; margin: 0 auto;
-  }
-  footer .heart { color: var(--accent2); }
-
-  /* ====== SCROLL REVEAL ====== */
-  .reveal {
-    opacity: 0; transform: translateY(30px);
-    transition: opacity .6s ease-out, transform .6s ease-out;
-  }
-  .reveal.visible {
-    opacity: 1; transform: translateY(0);
-  }
-
-  /* ====== RESPONSIVE ====== */
-  @media (max-width: 768px) {
-    nav { padding: .8rem 1.2rem; }
-    nav ul { gap: 1rem; }
-    nav a { font-size: .8rem; }
-    section { padding: 3rem 1.2rem; }
-    .hero { padding: 5rem 1.2rem 3rem; }
-  }
-</style>
+<link rel="stylesheet" href="style.css">
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']],
+    macros: { RR: '\\mathbb{R}', bold: ['\\mathbf{#1}',1] } },
+  svg: { fontCache: 'global' }, startup: { pageReady: () => MathJax.startup.defaultPageReady() }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
 </head>
 <body>
 
@@ -275,7 +24,16 @@
   <div class="logo">Data Mining</div>
   <ul>
     <li><a href="#intro">课程简介</a></li>
-    <li><a href="#outline">课程大纲</a></li>
+    <li class="dropdown">
+      <a href="#ch02">章节内容 ▾</a>
+      <div class="dropdown-menu">
+        <a href="#ch02">Ch02 线性回归</a><a href="#ch03">Ch03 K近邻</a>
+        <a href="#ch04">Ch04 朴素贝叶斯</a><a href="#ch05">Ch05 逻辑回归</a>
+        <a href="#ch06">Ch06 最大熵</a><a href="#ch07">Ch07 决策树</a>
+        <a href="#ch08">Ch08 感知机</a><a href="#ch09">Ch09 SVM</a>
+        <a href="#ch10">Ch10 EM算法</a><a href="#ch11">Ch11 提升方法</a>
+      </div>
+    </li>
     <li><a href="#concepts">核心思想</a></li>
     <li><a href="#tools">工具链</a></li>
   </ul>
@@ -283,266 +41,740 @@
 
 <!-- HERO -->
 <div class="hero">
+  <canvas id="hero-canvas"></canvas>
   <h1>数据挖掘</h1>
   <p class="subtitle">数学系 · 机器学习中的统计思想</p>
   <p class="author">董平 著 · Python 实现</p>
-  <p class="desc">
-    从线性回归到提升方法，以统计学的视角重新审视机器学习的经典算法。
-    每一章都从数学原理出发，用 Python 代码将理论落地——
-    这不仅是一门课，更是一次从"调包"到"理解"的思维升级。
-  </p>
+  <p class="desc">从线性回归到提升方法，以统计学的视角重新审视机器学习的经典算法。每一章都从数学原理出发，用 Python 代码将理论落地。</p>
   <div class="scroll-hint">&#8595;</div>
 </div>
 
 <!-- INTRO -->
-<section id="intro">
-  <div class="reveal">
-    <h2><span class="dot"></span>课程简介</h2>
-    <p class="lead">
-      本课程面向数学系学生，以董平《机器学习中的统计思想》为核心教材，
-      系统讲授数据挖掘领域的经典算法。课程特色在于：始终从统计学的视角理解模型，
-      强调"为什么这样做"而非仅仅"怎么调用"，并通过 Python 编程实现每一个算法。
-    </p>
-    <div class="intro-grid">
-      <div class="intro-card">
-        <div class="icon">&#128202;</div>
-        <h3>统计视角</h3>
-        <p>从概率分布、参数估计、假设检验等统计学基本概念出发，揭示机器学习算法背后的数学本质。</p>
-      </div>
-      <div class="intro-card">
-        <div class="icon">&#128187;</div>
-        <h3>Python 实践</h3>
-        <p>每一章配备完整的 Python 实现代码，从零手写算法核心，而非简单调用 sklearn，真正做到知其所以然。</p>
-      </div>
-      <div class="intro-card">
-        <div class="icon">&#128218;</div>
-        <h3>体系完整</h3>
-        <p>覆盖监督学习、无监督学习、概率图模型、集成学习等核心主题，构建完整的机器学习知识图谱。</p>
-      </div>
-    </div>
+<section id="intro" class="reveal">
+  <h2><span class="dot"></span>课程简介</h2>
+  <p class="lead">本课程面向数学系学生，以董平《机器学习中的统计思想》为核心教材，系统讲授数据挖掘领域的经典算法。始终从统计学的视角理解模型，强调"为什么这样做"而非仅仅"怎么调用"。</p>
+  <div class="intro-grid">
+    <div class="intro-card stagger"><div class="icon">📊</div><h3>统计视角</h3><p>从概率分布、参数估计、假设检验等统计学基本概念出发，揭示机器学习算法背后的数学本质。</p></div>
+    <div class="intro-card stagger"><div class="icon">💻</div><h3>Python 实践</h3><p>每一章从零手写算法核心，而非简单调用 sklearn，真正做到知其所以然。</p></div>
+    <div class="intro-card stagger"><div class="icon">📖</div><h3>体系完整</h3><p>覆盖监督学习、无监督学习、概率图模型、集成学习等核心主题，构建完整的知识图谱。</p></div>
   </div>
 </section>
 
-<!-- OUTLINE -->
-<section id="outline">
-  <div class="reveal">
-    <h2><span class="dot"></span>课程大纲</h2>
-    <p class="lead">十章内容，从基础回归到集成学习，循序渐进地构建你的机器学习知识体系。</p>
+<!-- ============================================================ -->
+<!-- CHAPTER 02: LINEAR REGRESSION -->
+<!-- ============================================================ -->
+<section id="ch02" class="chapter reveal">
+  <div class="ch-header">
+    <span class="ch-num">Chapter 02</span>
+    <h2>线性回归</h2>
+    <p class="ch-subtitle">Linear Regression</p>
+    <div class="ch-pills">
+      <span class="math-pill analysis">数学分析</span>
+      <span class="math-pill algebra">高等代数</span>
+      <span class="math-pill probability">概率论</span>
+      <span class="math-pill statistics">数理统计</span>
+    </div>
   </div>
-
-  <div class="timeline">
-
-    <div class="ch reveal">
-      <span class="num">Chapter 02</span>
-      <h3>线性回归</h3>
-      <p class="en">Linear Regression</p>
-      <p>机器学习的"Hello World"。从最小二乘法出发，理解损失函数、梯度下降、正则化（Ridge / Lasso）的统计含义——偏差-方差权衡的绝佳舞台。</p>
-      <div class="tags">
-        <span class="tag">最小二乘</span>
-        <span class="tag">梯度下降</span>
-        <span class="tag">正则化</span>
-        <span class="tag">偏差-方差</span>
-      </div>
+  <div class="ch-overview">
+    <p>机器学习的"Hello World"。假设目标变量 $y$ 服从以 $Xw$ 为均值的正态分布，极大似然估计等价于最小二乘。岭回归和 Lasso 分别引入 L2/L1 正则化，从贝叶斯视角对应高斯先验和拉普拉斯先验。</p>
+  </div>
+  <div class="ch-math">
+    <h3>数学推导</h3>
+    <div class="math-content">
+      <p><strong>1. 最小二乘解析解（正规方程）</strong></p>
+      <p>损失函数：$L(w) = \|y - Xw\|^2 = (y-Xw)^T(y-Xw)$</p>
+      <p>对 $w$ 求梯度：$\frac{\partial L}{\partial w} = -2X^T(y - Xw)$</p>
+      <p>令梯度为零：$X^TX \, w = X^Ty$，若 $X^TX$ 可逆，则：</p>
+      $$w^* = (X^TX)^{-1}X^Ty$$
+      <p><strong>2. 岭回归（L2 正则化）</strong></p>
+      <p>损失：$L(w) = \|y-Xw\|^2 + \lambda\|w\|^2$</p>
+      <p>解析解：$w^* = (X^TX + \lambda I)^{-1}X^Ty$</p>
+      <p>贝叶斯解释：等价于先验 $w \sim N(0, \tau^2 I)$，其中 $\lambda \propto 1/\tau^2$。</p>
+      <p><strong>3. Lasso（L1 正则化）与软阈值算子</strong></p>
+      <p>损失 $L(w) = \|y-Xw\|^2 + \lambda\|w\|_1$ 无解析解，用坐标下降法求解。第 $j$ 个系数的更新使用软阈值规则：</p>
+      $$S(z, \gamma) = \text{sign}(z) \cdot \max(|z| - \gamma, 0)$$
     </div>
-
-    <div class="ch reveal">
-      <span class="num">Chapter 03</span>
-      <h3>K 近邻</h3>
-      <p class="en">K-Nearest Neighbors</p>
-      <p>最直观的非参数方法——"近朱者赤"。讨论距离度量、K 值选择、维度灾难，理解非参数估计的思想与局限。</p>
-      <div class="tags">
-        <span class="tag">非参数估计</span>
-        <span class="tag">距离度量</span>
-        <span class="tag">维度灾难</span>
-      </div>
+    <div class="math-bridge">
+      <strong>与数学系课程的联系：</strong>
+      <ul>
+        <li><strong>高等代数</strong>：$X^TX$ 的正定性、矩阵求逆、伪逆 $\Rightarrow$ 正规方程的可解性</li>
+        <li><strong>数学分析</strong>：多元函数求极值、梯度为零的必要条件</li>
+        <li><strong>概率论</strong>：正态分布假设 $y|X \sim N(Xw, \sigma^2 I)$，极大似然估计</li>
+        <li><strong>数理统计</strong>：偏差-方差权衡——$\lambda$ 越大，偏差↑方差↓</li>
+      </ul>
     </div>
-
-    <div class="ch reveal">
-      <span class="num">Chapter 04</span>
-      <h3>朴素贝叶斯</h3>
-      <p class="en">Naive Bayes</p>
-      <p>以贝叶斯定理为基石，"朴素"地假设特征条件独立。看似简单，却在文本分类等领域大放异彩——理解生成模型 vs 判别模型的第一站。</p>
-      <div class="tags">
-        <span class="tag">贝叶斯定理</span>
-        <span class="tag">条件独立</span>
-        <span class="tag">生成模型</span>
-        <span class="tag">拉普拉斯平滑</span>
-      </div>
-    </div>
-
-    <div class="ch reveal">
-      <span class="num">Chapter 05</span>
-      <h3>逻辑回归</h3>
-      <p class="en">Logistic Regression</p>
-      <p>名字带"回归"，本质是分类。通过 Sigmoid 函数将线性模型映射到概率空间，用极大似然估计求解——统计学与机器学习的经典交汇点。</p>
-      <div class="tags">
-        <span class="tag">Sigmoid</span>
-        <span class="tag">极大似然</span>
-        <span class="tag">交叉熵</span>
-        <span class="tag">二分类</span>
-      </div>
-    </div>
-
-    <div class="ch reveal">
-      <span class="num">Chapter 06</span>
-      <h3>最大熵</h3>
-      <p class="en">Maximum Entropy</p>
-      <p>在已知约束下，选择熵最大的分布——"不做多余假设"的哲学。最大熵模型与逻辑回归殊途同归，揭示了信息论与统计学习的深层联系。</p>
-      <div class="tags">
-        <span class="tag">信息熵</span>
-        <span class="tag">拉格朗日对偶</span>
-        <span class="tag">指数族</span>
-      </div>
-    </div>
-
-    <div class="ch reveal">
-      <span class="num">Chapter 07</span>
-      <h3>决策树与随机森林</h3>
-      <p class="en">Decision Trees &amp; Random Forests</p>
-      <p>用"分而治之"的策略递归划分特征空间。从 ID3、C4.5 到 CART，理解信息增益、基尼系数；再通过 Bagging 和随机特征选择走向集成学习。</p>
-      <div class="tags">
-        <span class="tag">信息增益</span>
-        <span class="tag">基尼系数</span>
-        <span class="tag">剪枝</span>
-        <span class="tag">Bagging</span>
-      </div>
-    </div>
-
-    <div class="ch reveal">
-      <span class="num">Chapter 08</span>
-      <h3>感知机</h3>
-      <p class="en">Perceptron</p>
-      <p>神经网络的"老祖宗"。寻找一个超平面将数据线性可分——理解感知机的收敛定理，也是通往支持向量机的桥梁。</p>
-      <div class="tags">
-        <span class="tag">线性可分</span>
-        <span class="tag">收敛定理</span>
-        <span class="tag">对偶形式</span>
-      </div>
-    </div>
-
-    <div class="ch reveal">
-      <span class="num">Chapter 09</span>
-      <h3>支持向量机</h3>
-      <p class="en">Support Vector Machine</p>
-      <p>追求最大间隔的优雅分类器。从硬间隔到软间隔，从核技巧到 SMO 算法——几何直觉与凸优化的完美结合。</p>
-      <div class="tags">
-        <span class="tag">最大间隔</span>
-        <span class="tag">核函数</span>
-        <span class="tag">对偶问题</span>
-        <span class="tag">KKT条件</span>
-      </div>
-    </div>
-
-    <div class="ch reveal">
-      <span class="num">Chapter 10</span>
-      <h3>EM 算法</h3>
-      <p class="en">Expectation-Maximization</p>
-      <p>处理含隐变量模型的利器。E 步求期望，M 步求极大——迭代地逼近最大似然估计。高斯混合模型（GMM）是其最经典的应用。</p>
-      <div class="tags">
-        <span class="tag">隐变量</span>
-        <span class="tag">Jensen不等式</span>
-        <span class="tag">GMM</span>
-        <span class="tag">收敛性</span>
-      </div>
-    </div>
-
-    <div class="ch reveal">
-      <span class="num">Chapter 11</span>
-      <h3>提升方法</h3>
-      <p class="en">Boosting</p>
-      <p>三个臭皮匠，顶个诸葛亮。从 AdaBoost 到 Gradient Boosting，理解"加法模型 + 前向分步 + 指数损失"的统一框架，以及它为何能将弱学习器提升为强学习器。</p>
-      <div class="tags">
-        <span class="tag">AdaBoost</span>
-        <span class="tag">前向分步</span>
-        <span class="tag">GBDT</span>
-        <span class="tag">指数损失</span>
-      </div>
-    </div>
-
+  </div>
+  <div class="ch-code">
+    <h3>Python 实现</h3>
+    <p class="code-label">正规方程求解</p>
+    <pre><code class="language-python">def fit(self, X, y):
+    if self.fit_intercept:
+        X = np.column_stack([np.ones(X.shape[0]), X])
+    XtX = X.T @ X
+    Xty = X.T @ y
+    # 用 solve 而非求逆，数值更稳定
+    try:
+        theta = np.linalg.solve(XtX, Xty)
+    except np.linalg.LinAlgError:
+        theta = np.linalg.pinv(XtX) @ Xty</code></pre>
+    <p class="code-label">Lasso 软阈值函数</p>
+    <pre><code class="language-python">@staticmethod
+def _soft_threshold(z, gamma):
+    """S(z, γ) = sign(z) · max(|z| - γ, 0)"""
+    if z > gamma:   return z - gamma
+    elif z < -gamma: return z + gamma
+    else:            return 0.0</code></pre>
+  </div>
+  <div class="ch-viz" data-viz="vizLinearRegression">
+    <h3>可视化与交互</h3>
+    <p class="viz-hint">拖动 λ 滑块观察正则化对回归系数的影响</p>
+  </div>
+  <div class="ch-insights">
+    <h3>关键观察</h3>
+    <ul>
+      <li>岭回归系数较小但整体非零（L2 只收缩不归零）</li>
+      <li>Lasso 将部分系数压缩到恰好为零（L1 实现特征选择）</li>
+      <li>$\lambda$ 越大 → 正则化越强 → 系数越小 → 偏差↑方差↓</li>
+      <li>$X^TX$ 接近奇异时，岭回归通过加 $\lambda I$ 使其可逆</li>
+    </ul>
   </div>
 </section>
 
+<!-- ============================================================ -->
+<!-- CHAPTER 03: K-NEAREST NEIGHBORS -->
+<!-- ============================================================ -->
+<section id="ch03" class="chapter reveal">
+  <div class="ch-header">
+    <span class="ch-num">Chapter 03</span>
+    <h2>K 近邻</h2>
+    <p class="ch-subtitle">K-Nearest Neighbors</p>
+    <div class="ch-pills">
+      <span class="math-pill analysis">数学分析</span>
+      <span class="math-pill algebra">高等代数</span>
+      <span class="math-pill probability">概率论</span>
+    </div>
+  </div>
+  <div class="ch-overview">
+    <p>最直观的非参数方法——"近朱者赤"。不做任何分布假设，基于距离度量进行多数投票。KD 树通过递归空间划分将搜索复杂度从 $O(n)$ 降至 $O(\log n)$。</p>
+  </div>
+  <div class="ch-math">
+    <h3>数学推导</h3>
+    <div class="math-content">
+      <p><strong>1. 闵可夫斯基距离</strong></p>
+      $$d(x, x') = \left(\sum_{j=1}^{d} |x_j - x'_j|^p\right)^{1/p}$$
+      <p>$p=2$ 为欧氏距离，$p=1$ 为曼哈顿距离。这是 $L^p$ 范数的直接应用。</p>
+      <p><strong>2. 最近邻误差率上界</strong></p>
+      <p>设 $P^*$ 为贝叶斯最优错误率，最近邻分类器的错误率 $R$ 满足：</p>
+      $$P^* \leq R \leq 2P^*(1-P^*)$$
+      <p>即最近邻的错误率不超过贝叶斯最优的两倍。当 $P^*$ 很小时，$R \approx 2P^*$。</p>
+      <p><strong>3. KD 树划分</strong></p>
+      <p>递归沿坐标轴取中位数划分空间，搜索时利用三角不等式剪枝。复杂度 $O(n\log n)$ 建树，$O(\log n)$ 查询。</p>
+    </div>
+    <div class="math-bridge">
+      <strong>与数学系课程的联系：</strong>
+      <ul>
+        <li><strong>数学分析</strong>：度量空间公理、$L^p$ 范数、三角不等式</li>
+        <li><strong>高等代数</strong>：向量空间、内积与距离的关系</li>
+        <li><strong>概率论</strong>：条件概率、贝叶斯最优分类器、错误率分析</li>
+      </ul>
+    </div>
+  </div>
+  <div class="ch-code">
+    <h3>Python 实现</h3>
+    <p class="code-label">KNN 多数投票预测</p>
+    <pre><code class="language-python">def _predict_one(self, x):
+    # 闵可夫斯基距离: d(x,x') = (Σ|x_j-x'_j|^p)^{1/p}
+    distances = np.sum(np.abs(self.X_train_ - x) ** self.p, axis=1) ** (1/self.p)
+    knn_indices = np.argsort(distances)[:self.n_neighbors]
+    knn_labels = self.y_train_[knn_indices]
+    return Counter(knn_labels).most_common(1)[0][0]</code></pre>
+  </div>
+  <div class="ch-viz" data-viz="vizKNN">
+    <h3>可视化与交互</h3>
+    <p class="viz-hint">调节 K 值观察决策边界变化，鼠标悬停查看近邻</p>
+  </div>
+  <div class="ch-insights">
+    <h3>关键观察</h3>
+    <ul>
+      <li>KNN 是惰性学习——训练只存储数据，所有计算在预测时进行</li>
+      <li>K=1 时对噪声极度敏感（高方差），但训练误差为 0</li>
+      <li>K 过大会把远处不相关的样本也纳入投票（高偏差）</li>
+      <li>高维空间中距离趋同（维度灾难），KD 树退化为暴力搜索</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 04: NAIVE BAYES -->
+<!-- ============================================================ -->
+<section id="ch04" class="chapter reveal">
+  <div class="ch-header">
+    <span class="ch-num">Chapter 04</span>
+    <h2>朴素贝叶斯</h2>
+    <p class="ch-subtitle">Naive Bayes</p>
+    <div class="ch-pills">
+      <span class="math-pill probability">概率论</span>
+      <span class="math-pill statistics">数理统计</span>
+    </div>
+  </div>
+  <div class="ch-overview">
+    <p>以贝叶斯定理为基石，"朴素"地假设特征条件独立。看似简单，却在文本分类等领域大放异彩——生成模型的经典代表。</p>
+  </div>
+  <div class="ch-math">
+    <h3>数学推导</h3>
+    <div class="math-content">
+      <p><strong>1. 贝叶斯定理</strong></p>
+      $$P(C_k|x) = \frac{P(x|C_k) \cdot P(C_k)}{P(x)}$$
+      <p><strong>2. 条件独立假设</strong></p>
+      <p>"朴素"假设：给定类别后各特征相互独立：</p>
+      $$P(x|C_k) = \prod_{i=1}^{d} P(x_i|C_k)$$
+      <p><strong>3. 高斯朴素贝叶斯的对数后验</strong></p>
+      <p>假设 $P(x_i|c) = N(\mu_{c,i}, \sigma^2_{c,i})$，取对数：</p>
+      $$\log P(c|x) \propto \log P(c) + \sum_i \left[-\frac{1}{2}\log(2\pi\sigma^2) - \frac{(x_i-\mu)^2}{2\sigma^2}\right]$$
+      <p><strong>4. 拉普拉斯平滑</strong></p>
+      $$P(x_i|c) = \frac{\text{count}(x_i, c) + \alpha}{\sum_i \text{count}(x_i, c) + \alpha \cdot n}$$
+      <p>$\alpha=1$ 即拉普拉斯平滑，防止零概率导致整个后验为零。</p>
+    </div>
+    <div class="math-bridge">
+      <strong>与数学系课程的联系：</strong>
+      <ul>
+        <li><strong>概率论</strong>：贝叶斯公式、条件概率、先验与后验、全概率公式</li>
+        <li><strong>数理统计</strong>：极大似然估计 $\hat{\mu} = \bar{x}$，$\hat{\sigma}^2 = \frac{1}{n}\sum(x_i-\bar{x})^2$</li>
+      </ul>
+    </div>
+  </div>
+  <div class="ch-code">
+    <h3>Python 实现</h3>
+    <p class="code-label">高斯朴素贝叶斯——参数估计</p>
+    <pre><code class="language-python">def fit(self, X, y):
+    for i, c in enumerate(self.classes_):
+        X_c = X[y == c]
+        self.priors_[i] = len(X_c) / len(X)
+        self.means_[i] = np.mean(X_c, axis=0)
+        self.vars_[i] = np.var(X_c, axis=0) + 1e-9  # 防零方差</code></pre>
+  </div>
+  <div class="ch-viz" data-viz="vizNaiveBayes">
+    <h3>可视化与交互</h3>
+    <p class="viz-hint">点击画布任意位置查看该点的后验概率</p>
+  </div>
+  <div class="ch-insights">
+    <h3>关键观察</h3>
+    <ul>
+      <li>条件独立假设在现实中几乎不成立，但朴素贝叶斯仍表现良好</li>
+      <li>用对数计算而非连乘是为了数值稳定（log 将乘法转为加法）</li>
+      <li>朴素贝叶斯是生成模型：先学 $P(x|y)$ 和 $P(y)$，再推 $P(y|x)$</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 05: LOGISTIC REGRESSION -->
+<!-- ============================================================ -->
+<section id="ch05" class="chapter reveal">
+  <div class="ch-header">
+    <span class="ch-num">Chapter 05</span>
+    <h2>逻辑回归</h2>
+    <p class="ch-subtitle">Logistic Regression</p>
+    <div class="ch-pills">
+      <span class="math-pill analysis">数学分析</span>
+      <span class="math-pill algebra">高等代数</span>
+      <span class="math-pill probability">概率论</span>
+      <span class="math-pill statistics">数理统计</span>
+    </div>
+  </div>
+  <div class="ch-overview">
+    <p>名字带"回归"，本质是分类。通过 Sigmoid 将线性输出映射到概率空间，用极大似然估计求解。损失函数是凸的，保证梯度下降找到全局最优。</p>
+  </div>
+  <div class="ch-math">
+    <h3>数学推导</h3>
+    <div class="math-content">
+      <p><strong>1. Sigmoid 函数</strong></p>
+      $$\sigma(z) = \frac{1}{1+e^{-z}}, \quad \sigma'(z) = \sigma(z)(1-\sigma(z))$$
+      <p><strong>2. 交叉熵损失（伯努利 MLE）</strong></p>
+      <p>假设 $y|x \sim \text{Bernoulli}(\sigma(w^Tx))$，负对数似然：</p>
+      $$J(w) = -\frac{1}{n}\sum_i \left[y_i\log\sigma(w^Tx_i) + (1-y_i)\log(1-\sigma(w^Tx_i))\right]$$
+      <p><strong>3. 梯度与 Hessian</strong></p>
+      $$\nabla J = \frac{1}{n}X^T(\sigma(Xw) - y)$$
+      $$H = \frac{1}{n}X^T \text{diag}(p(1-p)) X \succeq 0$$
+      <p>$H$ 半正定 $\Rightarrow$ $J(w)$ 是凸函数 $\Rightarrow$ 任意局部最优即全局最优。</p>
+      <p><strong>4. 牛顿法更新</strong></p>
+      $$w \leftarrow w - H^{-1}\nabla J$$
+      <p>二次收敛速度，但每步需计算并求逆 Hessian 矩阵。</p>
+    </div>
+    <div class="math-bridge">
+      <strong>与数学系课程的联系：</strong>
+      <ul>
+        <li><strong>数学分析</strong>：凸函数判定、Taylor 展开、Hessian 矩阵、极值条件</li>
+        <li><strong>高等代数</strong>：正定/半正定矩阵、矩阵求逆</li>
+        <li><strong>概率论</strong>：伯努利分布、指数族、典型连接函数</li>
+        <li><strong>数理统计</strong>：极大似然估计、Fisher 信息量 $I(w) = -E[H]$</li>
+      </ul>
+    </div>
+  </div>
+  <div class="ch-code">
+    <h3>Python 实现</h3>
+    <p class="code-label">梯度下降与牛顿法</p>
+    <pre><code class="language-python">grad = X_aug.T @ (p - y) / n_samples
+if self.method == 'gradient_descent':
+    update = self.lr * grad
+elif self.method == 'newton':
+    D = p * (1 - p)
+    X_weighted = X_aug * np.sqrt(D[:, np.newaxis])
+    H = X_weighted.T @ X_weighted / n_samples
+    update = np.linalg.solve(H, grad)
+self.w_ -= update</code></pre>
+  </div>
+  <div class="ch-viz" data-viz="vizLogisticRegression">
+    <h3>可视化与交互</h3>
+    <p class="viz-hint">调节 Sigmoid 斜率，对比 GD 与 Newton 收敛速度</p>
+  </div>
+  <div class="ch-insights">
+    <h3>关键观察</h3>
+    <ul>
+      <li>牛顿法通常 5-10 次迭代就收敛（二次收敛速度）</li>
+      <li>梯度下降需要更多迭代，且对学习率敏感</li>
+      <li>交叉熵 + Sigmoid 的组合保证了凸性（全局最优存在）</li>
+      <li>逻辑回归是最大熵模型在二分类时的特例</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 06: MAXIMUM ENTROPY -->
+<!-- ============================================================ -->
+<section id="ch06" class="chapter reveal">
+  <div class="ch-header">
+    <span class="ch-num">Chapter 06</span>
+    <h2>最大熵</h2>
+    <p class="ch-subtitle">Maximum Entropy</p>
+    <div class="ch-pills">
+      <span class="math-pill analysis">数学分析</span>
+      <span class="math-pill probability">概率论</span>
+    </div>
+  </div>
+  <div class="ch-overview">
+    <p>在满足已知约束的前提下，选择熵最大的分布——"不做多余假设"的哲学。通过拉格朗日对偶推导出指数族形式，与逻辑回归殊途同归。</p>
+  </div>
+  <div class="ch-math">
+    <h3>数学推导</h3>
+    <div class="math-content">
+      <p><strong>1. 信息熵</strong></p>
+      $$H(P) = -\sum_{i} p_i \log p_i$$
+      <p>均匀分布时熵最大（$H = \log n$），退化分布时熵最小（$H = 0$）。</p>
+      <p><strong>2. 约束优化问题</strong></p>
+      $$\max_{P} H(P) = -\sum_{x,y} \tilde{P}(x)P(y|x)\log P(y|x)$$
+      $$\text{s.t.} \quad \sum_y P(y|x) = 1, \quad E_P[f_i] = E_{\tilde{P}}[f_i]$$
+      <p><strong>3. 拉格朗日对偶 → 指数族形式</strong></p>
+      <p>引入拉格朗日乘子 $w_i$，求解得最优解为：</p>
+      $$P_w(y|x) = \frac{1}{Z_w(x)} \exp\left(\sum_i w_i f_i(x,y)\right)$$
+      <p>其中 $Z_w(x) = \sum_y \exp(\sum_i w_i f_i(x,y))$ 是配分函数。</p>
+      <p><strong>4. 梯度 = 模型期望 - 经验期望</strong></p>
+      $$\frac{\partial L}{\partial w_k} = \frac{1}{n}\sum_i \left[P(y=k|x_i) - I(y_i=k)\right] \cdot x_i$$
+    </div>
+    <div class="math-bridge">
+      <strong>与数学系课程的联系：</strong>
+      <ul>
+        <li><strong>数学分析</strong>：约束优化、拉格朗日乘子法、KKT 条件</li>
+        <li><strong>概率论</strong>：信息熵、KL 散度 $D_{KL}(P\|Q) = \sum P\log\frac{P}{Q} \geq 0$</li>
+      </ul>
+    </div>
+  </div>
+  <div class="ch-code">
+    <h3>Python 实现</h3>
+    <p class="code-label">熵的计算</p>
+    <pre><code class="language-python">def entropy(p):
+    """H(P) = -Σ p_i log p_i"""
+    p = np.asarray(p)
+    p = p[p > 0]  # 0·log(0) = 0（取极限）
+    return -np.sum(p * np.log(p))</code></pre>
+  </div>
+  <div class="ch-viz" data-viz="vizMaxEntropy">
+    <h3>可视化与交互</h3>
+    <p class="viz-hint">拖动滑块选择 p 值，观察二值分布的熵变化</p>
+  </div>
+  <div class="ch-insights">
+    <h3>关键观察</h3>
+    <ul>
+      <li>最大熵 = "不说不知道的事"——在约束下选最均匀的分布</li>
+      <li>对偶函数是凹函数，可用任意凸优化方法求解</li>
+      <li>最大熵模型的多分类形式等价于 softmax 回归</li>
+      <li>梯度 = 模型期望 - 经验期望，直观反映约束满足程度</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 07: DECISION TREES & RANDOM FORESTS -->
+<!-- ============================================================ -->
+<section id="ch07" class="chapter reveal">
+  <div class="ch-header">
+    <span class="ch-num">Chapter 07</span>
+    <h2>决策树与随机森林</h2>
+    <p class="ch-subtitle">Decision Trees &amp; Random Forests</p>
+    <div class="ch-pills">
+      <span class="math-pill probability">概率论</span>
+      <span class="math-pill statistics">数理统计</span>
+    </div>
+  </div>
+  <div class="ch-overview">
+    <p>用"分而治之"的策略递归划分特征空间。从 ID3、C4.5 到 CART，每次划分让子节点纯度最高。随机森林通过 Bagging + 随机特征选择显著降低方差。</p>
+  </div>
+  <div class="ch-math">
+    <h3>数学推导</h3>
+    <div class="math-content">
+      <p><strong>1. 信息熵</strong></p>
+      $$H(D) = -\sum_{k=1}^{K} p_k \log_2 p_k$$
+      <p><strong>2. 信息增益（ID3）</strong></p>
+      $$g(D, A) = H(D) - \sum_v \frac{|D^v|}{|D|} H(D^v)$$
+      <p>选增益最大的特征。偏向取值多的特征。</p>
+      <p><strong>3. 信息增益比（C4.5）</strong></p>
+      $$g_R(D, A) = \frac{g(D, A)}{H_A(D)}, \quad H_A(D) = -\sum_v \frac{|D^v|}{|D|}\log_2\frac{|D^v|}{|D|}$$
+      <p><strong>4. 基尼指数（CART）</strong></p>
+      $$\text{Gini}(D) = 1 - \sum_{k=1}^{K} p_k^2$$
+      <p>统计直觉：随机抽两个样本，它们类别不一致的概率。</p>
+      <p><strong>5. 随机森林方差上界</strong></p>
+      $$\text{Var} \leq \rho\sigma^2 + \frac{(1-\rho)\sigma^2}{B}$$
+      <p>$\rho$ 为树间相关系数，$B$ 为树的数量。随机特征选择降低 $\rho$。</p>
+    </div>
+    <div class="math-bridge">
+      <strong>与数学系课程的联系：</strong>
+      <ul>
+        <li><strong>概率论</strong>：信息熵的凸性、$\log$ 函数性质</li>
+        <li><strong>数理统计</strong>：偏差-方差分解——单树低偏差高方差，森林低偏差低方差</li>
+      </ul>
+    </div>
+  </div>
+  <div class="ch-code">
+    <h3>Python 实现</h3>
+    <p class="code-label">节点不纯度计算</p>
+    <pre><code class="language-python">def _node_impurity(self, y):
+    _, counts = np.unique(y, return_counts=True)
+    probs = counts / counts.sum()
+    if self.criterion in ('entropy', 'gain_ratio'):
+        return -np.sum(probs * np.log2(probs + 1e-15))
+    elif self.criterion == 'gini':
+        return 1 - np.sum(probs ** 2)</code></pre>
+  </div>
+  <div class="ch-viz" data-viz="vizDecisionTree">
+    <h3>可视化与交互</h3>
+    <p class="viz-hint">点击"分裂"按钮，观察决策树逐步生长</p>
+  </div>
+  <div class="ch-insights">
+    <h3>关键观察</h3>
+    <ul>
+      <li>树越深 → 训练误差越低但测试误差可能上升（过拟合）</li>
+      <li>基尼指数计算更快（无需 log），实践中效果与熵相近</li>
+      <li>随机森林通过 Bagging + 随机特征，显著降低方差</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 08: PERCEPTRON -->
+<!-- ============================================================ -->
+<section id="ch08" class="chapter reveal">
+  <div class="ch-header">
+    <span class="ch-num">Chapter 08</span>
+    <h2>感知机</h2>
+    <p class="ch-subtitle">Perceptron</p>
+    <div class="ch-pills">
+      <span class="math-pill algebra">高等代数</span>
+      <span class="math-pill analysis">数学分析</span>
+    </div>
+  </div>
+  <div class="ch-overview">
+    <p>神经网络的"老祖宗"。寻找超平面将数据线性可分，用误分类驱动的 SGD 更新参数。Novikoff 定理保证在线性可分条件下有限步收敛。</p>
+  </div>
+  <div class="ch-math">
+    <h3>数学推导</h3>
+    <div class="math-content">
+      <p><strong>1. 模型形式</strong></p>
+      $$f(x) = \text{sign}(w^Tx + b)$$
+      <p><strong>2. 损失函数（误分类驱动）</strong></p>
+      $$L(w, b) = -\sum_{\text{误分类}} y_i(w^Tx_i + b)$$
+      <p>几何意义：误分类点到超平面距离之和的符号修正版。</p>
+      <p><strong>3. SGD 更新规则</strong></p>
+      <p>对每个误分类样本 $(x_i, y_i)$：</p>
+      $$w \leftarrow w + \eta \cdot y_i \cdot x_i, \quad b \leftarrow b + \eta \cdot y_i$$
+      <p>为什么有效？若 $y_i=+1$ 被误分为 $-1$，则 $w^Tx_i+b < 0$，更新后 $w^Tx_i$ 增大 $\eta\|x_i\|^2 > 0$。</p>
+      <p><strong>4. Novikoff 收敛定理</strong></p>
+      <p>若数据线性可分，$\|x_i\| \leq R$，存在 $\gamma > 0$ 使 $y_i(w^{*T}x_i+b^*) \geq \gamma$，则误分类次数 $\leq (R/\gamma)^2$。</p>
+    </div>
+    <div class="math-bridge">
+      <strong>与数学系课程的联系：</strong>
+      <ul>
+        <li><strong>高等代数</strong>：超平面 $w^Tx+b=0$、内积、线性可分性</li>
+        <li><strong>数学分析</strong>：SGD 收敛性分析、序列极限</li>
+      </ul>
+    </div>
+  </div>
+  <div class="ch-code">
+    <h3>Python 实现</h3>
+    <p class="code-label">感知机训练循环</p>
+    <pre><code class="language-python">for epoch in range(self.max_iter):
+    n_errors = 0
+    for i in range(n_samples):
+        if y[i] * (np.dot(self.w_, X[i]) + self.b_) <= 0:
+            self.w_ += self.lr * y[i] * X[i]
+            self.b_ += self.lr * y[i]
+            n_errors += 1
+    if n_errors == 0:
+        break  # 所有样本正确分类</code></pre>
+  </div>
+  <div class="ch-viz" data-viz="vizPerceptron">
+    <h3>可视化与交互</h3>
+    <p class="viz-hint">点击"训练一步"观察超平面如何调整</p>
+  </div>
+  <div class="ch-insights">
+    <h3>关键观察</h3>
+    <ul>
+      <li>感知机只在线性可分数据上收敛（Novikoff 定理保证）</li>
+      <li>解不唯一——初始值和样本顺序不同，解也不同</li>
+      <li>感知机是神经网络的基础，多层感知机 → 深度学习</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 09: SUPPORT VECTOR MACHINE -->
+<!-- ============================================================ -->
+<section id="ch09" class="chapter reveal">
+  <div class="ch-header">
+    <span class="ch-num">Chapter 09</span>
+    <h2>支持向量机</h2>
+    <p class="ch-subtitle">Support Vector Machine</p>
+    <div class="ch-pills">
+      <span class="math-pill algebra">高等代数</span>
+      <span class="math-pill analysis">数学分析</span>
+    </div>
+  </div>
+  <div class="ch-overview">
+    <p>追求最大间隔的优雅分类器。从硬间隔到软间隔，从核技巧到 SMO 算法——几何直觉与凸优化的完美结合。解只由支持向量决定，天然稀疏。</p>
+  </div>
+  <div class="ch-math">
+    <h3>数学推导</h3>
+    <div class="math-content">
+      <p><strong>1. 硬间隔原始问题</strong></p>
+      $$\min_{w,b} \frac{1}{2}\|w\|^2 \quad \text{s.t.} \quad y_i(w^Tx_i + b) \geq 1, \forall i$$
+      <p>间隔 $= 2/\|w\|$，最大化间隔 $\Leftrightarrow$ 最小化 $\|w\|^2/2$。</p>
+      <p><strong>2. 拉格朗日对偶</strong></p>
+      <p>引入乘子 $\alpha_i \geq 0$，由 KKT 条件 $w = \sum_i \alpha_i y_i x_i$，对偶问题：</p>
+      $$\max_\alpha \sum_i \alpha_i - \frac{1}{2}\sum_{i,j}\alpha_i\alpha_j y_iy_j x_i^Tx_j$$
+      $$\text{s.t.} \quad \sum_i \alpha_i y_i = 0, \quad \alpha_i \geq 0$$
+      <p><strong>3. 软间隔</strong></p>
+      <p>引入松弛变量 $\xi_i \geq 0$，惩罚参数 $C$：</p>
+      $$\min \frac{1}{2}\|w\|^2 + C\sum_i \xi_i \quad \text{s.t.} \quad y_i(w^Tx_i+b) \geq 1-\xi_i$$
+      <p>对偶形式仅约束变为 $0 \leq \alpha_i \leq C$。</p>
+      <p><strong>4. 核技巧</strong></p>
+      <p>将 $x_i^Tx_j$ 替换为核函数 $K(x_i, x_j) = \phi(x_i)^T\phi(x_j)$：</p>
+      <p>线性核：$K = x^Tx'$，RBF 核：$K(x,x') = \exp(-\gamma\|x-x'\|^2)$</p>
+    </div>
+    <div class="math-bridge">
+      <strong>与数学系课程的联系：</strong>
+      <ul>
+        <li><strong>高等代数</strong>：二次型、正定矩阵、核矩阵的半正定性</li>
+        <li><strong>数学分析</strong>：拉格朗日对偶、KKT 条件、凸优化、强对偶定理</li>
+      </ul>
+    </div>
+  </div>
+  <div class="ch-code">
+    <h3>Python 实现</h3>
+    <p class="code-label">SMO 核心——更新两个乘子</p>
+    <pre><code class="language-python">eta = self._K[i,i] + self._K[j,j] - 2*self._K[i,j]
+if eta <= 0: continue
+self.alpha_[j] += y[j] * (E_i - E_j) / eta
+self.alpha_[j] = np.clip(self.alpha_[j], L, H)
+self.alpha_[i] += y[i]*y[j]*(alpha_j_old - self.alpha_[j])</code></pre>
+  </div>
+  <div class="ch-viz" data-viz="vizSVM">
+    <h3>可视化与交互</h3>
+    <p class="viz-hint">调节 C 参数观察间隔变化，切换核函数看边界形状</p>
+  </div>
+  <div class="ch-insights">
+    <h3>关键观察</h3>
+    <ul>
+      <li>SVM 只依赖支持向量——其他样本对模型没有影响</li>
+      <li>C 越小 → 间隔越大 → 允许更多误分类 → 偏差↑方差↓</li>
+      <li>核技巧隐式地做特征映射，无需显式计算高维特征</li>
+      <li>SMO 每次只优化 2 个 $\alpha$，把大 QP 问题分解为可解析求解的子问题</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 10: EM ALGORITHM -->
+<!-- ============================================================ -->
+<section id="ch10" class="chapter reveal">
+  <div class="ch-header">
+    <span class="ch-num">Chapter 10</span>
+    <h2>EM 算法</h2>
+    <p class="ch-subtitle">Expectation-Maximization</p>
+    <div class="ch-pills">
+      <span class="math-pill analysis">数学分析</span>
+      <span class="math-pill probability">概率论</span>
+      <span class="math-pill statistics">数理统计</span>
+    </div>
+  </div>
+  <div class="ch-overview">
+    <p>处理含隐变量模型的利器。E 步求期望，M 步求极大——迭代逼近最大似然估计。单调性保证每次迭代似然不会下降。</p>
+  </div>
+  <div class="ch-math">
+    <h3>数学推导</h3>
+    <div class="math-content">
+      <p><strong>1. 不完全数据似然</strong></p>
+      $$\ell(\theta) = \log P(X|\theta) = \log \sum_z P(X, Z|\theta)$$
+      <p>直接优化困难（log 内有求和）。EM 将其转化为迭代优化 Q 函数。</p>
+      <p><strong>2. E 步：构造 Q 函数</strong></p>
+      $$Q(\theta|\theta^{(t)}) = E_{Z|X,\theta^{(t)}}[\log P(X,Z|\theta)]$$
+      <p><strong>3. M 步：最大化 Q 函数</strong></p>
+      $$\theta^{(t+1)} = \arg\max_\theta Q(\theta|\theta^{(t)})$$
+      <p><strong>4. 单调性（Jensen 不等式）</strong></p>
+      $$\ell(\theta^{(t+1)}) \geq \ell(\theta^{(t)})$$
+      <p><strong>5. GMM 的 E 步 / M 步</strong></p>
+      <p>E 步（责任值）：$\gamma_{ik} = \frac{\pi_k \cdot N(x_i|\mu_k,\Sigma_k)}{\sum_j \pi_j \cdot N(x_i|\mu_j,\Sigma_j)}$</p>
+      <p>M 步：$\mu_k = \frac{\sum_i \gamma_{ik} x_i}{\sum_i \gamma_{ik}}$，$\pi_k = \frac{\sum_i \gamma_{ik}}{n}$</p>
+    </div>
+    <div class="math-bridge">
+      <strong>与数学系课程的联系：</strong>
+      <ul>
+        <li><strong>数学分析</strong>：Jensen 不等式 $f(E[X]) \leq E[f(X)]$（$f$ 凸）、迭代优化收敛</li>
+        <li><strong>概率论</strong>：条件期望、混合分布、全概率公式</li>
+        <li><strong>数理统计</strong>：含隐变量的极大似然估计、Fisher 信息</li>
+      </ul>
+    </div>
+  </div>
+  <div class="ch-code">
+    <h3>Python 实现</h3>
+    <p class="code-label">E 步——计算责任值</p>
+    <pre><code class="language-python">def _e_step(self, X):
+    responsibilities = np.zeros((n_samples, self.n_components))
+    for k in range(self.n_components):
+        rv = multivariate_normal(mean=self.means_[k], cov=self.covars_[k])
+        responsibilities[:, k] = rv.pdf(X)
+    responsibilities *= self.weights_
+    responsibilities /= responsibilities.sum(axis=1, keepdims=True)
+    return responsibilities</code></pre>
+  </div>
+  <div class="ch-viz" data-viz="vizEM">
+    <h3>可视化与交互</h3>
+    <p class="viz-hint">点击 E步/M步 按钮，观察高斯椭圆逐步拟合数据</p>
+  </div>
+  <div class="ch-insights">
+    <h3>关键观察</h3>
+    <ul>
+      <li>EM 保证对数似然单调不减（核心理论保证）</li>
+      <li>EM 只能保证局部最优，结果依赖初始化</li>
+      <li>广义用于 GMM、HMM、缺失数据、因子分析等</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 11: BOOSTING -->
+<!-- ============================================================ -->
+<section id="ch11" class="chapter reveal">
+  <div class="ch-header">
+    <span class="ch-num">Chapter 11</span>
+    <h2>提升方法</h2>
+    <p class="ch-subtitle">Boosting</p>
+    <div class="ch-pills">
+      <span class="math-pill analysis">数学分析</span>
+      <span class="math-pill probability">概率论</span>
+      <span class="math-pill statistics">数理统计</span>
+    </div>
+  </div>
+  <div class="ch-overview">
+    <p>三个臭皮匠，顶个诸葛亮。从 AdaBoost 到 GBDT 再到 XGBoost，理解"加法模型 + 前向分步 + 指数损失"的统一框架。</p>
+  </div>
+  <div class="ch-math">
+    <h3>数学推导</h3>
+    <div class="math-content">
+      <p><strong>1. 指数损失与前向分步</strong></p>
+      $$L = \sum_i \exp(-y_i f(x_i)), \quad f(x) = \sum_t \alpha_t G_t(x)$$
+      <p><strong>2. AdaBoost 权重公式</strong></p>
+      $$\alpha_t = \frac{1}{2}\ln\frac{1-\epsilon_t}{\epsilon_t}$$
+      <p>样本权重更新：$D_{t+1}(i) \propto D_t(i) \cdot \exp(-\alpha_t y_i G_t(x_i))$</p>
+      <p><strong>3. GBDT：函数空间的梯度下降</strong></p>
+      <p>第 $t$ 轮拟合负梯度（对平方损失即残差）：</p>
+      $$r_i = -\frac{\partial L}{\partial f}\bigg|_{f=f_{t-1}} = y_i - f_{t-1}(x_i)$$
+      <p>更新：$f_t(x) = f_{t-1}(x) + \eta \cdot h_t(x)$</p>
+      <p><strong>4. XGBoost：二阶 Taylor 展开</strong></p>
+      $$\text{Obj}_t \approx \sum_i \left[g_i h_t(x_i) + \frac{1}{2}h_i h_t(x_i)^2\right] + \gamma T + \frac{1}{2}\lambda\sum_j w_j^2$$
+      <p>其中 $g_i = \partial L/\partial f_{t-1}$，$h_i = \partial^2 L/\partial f_{t-2}^2$。</p>
+    </div>
+    <div class="math-bridge">
+      <strong>与数学系课程的联系：</strong>
+      <ul>
+        <li><strong>数学分析</strong>：Taylor 展开、泛函梯度下降、加法模型的收敛性</li>
+        <li><strong>概率论</strong>：指数族分布、指数损失的统计解释</li>
+        <li><strong>数理统计</strong>：集成学习理论、偏差-方差——Boosting 降低偏差</li>
+      </ul>
+    </div>
+  </div>
+  <div class="ch-code">
+    <h3>Python 实现</h3>
+    <p class="code-label">AdaBoost 权重更新</p>
+    <pre><code class="language-python">error = np.sum(sample_weights * incorrect) / np.sum(sample_weights)
+alpha = 0.5 * np.log((1 - error) / max(error, 1e-10))
+sample_weights *= np.exp(-alpha * y * y_pred)
+sample_weights /= np.sum(sample_weights)</code></pre>
+    <p class="code-label">GBDT 拟合残差</p>
+    <pre><code class="language-python">residuals = y - current_pred  # 负梯度 = 残差
+tree = DecisionTreeRegressor(max_depth=self.max_depth)
+tree.fit(X, residuals)
+current_pred += self.learning_rate * tree.predict(X)</code></pre>
+  </div>
+  <div class="ch-viz" data-viz="vizBoosting">
+    <h3>可视化与交互</h3>
+    <p class="viz-hint">点击"添加弱学习器"观察决策边界逐步演化</p>
+  </div>
+  <div class="ch-insights">
+    <h3>关键观察</h3>
+    <ul>
+      <li>AdaBoost 通过样本重加权让后续分类器关注困难样本</li>
+      <li>GBDT = 函数空间中的梯度下降，每步拟合负梯度</li>
+      <li>学习率 $\eta < 1$ 时更稳定（shrinkage），但需要更多树</li>
+      <li>XGBoost 核心创新：二阶 Taylor 展开 + 显式正则化</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
 <!-- CORE CONCEPTS -->
-<section id="concepts">
-  <div class="reveal">
-    <h2><span class="dot"></span>核心统计思想</h2>
-    <p class="lead">贯穿整门课程的几条主线，帮助你从更高的视角俯瞰机器学习全景。</p>
-  </div>
-  <div class="concept-cards reveal">
-    <div class="concept-card">
-      <h3>&#127919; 极大似然估计 (MLE)</h3>
-      <p>逻辑回归、EM 算法、GMM……绝大多数模型的参数求解都可以统一到"找到使观测数据出现概率最大的参数"这一框架下。</p>
-    </div>
-    <div class="concept-card">
-      <h3>&#9878; 偏差-方差权衡</h3>
-      <p>模型复杂度的两难困境。线性回归的正则化、决策树的剪枝、Boosting 的迭代次数——本质上都在做同一个权衡。</p>
-    </div>
-    <div class="concept-card">
-      <h3>&#128200; 正则化与先验</h3>
-      <p>L2 正则化 = 高斯先验，L1 正则化 = 拉普拉斯先验。频率学派的正则化与贝叶斯学派的先验殊途同归。</p>
-    </div>
-    <div class="concept-card">
-      <h3>&#128269; 对偶性</h3>
-      <p>SVM 的对偶问题、最大熵的拉格朗日对偶——对偶视角不仅带来计算便利，更揭示了核方法和支持向量的本质。</p>
-    </div>
-    <div class="concept-card">
-      <h3>&#128202; 生成 vs 判别</h3>
-      <p>朴素贝叶斯建模 P(X|Y)，逻辑回归直接建模 P(Y|X)。两种范式各有优劣，理解它们的区别是选择模型的前提。</p>
-    </div>
-    <div class="concept-card">
-      <h3>&#127922; 集成学习哲学</h3>
-      <p>Bagging 降低方差，Boosting 降低偏差。随机森林和 GBDT 的成功证明了"群体智慧"在机器学习中的力量。</p>
-    </div>
+<!-- ============================================================ -->
+<section id="concepts" class="reveal">
+  <h2><span class="dot"></span>核心统计思想</h2>
+  <p class="lead">贯穿整门课程的几条主线，帮助你从更高的视角俯瞰机器学习全景。</p>
+  <div class="concept-cards">
+    <div class="concept-card stagger"><h3>🎯 极大似然估计 (MLE)</h3><p>逻辑回归、EM、GMM……绝大多数模型的参数求解都统一到"找到使观测数据概率最大的参数"。</p></div>
+    <div class="concept-card stagger"><h3>⚖️ 偏差-方差权衡</h3><p>正则化、剪枝、Boosting 迭代次数——本质上都在做同一个权衡。</p></div>
+    <div class="concept-card stagger"><h3>📈 正则化与先验</h3><p>L2 正则化 = 高斯先验，L1 = 拉普拉斯先验。频率学派与贝叶斯学派殊途同归。</p></div>
+    <div class="concept-card stagger"><h3>🔍 对偶性</h3><p>SVM 对偶、最大熵对偶——不仅带来计算便利，更揭示核方法和支持向量的本质。</p></div>
+    <div class="concept-card stagger"><h3>📊 生成 vs 判别</h3><p>朴素贝叶斯建模 $P(X|Y)$，逻辑回归直接建模 $P(Y|X)$。两种范式各有优劣。</p></div>
+    <div class="concept-card stagger"><h3>🎲 集成学习哲学</h3><p>Bagging 降低方差，Boosting 降低偏差。"群体智慧"在机器学习中的力量。</p></div>
   </div>
 </section>
 
 <!-- TOOLS -->
-<section id="tools">
-  <div class="reveal">
-    <h2><span class="dot"></span>工具链</h2>
-    <p class="lead">课程中用到的 Python 生态工具——它们是数据科学家的"瑞士军刀"。</p>
-    <div class="tools-row">
-      <div class="tool-badge">
-        <div class="t-icon" style="background:rgba(55,118,171,.2);color:#3776ab;">Py</div>
-        Python 3
-      </div>
-      <div class="tool-badge">
-        <div class="t-icon" style="background:rgba(0,150,255,.12);color:#0096ff;">np</div>
-        NumPy
-      </div>
-      <div class="tool-badge">
-        <div class="t-icon" style="background:rgba(137,50,190,.12);color:#8932be;">pd</div>
-        Pandas
-      </div>
-      <div class="tool-badge">
-        <div class="t-icon" style="background:rgba(255,101,132,.12);color:#ff6584;">mp</div>
-        Matplotlib
-      </div>
-      <div class="tool-badge">
-        <div class="t-icon" style="background:rgba(108,99,255,.12);color:#6c63ff;">sk</div>
-        scikit-learn
-      </div>
-      <div class="tool-badge">
-        <div class="t-icon" style="background:rgba(255,165,0,.12);color:#ffa500;">sp</div>
-        SciPy
-      </div>
-    </div>
+<section id="tools" class="reveal">
+  <h2><span class="dot"></span>工具链</h2>
+  <p class="lead">课程中用到的 Python 生态工具。</p>
+  <div class="tools-row">
+    <div class="tool-badge"><div class="t-icon" style="background:rgba(55,118,171,.2);color:#3776ab;">Py</div>Python 3</div>
+    <div class="tool-badge"><div class="t-icon" style="background:rgba(0,150,255,.12);color:#0096ff;">np</div>NumPy</div>
+    <div class="tool-badge"><div class="t-icon" style="background:rgba(137,50,190,.12);color:#8932be;">pd</div>Pandas</div>
+    <div class="tool-badge"><div class="t-icon" style="background:rgba(255,101,132,.12);color:#ff6584;">mp</div>Matplotlib</div>
+    <div class="tool-badge"><div class="t-icon" style="background:rgba(108,99,255,.12);color:#6c63ff;">sk</div>scikit-learn</div>
+    <div class="tool-badge"><div class="t-icon" style="background:rgba(255,165,0,.12);color:#ffa500;">sp</div>SciPy</div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
-  <p>数学系 · 数据挖掘课程 &nbsp;|&nbsp; 基于董平《机器学习中的统计思想：Python实现》</p>
+  <p>数学系 · 数据挖掘课程 | 基于董平《机器学习中的统计思想：Python实现》</p>
   <p style="margin-top:.5rem;">Made with <span class="heart">&#9829;</span> for learners who want to understand, not just use.</p>
 </footer>
 
-<!-- SCROLL REVEAL -->
-<script>
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-</script>
-
+<script src="main.js"></script>
+<script src="viz.js"></script>
 </body>
 </html>
