@@ -158,15 +158,16 @@
      4. initNavHighlight — scrollspy for navigation and side-dots
      ================================================================ */
   function initNavHighlight() {
-    // Collect all navigable sections
-    var sectionIds = [
-      'intro', 'outline', 'concepts', 'tools',
-      'ch02', 'ch03', 'ch04', 'ch05', 'ch06',
-      'ch07', 'ch08', 'ch09', 'ch10', 'ch11',
-    ];
-
+    // Collect section IDs dynamically from nav links
     var sections = [];
-    sectionIds.forEach(function (id) {
+    var seen = {};
+    var navLinks = document.querySelectorAll('nav a[href^="#"]');
+    navLinks.forEach(function (link) {
+      var href = link.getAttribute('href');
+      if (!href || href === '#') return;
+      var id = href.substring(1);
+      if (seen[id]) return;
+      seen[id] = true;
       var el = document.getElementById(id);
       if (el) sections.push({ id: id, el: el });
     });
@@ -395,6 +396,8 @@
      9. initChapterAnimations — per-chapter entrance animations
      ================================================================ */
   function initChapterAnimations() {
+    // Only run on the main page (prereq pages use .reveal for scroll animations)
+    if (!document.getElementById('hero-canvas')) return;
     var chapters = document.querySelectorAll('.chapter');
     if (!chapters.length) return;
 

@@ -1575,37 +1575,6 @@ footer .footer-links {
    16. PREREQUISITE PAGES & BUTTONS
    ============================================================ */
 
-/* Prerequisite knowledge button in chapter pills */
-.prereq-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  padding: 0.3rem 0.8rem;
-  border-radius: 999px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--accent);
-  background: rgba(108, 99, 255, 0.08);
-  border: 1px solid rgba(108, 99, 255, 0.25);
-  text-decoration: none;
-  transition: all var(--transition);
-  cursor: pointer;
-  margin-left: 0.3rem;
-}
-
-.prereq-btn:hover {
-  background: rgba(108, 99, 255, 0.2);
-  border-color: var(--accent);
-  color: #fff;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px var(--glow);
-}
-
-.prereq-btn::before {
-  content: '\2197';
-  font-size: 0.85rem;
-}
-
 /* Prerequisite label in chapter pills (non-clickable indicator) */
 .prereq-label {
   display: inline-flex;
@@ -1629,61 +1598,6 @@ footer .footer-links {
 
 .hero.prereq-hero h1 {
   font-size: clamp(1.8rem, 4vw, 3rem);
-}
-
-/* Prerequisite topic section */
-.prereq-section {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 3rem clamp(1rem, 4vw, 3rem);
-}
-
-.prereq-section + .prereq-section {
-  border-top: 1px solid var(--border-subtle);
-}
-
-.prereq-section h2 {
-  font-size: clamp(1.4rem, 3vw, 2rem);
-  margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.prereq-section h2::before {
-  content: '';
-  display: inline-block;
-  width: 4px;
-  height: 1em;
-  background: linear-gradient(180deg, var(--accent), var(--accent2));
-  border-radius: 2px;
-}
-
-/* Bridge card linking back to data mining chapters */
-.prereq-bridge {
-  margin-top: 2rem;
-  padding: 1.2rem 1.5rem;
-  background: rgba(108, 99, 255, 0.05);
-  border: 1px solid rgba(108, 99, 255, 0.15);
-  border-radius: var(--radius);
-  font-size: 0.92rem;
-  line-height: 1.7;
-}
-
-.prereq-bridge strong {
-  color: var(--accent);
-}
-
-.prereq-bridge a {
-  color: var(--accent2);
-  text-decoration: none;
-  border-bottom: 1px dashed var(--accent2);
-  transition: all var(--transition);
-}
-
-.prereq-bridge a:hover {
-  color: #fff;
-  border-bottom-color: #fff;
 }
 
 /* ============================================================

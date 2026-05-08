@@ -30,7 +30,7 @@ MathJax = {
   </ul>
 </nav>
 
-<div class="hero">
+<div class="hero prereq-hero">
   <div class="hero-content">
     <h1>数理统计</h1>
     <p class="subtitle">数据挖掘 · 前置数学知识</p>
@@ -40,7 +40,7 @@ MathJax = {
 <!-- ============================================================ -->
 <!-- 1. 偏差-方差分解 -->
 <!-- ============================================================ -->
-<section class="chapter" id="topic-bias-variance">
+<section class="chapter reveal" id="topic-bias-variance">
   <h2>一、偏差-方差分解（Bias-Variance Decomposition）</h2>
 
   <div class="ch-math">
@@ -119,7 +119,7 @@ MathJax = {
 <!-- ============================================================ -->
 <!-- 2. Fisher 信息量 -->
 <!-- ============================================================ -->
-<section class="chapter" id="topic-fisher">
+<section class="chapter reveal" id="topic-fisher">
   <h2>二、Fisher 信息量（Fisher Information）</h2>
 
   <div class="ch-math">
@@ -184,10 +184,11 @@ MathJax = {
         <li><strong>渐近有效性</strong>：MLE 的渐近方差达到 Cramér-Rao 下界，即 MLE 是渐近最优的无偏估计。</li>
       </ol>
 
-      <p><strong>信息矩阵与 Hessian 的关系</strong>：令 $H(\theta) = -\nabla^2_\theta \ell(\theta)$ 为负对数似然的 Hessian 矩阵（$\ell$ 为总对数似然），则</p>
-      $$I(\theta) = E[H(\theta)]$$
+      <p><strong>信息矩阵与 Hessian 的关系</strong>：令 $H(\theta) = -\nabla^2_\theta \ell(\theta)$ 为负总对数似然 $\ell = \sum_{i=1}^n \log f(x_i|\theta)$ 的 Hessian 矩阵，则</p>
+      $$E[H(\theta)] = n \cdot I_1(\theta)$$
+      <p>其中 $I_1(\theta)$ 为单个样本的 Fisher 信息矩阵。在渐近正态性 $\sqrt{n}(\hat{\theta} - \theta_0) \xrightarrow{d} N(0,\, I_1(\theta_0)^{-1})$ 中使用的是 $I_1$。</p>
 
-      <p>实际中，观测 Fisher 信息矩阵 $\hat{I}(\theta) = H(\hat{\theta}_{\text{MLE}})$ 常被用来近似 $I(\theta)$（称为"经验 Fisher 信息"），二者在大样本下渐近一致。</p>
+      <p>实际中，观测 Fisher 信息矩阵 $\hat{I}(\theta) = H(\hat{\theta}_{\text{MLE}})$ 常被用来近似 $n \cdot I_1(\theta)$（称为"经验 Fisher 信息"），二者在大样本下渐近一致。</p>
     </div>
   </div>
 
@@ -201,7 +202,7 @@ MathJax = {
 <!-- ============================================================ -->
 <!-- 3. 参数估计理论 -->
 <!-- ============================================================ -->
-<section class="chapter" id="topic-estimation">
+<section class="chapter reveal" id="topic-estimation">
   <h2>三、参数估计理论（Statistical Estimation）</h2>
 
   <div class="ch-math">
@@ -280,7 +281,7 @@ MathJax = {
 <!-- ============================================================ -->
 <!-- 4. 集成学习理论 -->
 <!-- ============================================================ -->
-<section class="chapter" id="topic-ensemble">
+<section class="chapter reveal" id="topic-ensemble">
   <h2>四、集成学习理论（Ensemble Learning Theory）</h2>
 
   <div class="ch-math">

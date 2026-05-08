@@ -35,7 +35,7 @@ MathJax = {
 </nav>
 
 <!-- ===================== Hero ===================== -->
-<div class="hero">
+<div class="hero prereq-hero">
   <div class="hero-content">
     <h1>数学分析</h1>
     <p class="subtitle">数据挖掘 · 前置数学知识</p>
@@ -433,13 +433,14 @@ MathJax = {
       $$\|x + y\|_p \leq \|x\|_p + \|y\|_p$$
       <p>此即 $L^p$ 范数的三角不等式，是度量空间公理第三条的具体实例。</p>
       <p><strong>证明（$1 < p < \infty$）：</strong>
-        记 $s_i = |x_i + y_i|$。注意到 $s_i^p = |x_i + y_i|^p \leq (|x_i| + |y_i|)^p = (|x_i| + |y_i|) \cdot (|x_i| + |y_i|)^{p-1}$。
-        对 $i$ 求和：$\sum s_i^p \leq \sum |x_i|(|x_i|+|y_i|)^{p-1} + \sum |y_i|(|x_i|+|y_i|)^{p-1}$。
+        记 $t_i = |x_i| + |y_i|$。注意到 $|x_i + y_i|^p \leq t_i^p = t_i \cdot t_i^{p-1}$，故
+        $$\sum |x_i+y_i|^p \leq \sum |x_i|\,t_i^{p-1} + \sum |y_i|\,t_i^{p-1}$$
         由 Holder 不等式（$\frac{1}{p} + \frac{1}{q} = 1$，$q = p/(p-1)$），
-        $$\sum |x_i|(|x_i|+|y_i|)^{p-1} \leq \|x\|_p \left(\sum (|x_i|+|y_i|)^{(p-1)q}\right)^{1/q} = \|x\|_p \left(\sum (|x_i|+|y_i|)^p\right)^{1/q}$$
-        两边除以 $\left(\sum (|x_i|+|y_i|)^p\right)^{1/q}$（假设非零），得
-        $$\left(\sum s_i^p\right)^{1/p} \leq \|x\|_p + \|y\|_p$$
-        而 $\sum (|x_i| + |y_i|)^p \geq \sum |x_i+y_i|^p = \sum s_i^p$。$\blacksquare$
+        $$\sum |x_i|\,t_i^{p-1} \leq \|x\|_p \left(\sum t_i^{(p-1)q}\right)^{1/q} = \|x\|_p \left(\sum t_i^p\right)^{1/q}$$
+        同理 $\sum |y_i|\,t_i^{p-1} \leq \|y\|_p \left(\sum t_i^p\right)^{1/q}$。两式相加：
+        $$\sum t_i^p \leq (\|x\|_p + \|y\|_p)\left(\sum t_i^p\right)^{1/q}$$
+        记 $T = \left(\sum t_i^p\right)^{1/p}$，则 $T^p \leq (\|x\|_p + \|y\|_p)\,T^{p/q}$，两边除以 $T^{p/q}$（$T > 0$）得 $T \leq \|x\|_p + \|y\|_p$。
+        而 $\|x+y\|_p = \left(\sum |x_i+y_i|^p\right)^{1/p} \leq T$，故 $\|x+y\|_p \leq \|x\|_p + \|y\|_p$。$\blacksquare$
       </p>
 
       <h3>6.5 范数诱导度量</h3>
