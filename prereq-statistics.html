@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数理统计 — 数据挖掘前置知识</title>
+<link rel="stylesheet" href="style.css">
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']],
+    macros: { RR: '\\mathbb{R}', bold: ['\\mathbf{#1}',1] } },
+  svg: { fontCache: 'global' }, startup: { pageReady: () => MathJax.startup.defaultPageReady() }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><a href="index.html" style="color:inherit;text-decoration:none;">← 返回主页</a></div>
+  <button class="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  <ul>
+    <li><a href="#topic-bias-variance">偏差-方差</a></li>
+    <li><a href="#topic-fisher">Fisher信息量</a></li>
+    <li><a href="#topic-estimation">参数估计</a></li>
+    <li><a href="#topic-ensemble">集成学习理论</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-content">
+    <h1>数理统计</h1>
+    <p class="subtitle">数据挖掘 · 前置数学知识</p>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 1. 偏差-方差分解 -->
+<!-- ============================================================ -->
+<section class="chapter" id="topic-bias-variance">
+  <h2>一、偏差-方差分解（Bias-Variance Decomposition）</h2>
+
+  <div class="ch-math">
+    <h3>1.1 MSE 分解</h3>
+    <div class="math-content">
+      <p>设真实模型为 $y = f(x) + \varepsilon$，其中 $\varepsilon \sim (0, \sigma^2)$ 为不可约噪声。对任意预测器 $\hat{f}(x)$，其均方误差可分解为三部分：</p>
+      $$E\!\bigl[(y - \hat{f}(x))^2\bigr] = \underbrace{\bigl(E[\hat{f}(x)] - f(x)\bigr)^2}_{\text{Bias}^2} \;+\; \underbrace{E\!\bigl[(\hat{f}(x) - E[\hat{f}(x)])^2\bigr]}_{\text{Var}} \;+\; \underbrace{\sigma^2}_{\text{噪声}}$$
+
+      <p>其中：</p>
+      <ul>
+        <li><strong>偏差</strong> $\text{Bias}[\hat{f}(x)] = E[\hat{f}(x)] - f(x)$：衡量模型期望预测与真实值之间的系统性偏离；</li>
+        <li><strong>方差</strong> $\text{Var}[\hat{f}(x)] = E\!\bigl[(\hat{f}(x) - E[\hat{f}(x)])^2\bigr]$：衡量模型对训练集扰动的敏感程度；</li>
+        <li><strong>不可约误差</strong> $\sigma^2 = E[(y - f(x))^2]$：数据本身的噪声，任何模型无法消除。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>1.2 完整推导</h3>
+    <div class="math-content">
+      <p><strong>证明.</strong> 记 $\mu(x) = E[\hat{f}(x)]$。展开 MSE：</p>
+      $$E\!\bigl[(y - \hat{f})^2\bigr] = E\!\bigl[\bigl((y - f) + (f - \mu) + (\mu - \hat{f})\bigr)^2\bigr]$$
+
+      <p>展开平方项，逐项处理：</p>
+
+      <p><strong>（i）</strong> $E[(y - f)^2] = E[\varepsilon^2] = \sigma^2$。</p>
+
+      <p><strong>（ii）</strong> $(f - \mu)^2 = \text{Bias}^2$ 是常数（不依赖随机性），故 $E[(f - \mu)^2] = \text{Bias}^2$。</p>
+
+      <p><strong>（iii）</strong> $E[(\mu - \hat{f})^2] = E[(\hat{f} - E[\hat{f}])^2] = \text{Var}[\hat{f}(x)]$。</p>
+
+      <p><strong>（iv）交叉项</strong>：因为 $y = f + \varepsilon$ 且 $\varepsilon$ 与 $\hat{f}$ 独立（$\hat{f}$ 仅依赖训练数据，而新样本的噪声独立于训练集），</p>
+      $$E\!\bigl[(y - f)(f - \mu)\bigr] = (f - \mu) \cdot E[\varepsilon] = 0,$$
+      $$E\!\bigl[(y - f)(\mu - \hat{f})\bigr] = E[\varepsilon] \cdot E[\mu - \hat{f}] = 0 \cdot 0 = 0,$$
+      $$E\!\bigl[(f - \mu)(\mu - \hat{f})\bigr] = (f - \mu) \cdot E[\mu - \hat{f}] = (f - \mu) \cdot 0 = 0.$$
+
+      <p>所有交叉项为零，因此：</p>
+      $$\boxed{E\!\bigl[(y - \hat{f})^2\bigr] = \text{Bias}^2 + \text{Var} + \sigma^2} \qquad \blacksquare$$
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>1.3 偏差-方差权衡</h3>
+    <div class="math-content">
+      <p>模型复杂度与偏差、方差之间的典型关系：</p>
+      <ul>
+        <li><strong>模型复杂度 $\uparrow$</strong>（如增加决策树深度、减少正则化强度）→ 偏差 $\downarrow$，方差 $\uparrow$；</li>
+        <li><strong>模型复杂度 $\downarrow$</strong>（如增加正则化、限制树深度）→ 偏差 $\uparrow$，方差 $\downarrow$。</li>
+      </ul>
+
+      <p><strong>正则化的统计解释</strong>：以岭回归为例，损失函数为</p>
+      $$L(\beta) = \|y - X\beta\|^2 + \lambda\|\beta\|^2$$
+
+      <p>解为 $\hat{\beta}_{\text{ridge}} = (X^TX + \lambda I)^{-1}X^Ty$。与 OLS 解 $\hat{\beta}_{\text{OLS}} = (X^TX)^{-1}X^Ty$ 相比：</p>
+      <ul>
+        <li>$E[\hat{\beta}_{\text{ridge}}] \neq \beta$（引入偏差），但 $\text{Var}[\hat{\beta}_{\text{ridge}}] < \text{Var}[\hat{\beta}_{\text{OLS}}]$（方差更小）；</li>
+        <li>当 $\lambda$ 适当时，MSE 反而下降——"以偏差换方差"的收益大于偏差增加的损失。</li>
+      </ul>
+
+      <p><strong>欠拟合 vs 过拟合</strong>：</p>
+      <ul>
+        <li><strong>欠拟合</strong>（underfitting）：高偏差、低方差——模型过于简单，无法捕捉数据中的规律；</li>
+        <li><strong>过拟合</strong>（overfitting）：低偏差、高方差——模型过于复杂，拟合了噪声。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="math-bridge">
+    <h3>与数据挖掘的联系</h3>
+    <p><strong>Ch02 线性回归</strong>：岭回归 / Lasso 的正则化参数 $\lambda$ 直接控制偏差-方差权衡；通过交叉验证选择最优 $\lambda$ 本质上是在偏差-方差曲线上寻找最优点。</p>
+    <p><strong>Ch07 决策树</strong>：剪枝（预剪枝 / 后剪枝）通过限制树深度降低方差（偏差相应增加）；未剪枝的深层树偏差低但方差极高。</p>
+    <p><strong>Ch11 Bagging</strong>：Bagging 对 $M$ 个高方差模型取平均，在不改变偏差的前提下显著降低方差——这是集成学习的理论基石。</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 2. Fisher 信息量 -->
+<!-- ============================================================ -->
+<section class="chapter" id="topic-fisher">
+  <h2>二、Fisher 信息量（Fisher Information）</h2>
+
+  <div class="ch-math">
+    <h3>2.1 Score 函数</h3>
+    <div class="math-content">
+      <p>设 $X \sim f(x|\theta)$，$\theta \in \RR^p$ 为参数。定义 <strong>Score 函数</strong>为对数似然的梯度：</p>
+      $$s(\theta) = \nabla_\theta \log f(X|\theta) = \frac{\nabla_\theta f(X|\theta)}{f(X|\theta)}$$
+
+      <p><strong>性质</strong>：$E[s(\theta)] = 0$。</p>
+      <p><strong>证明</strong>：由归一化条件 $\int f(x|\theta)\,dx = 1$，对 $\theta$ 求梯度：</p>
+      $$\nabla_\theta \int f(x|\theta)\,dx = \int \nabla_\theta f(x|\theta)\,dx = 0$$
+
+      <p>因此：</p>
+      $$E[s(\theta)] = \int \frac{\nabla_\theta f(x|\theta)}{f(x|\theta)} f(x|\theta)\,dx = \int \nabla_\theta f(x|\theta)\,dx = 0 \qquad \blacksquare$$
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>2.2 Fisher 信息矩阵</h3>
+    <div class="math-content">
+      <p><strong>Fisher 信息矩阵</strong>定义为 Score 函数的协方差矩阵：</p>
+      $$I(\theta) = E\!\bigl[s(\theta)\,s(\theta)^T\bigr] = E\!\bigl[\nabla_\theta \log f \cdot (\nabla_\theta \log f)^T\bigr]$$
+
+      <p>由于 $E[s(\theta)] = 0$，这等价于 $I(\theta) = \text{Var}[s(\theta)]$。</p>
+
+      <p><strong>等价表达式</strong>（利用二阶导数）：</p>
+      $$I(\theta) = -E\!\bigl[\nabla^2_\theta \log f(X|\theta)\bigr]$$
+
+      <p><strong>证明</strong>：对 $\nabla_\theta \log f$ 再求梯度：</p>
+      $$\nabla^2_\theta \log f = \nabla_\theta \left(\frac{\nabla_\theta f}{f}\right) = \frac{(\nabla^2_\theta f) \cdot f - (\nabla_\theta f)(\nabla_\theta f)^T}{f^2} = \frac{\nabla^2_\theta f}{f} - s(\theta)\,s(\theta)^T$$
+
+      <p>取期望（注意 $E\!\left[\frac{\nabla^2_\theta f}{f}\right] = \int \nabla^2_\theta f\,dx = \nabla^2_\theta \int f\,dx = 0$），得：</p>
+      $$E[\nabla^2_\theta \log f] = 0 - E[s(\theta)\,s(\theta)^T] = -I(\theta)$$
+
+      <p>因此 $\boxed{I(\theta) = -E[\nabla^2_\theta \log f(X|\theta)]}$。$\blacksquare$</p>
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>2.3 Cramér-Rao 下界</h3>
+    <div class="math-content">
+      <p><strong>定理（Cramér-Rao 不等式）</strong>：设 $\hat{\theta}$ 是 $\theta$ 的无偏估计，则</p>
+      $$\text{Var}(\hat{\theta}) \geq \frac{1}{I(\theta)} \quad (\text{标量情形}) \qquad \text{或} \qquad \text{Cov}(\hat{\theta}) \succeq I(\theta)^{-1} \quad (\text{矩阵情形})$$
+
+      <p><strong>证明（标量情形）</strong>：设 $\hat{\theta} = T(X)$，$E[\hat{\theta}] = \theta$。考虑 $\hat{\theta}$ 与 Score 函数的协方差：</p>
+      $$\text{Cov}(\hat{\theta},\, s(\theta)) = E[\hat{\theta} \cdot s(\theta)] - E[\hat{\theta}]E[s(\theta)] = E[\hat{\theta} \cdot s(\theta)]$$
+
+      <p>其中 $E[\hat{\theta} \cdot s(\theta)] = \int T(x) \frac{\nabla_\theta f}{f} f\,dx = \nabla_\theta \int T(x) f\,dx = \nabla_\theta E[\hat{\theta}] = \nabla_\theta \theta = 1$。</p>
+
+      <p>由 Cauchy-Schwarz 不等式：$\text{Cov}(\hat{\theta}, s)^2 \leq \text{Var}(\hat{\theta}) \cdot \text{Var}(s(\theta))$，即 $1 \leq \text{Var}(\hat{\theta}) \cdot I(\theta)$，故：</p>
+      $$\boxed{\text{Var}(\hat{\theta}) \geq \frac{1}{I(\theta)}} \qquad \blacksquare$$
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>2.4 MLE 的渐近性质与信息矩阵</h3>
+    <div class="math-content">
+      <p><strong>定理</strong>：在正则条件下，极大似然估计 $\hat{\theta}_{\text{MLE}}$ 满足：</p>
+      <ol>
+        <li><strong>一致性</strong>：$\hat{\theta}_{\text{MLE}} \xrightarrow{P} \theta_0$（真参数）；</li>
+        <li><strong>渐近正态性</strong>：$\sqrt{n}(\hat{\theta}_{\text{MLE}} - \theta_0) \xrightarrow{d} N(0,\, I(\theta_0)^{-1})$；</li>
+        <li><strong>渐近有效性</strong>：MLE 的渐近方差达到 Cramér-Rao 下界，即 MLE 是渐近最优的无偏估计。</li>
+      </ol>
+
+      <p><strong>信息矩阵与 Hessian 的关系</strong>：令 $H(\theta) = -\nabla^2_\theta \ell(\theta)$ 为负对数似然的 Hessian 矩阵（$\ell$ 为总对数似然），则</p>
+      $$I(\theta) = E[H(\theta)]$$
+
+      <p>实际中，观测 Fisher 信息矩阵 $\hat{I}(\theta) = H(\hat{\theta}_{\text{MLE}})$ 常被用来近似 $I(\theta)$（称为"经验 Fisher 信息"），二者在大样本下渐近一致。</p>
+    </div>
+  </div>
+
+  <div class="math-bridge">
+    <h3>与数据挖掘的联系</h3>
+    <p><strong>Ch05 逻辑回归</strong>：逻辑回归的参数通过 MLE 估计。Newton-Raphson 迭代 $\theta^{(t+1)} = \theta^{(t)} + H^{-1}\nabla\ell$ 直接利用 Fisher 信息矩阵（或其观测版本）作为二阶信息。Fisher 信息矩阵的逆给出了参数估计的协方差矩阵，用于计算置信区间和假设检验。</p>
+    <p><strong>Ch10 EM 算法</strong>：EM 算法的收敛速率与"缺失信息"比例有关——由 Fisher 信息矩阵的完整数据版本和观测数据版本的差异决定。EM 的 M 步本质上在优化期望对数似然，其曲率由 Fisher 信息矩阵刻画。</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 3. 参数估计理论 -->
+<!-- ============================================================ -->
+<section class="chapter" id="topic-estimation">
+  <h2>三、参数估计理论（Statistical Estimation）</h2>
+
+  <div class="ch-math">
+    <h3>3.1 点估计与优良性准则</h3>
+    <div class="math-content">
+      <p>设 $X_1, \ldots, X_n \overset{\text{i.i.d.}}{\sim} f(x|\theta)$，$\theta \in \Theta$。<strong>点估计</strong>是统计量 $\hat{\theta}_n = T(X_1, \ldots, X_n)$。</p>
+
+      <p><strong>（一）无偏性（Unbiasedness）</strong></p>
+      $$E_\theta[\hat{\theta}_n] = \theta, \quad \forall\,\theta \in \Theta$$
+
+      <p>即估计量的期望等于真参数。无偏性的含义：在大量重复实验中，无偏估计量不会系统性地偏高或偏低。</p>
+      <p><strong>反例</strong>：样本方差 $S^2 = \frac{1}{n-1}\sum(X_i - \bar{X})^2$ 是 $\sigma^2$ 的无偏估计，但 $S$ 不是 $\sigma$ 的无偏估计（$E[S] \neq \sigma$）。</p>
+
+      <p><strong>（二）一致性（Consistency）</strong></p>
+      $$\hat{\theta}_n \xrightarrow{P} \theta \quad \text{即} \quad \forall\,\varepsilon > 0,\; P(|\hat{\theta}_n - \theta| > \varepsilon) \to 0 \;\text{as}\; n \to \infty$$
+
+      <p>一致性由大数定律保证：$\bar{X}_n \xrightarrow{P} E[X] = \mu$。更强的 <strong>$L^2$ 一致性</strong>要求 $E[(\hat{\theta}_n - \theta)^2] \to 0$。</p>
+      <p><strong>充分条件</strong>：若 $\text{Bias}(\hat{\theta}_n) \to 0$ 且 $\text{Var}(\hat{\theta}_n) \to 0$，则 $\hat{\theta}_n$ 是一致的（由 MSE $= \text{Bias}^2 + \text{Var}$）。</p>
+
+      <p><strong>（三）有效性（Efficiency）</strong></p>
+      <p>在所有无偏估计中，方差最小者称为<strong>有效估计量</strong>。由 Cramér-Rao 不等式：</p>
+      $$\text{Var}(\hat{\theta}_n) \geq \frac{1}{n \cdot I_1(\theta)}$$
+
+      <p>其中 $I_1(\theta)$ 是单个样本的 Fisher 信息量。若等号成立，则 $\hat{\theta}_n$ 达到 <strong>Cramér-Rao 下界</strong>，是<strong>最小方差无偏估计</strong>（MVUE）。MLE 在大样本下渐近达到此下界。</p>
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>3.2 充分统计量与因子分解定理</h3>
+    <div class="math-content">
+      <p><strong>定义</strong>：统计量 $T(X_1, \ldots, X_n)$ 是关于 $\theta$ 的<strong>充分统计量</strong>，若给定 $T = t$ 时，样本 $(X_1, \ldots, X_n)$ 的条件分布不依赖 $\theta$。直观上，$T$ 包含了样本中关于 $\theta$ 的全部信息。</p>
+
+      <p><strong>定理（Fisher-Neyman 因子分解定理）</strong>：$T(X)$ 是充分统计量当且仅当联合密度可分解为：</p>
+      $$f(x_1, \ldots, x_n|\theta) = g\!\bigl(T(x_1, \ldots, x_n),\,\theta\bigr) \cdot h(x_1, \ldots, x_n)$$
+
+      <p>其中 $g$ 通过 $T$ 依赖数据，$h$ 不依赖 $\theta$。</p>
+
+      <p><strong>证明（"$\Leftarrow$"方向）</strong>：若分解成立，则</p>
+      $$P(X_1=x_1,\ldots,X_n=x_n \mid T=t) = \frac{g(t,\theta) \cdot h(x_1,\ldots,x_n)}{\sum_{x':T(x')=t} g(t,\theta) \cdot h(x')} = \frac{h(x_1,\ldots,x_n)}{\sum_{x':T(x')=t} h(x')}$$
+
+      <p>$g(t,\theta)$ 在分子分母中相消，条件分布与 $\theta$ 无关。$\blacksquare$</p>
+
+      <p><strong>例</strong>：$X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} N(\mu, \sigma^2)$，联合密度：</p>
+      $$f = (2\pi\sigma^2)^{-n/2} \exp\!\left(-\frac{1}{2\sigma^2}\sum(x_i-\mu)^2\right) = (2\pi\sigma^2)^{-n/2} e^{-n\mu^2/(2\sigma^2)} \cdot \exp\!\left(-\frac{\sum x_i^2}{2\sigma^2} + \frac{\mu \sum x_i}{\sigma^2}\right) \cdot 1$$
+
+      <p>因此 $T = (\sum X_i,\, \sum X_i^2)$ 是充分统计量（或等价地 $T = (\bar{X},\, S^2)$）。</p>
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>3.3 区间估计与置信区间</h3>
+    <div class="math-content">
+      <p>点估计不提供精度信息。<strong>区间估计</strong>给出参数的可能范围及其可信程度。</p>
+
+      <p><strong>$100(1-\alpha)\%$ 置信区间</strong>：若 $P(\hat{\theta}_L \leq \theta \leq \hat{\theta}_U) = 1 - \alpha$ 对所有 $\theta$ 成立，则 $[\hat{\theta}_L, \hat{\theta}_U]$ 是 $\theta$ 的 $100(1-\alpha)\%$ 置信区间。</p>
+
+      <p><strong>正态均值的置信区间</strong>：设 $X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} N(\mu, \sigma^2)$，$\sigma^2$ 已知，则</p>
+      $$\bar{X} \pm z_{\alpha/2} \cdot \frac{\sigma}{\sqrt{n}}$$
+
+      <p>其中 $z_{\alpha/2} = \Phi^{-1}(1-\alpha/2)$ 是标准正态的上 $\alpha/2$ 分位数。推导：$\frac{\bar{X}-\mu}{\sigma/\sqrt{n}} \sim N(0,1)$。</p>
+
+      <p><strong>$\sigma^2$ 未知</strong>时，用 $S$ 代替 $\sigma$，使用 $t$ 分布：</p>
+      $$\bar{X} \pm t_{\alpha/2,\,n-1} \cdot \frac{S}{\sqrt{n}}$$
+
+      <p><strong>大样本近似</strong>：由中心极限定理，对任意分布，当 $n$ 充分大时，$\hat{\theta} \pm z_{\alpha/2} \cdot \text{se}(\hat{\theta})$ 近似成立，其中 $\text{se}(\hat{\theta}) = \sqrt{\text{Var}(\hat{\theta})}$ 可由 Delta 方法或 Bootstrap 估计。</p>
+    </div>
+  </div>
+
+  <div class="math-bridge">
+    <h3>与数据挖掘的联系</h3>
+    <p><strong>Ch04 朴素贝叶斯</strong>：朴素贝叶斯的类条件概率 $P(x_j|y=c)$ 需要从训练数据估计。对离散特征使用频率估计（MLE），对连续特征假设高斯分布后估计 $\mu_{jc}$ 和 $\sigma_{jc}^2$——这些都是参数估计的基本应用。充分统计量的概念解释了为什么仅需保存 $\bar{x}$ 和 $S^2$ 而非全部训练数据。</p>
+    <p><strong>Ch05 逻辑回归</strong>：逻辑回归通过极大似然估计参数 $\beta$。MLE 的一致性保证了在大样本下 $\hat{\beta} \to \beta_0$；Fisher 信息矩阵的逆给出了 $\hat{\beta}$ 的协方差矩阵，从而可以构造 Wald 检验统计量 $z = \hat{\beta}_j / \text{se}(\hat{\beta}_j)$，用于判断特征是否显著。</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 4. 集成学习理论 -->
+<!-- ============================================================ -->
+<section class="chapter" id="topic-ensemble">
+  <h2>四、集成学习理论（Ensemble Learning Theory）</h2>
+
+  <div class="ch-math">
+    <h3>4.1 Bagging 的方差缩减</h3>
+    <div class="math-content">
+      <p>设 $\hat{f}_1, \hat{f}_2, \ldots, \hat{f}_M$ 是 $M$ 个基于 Bootstrap 样本训练的估计器，Bagging 预测为 $\bar{f}(x) = \frac{1}{M}\sum_{m=1}^M \hat{f}_m(x)$。</p>
+
+      <p>假设所有估计器有相同的方差 $\text{Var}(\hat{f}_m) = \sigma^2$，且任意两个估计器间的相关系数为 $\rho$（$\rho \geq 0$），则：</p>
+
+      $$\text{Var}(\bar{f}) = \text{Var}\!\left(\frac{1}{M}\sum_{m=1}^M \hat{f}_m\right) = \frac{1}{M^2}\left[\sum_{m=1}^M \text{Var}(\hat{f}_m) + \sum_{m \neq k} \text{Cov}(\hat{f}_m, \hat{f}_k)\right]$$
+
+      $$= \frac{1}{M^2}\bigl[M\sigma^2 + M(M-1)\rho\sigma^2\bigr]$$
+
+      $$\boxed{\text{Var}(\bar{f}) = \rho\sigma^2 + \frac{1-\rho}{M}\sigma^2}$$
+
+      <p><strong>分析</strong>：</p>
+      <ul>
+        <li>当 $M \to \infty$ 时，$\frac{1-\rho}{M}\sigma^2 \to 0$，故 $\text{Var}(\bar{f}) \to \rho\sigma^2$；</li>
+        <li>Bagging 的效果取决于 $\rho$：若 $\rho = 1$（完全相关），集成无效果；$\rho$ 越小，方差缩减越大；</li>
+        <li><strong>随机森林</strong>（Random Forest）通过在每次分裂时随机选择 $k < p$ 个特征子集，人为降低估计器间的相关性 $\rho$，从而比普通 Bagging 更有效。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>4.2 Boosting 的偏差缩减</h3>
+    <div class="math-content">
+      <p>Boosting 是<strong>加法模型</strong>（additive model）：</p>
+      $$f(x) = \sum_{t=1}^T \alpha_t h_t(x)$$
+
+      <p>其中 $h_t$ 是第 $t$ 轮的基学习器，$\alpha_t$ 是其权重。</p>
+
+      <p><strong>前向分步算法</strong>：每轮求解</p>
+      $$(\alpha_t, h_t) = \arg\min_{\alpha, h} \sum_{i=1}^n L\!\left(y_i,\; f_{t-1}(x_i) + \alpha\, h(x_i)\right)$$
+
+      <p><strong>偏差逐步降低的直观解释</strong>：</p>
+      <ul>
+        <li>在 <strong>AdaBoost</strong> 中，每轮调整样本权重——被前一轮错误分类的样本获得更高权重，迫使新的基学习器聚焦于"难"样本；</li>
+        <li>在 <strong>Gradient Boosting</strong> 中，每轮拟合当前模型的<strong>负梯度</strong>（残差的推广）：
+          $$r_{it} = -\frac{\partial L(y_i, f(x_i))}{\partial f(x_i)}\bigg|_{f=f_{t-1}}$$
+          这等价于在函数空间中做梯度下降，每步都在降低训练损失（即降低偏差）。</li>
+        <li>基学习器 $h_t$ 通常是<strong>弱学习器</strong>（高偏差、低方差的浅层决策树），Boosting 通过组合大量弱学习器来降低整体偏差，同时保持较低的方差。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>4.3 Ambiguity 分解（集成误差上界）</h3>
+    <div class="math-content">
+      <p>对回归问题，设集成预测 $f_{\text{ens}}(x) = \sum_{m=1}^M w_m \hat{f}_m(x)$（$\sum w_m = 1$）。定义：</p>
+      <ul>
+        <li><strong>集成均方误差</strong>：$\text{MSE}_{\text{ens}} = E[(y - f_{\text{ens}})^2]$</li>
+        <li><strong>成员均方误差</strong>：$\overline{\text{MSE}}_m = E[(y - \hat{f}_m)^2]$</li>
+        <li><strong>Ambiguity（歧义度）</strong>：$\bar{A}(x) = \sum_{m=1}^M w_m \bigl(\hat{f}_m(x) - f_{\text{ens}}(x)\bigr)^2$</li>
+      </ul>
+
+      <p><strong>定理（Ambiguity 分解）</strong>：</p>
+      $$\underbrace{\sum_{m=1}^M w_m \cdot \overline{\text{MSE}}_m}_{\text{加权平均误差}} = \underbrace{\text{MSE}_{\text{ens}}}_{\text{集成误差}} + \underbrace{\sum_{m=1}^M w_m \cdot E\!\bigl[(\hat{f}_m - f_{\text{ens}})^2\bigr]}_{\text{加权 Ambiguity}}$$
+
+      <p>即：</p>
+      $$\boxed{\text{MSE}_{\text{ens}} = \overline{\text{MSE}} - \bar{A}}$$
+
+      <p><strong>证明</strong>：对固定 $x$，令 $f_m = \hat{f}_m(x)$，$f_e = f_{\text{ens}}(x) = \sum w_m f_m$。</p>
+      $$\sum w_m E[(y - f_m)^2] = \sum w_m E\!\bigl[\bigl((y - f_e) + (f_e - f_m)\bigr)^2\bigr]$$
+      $$= \sum w_m E[(y - f_e)^2] + 2\sum w_m E[(y - f_e)(f_e - f_m)] + \sum w_m (f_e - f_m)^2$$
+
+      <p>第一项 $= E[(y-f_e)^2] = \text{MSE}_{\text{ens}}$（因为 $\sum w_m = 1$）。</p>
+      <p>第三项 $= \bar{A}(x)$。</p>
+      <p>第二项 $= 2E[(y-f_e)] \cdot \sum w_m (f_e - f_m) = 2E[(y-f_e)] \cdot 0 = 0$（因为 $\sum w_m(f_e - f_m) = f_e - f_e = 0$）。</p>
+
+      <p>对 $x$ 取期望即得 $\boxed{\overline{\text{MSE}} = \text{MSE}_{\text{ens}} + \bar{A}}$。$\blacksquare$</p>
+
+      <p><strong>意义</strong>：集成成员越"多样"（$\bar{A}$ 越大），集成模型的误差越低于成员平均误差。因此，构建集成模型时应鼓励成员的多样性——这正是 Bagging（通过 Bootstrap 随机性）和随机森林（通过特征随机化）的核心思想。</p>
+    </div>
+  </div>
+
+  <div class="math-bridge">
+    <h3>与数据挖掘的联系</h3>
+    <p><strong>Ch07 随机森林</strong>：随机森林的方差公式 $\text{Var}(\bar{f}) = \rho\sigma^2 + \frac{1-\rho}{M}\sigma^2$ 直接解释了两个关键超参数的作用——(1) 增加树的数量 $M$ 可降低第二项（但存在边际递减效应）；(2) 减少每棵树的特征子集大小 $k$ 可降低 $\rho$，从而更有效地缩减方差。</p>
+    <p><strong>Ch11 集成学习</strong>：AdaBoost 的训练误差上界 $\prod_{t=1}^T Z_t$（$Z_t$ 为归一化因子）保证了指数收敛；GBDT 通过梯度下降视角统一了各种损失函数下的 Boosting 算法；XGBoost 进一步引入正则化项 $\Omega(h_t) = \gamma T + \frac{1}{2}\lambda\|w\|^2$，在偏差-方差权衡中加入了结构正则化。Ambiguity 分解为理解这些方法为何有效提供了统一的理论框架。</p>
+  </div>
+</section>
+
+<footer>
+  <p>数学系 · 数据挖掘前置知识</p>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>

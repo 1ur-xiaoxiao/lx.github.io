@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数学分析 — 数据挖掘前置知识</title>
+<link rel="stylesheet" href="style.css">
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']],
+    macros: { RR: '\\mathbb{R}', bold: ['\\mathbf{#1}',1] } },
+  svg: { fontCache: 'global' }, startup: { pageReady: () => MathJax.startup.defaultPageReady() }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+</head>
+<body>
+
+<!-- ===================== 导航栏 ===================== -->
+<nav>
+  <div class="logo"><a href="index.html" style="color:inherit;text-decoration:none;">← 返回主页</a></div>
+  <button class="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  <ul>
+    <li><a href="#topic-gradient">极值与梯度</a></li>
+    <li><a href="#topic-convex">凸函数</a></li>
+    <li><a href="#topic-taylor">Taylor展开</a></li>
+    <li><a href="#topic-kkt">约束优化</a></li>
+    <li><a href="#topic-jensen">Jensen不等式</a></li>
+    <li><a href="#topic-metric">度量空间</a></li>
+    <li><a href="#topic-convergence">收敛性</a></li>
+  </ul>
+</nav>
+
+<!-- ===================== Hero ===================== -->
+<div class="hero">
+  <div class="hero-content">
+    <h1>数学分析</h1>
+    <p class="subtitle">数据挖掘 · 前置数学知识</p>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!--  TOPIC 1  多元函数极值与梯度                                      -->
+<!-- ================================================================ -->
+<section id="topic-gradient" class="chapter reveal">
+  <h2>一、多元函数极值与梯度</h2>
+
+  <div class="ch-math">
+    <div class="math-content">
+
+      <h3>1.1 梯度的定义</h3>
+      <p>
+        设 $f: \RR^n \to \RR$ 在点 $x = (x_1, \dots, x_n)^T$ 的某邻域内各一阶偏导数均存在，
+        则称向量
+      </p>
+      $$\nabla f(x) = \left(\frac{\partial f}{\partial x_1},\; \frac{\partial f}{\partial x_2},\; \dots,\; \frac{\partial f}{\partial x_n}\right)^T$$
+      <p>为 $f$ 在 $x$ 处的 <strong>梯度</strong>（gradient）。梯度指向函数值增长最快的方向，其模为该方向上的最大变化率。</p>
+
+      <h3>1.2 方向导数</h3>
+      <p>设 $u \in \RR^n$ 为单位向量（$\|u\|_2 = 1$），则 $f$ 在 $x$ 处沿方向 $u$ 的方向导数定义为：</p>
+      $$D_u f(x) = \lim_{t \to 0} \frac{f(x + tu) - f(x)}{t}$$
+      <p>当 $f$ 可微时，方向导数与梯度的关系为：</p>
+      $$D_u f(x) = \nabla f(x)^T u = \|\nabla f(x)\|_2 \cos\theta$$
+      <p>其中 $\theta$ 为 $\nabla f(x)$ 与 $u$ 的夹角。几何意义：</p>
+      <ul>
+        <li>$\theta = 0$ 时，$D_u f = \|\nabla f\|$，取得最大增长率；</li>
+        <li>$\theta = \pi$ 时，$D_u f = -\|\nabla f\|$，函数值下降最快；</li>
+        <li>$\theta = \pi/2$ 时，$D_u f = 0$，沿等值面切方向无变化。</li>
+      </ul>
+
+      <h3>1.3 极值的必要条件</h3>
+      <p><strong>定理 1.1</strong>（极值的一阶必要条件）&ensp;
+        设 $f: \RR^n \to \RR$ 在 $x^*$ 处可微，若 $x^*$ 为 $f$ 的局部极值点，则
+      </p>
+      $$\nabla f(x^*) = 0$$
+      <p>满足 $\nabla f(x^*) = 0$ 的点 $x^*$ 称为 <strong>驻点</strong>（临界点）。注意驻点未必是极值点（可能是鞍点）。</p>
+      <p><strong>证明：</strong>设 $e_i$ 为第 $i$ 个标准基向量，则一元函数 $\varphi_i(t) = f(x^* + t e_i)$ 在 $t=0$ 处取局部极值，由一元函数费马定理 $\varphi_i'(0) = \frac{\partial f}{\partial x_i}(x^*) = 0$。这对所有 $i = 1,\dots,n$ 成立，故 $\nabla f(x^*) = 0$。$\blacksquare$</p>
+
+      <h3>1.4 Hessian 矩阵与二阶充分条件</h3>
+      <p>设 $f$ 二阶连续可微，定义 <strong>Hessian 矩阵</strong>：</p>
+      $$H(x) = \nabla^2 f(x) = \left[\frac{\partial^2 f}{\partial x_i \partial x_j}(x)\right]_{n \times n}$$
+      <p>由二阶偏导数的连续性知 $H(x)$ 为实对称矩阵。</p>
+
+      <p><strong>定理 1.2</strong>（极值的二阶充分条件）&ensp;
+        设 $\nabla f(x^*) = 0$，则：
+      </p>
+      <ul>
+        <li>$H(x^*)$ <strong>正定</strong>（所有特征值 $\lambda_i > 0$）$\implies$ $x^*$ 为严格局部极小值点；</li>
+        <li>$H(x^*)$ <strong>负定</strong>（所有特征值 $\lambda_i < 0$）$\implies$ $x^*$ 为严格局部极大值点；</li>
+        <li>$H(x^*)$ <strong>不定</strong>（特征值有正有负）$\implies$ $x^*$ 为鞍点。</li>
+      </ul>
+      <p><strong>证明（正定 $\Rightarrow$ 极小）：</strong>
+        由二阶 Taylor 展开
+        $$f(x^* + h) = f(x^*) + \nabla f(x^*)^T h + \frac{1}{2} h^T H(x^*) h + o(\|h\|^2)$$
+        由 $\nabla f(x^*) = 0$，得 $f(x^* + h) - f(x^*) = \frac{1}{2} h^T H(x^*) h + o(\|h\|^2)$。
+        因 $H(x^*)$ 正定，存在 $\lambda_{\min} > 0$ 使得 $h^T H(x^*) h \geq \lambda_{\min} \|h\|^2$。
+        当 $\|h\|$ 充分小时，$\frac{1}{2}\lambda_{\min}\|h\|^2 + o(\|h\|^2) > 0$，故 $f(x^* + h) > f(x^*)$。
+        $\blacksquare$
+      </p>
+
+      <h3>1.5 例子</h3>
+      <p><strong>例 1</strong>&ensp; 设 $f(x_1, x_2) = x_1^2 + 3x_2^2 - 2x_1 x_2$，求极值。</p>
+      <p><strong>解：</strong>$\nabla f = (2x_1 - 2x_2,\; 6x_2 - 2x_1)^T = 0$ 解得唯一驻点 $(0,0)$。</p>
+      <p>Hessian $H = \begin{pmatrix}2 & -2 \\ -2 & 6\end{pmatrix}$，特征多项式 $\lambda^2 - 8\lambda + 8 = 0$，特征值 $\lambda = 4 \pm 2\sqrt{2} > 0$，故 $H$ 正定，$(0,0)$ 为严格极小点。$\blacksquare$</p>
+
+    </div>
+  </div>
+
+  <div class="math-bridge">
+    <h3>与数据挖掘的联系</h3>
+    <p><strong>Ch02 线性回归：</strong>最小二乘目标 $J(w) = \|Xw - y\|^2$ 的最优解满足正规方程 $\nabla J = 2X^T(Xw - y) = 0$，即 $w^* = (X^TX)^{-1}X^Ty$。这正是梯度为零的一阶必要条件的直接应用。Hessian $H = 2X^TX$ 的正定性保证了目标函数严格凸性，从而 $w^*$ 为全局最小值。</p>
+    <p><strong>Ch05 逻辑回归：</strong>对数损失函数 $J(w)$ 无闭式解，需用梯度下降法 $w \leftarrow w - \eta \nabla J(w)$ 迭代求解。梯度方向指示了参数更新的最优方向。</p>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!--  TOPIC 2  凸函数                                                  -->
+<!-- ================================================================ -->
+<section id="topic-convex" class="chapter reveal">
+  <h2>二、凸函数</h2>
+
+  <div class="ch-math">
+    <div class="math-content">
+
+      <h3>2.1 凸集与凸函数定义</h3>
+      <p><strong>定义 2.1</strong>（凸集）&ensp;
+        集合 $C \subseteq \RR^n$ 称为凸集，若对任意 $x, y \in C$ 和 $\lambda \in [0,1]$，有 $\lambda x + (1-\lambda)y \in C$。
+      </p>
+      <p><strong>定义 2.2</strong>（凸函数）&ensp;
+        设 $C \subseteq \RR^n$ 为凸集，函数 $f: C \to \RR$ 称为凸函数，若对任意 $x, y \in C$ 和 $\lambda \in [0,1]$，有
+      </p>
+      $$f(\lambda x + (1-\lambda)y) \leq \lambda f(x) + (1-\lambda) f(y)$$
+      <p>若上述不等号严格成立（$x \neq y$，$\lambda \in (0,1)$），则称 $f$ 为 <strong>严格凸函数</strong>。</p>
+      <p>几何意义：凸函数图像上任意两点之间的弦不低于函数曲线。</p>
+
+      <h3>2.2 一阶条件（切线不等式）</h3>
+      <p><strong>定理 2.1</strong>&ensp;
+        设 $f$ 在凸集 $C$ 上可微，则 $f$ 为凸函数当且仅当对任意 $x, y \in C$，
+      </p>
+      $$f(y) \geq f(x) + \nabla f(x)^T (y - x)$$
+      <p><strong>证明（必要性）：</strong>由凸函数定义，对 $\lambda \in (0,1]$，
+        $$f(x + \lambda(y - x)) \leq (1-\lambda)f(x) + \lambda f(y)$$
+        整理得 $\frac{f(x + \lambda(y-x)) - f(x)}{\lambda} \leq f(y) - f(x)$。
+        令 $\lambda \to 0^+$，左边趋向 $\nabla f(x)^T(y-x)$，得证。</p>
+      <p><strong>证明（充分性）：</strong>设 $z = \lambda x + (1-\lambda)y$，由切线不等式
+        $$f(x) \geq f(z) + \nabla f(z)^T(x-z), \qquad f(y) \geq f(z) + \nabla f(z)^T(y-z)$$
+        两式分别乘以 $\lambda$ 和 $1-\lambda$ 后相加：
+        $$\lambda f(x) + (1-\lambda)f(y) \geq f(z) + \nabla f(z)^T[\lambda(x-z) + (1-\lambda)(y-z)] = f(z)$$
+        其中 $\lambda(x-z) + (1-\lambda)(y-z) = 0$。$\blacksquare$</p>
+
+      <h3>2.3 二阶条件</h3>
+      <p><strong>定理 2.2</strong>&ensp;
+        设 $f$ 在凸集 $C$ 上二阶连续可微，则 $f$ 为凸函数当且仅当对一切 $x \in C$，
+      </p>
+      $$\nabla^2 f(x) \succeq 0 \quad (\text{半正定})$$
+      <p>即对所有 $v \in \RR^n$，$v^T \nabla^2 f(x) \, v \geq 0$。</p>
+      <p><strong>充分性证明思路：</strong>对任意 $x, y \in C$，令 $\varphi(t) = f(x + t(y-x))$，则 $\varphi''(t) = (y-x)^T \nabla^2 f(x+t(y-x)) (y-x) \geq 0$，故 $\varphi$ 为 $[0,1]$ 上的凸函数，从而 $\varphi(1) = f(y) \geq \varphi(0) + \varphi'(0) = f(x) + \nabla f(x)^T(y-x)$。由定理 2.1 即得。$\blacksquare$</p>
+
+      <h3>2.4 凸优化的核心性质</h3>
+      <p><strong>定理 2.3</strong>&ensp;
+        设 $f$ 为凸函数，$C$ 为凸集。若 $x^* \in C$ 为 $f$ 在 $C$ 上的局部极小点，则 $x^*$ 为全局极小点。
+      </p>
+      <p><strong>证明：</strong>设 $x^*$ 为局部极小点，$y \in C$ 为任意点。因 $C$ 凸，$x^* + t(y-x^*) \in C$ 对 $t \in [0,1]$。
+        由局部极小性，存在 $\delta > 0$ 使得对 $t \in [0,\delta]$，$f(x^* + t(y-x^*)) \geq f(x^*)$。
+        由凸性 $f(x^* + t(y-x^*)) \leq (1-t)f(x^*) + t f(y)$，故 $t f(y) \geq t f(x^*)$，即 $f(y) \geq f(x^*)$。
+        $\blacksquare$
+      </p>
+      <p><strong>推论：</strong>若 $f$ 严格凸，则全局最小值点唯一。</p>
+
+      <h3>2.5 例子</h3>
+      <p><strong>例 2</strong>&ensp; 验证 $f(w) = \frac{1}{2}\|Xw - y\|^2$ 为凸函数。</p>
+      <p><strong>解：</strong>$\nabla^2 f(w) = X^T X$。对任意 $v \in \RR^n$，$v^T X^T X v = \|Xv\|^2 \geq 0$，故 $X^TX \succeq 0$，$f$ 凸。
+        若 $\ker(X) = \{0\}$（列满秩），则 $X^TX$ 正定，$f$ 严格凸。$\blacksquare$</p>
+
+    </div>
+  </div>
+
+  <div class="math-bridge">
+    <h3>与数据挖掘的联系</h3>
+    <p><strong>Ch05 逻辑回归：</strong>对数损失 $J(w) = -\sum [y_i \log \sigma(w^T x_i) + (1-y_i)\log(1-\sigma(w^T x_i))]$ 可证明为凸函数，保证梯度下降收敛到全局最优。</p>
+    <p><strong>Ch09 SVM：</strong>原问题 $\min \frac{1}{2}\|w\|^2$ 的目标函数为严格凸二次函数，约束为线性（凸集），故为凸优化问题，KKT 点即全局最优。对偶问题同样为凸二次规划。</p>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!--  TOPIC 3  Taylor 展开                                             -->
+<!-- ================================================================ -->
+<section id="topic-taylor" class="chapter reveal">
+  <h2>三、Taylor 展开</h2>
+
+  <div class="ch-math">
+    <div class="math-content">
+
+      <h3>3.1 多元函数 Taylor 展开</h3>
+      <p><strong>定理 3.1</strong>（带 Peano 余项的 Taylor 公式）&ensp;
+        设 $f: \RR^n \to \RR$ 在 $x$ 的某邻域内 $m$ 阶连续可微，则当 $h \to 0$ 时：
+      </p>
+      <p><strong>一阶展开（$m=1$）：</strong></p>
+      $$f(x + h) = f(x) + \nabla f(x)^T h + o(\|h\|)$$
+      <p><strong>二阶展开（$m=2$）：</strong></p>
+      $$f(x + h) = f(x) + \nabla f(x)^T h + \frac{1}{2} h^T \nabla^2 f(x) \, h + o(\|h\|^2)$$
+      <p>其中 $\nabla f(x)^T h = \sum_{i=1}^n \frac{\partial f}{\partial x_i} h_i$ 为方向导数的线性近似，
+        $\frac{1}{2} h^T \nabla^2 f(x) \, h = \frac{1}{2}\sum_{i,j} \frac{\partial^2 f}{\partial x_i \partial x_j} h_i h_j$ 为二次型修正项。</p>
+
+      <h3>3.2 Lagrange 余项</h3>
+      <p><strong>定理 3.2</strong>&ensp;
+        在定理 3.1 条件下，存在 $\theta \in (0,1)$ 使得
+      </p>
+      $$f(x+h) = f(x) + \nabla f(x)^T h + \frac{1}{2} h^T \nabla^2 f(x + \theta h) \, h$$
+      <p>此形式为精确等式而非近似，余项用 $x + \theta h$ 处的 Hessian 表示。</p>
+
+      <h3>3.3 牛顿法的推导</h3>
+      <p>在当前迭代点 $x_k$ 处对 $f$ 做二阶 Taylor 近似：</p>
+      $$f(x_k + h) \approx f(x_k) + \nabla f(x_k)^T h + \frac{1}{2} h^T H_k \, h \triangleq m_k(h)$$
+      <p>对 $m_k(h)$ 关于 $h$ 求极小，令 $\nabla_h m_k = \nabla f(x_k) + H_k h = 0$，得</p>
+      $$h^* = -H_k^{-1} \nabla f(x_k)$$
+      <p>因此 <strong>牛顿迭代</strong>为：</p>
+      $$x_{k+1} = x_k - [\nabla^2 f(x_k)]^{-1} \nabla f(x_k)$$
+      <p>当 $x_k$ 接近极小点时，$f$ 接近二次函数，牛顿法具有 <strong>二次收敛速度</strong>：$\|x_{k+1} - x^*\| = O(\|x_k - x^*\|^2)$。</p>
+
+      <h3>3.4 XGBoost 的二阶 Taylor 展开</h3>
+      <p>设目标函数（含正则化）为</p>
+      $$\mathcal{L}(\phi) = \sum_{i=1}^n \ell(y_i, \hat{y}_i) + \sum_k \Omega(f_k)$$
+      <p>在第 $t$ 轮，令 $\hat{y}_i^{(t)} = \hat{y}_i^{(t-1)} + f_t(x_i)$，对损失函数在 $\hat{y}_i^{(t-1)}$ 处做二阶 Taylor 展开：</p>
+      $$\mathcal{L}^{(t)} \approx \sum_{i=1}^n \left[ g_i f_t(x_i) + \frac{1}{2} h_i f_t(x_i)^2 \right] + \Omega(f_t)$$
+      <p>其中 $g_i = \partial_{\hat{y}} \ell(y_i, \hat{y}) \big|_{\hat{y}^{(t-1)}}$，$h_i = \partial_{\hat{y}}^2 \ell(y_i, \hat{y}) \big|_{\hat{y}^{(t-1)}}$。这将任意损失函数转化为关于 $f_t$ 的二次优化问题，可直接求解叶节点最优值。</p>
+
+      <h3>3.5 例子</h3>
+      <p><strong>例 3</strong>&ensp; 对 $f(x) = e^{x_1} + x_1 x_2 + x_2^2$ 在原点做二阶 Taylor 展开。</p>
+      <p><strong>解：</strong>$f(0,0) = 1$，$\nabla f(0,0) = (1, 0)^T$，$\nabla^2 f(0,0) = \begin{pmatrix}1 & 1 \\ 1 & 2\end{pmatrix}$。</p>
+      $$f(h) \approx 1 + h_1 + \frac{1}{2}(h_1^2 + 2h_1 h_2 + 2h_2^2)$$
+      $\blacksquare$
+
+    </div>
+  </div>
+
+  <div class="math-bridge">
+    <h3>与数据挖掘的联系</h3>
+    <p><strong>Ch05 牛顿法：</strong>逻辑回归的 IRLS（迭代重加权最小二乘）算法本质是对对数似然做局部二阶 Taylor 近似后迭代求解。</p>
+    <p><strong>Ch09 SMO 算法：</strong>SVM 的序贯最小优化每次选取两个变量优化，相当于在二维子空间做精确二次近似。</p>
+    <p><strong>Ch11 XGBoost：</strong>二阶 Taylor 展开是 XGBoost 算法的数学基石，使得任意可微损失函数都可纳入统一的梯度提升框架。</p>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!--  TOPIC 4  约束优化与 KKT 条件                                     -->
+<!-- ================================================================ -->
+<section id="topic-kkt" class="chapter reveal">
+  <h2>四、约束优化与 KKT 条件</h2>
+
+  <div class="ch-math">
+    <div class="math-content">
+
+      <h3>4.1 等式约束：Lagrange 乘子法</h3>
+      <p><strong>问题形式：</strong></p>
+      $$\min_{x} f(x) \quad \text{s.t.} \quad g_i(x) = 0, \; i = 1,\dots,m$$
+      <p>定义 <strong>Lagrange 函数</strong></p>
+      $$L(x, \lambda) = f(x) + \sum_{i=1}^m \lambda_i g_i(x) = f(x) + \lambda^T g(x)$$
+      <p><strong>定理 4.1</strong>（一阶必要条件）&ensp;
+        设 $x^*$ 为局部最优解，且 $\{\nabla g_i(x^*)\}_{i=1}^m$ 线性无关（约束规范/LICQ），则存在 $\lambda^* \in \RR^m$ 使得
+      </p>
+      $$\nabla_x L(x^*, \lambda^*) = \nabla f(x^*) + \sum_{i=1}^m \lambda_i^* \nabla g_i(x^*) = 0$$
+      $$\nabla_\lambda L(x^*, \lambda^*) = g(x^*) = 0$$
+      <p><strong>几何直觉：</strong>在最优点处，目标函数的梯度必须垂直于约束曲面，即 $\nabla f(x^*)$ 位于约束法向量的张成空间中。</p>
+
+      <h3>4.2 不等式约束：KKT 条件</h3>
+      <p><strong>问题形式：</strong></p>
+      $$\min_{x} f(x) \quad \text{s.t.} \quad g_i(x) \leq 0, \; i=1,\dots,m; \quad h_j(x) = 0, \; j=1,\dots,p$$
+      <p><strong>定理 4.2</strong>（KKT 必要条件）&ensp;
+        设 $x^*$ 为局部最优解，且约束规范成立（如 LICQ），则存在乘子 $\mu^* \in \RR^m$，$\nu^* \in \RR^p$ 使得：
+      </p>
+      <ol>
+        <li><strong>原始可行性：</strong>$g_i(x^*) \leq 0$，$h_j(x^*) = 0$；</li>
+        <li><strong>对偶可行性：</strong>$\mu_i^* \geq 0$；</li>
+        <li><strong>互补松弛：</strong>$\mu_i^* g_i(x^*) = 0$，$\forall i$；</li>
+        <li><strong>稳定点条件：</strong>$\nabla f(x^*) + \sum_{i=1}^m \mu_i^* \nabla g_i(x^*) + \sum_{j=1}^p \nu_j^* \nabla h_j(x^*) = 0$。</li>
+      </ol>
+      <p>Lagrange 函数为 $L(x, \mu, \nu) = f(x) + \sum \mu_i g_i(x) + \sum \nu_j h_j(x)$，条件 4 即 $\nabla_x L = 0$。</p>
+
+      <h3>4.3 强对偶与 Slater 条件</h3>
+      <p>定义 <strong>对偶函数</strong> $q(\mu, \nu) = \inf_x L(x, \mu, \nu)$，<strong>对偶问题</strong>为</p>
+      $$\max_{\mu \geq 0, \nu} \; q(\mu, \nu)$$
+      <p>由弱对偶性，$q(\mu^*, \nu^*) \leq f(x^*)$ 恒成立（对偶间隙 $\geq 0$）。</p>
+      <p><strong>定理 4.3</strong>（强对偶定理）&ensp;
+        若原问题为凸优化（$f$ 凸，$g_i$ 凸，$h_j$ 仿射），且存在 $x_0$ 使得 $g_i(x_0) < 0$（<strong>Slater 条件</strong>），则强对偶成立：对偶间隙为零，$q(\mu^*, \nu^*) = f(x^*)$。
+      </p>
+
+      <h3>4.4 KKT 充分性（凸优化）</h3>
+      <p><strong>定理 4.4</strong>&ensp;
+        若 $f, g_i$ 均为凸函数，$h_j$ 为仿射函数，且 $(x^*, \mu^*, \nu^*)$ 满足 KKT 条件，则 $x^*$ 为全局最优解。
+      </p>
+      <p><strong>证明：</strong>由 $f$ 凸及一阶条件：
+        $$f(x) \geq f(x^*) + \nabla f(x^*)^T (x - x^*)$$
+        由 KKT 稳定点条件 $\nabla f(x^*) = -\sum \mu_i^* \nabla g_i(x^*) - \sum \nu_j^* \nabla h_j(x^*)$。代入得
+        $$f(x) \geq f(x^*) - \sum \mu_i^* \nabla g_i(x^*)^T(x - x^*) - \sum \nu_j^* \nabla h_j(x^*)^T(x - x^*)$$
+        由 $g_i$ 凸性，$g_i(x) \geq g_i(x^*) + \nabla g_i(x^*)^T(x-x^*)$，故 $\nabla g_i(x^*)^T(x-x^*) \leq g_i(x) - g_i(x^*)$。
+        结合互补松弛 $\mu_i^* g_i(x^*) = 0$ 和对偶可行性 $\mu_i^* \geq 0$：
+        $$-\mu_i^* \nabla g_i(x^*)^T(x-x^*) \geq -\mu_i^*[g_i(x) - g_i(x^*)] = -\mu_i^* g_i(x) \geq 0$$
+        对于仿射等式约束 $h_j(x) = 0$，$\nabla h_j(x^*)^T(x-x^*) = h_j(x) - h_j(x^*) = 0$。
+        因此 $f(x) \geq f(x^*)$，$x^*$ 为全局最优。$\blacksquare$</p>
+
+      <h3>4.5 例子</h3>
+      <p><strong>例 4</strong>&ensp; $\min \frac{1}{2}(x_1^2 + x_2^2)$ s.t. $x_1 + x_2 - 1 \geq 0$。</p>
+      <p><strong>解：</strong>改写约束为 $g(x) = -x_1 - x_2 + 1 \leq 0$。KKT 条件：
+        $$x_1 - \mu = 0, \quad x_2 - \mu = 0, \quad \mu \geq 0, \quad \mu(-x_1 - x_2 + 1) = 0$$
+        若 $\mu > 0$ 则 $x_1 + x_2 = 1$，结合 $x_1 = x_2 = \mu$ 得 $x_1 = x_2 = 1/2$，$\mu = 1/2 > 0$。
+        最优解 $(1/2, 1/2)$，最优值 $1/4$。$\blacksquare$</p>
+
+    </div>
+  </div>
+
+  <div class="math-bridge">
+    <h3>与数据挖掘的联系</h3>
+    <p><strong>Ch06 最大熵模型：</strong>在概率分布约束 $\sum_y p(y|x) = 1$ 和特征期望约束下最大化熵，是典型的约束凸优化问题，可用 Lagrange 乘子法导出指数族分布形式。</p>
+    <p><strong>Ch09 SVM：</strong>原问题引入松弛变量后为凸二次规划。通过对偶变换，KKT 互补松弛条件直接决定了支持向量的选择——只有满足 $\alpha_i > 0$ 的样本点成为支持向量。</p>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!--  TOPIC 5  Jensen 不等式                                           -->
+<!-- ================================================================ -->
+<section id="topic-jensen" class="chapter reveal">
+  <h2>五、Jensen 不等式</h2>
+
+  <div class="ch-math">
+    <div class="math-content">
+
+      <h3>5.1 定理陈述</h3>
+      <p><strong>定理 5.1</strong>（Jensen 不等式）&ensp;
+        设 $f: C \to \RR$ 为凸函数，$C \subseteq \RR^n$ 为凸集，$X$ 为取值于 $C$ 的随机向量且 $E[\|X\|] < \infty$，则
+      </p>
+      $$f\big(E[X]\big) \leq E\big[f(X)\big]$$
+      <p>若 $f$ 严格凸，等号成立当且仅当 $X = E[X]$ 几乎必然（即 $X$ 为退化分布）。</p>
+
+      <h3>5.2 离散形式</h3>
+      <p>设 $x_1, \dots, x_k \in C$，$\lambda_1, \dots, \lambda_k \geq 0$，$\sum_{i=1}^k \lambda_i = 1$，则</p>
+      $$f\!\left(\sum_{i=1}^k \lambda_i x_i\right) \leq \sum_{i=1}^k \lambda_i f(x_i)$$
+      <p>这正是凸函数定义的直接推广（归纳法）。</p>
+
+      <h3>5.3 完整证明</h3>
+      <p><strong>证明（有限离散形式，数学归纳法）：</strong></p>
+      <p><strong>基础（$k=2$）：</strong>由凸函数定义直接成立。</p>
+      <p><strong>归纳假设：</strong>设对 $k$ 个点成立。</p>
+      <p><strong>归纳步（$k+1$）：</strong>设 $\lambda_i \geq 0$，$\sum_{i=1}^{k+1} \lambda_i = 1$。若 $\lambda_{k+1} = 1$ 则平凡。设 $\lambda_{k+1} < 1$，令 $\mu = \sum_{i=1}^k \lambda_i = 1 - \lambda_{k+1} > 0$。</p>
+      <p>记 $\bar{x} = \sum_{i=1}^k \frac{\lambda_i}{\mu} x_i$，则 $\sum_{i=1}^k \frac{\lambda_i}{\mu} = 1$，由归纳假设 $f(\bar{x}) \leq \sum_{i=1}^k \frac{\lambda_i}{\mu} f(x_i)$。</p>
+      <p>由 $k=2$ 情形：
+        $$f(\mu \bar{x} + \lambda_{k+1} x_{k+1}) \leq \mu f(\bar{x}) + \lambda_{k+1} f(x_{k+1})$$
+        即
+        $$f\!\left(\sum_{i=1}^{k+1} \lambda_i x_i\right) \leq \mu \sum_{i=1}^k \frac{\lambda_i}{\mu} f(x_i) + \lambda_{k+1} f(x_{k+1}) = \sum_{i=1}^{k+1} \lambda_i f(x_i)$$
+        归纳完成。$\blacksquare$
+      </p>
+
+      <p><strong>证明（一般形式，利用凸函数支撑超平面）：</strong></p>
+      <p>设 $\mu = E[X]$。由凸函数的切线不等式，存在 $g \in \RR^n$（次梯度）使得对所有 $x \in C$，</p>
+      $$f(x) \geq f(\mu) + g^T(x - \mu)$$
+      <p>将 $X$ 代入并取期望：</p>
+      $$E[f(X)] \geq f(\mu) + g^T(E[X] - \mu) = f(\mu)$$
+      <p>即 $f(E[X]) \leq E[f(X)]$。$\blacksquare$</p>
+
+      <h3>5.4 等号条件</h3>
+      <p>当 $f$ 严格凸时：</p>
+      <ul>
+        <li>等号成立 $\iff$ $P(X = E[X]) = 1$（$X$ 几乎必然为常数）；</li>
+        <li>当 $f$ 仅为凸（非严格），等号也可在 $X$ 的支撑集落在 $f$ 的某个仿射区域时成立。</li>
+      </ul>
+
+      <h3>5.5 例子</h3>
+      <p><strong>例 5</strong>&ensp; 由 $f(x) = -\log x$（凸函数），Jensen 不等式给出</p>
+      $$-\log E[X] \leq E[-\log X] = -E[\log X]$$
+      <p>即 $\log E[X] \geq E[\log X]$，这是 AM-GM 不等式的推广形式。$\blacksquare$</p>
+
+      <p><strong>例 6</strong>&ensp; 由 $f(x) = x^2$（凸函数），$E[X]^2 \leq E[X^2]$，即 $\text{Var}(X) = E[X^2] - E[X]^2 \geq 0$。$\blacksquare$</p>
+
+    </div>
+  </div>
+
+  <div class="math-bridge">
+    <h3>与数据挖掘的联系</h3>
+    <p><strong>Ch10 EM 算法：</strong>EM 算法的每一步迭代保证似然函数不下降，其核心证明依赖 Jensen 不等式。
+      设 $Q_i(z)$ 为隐变量的后验分布，$\theta$ 为模型参数，则</p>
+    $$\log p(x|\theta) = \log \sum_z p(x,z|\theta) = \log \sum_z Q_i(z) \frac{p(x,z|\theta)}{Q_i(z)} \geq \sum_z Q_i(z) \log \frac{p(x,z|\theta)}{Q_i(z)}$$
+    <p>不等号正是 Jensen 不等式（$\log$ 为凹函数）的直接应用。右端即为 E 步构造的下界 $\mathcal{L}(Q, \theta)$，M 步通过最大化此下界来更新参数。</p>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!--  TOPIC 6  度量空间与范数                                          -->
+<!-- ================================================================ -->
+<section id="topic-metric" class="chapter reveal">
+  <h2>六、度量空间与范数</h2>
+
+  <div class="ch-math">
+    <div class="math-content">
+
+      <h3>6.1 度量空间的定义</h3>
+      <p><strong>定义 6.1</strong>（度量）&ensp;
+        设 $X$ 为非空集合，函数 $d: X \times X \to [0, \infty)$ 称为 $X$ 上的度量（距离），若满足以下三条公理：
+      </p>
+      <ol>
+        <li><strong>非负性与同一性：</strong>$d(x,y) \geq 0$，且 $d(x,y) = 0 \iff x = y$；</li>
+        <li><strong>对称性：</strong>$d(x,y) = d(y,x)$；</li>
+        <li><strong>三角不等式：</strong>$d(x,z) \leq d(x,y) + d(y,z)$，$\forall x,y,z \in X$。</li>
+      </ol>
+      <p>$(X, d)$ 称为度量空间。</p>
+
+      <h3>6.2 范数的定义</h3>
+      <p><strong>定义 6.2</strong>（范数）&ensp;
+        函数 $\|\cdot\|: \RR^n \to [0,\infty)$ 称为范数，若满足：
+      </p>
+      <ol>
+        <li><strong>非负性：</strong>$\|x\| \geq 0$，$\|x\| = 0 \iff x = 0$；</li>
+        <li><strong>齐次性：</strong>$\|\alpha x\| = |\alpha| \|x\|$，$\forall \alpha \in \RR$；</li>
+        <li><strong>三角不等式：</strong>$\|x + y\| \leq \|x\| + \|y\|$。</li>
+      </ol>
+
+      <h3>6.3 $L^p$ 范数族</h3>
+      <p>对 $1 \leq p < \infty$，定义</p>
+      $$\|x\|_p = \left(\sum_{i=1}^n |x_i|^p\right)^{1/p}$$
+      <p>常见特例：</p>
+      <ul>
+        <li><strong>$L^1$ 范数（曼哈顿距离）：</strong>$\|x\|_1 = \sum_{i=1}^n |x_i|$；</li>
+        <li><strong>$L^2$ 范数（欧几里得距离）：</strong>$\|x\|_2 = \sqrt{\sum_{i=1}^n x_i^2}$；</li>
+        <li><strong>$L^\infty$ 范数（切比雪夫距离）：</strong>$\|x\|_\infty = \max_{1 \leq i \leq n} |x_i| = \lim_{p \to \infty} \|x\|_p$。</li>
+      </ul>
+
+      <h3>6.4 Minkowski 不等式</h3>
+      <p><strong>定理 6.1</strong>（Minkowski 不等式）&ensp;
+        设 $x, y \in \RR^n$，$1 \leq p \leq \infty$，则
+      </p>
+      $$\|x + y\|_p \leq \|x\|_p + \|y\|_p$$
+      <p>此即 $L^p$ 范数的三角不等式，是度量空间公理第三条的具体实例。</p>
+      <p><strong>证明（$1 < p < \infty$）：</strong>
+        记 $s_i = |x_i + y_i|$。注意到 $s_i^p = |x_i + y_i|^p \leq (|x_i| + |y_i|)^p = (|x_i| + |y_i|) \cdot (|x_i| + |y_i|)^{p-1}$。
+        对 $i$ 求和：$\sum s_i^p \leq \sum |x_i|(|x_i|+|y_i|)^{p-1} + \sum |y_i|(|x_i|+|y_i|)^{p-1}$。
+        由 Holder 不等式（$\frac{1}{p} + \frac{1}{q} = 1$，$q = p/(p-1)$），
+        $$\sum |x_i|(|x_i|+|y_i|)^{p-1} \leq \|x\|_p \left(\sum (|x_i|+|y_i|)^{(p-1)q}\right)^{1/q} = \|x\|_p \left(\sum (|x_i|+|y_i|)^p\right)^{1/q}$$
+        两边除以 $\left(\sum (|x_i|+|y_i|)^p\right)^{1/q}$（假设非零），得
+        $$\left(\sum s_i^p\right)^{1/p} \leq \|x\|_p + \|y\|_p$$
+        而 $\sum (|x_i| + |y_i|)^p \geq \sum |x_i+y_i|^p = \sum s_i^p$。$\blacksquare$
+      </p>
+
+      <h3>6.5 范数诱导度量</h3>
+      <p>任何范数 $\|\cdot\|$ 自然诱导一个度量：</p>
+      $$d(x,y) = \|x - y\|$$
+      <p>验证三角不等式：$d(x,z) = \|x-z\| = \|(x-y)+(y-z)\| \leq \|x-y\| + \|y-z\| = d(x,y) + d(y,z)$。</p>
+      <p>特别地，$d_p(x,y) = \|x-y\|_p$ 诱导了 $L^p$ 度量。</p>
+
+      <h3>6.6 例子</h3>
+      <p><strong>例 7</strong>&ensp; 设 $x = (1,2)^T$，$y = (4,6)^T$，则</p>
+      <ul>
+        <li>$d_1(x,y) = |1-4| + |2-6| = 7$；</li>
+        <li>$d_2(x,y) = \sqrt{9 + 16} = 5$；</li>
+        <li>$d_\infty(x,y) = \max(3, 4) = 4$。</li>
+      </ul>
+      <p>一般地，$d_\infty \leq d_2 \leq d_1 \leq n \cdot d_\infty$。$\blacksquare$</p>
+
+    </div>
+  </div>
+
+  <div class="math-bridge">
+    <h3>与数据挖掘的联系</h3>
+    <p><strong>Ch03 K 近邻（KNN）：</strong>KNN 分类器的核心是距离度量的选择。$L^2$（欧氏距离）适合各维度量级相近的连续特征；$L^1$（曼哈顿距离）对异常值更鲁棒；$L^\infty$ 强调最大差异维度。实践中常通过学习距离度量（如马氏距离 $d_M(x,y) = \sqrt{(x-y)^T M (x-y)}$）来提升分类性能。</p>
+    <p><strong>Ch03 聚类分析：</strong>K-means 使用 $L^2$ 范数（最小化簇内方差），K-medoids 可使用任意度量。度量的选择直接影响聚类结果。</p>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!--  TOPIC 7  序列极限与收敛性                                         -->
+<!-- ================================================================ -->
+<section id="topic-convergence" class="chapter reveal">
+  <h2>七、序列极限与收敛性</h2>
+
+  <div class="ch-math">
+    <div class="math-content">
+
+      <h3>7.1 序列收敛的定义</h3>
+      <p><strong>定义 7.1</strong>&ensp;
+        设 $\{x_k\} \subset \RR^n$ 为序列。若存在 $x^* \in \RR^n$，使得
+      </p>
+      $$\forall \varepsilon > 0, \; \exists K \in \NN, \; \forall k \geq K: \quad \|x_k - x^*\| < \varepsilon$$
+      <p>则称 $\{x_k\}$ 收敛于 $x^*$，记为 $x_k \to x^*$ 或 $\lim_{k \to \infty} x_k = x^*$。</p>
+      <p><strong>等价刻画：</strong>$x_k \to x^*$ 当且仅当 $\|x_k - x^*\| \to 0$。</p>
+
+      <h3>7.2 收敛速度的分类</h3>
+      <p>设 $x_k \to x^*$，$e_k = \|x_k - x^*\|$。收敛速度按以下分类：</p>
+      <ol>
+        <li><strong>次线性收敛：</strong>$\lim_{k \to \infty} \frac{e_{k+1}}{e_k} = 1$（如梯度下降对一般凸函数）；</li>
+        <li><strong>线性收敛（$Q$-线性）：</strong>存在 $r \in (0,1)$ 使得 $e_{k+1} \leq r \, e_k$，等价于
+          $$\limsup_{k \to \infty} \frac{e_{k+1}}{e_k} \leq r < 1$$
+          $r$ 称为收敛比；</li>
+        <li><strong>超线性收敛：</strong>$\lim_{k \to \infty} \frac{e_{k+1}}{e_k} = 0$；</li>
+        <li><strong>二次收敛（$Q$-二次）：</strong>存在 $M > 0$ 使得 $e_{k+1} \leq M \, e_k^2$，即
+          $$\limsup_{k \to \infty} \frac{e_{k+1}}{e_k^2} \leq M < \infty$$</li>
+      </ol>
+      <p>显然二次收敛 > 超线性 > 线性 > 次线性。在优化算法中，梯度下降通常线性收敛，牛顿法在正则条件下二次收敛。</p>
+
+      <h3>7.3 随机梯度下降（SGD）的收敛性</h3>
+      <p>SGD 迭代格式：$x_{k+1} = x_k - \eta_k \tilde{g}_k$，其中 $\tilde{g}_k$ 为随机无偏梯度估计（$E[\tilde{g}_k] = \nabla f(x_k)$）。</p>
+      <p><strong>定理 7.1</strong>（Robbins-Monro 定理）&ensp;
+        设 $f$ 为凸函数且 $x^*$ 存在。若学习率序列 $\{\eta_k\}$ 满足
+      </p>
+      $$\sum_{k=1}^{\infty} \eta_k = \infty \qquad \text{且} \qquad \sum_{k=1}^{\infty} \eta_k^2 < \infty$$
+      <p>（称为 <strong>Robbins-Monro 条件</strong>），则 $x_k \xrightarrow{a.s.} x^*$。</p>
+      <p><strong>条件的直觉：</strong></p>
+      <ul>
+        <li>$\sum \eta_k = \infty$：步长之和发散，保证算法能"走足够远"以到达最优解的任意邻域；</li>
+        <li>$\sum \eta_k^2 < \infty$：步长平方和收敛，保证随机噪声的累积方差有界（$\sum \text{Var}[\eta_k \tilde{g}_k] \leq C \sum \eta_k^2 < \infty$），从而消除随机波动。</li>
+      </ul>
+      <p><strong>典型选择：</strong>$\eta_k = \frac{c}{k^\alpha}$，其中 $\alpha \in (1/2, 1]$。常用 $\eta_k = c/k$。</p>
+
+      <h3>7.4 梯度下降在凸函数上的收敛率</h3>
+      <p><strong>定理 7.2</strong>&ensp;
+        设 $f$ 为凸且 $L$-Lipschitz 光滑（即 $\|\nabla f(x) - \nabla f(y)\| \leq L\|x-y\|$），步长 $\eta = 1/L$，则
+      </p>
+      $$f(x_k) - f(x^*) \leq \frac{L \|x_0 - x^*\|^2}{2k}$$
+      <p>即收敛率为 $O(1/k)$（次线性）。</p>
+      <p><strong>证明：</strong>由光滑性，$f(y) \leq f(x) + \nabla f(x)^T(y-x) + \frac{L}{2}\|y-x\|^2$。
+        令 $y = x_{k+1} = x_k - \frac{1}{L}\nabla f(x_k)$，$x = x_k$：</p>
+      $$f(x_{k+1}) \leq f(x_k) + \nabla f(x_k)^T\!\left(-\frac{1}{L}\nabla f(x_k)\right) + \frac{L}{2}\left\|\frac{1}{L}\nabla f(x_k)\right\|^2 = f(x_k) - \frac{1}{2L}\|\nabla f(x_k)\|^2$$
+      <p>由凸性 $f(x^*) \geq f(x_k) + \nabla f(x_k)^T(x^* - x_k)$，故
+        $$f(x_k) - f(x^*) \leq \nabla f(x_k)^T(x_k - x^*) \leq \|\nabla f(x_k)\| \cdot \|x_k - x^*\|$$
+        又 $\|\nabla f(x_k)\|^2 \geq \frac{(f(x_k) - f(x^*))^2}{\|x_k - x^*\|^2}$。</p>
+      <p>记 $\delta_k = f(x_k) - f(x^*)$，$D = \|x_0 - x^*\|$，可证 $\delta_k \leq \frac{LD^2}{2k}$（利用递推和归纳）。$\blacksquare$</p>
+
+      <h3>7.5 强凸情形的线性收敛</h3>
+      <p><strong>定理 7.3</strong>&ensp;
+        设 $f$ 为 $\mu$-强凸且 $L$-光滑，步长 $\eta = 1/L$，则
+      </p>
+      $$f(x_k) - f(x^*) \leq \frac{L}{2}\left(1 - \frac{\mu}{L}\right)^k \|x_0 - x^*\|^2$$
+      <p>收敛率为线性，收敛比 $r = 1 - \mu/L$。条件数 $\kappa = L/\mu$ 越小，收敛越快。</p>
+
+      <h3>7.6 例子</h3>
+      <p><strong>例 8</strong>&ensp; 一元二次函数 $f(x) = \frac{1}{2}ax^2$（$a > 0$），梯度下降 $x_{k+1} = x_k - \eta ax_k = (1 - \eta a)x_k$。
+        当 $0 < \eta < 2/a$ 时，$|1 - \eta a| < 1$，$x_k \to 0$ 且线性收敛，收敛比 $r = |1 - \eta a|$。
+        最优步长 $\eta^* = 1/a$ 给出 $r = 0$（一步收敛）。$\blacksquare$</p>
+
+    </div>
+  </div>
+
+  <div class="math-bridge">
+    <h3>与数据挖掘的联系</h3>
+    <p><strong>Ch08 感知机：</strong>Novikoff 定理证明感知机算法在有限步内收敛。设间隔 $\gamma = \min_i y_i(w^{*T} x_i) / \|w^*\|$，则误分类次数不超过 $R^2/\gamma^2$（$R = \max \|x_i\|$）。这是有限步收敛的经典保证。</p>
+    <p><strong>Ch05 梯度下降：</strong>实际训练深度学习模型时，常使用学习率衰减策略 $\eta_k = \eta_0 / (1 + \alpha k)$ 以满足 Robbins-Monro 条件，同时借助动量法加速收敛。</p>
+  </div>
+</section>
+
+<!-- ===================== 页脚 ===================== -->
+<footer>
+  <p>数学系 · 数据挖掘前置知识</p>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>

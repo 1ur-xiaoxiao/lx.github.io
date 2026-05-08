@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高等代数 — 数据挖掘前置知识</title>
+<link rel="stylesheet" href="style.css">
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']],
+    macros: { RR: '\\mathbb{R}', bold: ['\\mathbf{#1}',1] } },
+  svg: { fontCache: 'global' }, startup: { pageReady: () => MathJax.startup.defaultPageReady() }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo"><a href="index.html" style="color:inherit;text-decoration:none;">&larr; 返回主页</a></div>
+  <button class="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul>
+    <li><a href="#topic-pd">正定矩阵</a></li>
+    <li><a href="#topic-inverse">矩阵求逆</a></li>
+    <li><a href="#topic-inner">向量空间与内积</a></li>
+    <li><a href="#topic-hyperplane">超平面</a></li>
+    <li><a href="#topic-quadratic">二次型</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-content">
+    <h1>高等代数</h1>
+    <p class="subtitle">数据挖掘 &middot; 前置数学知识</p>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TOPIC 1: 正定矩阵与半正定矩阵 -->
+<!-- ============================================================ -->
+<section id="topic-pd" class="chapter reveal">
+  <div class="ch-header">
+    <span class="ch-num">1</span>
+    <h2>正定矩阵与半正定矩阵</h2>
+    <p class="ch-subtitle">Positive (Semi-)Definite Matrices</p>
+  </div>
+  <div class="ch-overview">
+    <p>正定矩阵是数据挖掘中最常见的矩阵结构之一。从线性回归的正规方程到逻辑回归的 Hessian 矩阵，再到 SVM 的核矩阵，正定性保证了优化问题的良好性质（可逆性、凸性）。</p>
+  </div>
+  <div class="ch-math">
+    <h3>数学推导</h3>
+    <div class="math-content">
+      <p><strong>1. 定义</strong></p>
+      <p>设 $A \in \RR^{n \times n}$ 为实对称矩阵。</p>
+      <p>$A$ <strong>正定</strong>（positive definite），记 $A \succ 0$：</p>
+      $$\forall \boldsymbol{x} \in \RR^n,\; \boldsymbol{x} \neq \boldsymbol{0} \implies \boldsymbol{x}^T A \boldsymbol{x} > 0$$
+      <p>$A$ <strong>半正定</strong>（positive semi-definite），记 $A \succeq 0$：</p>
+      $$\forall \boldsymbol{x} \in \RR^n \implies \boldsymbol{x}^T A \boldsymbol{x} \geq 0$$
+
+      <p><strong>2. 特征值判定</strong></p>
+      <p>设 $A$ 的特征值为 $\lambda_1 \geq \lambda_2 \geq \cdots \geq \lambda_n$。因为 $A$ 实对称，故存在正交矩阵 $Q$ 使 $A = Q \Lambda Q^T$，其中 $\Lambda = \mathrm{diag}(\lambda_1, \ldots, \lambda_n)$。</p>
+      <p>令 $\boldsymbol{y} = Q^T \boldsymbol{x}$，则：</p>
+      $$\boldsymbol{x}^T A \boldsymbol{x} = \boldsymbol{x}^T Q \Lambda Q^T \boldsymbol{x} = \boldsymbol{y}^T \Lambda \boldsymbol{y} = \sum_{i=1}^{n} \lambda_i y_i^2$$
+      <p>因此：</p>
+      <ul>
+        <li>$A \succ 0 \iff \lambda_i > 0, \;\forall i$</li>
+        <li>$A \succeq 0 \iff \lambda_i \geq 0, \;\forall i$</li>
+      </ul>
+
+      <p><strong>3. Sylvester 判据（顺序主子式）</strong></p>
+      <p>记 $A_k$ 为 $A$ 的第 $k$ 阶顺序主子式（取前 $k$ 行前 $k$ 列），则：</p>
+      $$A \succ 0 \iff \det(A_k) > 0, \quad k = 1, 2, \ldots, n$$
+      <p><strong>证明</strong>：对 $n$ 归纳。$n=1$ 时 $A = (a_{11})$，正定 $\iff a_{11} > 0$。假设结论对 $n-1$ 成立。将 $A$ 分块：</p>
+      $$A = \begin{pmatrix} A_{n-1} & \boldsymbol{b} \\ \boldsymbol{b}^T & a_{nn} \end{pmatrix}$$
+      <p>由归纳假设 $A_{n-1} \succ 0$ 故 $A_{n-1}$ 可逆。取 $\boldsymbol{x} = (-A_{n-1}^{-1}\boldsymbol{b},\; 1)^T \neq \boldsymbol{0}$，代入 $\boldsymbol{x}^T A \boldsymbol{x}$ 可得 Schur 补 $a_{nn} - \boldsymbol{b}^T A_{n-1}^{-1} \boldsymbol{b} = \det(A)/\det(A_{n-1})$。正定性要求该值 $> 0$，结合 $\det(A_{n-1}) > 0$ 得 $\det(A) > 0$。</p>
+
+      <p><strong>4. Cholesky 分解</strong></p>
+      <p>$A \succ 0$ 时存在唯一的下三角矩阵 $L$（对角元均 $> 0$）使得：</p>
+      $$A = L L^T$$
+      <p>这是数值计算中最高效的正定矩阵分解，复杂度 $O(n^3/3)$（约为 LU 分解的一半）。</p>
+
+      <p><strong>5. 正定矩阵的性质</strong></p>
+      <ul>
+        <li>$A$ 正定 $\Rightarrow$ $A$ 可逆，且 $A^{-1}$ 也是正定矩阵</li>
+        <li>$A$ 正定 $\Rightarrow$ 所有特征值 $> 0$，故 $\det(A) = \prod \lambda_i > 0$</li>
+        <li>$A, B$ 正定 $\Rightarrow$ $A + B$ 正定</li>
+        <li>$A$ 正定 $\Rightarrow$ $\forall$ 正整数 $k$，$A^k$ 正定</li>
+      </ul>
+
+      <p><strong>6. 半正定矩阵</strong></p>
+      <p>半正定矩阵允许奇异（$\det(A) = 0$），特征值 $\geq 0$。关键性质：</p>
+      $$\boldsymbol{x}^T A \boldsymbol{x} = 0 \implies A \boldsymbol{x} = \boldsymbol{0}$$
+      <p><strong>证明</strong>：设 $A = Q \Lambda Q^T$，$\boldsymbol{x}^T A \boldsymbol{x} = \sum \lambda_i y_i^2 = 0$，因 $\lambda_i \geq 0$ 且 $y_i^2 \geq 0$，故 $\lambda_i y_i = 0$ 对所有 $i$。从而 $\Lambda \boldsymbol{y} = \boldsymbol{0}$，即 $A \boldsymbol{x} = Q \Lambda Q^T \boldsymbol{x} = Q \Lambda \boldsymbol{y} = \boldsymbol{0}$。</p>
+
+      <p><strong>7. 例题</strong></p>
+      <p>判断矩阵 $A = \begin{pmatrix} 2 & 1 \\ 1 & 2 \end{pmatrix}$ 的正定性。</p>
+      <p>方法一（Sylvester 判据）：$\det(A_1) = 2 > 0$，$\det(A_2) = 4 - 1 = 3 > 0$，故 $A \succ 0$。</p>
+      <p>方法二（特征值）：$\det(A - \lambda I) = (2-\lambda)^2 - 1 = \lambda^2 - 4\lambda + 3 = (\lambda - 1)(\lambda - 3)$，特征值 $\lambda_1 = 3, \lambda_2 = 1$ 均 $> 0$，故 $A \succ 0$。</p>
+      <p>方法三（Cholesky）：$L = \begin{pmatrix} \sqrt{2} & 0 \\ 1/\sqrt{2} & \sqrt{3/2} \end{pmatrix}$，验证 $LL^T = A$。</p>
+    </div>
+    <div class="math-bridge">
+      <strong>与数据挖掘章节的联系：</strong>
+      <ul>
+        <li><strong>Ch02 线性回归</strong>：$X^T X$ 是半正定的；当 $X$ 列满秩时 $X^T X$ 正定，保证正规方程 $w^* = (X^T X)^{-1} X^T y$ 有唯一解</li>
+        <li><strong>Ch05 逻辑回归</strong>：Hessian 矩阵 $H = \frac{1}{n} X^T \mathrm{diag}(p(1-p)) X$ 半正定，保证交叉熵损失为凸函数</li>
+        <li><strong>Ch09 SVM</strong>：核矩阵 $K_{ij} = K(\boldsymbol{x}_i, \boldsymbol{x}_j)$ 半正定（Mercer 条件），保证对偶问题有解</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- TOPIC 2: 矩阵求逆与伪逆 -->
+<!-- ============================================================ -->
+<section id="topic-inverse" class="chapter reveal">
+  <div class="ch-header">
+    <span class="ch-num">2</span>
+    <h2>矩阵求逆与伪逆</h2>
+    <p class="ch-subtitle">Matrix Inverse &amp; Pseudo-Inverse</p>
+  </div>
+  <div class="ch-overview">
+    <p>矩阵求逆是求解线性方程组的核心运算。当矩阵不可逆或非方阵时，伪逆（Moore-Penrose 逆）提供了最小二乘意义下的最优解。Sherman-Morrison 公式则为在线学习中的增量更新提供了高效工具。</p>
+  </div>
+  <div class="ch-math">
+    <h3>数学推导</h3>
+    <div class="math-content">
+      <p><strong>1. 逆矩阵的定义与存在条件</strong></p>
+      <p>对于 $A \in \RR^{n \times n}$，若存在 $A^{-1} \in \RR^{n \times n}$ 使得：</p>
+      $$A A^{-1} = A^{-1} A = I_n$$
+      <p>则称 $A$ <strong>可逆</strong>（非奇异）。等价条件：</p>
+      <ul>
+        <li>$\det(A) \neq 0$</li>
+        <li>$\mathrm{rank}(A) = n$（列满秩 / 行满秩）</li>
+        <li>$A\boldsymbol{x} = \boldsymbol{0}$ 只有零解</li>
+        <li>$A$ 的所有特征值非零</li>
+      </ul>
+
+      <p><strong>2. 伴随矩阵公式</strong></p>
+      $$A^{-1} = \frac{1}{\det(A)} \mathrm{adj}(A)$$
+      <p>其中 $\mathrm{adj}(A)$ 是 $A$ 的伴随矩阵（代数余子式矩阵的转置）。实际计算中更常用初等行变换或 LU 分解。</p>
+
+      <p><strong>3. 分块矩阵求逆</strong></p>
+      <p>设 $A$ 分块为：</p>
+      $$A = \begin{pmatrix} A_{11} & A_{12} \\ A_{21} & A_{22} \end{pmatrix}$$
+      <p>若 $A_{11}$ 可逆，则 Schur 补 $S = A_{22} - A_{21} A_{11}^{-1} A_{12}$，有：</p>
+      $$A^{-1} = \begin{pmatrix} A_{11}^{-1} + A_{11}^{-1} A_{12} S^{-1} A_{21} A_{11}^{-1} & -A_{11}^{-1} A_{12} S^{-1} \\ -S^{-1} A_{21} A_{11}^{-1} & S^{-1} \end{pmatrix}$$
+
+      <p><strong>4. Sherman-Morrison 公式</strong></p>
+      <p>设 $A$ 可逆，$\boldsymbol{u}, \boldsymbol{v} \in \RR^n$，则 $A + \boldsymbol{u}\boldsymbol{v}^T$ 可逆当且仅当 $1 + \boldsymbol{v}^T A^{-1} \boldsymbol{u} \neq 0$，且：</p>
+      $$(A + \boldsymbol{u}\boldsymbol{v}^T)^{-1} = A^{-1} - \frac{A^{-1} \boldsymbol{u}\boldsymbol{v}^T A^{-1}}{1 + \boldsymbol{v}^T A^{-1} \boldsymbol{u}}$$
+      <p><strong>证明</strong>：直接验证 $(A + \boldsymbol{u}\boldsymbol{v}^T) \cdot \left(A^{-1} - \frac{A^{-1} \boldsymbol{u}\boldsymbol{v}^T A^{-1}}{1 + \boldsymbol{v}^T A^{-1} \boldsymbol{u}}\right) = I$：</p>
+      $$= I + \boldsymbol{u}\boldsymbol{v}^T A^{-1} - \frac{\boldsymbol{u}\boldsymbol{v}^T A^{-1} + \boldsymbol{u}(\boldsymbol{v}^T A^{-1} \boldsymbol{u})\boldsymbol{v}^T A^{-1}}{1 + \boldsymbol{v}^T A^{-1} \boldsymbol{u}} = I + \boldsymbol{u}\boldsymbol{v}^T A^{-1} - \boldsymbol{u}\boldsymbol{v}^T A^{-1} = I \quad \square$$
+
+      <p><strong>5. Moore-Penrose 伪逆</strong></p>
+      <p>对于 $A \in \RR^{m \times n}$（$m \geq n$，列满秩），<strong>左伪逆</strong>定义为：</p>
+      $$A^+ = (A^T A)^{-1} A^T \in \RR^{n \times m}$$
+      <p>满足 $A^+ A = I_n$。对于一般的 $A$（不要求满秩），$A^+$ 是唯一的矩阵满足以下四个 Moore-Penrose 条件：</p>
+      <ol>
+        <li>$A A^+ A = A$</li>
+        <li>$A^+ A A^+ = A^+$</li>
+        <li>$(A A^+)^T = A A^+$</li>
+        <li>$(A^+ A)^T = A^+ A$</li>
+      </ol>
+      <p>当 $A$ 列满秩时，$A^T A$ 正定可逆，$A^+ = (A^T A)^{-1} A^T$。当 $A$ 行满秩时，$A^+ = A^T (A A^T)^{-1}$。一般情形用 SVD 计算：若 $A = U \Sigma V^T$，则 $A^+ = V \Sigma^+ U^T$，其中 $\Sigma^+$ 对非零对角元取倒数。</p>
+
+      <p><strong>6. 正规方程与伪逆</strong></p>
+      <p>线性回归中，最小化 $\| \boldsymbol{y} - X\boldsymbol{w} \|^2$ 的正规方程为：</p>
+      $$X^T X \boldsymbol{w} = X^T \boldsymbol{y}$$
+      <p>当 $X$ 列满秩时，$X^T X$ 正定可逆：</p>
+      $$\boldsymbol{w}^* = (X^T X)^{-1} X^T \boldsymbol{y} = X^+ \boldsymbol{y}$$
+      <p>当 $X$ 不满秩时，$X^T X$ 奇异，正规方程有无穷多解，取最小范数解：</p>
+      $$\boldsymbol{w}^* = X^+ \boldsymbol{y} = V \Sigma^+ U^T \boldsymbol{y}$$
+
+      <p><strong>7. 例题</strong></p>
+      <p>设 $A = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}$，验证 Sherman-Morrison 公式。</p>
+      <p>$A^{-1} = \frac{1}{-2} \begin{pmatrix} 4 & -2 \\ -3 & 1 \end{pmatrix} = \begin{pmatrix} -2 & 1 \\ 3/2 & -1/2 \end{pmatrix}$。取 $\boldsymbol{u} = (1, 0)^T$，$\boldsymbol{v} = (0, 1)^T$，则 $A + \boldsymbol{u}\boldsymbol{v}^T = \begin{pmatrix} 1 & 3 \\ 3 & 4 \end{pmatrix}$。</p>
+      <p>直接求逆：$(A + \boldsymbol{u}\boldsymbol{v}^T)^{-1} = \frac{1}{-5} \begin{pmatrix} 4 & -3 \\ -3 & 1 \end{pmatrix}$。</p>
+      <p>Sherman-Morrison：$1 + \boldsymbol{v}^T A^{-1} \boldsymbol{u} = 1 + (0, 1) \begin{pmatrix} -2 \\ 3/2 \end{pmatrix} = 1 + 3/2 = 5/2$。</p>
+      $$A^{-1} - \frac{A^{-1} \boldsymbol{u}\boldsymbol{v}^T A^{-1}}{5/2} = \begin{pmatrix} -2 & 1 \\ 3/2 & -1/2 \end{pmatrix} - \frac{2}{5} \begin{pmatrix} 1 \\ 3/2 \end{pmatrix} \begin{pmatrix} 3/2 & -1/2 \end{pmatrix} = \cdots = \frac{1}{-5} \begin{pmatrix} 4 & -3 \\ -3 & 1 \end{pmatrix} \quad \square$$
+    </div>
+    <div class="math-bridge">
+      <strong>与数据挖掘章节的联系：</strong>
+      <ul>
+        <li><strong>Ch02 线性回归</strong>：正规方程 $\boldsymbol{w}^* = (X^T X)^{-1} X^T \boldsymbol{y} = X^+ \boldsymbol{y}$，岭回归中 $(X^T X + \lambda I)^{-1}$ 的存在性由正定性保证</li>
+        <li><strong>Ch05 逻辑回归</strong>：牛顿法中每步需计算 $H^{-1} \nabla J$</li>
+        <li><strong>在线学习</strong>：Sherman-Morrison 公式支持增量更新 $(A + \boldsymbol{u}\boldsymbol{v}^T)^{-1}$，避免每次重新求逆</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- TOPIC 3: 向量空间与内积 -->
+<!-- ============================================================ -->
+<section id="topic-inner" class="chapter reveal">
+  <div class="ch-header">
+    <span class="ch-num">3</span>
+    <h2>向量空间与内积</h2>
+    <p class="ch-subtitle">Vector Spaces &amp; Inner Products</p>
+  </div>
+  <div class="ch-overview">
+    <p>向量空间是线性代数的基本框架，内积赋予了空间"角度"和"长度"的概念。数据挖掘中的距离度量、正交投影、核方法都建立在内积空间之上。</p>
+  </div>
+  <div class="ch-math">
+    <h3>数学推导</h3>
+    <div class="math-content">
+      <p><strong>1. 向量空间的定义</strong></p>
+      <p>域 $\RR$ 上的<strong>向量空间</strong> $V$ 是一个集合，配备加法 $+$ 和标量乘法 $\cdot$，满足八条公理（封闭、结合、交换、零元、逆元、单位元、分配律）。</p>
+      <p>典型例子：$\RR^n$（$n$ 维实列向量）、$M_{m \times n}(\RR)$（$m \times n$ 实矩阵）、$C[a,b]$（$[a,b]$ 上的连续函数）。</p>
+
+      <p><strong>2. 子空间、基与维数</strong></p>
+      <p>$W \subseteq V$ 是<strong>子空间</strong>，若 $W$ 对加法和标量乘法封闭（等价于 $\forall \alpha, \beta \in \RR, \boldsymbol{u}, \boldsymbol{v} \in W \implies \alpha\boldsymbol{u} + \beta\boldsymbol{v} \in W$）。</p>
+      <p>$\{\boldsymbol{v}_1, \ldots, \boldsymbol{v}_k\}$ 是 $V$ 的一组<strong>基</strong>，若它们线性无关且张成 $V$。基的元素个数称为<strong>维数</strong> $\dim(V)$。</p>
+      <p>$\RR^n$ 的标准基：$\{\boldsymbol{e}_1, \ldots, \boldsymbol{e}_n\}$，其中 $\boldsymbol{e}_i$ 的第 $i$ 个分量为 $1$，其余为 $0$。</p>
+
+      <p><strong>3. 内积的定义与性质</strong></p>
+      <p>$\RR^n$ 上的<strong>标准内积</strong>（点积）：</p>
+      $$\langle \boldsymbol{x}, \boldsymbol{y} \rangle = \boldsymbol{x}^T \boldsymbol{y} = \sum_{i=1}^{n} x_i y_i$$
+      <p>一般内积满足三条公理：</p>
+      <ul>
+        <li><strong>对称性</strong>：$\langle \boldsymbol{x}, \boldsymbol{y} \rangle = \langle \boldsymbol{y}, \boldsymbol{x} \rangle$</li>
+        <li><strong>线性</strong>：$\langle \alpha \boldsymbol{x} + \beta \boldsymbol{y}, \boldsymbol{z} \rangle = \alpha \langle \boldsymbol{x}, \boldsymbol{z} \rangle + \beta \langle \boldsymbol{y}, \boldsymbol{z} \rangle$</li>
+        <li><strong>正定性</strong>：$\langle \boldsymbol{x}, \boldsymbol{x} \rangle \geq 0$，等号当且仅当 $\boldsymbol{x} = \boldsymbol{0}$</li>
+      </ul>
+      <p>由内积诱导的范数：$\| \boldsymbol{x} \| = \sqrt{\langle \boldsymbol{x}, \boldsymbol{x} \rangle}$。欧氏距离：$d(\boldsymbol{x}, \boldsymbol{y}) = \| \boldsymbol{x} - \boldsymbol{y} \|$。</p>
+
+      <p><strong>4. Cauchy-Schwarz 不等式</strong></p>
+      $$|\langle \boldsymbol{x}, \boldsymbol{y} \rangle| \leq \| \boldsymbol{x} \| \cdot \| \boldsymbol{y} \|$$
+      <p><strong>证明</strong>：$\forall t \in \RR$，$\langle \boldsymbol{x} + t\boldsymbol{y}, \boldsymbol{x} + t\boldsymbol{y} \rangle \geq 0$，展开为关于 $t$ 的二次函数 $\geq 0$，判别式 $\leq 0$ 即得。</p>
+
+      <p><strong>5. 正交与正交投影</strong></p>
+      <p>$\boldsymbol{x} \perp \boldsymbol{y}$ 当且仅当 $\langle \boldsymbol{x}, \boldsymbol{y} \rangle = 0$。$\boldsymbol{x}$ 在 $\boldsymbol{v}$ 方向上的<strong>正交投影</strong>：</p>
+      $$\mathrm{proj}_{\boldsymbol{v}} \boldsymbol{x} = \frac{\langle \boldsymbol{x}, \boldsymbol{v} \rangle}{\langle \boldsymbol{v}, \boldsymbol{v} \rangle} \boldsymbol{v}$$
+      <p>几何意义：$\boldsymbol{x} - \mathrm{proj}_{\boldsymbol{v}} \boldsymbol{x}$ 与 $\boldsymbol{v}$ 正交，是 $\boldsymbol{x}$ 到 $\mathrm{span}(\boldsymbol{v})$ 的最短距离。</p>
+
+      <p><strong>6. Gram 矩阵</strong></p>
+      <p>给定向量组 $\boldsymbol{x}_1, \ldots, \boldsymbol{x}_m \in \RR^n$，其 <strong>Gram 矩阵</strong>定义为：</p>
+      $$G_{ij} = \langle \boldsymbol{x}_i, \boldsymbol{x}_j \rangle = \boldsymbol{x}_i^T \boldsymbol{x}_j$$
+      <p>即 $G = X X^T$（$X$ 的行是 $\boldsymbol{x}_i^T$）。Gram 矩阵总是半正定的：</p>
+      $$\boldsymbol{\alpha}^T G \boldsymbol{\alpha} = \boldsymbol{\alpha}^T X X^T \boldsymbol{\alpha} = \| X^T \boldsymbol{\alpha} \|^2 \geq 0$$
+      <p>$G$ 正定 $\iff$ $\boldsymbol{x}_1, \ldots, \boldsymbol{x}_m$ 线性无关。</p>
+
+      <p><strong>7. 核函数与隐式内积</strong></p>
+      <p>映射 $\phi: \RR^n \to \RR^N$（$N \gg n$）将数据映射到高维特征空间。核函数定义为：</p>
+      $$K(\boldsymbol{x}, \boldsymbol{y}) = \langle \phi(\boldsymbol{x}), \phi(\boldsymbol{y}) \rangle = \phi(\boldsymbol{x})^T \phi(\boldsymbol{y})$$
+      <p><strong>例子</strong>：二次核 $\phi(x_1, x_2) = (x_1^2, \sqrt{2}x_1 x_2, x_2^2)$，则：</p>
+      $$K(\boldsymbol{x}, \boldsymbol{y}) = (\boldsymbol{x}^T \boldsymbol{y})^2$$
+      <p>RBF 核 $K(\boldsymbol{x}, \boldsymbol{y}) = \exp(-\gamma \| \boldsymbol{x} - \boldsymbol{y} \|^2)$ 对应无穷维特征空间。</p>
+
+      <p><strong>8. 例题</strong></p>
+      <p>设 $\boldsymbol{x}_1 = (1, 0)^T$，$\boldsymbol{x}_2 = (1, 1)^T$，$\boldsymbol{x}_3 = (0, 1)^T$。计算 Gram 矩阵并验证其半正定性。</p>
+      $$G = \begin{pmatrix} 1 & 1 & 0 \\ 1 & 2 & 1 \\ 0 & 1 & 1 \end{pmatrix}$$
+      <p>特征值：$\det(G - \lambda I) = -\lambda(\lambda - 1)(\lambda - 3) + 2\lambda = -\lambda^3 + 4\lambda^2 - 3\lambda = -\lambda(\lambda - 1)(\lambda - 3)$。特征值为 $0, 1, 3$，均 $\geq 0$，故 $G \succeq 0$。$\det(G) = 0$ 说明 $\boldsymbol{x}_1, \boldsymbol{x}_2, \boldsymbol{x}_3$ 线性相关（三个二维向量必然相关）。$\square$</p>
+    </div>
+    <div class="math-bridge">
+      <strong>与数据挖掘章节的联系：</strong>
+      <ul>
+        <li><strong>Ch03 KNN</strong>：$d(\boldsymbol{x}, \boldsymbol{y}) = \| \boldsymbol{x} - \boldsymbol{y} \|_p$ 以向量空间范数为基础，高维空间中欧氏距离的"趋同"现象</li>
+        <li><strong>Ch08 感知机</strong>：分类超平面 $f(\boldsymbol{x}) = \mathrm{sign}(\boldsymbol{w}^T \boldsymbol{x} + b)$ 中 $\boldsymbol{w}^T \boldsymbol{x}$ 是内积</li>
+        <li><strong>Ch09 SVM</strong>：核技巧 $K(\boldsymbol{x}_i, \boldsymbol{x}_j) = \phi(\boldsymbol{x}_i)^T \phi(\boldsymbol{x}_j)$ 将内积推广到高维空间，避免"维度灾难"</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- TOPIC 4: 超平面与线性可分 -->
+<!-- ============================================================ -->
+<section id="topic-hyperplane" class="chapter reveal">
+  <div class="ch-header">
+    <span class="ch-num">4</span>
+    <h2>超平面与线性可分</h2>
+    <p class="ch-subtitle">Hyperplanes &amp; Linear Separability</p>
+  </div>
+  <div class="ch-overview">
+    <p>超平面是线性分类器的几何基础。感知机寻找一个将两类数据正确分离的超平面，SVM 进一步寻找"间隔最大"的超平面。理解超平面的几何性质是掌握这些算法的前提。</p>
+  </div>
+  <div class="ch-math">
+    <h3>数学推导</h3>
+    <div class="math-content">
+      <p><strong>1. 超平面的定义</strong></p>
+      <p>$\RR^n$ 中的<strong>超平面</strong>（hyperplane）是如下 $(n-1)$ 维仿射子空间：</p>
+      $$H = \{ \boldsymbol{x} \in \RR^n : \boldsymbol{w}^T \boldsymbol{x} + b = 0 \}$$
+      <p>其中 $\boldsymbol{w} \in \RR^n$（$\boldsymbol{w} \neq \boldsymbol{0}$）为<strong>法向量</strong>，$b \in \RR$ 为<strong>偏置</strong>（截距）。</p>
+      <ul>
+        <li>$\boldsymbol{w}^T \boldsymbol{x} + b = 0$：点 $\boldsymbol{x}$ 在超平面上</li>
+        <li>$\boldsymbol{w}^T \boldsymbol{x} + b > 0$：点 $\boldsymbol{x}$ 在超平面的<strong>正侧</strong></li>
+        <li>$\boldsymbol{w}^T \boldsymbol{x} + b < 0$：点 $\boldsymbol{x}$ 在超平面的<strong>负侧</strong></li>
+      </ul>
+      <p>当 $b = 0$ 时，超平面过原点，退化为 $\boldsymbol{w}$ 的正交补空间 $H = \{ \boldsymbol{x} : \boldsymbol{w}^T \boldsymbol{x} = 0 \} = \boldsymbol{w}^{\perp}$。</p>
+
+      <p><strong>2. 点到超平面的距离</strong></p>
+      <p>设 $\boldsymbol{x}_0 \in \RR^n$，则 $\boldsymbol{x}_0$ 到超平面 $H: \boldsymbol{w}^T \boldsymbol{x} + b = 0$ 的距离为：</p>
+      $$d(\boldsymbol{x}_0, H) = \frac{|\boldsymbol{w}^T \boldsymbol{x}_0 + b|}{\| \boldsymbol{w} \|}$$
+      <p><strong>证明</strong>：设 $\boldsymbol{x}_1 \in H$ 为超平面上任一点，则 $\boldsymbol{w}^T \boldsymbol{x}_1 + b = 0$。$\boldsymbol{x}_0$ 到 $H$ 的距离等于 $\boldsymbol{x}_0 - \boldsymbol{x}_1$ 在 $\boldsymbol{w}$ 方向上的投影长度：</p>
+      $$d = \frac{|\langle \boldsymbol{x}_0 - \boldsymbol{x}_1, \boldsymbol{w} \rangle|}{\| \boldsymbol{w} \|} = \frac{|\boldsymbol{w}^T \boldsymbol{x}_0 - \boldsymbol{w}^T \boldsymbol{x}_1|}{\| \boldsymbol{w} \|} = \frac{|\boldsymbol{w}^T \boldsymbol{x}_0 + b|}{\| \boldsymbol{w} \|} \quad \square$$
+
+      <p><strong>3. 半空间</strong></p>
+      <p>超平面将 $\RR^n$ 分为两个<strong>半空间</strong>（half-spaces）：</p>
+      $$H^+ = \{ \boldsymbol{x} : \boldsymbol{w}^T \boldsymbol{x} + b > 0 \}, \quad H^- = \{ \boldsymbol{x} : \boldsymbol{w}^T \boldsymbol{x} + b < 0 \}$$
+      <p>分类器 $f(\boldsymbol{x}) = \mathrm{sign}(\boldsymbol{w}^T \boldsymbol{x} + b)$ 将 $H^+$ 中的点判为正类，$H^-$ 中的点判为负类。</p>
+
+      <p><strong>4. 线性可分</strong></p>
+      <p>数据集 $\{(\boldsymbol{x}_i, y_i)\}_{i=1}^{m}$（$y_i \in \{-1, +1\}$）是<strong>线性可分的</strong>，若存在 $\boldsymbol{w}, b$ 使得：</p>
+      $$y_i (\boldsymbol{w}^T \boldsymbol{x}_i + b) > 0, \quad \forall i = 1, \ldots, m$$
+      <p>即存在一个超平面将正类和负类严格分离。</p>
+
+      <p><strong>5. 几何间隔与函数间隔</strong></p>
+      <p>给定超平面 $(\boldsymbol{w}, b)$，样本 $(\boldsymbol{x}_i, y_i)$ 的<strong>函数间隔</strong>：</p>
+      $$\hat{\gamma}_i = y_i (\boldsymbol{w}^T \boldsymbol{x}_i + b)$$
+      <p><strong>几何间隔</strong>（归一化间隔）：</p>
+      $$\gamma_i = \frac{\hat{\gamma}_i}{\| \boldsymbol{w} \|} = \frac{y_i (\boldsymbol{w}^T \boldsymbol{x}_i + b)}{\| \boldsymbol{w} \|}$$
+      <p>几何间隔的含义：样本 $\boldsymbol{x}_i$ 到超平面的有符号距离。数据集的<strong>几何间隔</strong>：</p>
+      $$\gamma = \min_{i=1,\ldots,m} \gamma_i$$
+      <p>几何间隔在 $\boldsymbol{w}$ 的缩放下不变（$\boldsymbol{w} \to c\boldsymbol{w}$ 时分子分母同比缩放），而函数间隔随 $\boldsymbol{w}$ 的缩放而变化。SVM 通常固定 $\hat{\gamma} = 1$（即令 $y_i(\boldsymbol{w}^T \boldsymbol{x}_i + b) \geq 1$），此时 $\gamma = 1/\| \boldsymbol{w} \|$，间隔 $= 2/\| \boldsymbol{w} \|$。</p>
+
+      <p><strong>6. 线性可分的充要条件</strong></p>
+      <p>数据集线性可分 $\iff$ 两类点的凸包不相交。即 $\mathrm{conv}(\{ \boldsymbol{x}_i : y_i = +1 \}) \cap \mathrm{conv}(\{ \boldsymbol{x}_i : y_i = -1 \}) = \emptyset$。</p>
+      <p><strong>证明思路</strong>：超平面分离定理——两个不相交凸集之间存在严格分离超平面。</p>
+
+      <p><strong>7. 例题</strong></p>
+      <p>在 $\RR^2$ 中，设 $A_1 = (1, 1), A_2 = (2, 2)$（正类），$B_1 = (0, 0), B_2 = (-1, -1)$（负类）。验证线性可分并求最大间隔超平面。</p>
+      <p>取 $\boldsymbol{w} = (1, 1)^T$，$b = -1$：$y_i(\boldsymbol{w}^T \boldsymbol{x}_i + b)$ 对 $A_1$ 为 $1 \cdot (2 - 1) = 1$，对 $A_2$ 为 $1 \cdot (4 - 1) = 3$，对 $B_1$ 为 $-1 \cdot (0 - 1) = 1$，对 $B_2$ 为 $-1 \cdot (-2 - 1) = 3$，均 $> 0$，故线性可分。归一化 $\boldsymbol{w} = (1/\sqrt{2}, 1/\sqrt{2})^T$，$b = -1/\sqrt{2}$，几何间隔 $= 1/\sqrt{2}$，间隔 $= 2/\sqrt{2} = \sqrt{2}$。$\square$</p>
+    </div>
+    <div class="math-bridge">
+      <strong>与数据挖掘章节的联系：</strong>
+      <ul>
+        <li><strong>Ch08 感知机</strong>：模型 $f(\boldsymbol{x}) = \mathrm{sign}(\boldsymbol{w}^T \boldsymbol{x} + b)$ 定义超平面分类器；Novikoff 定理证明线性可分时有限步收敛，收敛速率与几何间隔 $\gamma$ 有关</li>
+        <li><strong>Ch09 SVM</strong>：最大间隔分类器 $\min \frac{1}{2}\|\boldsymbol{w}\|^2$ s.t. $y_i(\boldsymbol{w}^T \boldsymbol{x}_i + b) \geq 1$，等价于最大化几何间隔 $\gamma = 1/\|\boldsymbol{w}\|$</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- TOPIC 5: 二次型 -->
+<!-- ============================================================ -->
+<section id="topic-quadratic" class="chapter reveal">
+  <div class="ch-header">
+    <span class="ch-num">5</span>
+    <h2>二次型</h2>
+    <p class="ch-subtitle">Quadratic Forms</p>
+  </div>
+  <div class="ch-overview">
+    <p>二次型 $\boldsymbol{x}^T A \boldsymbol{x}$ 是线性代数与优化理论的交叉点。SVM 的对偶问题是一个关于 $\alpha$ 的二次规划，核矩阵的半正定性保证了其可解性。通过正交变换将二次型化为标准型，揭示了矩阵特征值的几何意义。</p>
+  </div>
+  <div class="ch-math">
+    <h3>数学推导</h3>
+    <div class="math-content">
+      <p><strong>1. 二次型的定义</strong></p>
+      <p>设 $A \in \RR^{n \times n}$ 为实对称矩阵，<strong>二次型</strong>（quadratic form）为：</p>
+      $$Q(\boldsymbol{x}) = \boldsymbol{x}^T A \boldsymbol{x} = \sum_{i=1}^{n} \sum_{j=1}^{n} a_{ij} x_i x_j$$
+      <p>由于 $A$ 对称，$a_{ij} = a_{ji}$，故 $Q(\boldsymbol{x}) = \sum_{i} a_{ii} x_i^2 + 2 \sum_{i < j} a_{ij} x_i x_j$。</p>
+
+      <p><strong>2. 正交变换化标准型</strong></p>
+      <p>由于 $A$ 实对称，存在正交矩阵 $P$（$P^T P = I$）使得：</p>
+      $$A = P \Lambda P^T, \quad \Lambda = \mathrm{diag}(\lambda_1, \ldots, \lambda_n)$$
+      <p>作正交变换 $\boldsymbol{x} = P \boldsymbol{y}$，则：</p>
+      $$Q(\boldsymbol{x}) = \boldsymbol{x}^T A \boldsymbol{x} = \boldsymbol{y}^T P^T A P \boldsymbol{y} = \boldsymbol{y}^T \Lambda \boldsymbol{y} = \sum_{i=1}^{n} \lambda_i y_i^2$$
+      <p>这就是二次型的<strong>标准型</strong>——只有平方项，没有交叉项。$\lambda_1, \ldots, \lambda_n$ 称为二次型的<strong>惯性指数</strong>（正特征值个数为正惯性指数，负特征值个数为负惯性指数）。</p>
+
+      <p><strong>3. 正定二次型</strong></p>
+      <p>$Q(\boldsymbol{x})$ 是<strong>正定二次型</strong> $\iff$ $A \succ 0$ $\iff$ $\lambda_i > 0$ 对所有 $i$ $\iff$ 标准型为 $\sum \lambda_i y_i^2$，所有 $\lambda_i > 0$。</p>
+      <p>等价条件（汇总）：</p>
+      <ul>
+        <li>$Q(\boldsymbol{x}) > 0, \forall \boldsymbol{x} \neq \boldsymbol{0}$</li>
+        <li>所有特征值 $> 0$</li>
+        <li>所有顺序主子式 $> 0$</li>
+        <li>存在 Cholesky 分解 $A = LL^T$</li>
+        <li>$Q$ 的正惯性指数 $= n$</li>
+      </ul>
+
+      <p><strong>4. 二次型与优化</strong></p>
+      <p>多元函数 $f(\boldsymbol{x})$ 在 $\boldsymbol{x}_0$ 处的二阶 Taylor 展开：</p>
+      $$f(\boldsymbol{x}) \approx f(\boldsymbol{x}_0) + \nabla f(\boldsymbol{x}_0)^T (\boldsymbol{x} - \boldsymbol{x}_0) + \frac{1}{2} (\boldsymbol{x} - \boldsymbol{x}_0)^T H (\boldsymbol{x} - \boldsymbol{x}_0)$$
+      <p>其中 $H$ 是 Hessian 矩阵。最后一项 $\frac{1}{2}(\boldsymbol{x} - \boldsymbol{x}_0)^T H (\boldsymbol{x} - \boldsymbol{x}_0)$ 是关于 $\boldsymbol{x} - \boldsymbol{x}_0$ 的二次型。</p>
+      <ul>
+        <li>$H \succ 0$：$f$ 在 $\boldsymbol{x}_0$ 处严格凸，$\boldsymbol{x}_0$ 为局部极小值</li>
+        <li>$H \prec 0$：$f$ 在 $\boldsymbol{x}_0$ 处严格凹，$\boldsymbol{x}_0$ 为局部极大值</li>
+        <li>$H$ 不定：$\boldsymbol{x}_0$ 为鞍点</li>
+      </ul>
+
+      <p><strong>5. 核矩阵与 Mercer 定理</strong></p>
+      <p>给定数据 $\boldsymbol{x}_1, \ldots, \boldsymbol{x}_m$ 和核函数 $K$，定义<strong>核矩阵</strong>（Gram 矩阵）：</p>
+      $$\boldsymbol{K}_{ij} = K(\boldsymbol{x}_i, \boldsymbol{x}_j)$$
+      <p><strong>Mercer 定理</strong>：$K(\boldsymbol{x}, \boldsymbol{y})$ 是有效核函数（即存在 $\phi$ 使 $K = \langle \phi(\boldsymbol{x}), \phi(\boldsymbol{y}) \rangle$）当且仅当对任意有限点集，$\boldsymbol{K}$ 半正定。</p>
+      <p><strong>证明</strong>（必要性）：若 $K(\boldsymbol{x}, \boldsymbol{y}) = \phi(\boldsymbol{x})^T \phi(\boldsymbol{y})$，则 $\boldsymbol{K}_{ij} = \phi(\boldsymbol{x}_i)^T \phi(\boldsymbol{x}_j)$，即 $\boldsymbol{K} = \Phi \Phi^T$（$\Phi$ 的行是 $\phi(\boldsymbol{x}_i)^T$）。从而 $\forall \boldsymbol{\alpha}$：$\boldsymbol{\alpha}^T \boldsymbol{K} \boldsymbol{\alpha} = \| \Phi^T \boldsymbol{\alpha} \|^2 \geq 0$。$\square$</p>
+
+      <p><strong>6. SVM 对偶问题中的二次型</strong></p>
+      <p>SVM 对偶问题：</p>
+      $$\max_{\boldsymbol{\alpha}} \sum_{i=1}^{m} \alpha_i - \frac{1}{2} \sum_{i=1}^{m} \sum_{j=1}^{m} \alpha_i \alpha_j y_i y_j K(\boldsymbol{x}_i, \boldsymbol{x}_j)$$
+      $$\text{s.t.} \quad \sum_{i=1}^{m} \alpha_i y_i = 0, \quad 0 \leq \alpha_i \leq C$$
+      <p>令 $Q_{ij} = y_i y_j K(\boldsymbol{x}_i, \boldsymbol{x}_j)$，目标函数的二次项为 $-\frac{1}{2} \boldsymbol{\alpha}^T Q \boldsymbol{\alpha}$。</p>
+      <p>$Q$ 半正定性：$\forall \boldsymbol{\alpha}$，</p>
+      $$\boldsymbol{\alpha}^T Q \boldsymbol{\alpha} = \sum_{i,j} \alpha_i \alpha_j y_i y_j K(\boldsymbol{x}_i, \boldsymbol{x}_j) = \left\| \sum_i \alpha_i y_i \phi(\boldsymbol{x}_i) \right\|^2 \geq 0$$
+      <p>因此目标函数是凹函数（$-\frac{1}{2}\boldsymbol{\alpha}^T Q \boldsymbol{\alpha}$ 凹，$\sum \alpha_i$ 线性），约束为凸集，整体为凸优化问题，KKT 条件保证找到全局最优。</p>
+
+      <p><strong>7. 例题</strong></p>
+      <p>将二次型 $Q(x_1, x_2, x_3) = 2x_1^2 + 2x_2^2 + 2x_3^2 + 2x_1 x_2 + 2x_1 x_3 + 2x_2 x_3$ 化为标准型。</p>
+      $$A = \begin{pmatrix} 2 & 1 & 1 \\ 1 & 2 & 1 \\ 1 & 1 & 2 \end{pmatrix}$$
+      <p>$\det(A - \lambda I) = (1-\lambda)^2(4-\lambda)$，特征值 $\lambda_1 = 4, \lambda_2 = \lambda_3 = 1$。</p>
+      <p>标准型：$Q = 4y_1^2 + y_2^2 + y_3^2$。所有特征值 $> 0$，故 $A \succ 0$，$Q$ 正定。$\square$</p>
+    </div>
+    <div class="math-bridge">
+      <strong>与数据挖掘章节的联系：</strong>
+      <ul>
+        <li><strong>Ch09 SVM</strong>：对偶问题的二次型 $\boldsymbol{\alpha}^T Q \boldsymbol{\alpha} = \sum_{i,j} \alpha_i \alpha_j y_i y_j K(\boldsymbol{x}_i, \boldsymbol{x}_j)$，$Q$ 半正定保证问题为凸二次规划</li>
+        <li><strong>Ch05 逻辑回归</strong>：牛顿法中 $\frac{1}{2} \boldsymbol{d}^T H \boldsymbol{d}$（$H$ 为 Hessian）是二次型，正定性保证下降方向</li>
+        <li><strong>Ch02 线性回归</strong>：$L(\boldsymbol{w}) = (\boldsymbol{y} - X\boldsymbol{w})^T (\boldsymbol{y} - X\boldsymbol{w})$ 展开后关于 $\boldsymbol{w}$ 的二次项为 $\boldsymbol{w}^T X^T X \boldsymbol{w}$</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>数学系 · 数据挖掘前置知识</p>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>

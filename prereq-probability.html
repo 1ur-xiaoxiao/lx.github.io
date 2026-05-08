@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概率论 — 数据挖掘前置知识</title>
+<link rel="stylesheet" href="style.css">
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']],
+    macros: { RR: '\\mathbb{R}', bold: ['\\mathbf{#1}',1] } },
+  svg: { fontCache: 'global' }, startup: { pageReady: () => MathJax.startup.defaultPageReady() }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+</head>
+<body>
+
+<!-- ===== 导航栏 ===== -->
+<nav>
+  <div class="logo"><a href="index.html" style="color:inherit;text-decoration:none;">← 返回主页</a></div>
+  <button class="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  <ul>
+    <li><a href="#topic-bayes">贝叶斯公式</a></li>
+    <li><a href="#topic-distributions">常用分布</a></li>
+    <li><a href="#topic-mle">极大似然估计</a></li>
+    <li><a href="#topic-entropy">信息熵</a></li>
+    <li><a href="#topic-expectation">条件期望</a></li>
+  </ul>
+</nav>
+
+<!-- ===== Hero ===== -->
+<div class="hero">
+  <div class="hero-content">
+    <h1>概率论</h1>
+    <p class="subtitle">数据挖掘 · 前置数学知识</p>
+  </div>
+</div>
+
+<!-- ===== 1. 条件概率与贝叶斯公式 ===== -->
+<section class="chapter" id="topic-bayes">
+  <h2>一、条件概率与贝叶斯公式</h2>
+
+  <div class="ch-math">
+    <h3>1.1 条件概率</h3>
+    <div class="math-content">
+      <p>设 $A, B$ 为事件且 $P(B) > 0$，则 $B$ 发生条件下 $A$ 的<strong>条件概率</strong>定义为</p>
+      $$P(A \mid B) = \frac{P(AB)}{P(B)}.$$
+      <p>由此立即得到<strong>乘法公式</strong>：</p>
+      $$P(AB) = P(A \mid B)\,P(B) = P(B \mid A)\,P(A).$$
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>1.2 全概率公式</h3>
+    <div class="math-content">
+      <p>设 $\{B_1, B_2, \ldots, B_n\}$ 为<strong>完备事件组</strong>（即 $B_i B_j = \varnothing\ (i \neq j)$，$\bigcup_i B_i = \Omega$），则对任意事件 $A$：</p>
+      $$P(A) = \sum_{i=1}^{n} P(A \mid B_i)\,P(B_i).$$
+      <p><strong>证明：</strong>因为 $A = A \cap \Omega = A \cap \left(\bigcup_i B_i\right) = \bigcup_i (AB_i)$，且 $AB_i$ 互不相容，由可加性</p>
+      $$P(A) = \sum_i P(AB_i) = \sum_i P(A \mid B_i)P(B_i). \quad \blacksquare$$
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>1.3 贝叶斯公式</h3>
+    <div class="math-content">
+      <p>在全概率公式的基础上，贝叶斯公式回答"已知结果 $A$ 发生，求原因 $B_j$ 的概率"：</p>
+      $$P(B_j \mid A) = \frac{P(A \mid B_j)\,P(B_j)}{\displaystyle\sum_{i=1}^{n} P(A \mid B_i)\,P(B_i)}.$$
+      <p><strong>证明：</strong>由条件概率定义与乘法公式：</p>
+      $$P(B_j \mid A) = \frac{P(AB_j)}{P(A)} = \frac{P(A \mid B_j)P(B_j)}{P(A)} = \frac{P(A \mid B_j)P(B_j)}{\displaystyle\sum_i P(A \mid B_i)P(B_i)}. \quad \blacksquare$$
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>1.4 先验与后验</h3>
+    <div class="math-content">
+      <p>贝叶斯公式的统计学解读：</p>
+      <ul>
+        <li><strong>先验概率（Prior）</strong>$P(B)$：观测数据之前对 $B$ 的信念。</li>
+        <li><strong>似然（Likelihood）</strong>$P(A \mid B)$：在假设 $B$ 下观测到 $A$ 的可能性。</li>
+        <li><strong>后验概率（Posterior）</strong>$P(B \mid A)$：观测到 $A$ 之后对 $B$ 更新的信念。</li>
+      </ul>
+      $$\text{后验} \propto \text{似然} \times \text{先验}.$$
+      <p>这一"数据更新信念"的框架是贝叶斯统计与贝叶斯机器学习的核心范式。</p>
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>1.5 独立性</h3>
+    <div class="math-content">
+      <p>事件 $A, B$ <strong>独立</strong>当且仅当</p>
+      $$P(AB) = P(A)\,P(B).$$
+      <p>等价条件：$P(A \mid B) = P(A)$（$B$ 的发生不影响 $A$）。</p>
+      <p><strong>条件独立</strong>：给定 $C$，若 $P(AB \mid C) = P(A \mid C)\,P(B \mid C)$，则称 $A, B$ 在条件 $C$ 下独立，记 $A \perp\!\!\!\perp B \mid C$。</p>
+      <p><em>注意：独立不蕴含条件独立，条件独立也不蕴含独立。</em></p>
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>1.6 与数据挖掘的桥梁</h3>
+    <div class="math-bridge">
+      <ul>
+        <li><strong>Ch04 朴素贝叶斯</strong>：分类时计算 $P(C_k \mid \boldsymbol{x}) \propto P(\boldsymbol{x} \mid C_k)P(C_k)$，朴素假设在给定类别 $C_k$ 下各特征条件独立，即 $P(\boldsymbol{x} \mid C_k) = \prod_j P(x_j \mid C_k)$。</li>
+        <li><strong>Ch10 EM 算法</strong>：含隐变量 $z$ 时，E 步计算后验 $P(z \mid x, \theta^{(t)})$，正是贝叶斯公式的直接应用。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 2. 常用分布 ===== -->
+<section class="chapter" id="topic-distributions">
+  <h2>二、常用概率分布</h2>
+
+  <div class="ch-math">
+    <h3>2.1 伯努利分布</h3>
+    <div class="math-content">
+      <p>随机变量 $X \sim \text{Bernoulli}(p)$，取值 $\{0, 1\}$：</p>
+      $$P(X=1) = p, \quad P(X=0) = 1-p, \quad 0 < p < 1.$$
+      <p>数字特征：</p>
+      $$E[X] = p, \quad \text{Var}(X) = p(1-p).$$
+      <p><strong>证明均值</strong>：$E[X] = 1 \cdot p + 0 \cdot (1-p) = p$。</p>
+      <p><strong>证明方差</strong>：$E[X^2] = 1^2 \cdot p + 0^2 \cdot (1-p) = p$，故 $\text{Var}(X) = E[X^2] - (E[X])^2 = p - p^2 = p(1-p)$。$\blacksquare$</p>
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>2.2 正态分布</h3>
+    <div class="math-content">
+      <p>$X \sim N(\mu, \sigma^2)$，概率密度函数为</p>
+      $$f(x) = \frac{1}{\sqrt{2\pi}\,\sigma} \exp\!\left(-\frac{(x-\mu)^2}{2\sigma^2}\right), \quad x \in \mathbb{R}.$$
+      <p>其中 $\mu$ 为均值，$\sigma^2$ 为方差。标准正态 $Z = \frac{X-\mu}{\sigma} \sim N(0,1)$。</p>
+
+      <p><strong>重要性质：</strong></p>
+      <ol>
+        <li><strong>线性变换</strong>：若 $X \sim N(\mu, \sigma^2)$，则 $aX + b \sim N(a\mu+b,\, a^2\sigma^2)$。</li>
+        <li><strong>独立性与不相关等价</strong>：对联合正态变量，$X \perp Y \;\Leftrightarrow\; \text{Cov}(X,Y) = 0$。</li>
+        <li><strong>可加性</strong>：$X \sim N(\mu_1, \sigma_1^2)$，$Y \sim N(\mu_2, \sigma_2^2)$ 独立，则 $X+Y \sim N(\mu_1+\mu_2,\, \sigma_1^2+\sigma_2^2)$。</li>
+      </ol>
+
+      <p><strong>MLE 推导</strong>（详见第三节）：</p>
+      $$\hat{\mu}_{MLE} = \bar{x} = \frac{1}{n}\sum_{i=1}^n x_i, \quad \hat{\sigma}^2_{MLE} = \frac{1}{n}\sum_{i=1}^n (x_i - \bar{x})^2.$$
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>2.3 多元正态分布</h3>
+    <div class="math-content">
+      <p>$\boldsymbol{X} \sim N(\boldsymbol{\mu}, \boldsymbol{\Sigma})$，其中 $\boldsymbol{\mu} \in \mathbb{R}^d$，$\boldsymbol{\Sigma} \in \mathbb{R}^{d \times d}$ 为正定协方差矩阵。密度函数：</p>
+      $$f(\boldsymbol{x}) = \frac{1}{(2\pi)^{d/2}|\boldsymbol{\Sigma}|^{1/2}} \exp\!\left(-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu})^T \boldsymbol{\Sigma}^{-1}(\boldsymbol{x}-\boldsymbol{\mu})\right).$$
+
+      <p><strong>边缘分布</strong>：设 $\boldsymbol{X} = (\boldsymbol{X}_1, \boldsymbol{X}_2)^T$，对应的分块参数</p>
+      $$\boldsymbol{\mu} = \begin{pmatrix}\boldsymbol{\mu}_1 \\ \boldsymbol{\mu}_2\end{pmatrix}, \quad \boldsymbol{\Sigma} = \begin{pmatrix}\boldsymbol{\Sigma}_{11} & \boldsymbol{\Sigma}_{12} \\ \boldsymbol{\Sigma}_{21} & \boldsymbol{\Sigma}_{22}\end{pmatrix},$$
+      <p>则 $\boldsymbol{X}_1 \sim N(\boldsymbol{\mu}_1, \boldsymbol{\Sigma}_{11})$。</p>
+
+      <p><strong>条件分布</strong>：$\boldsymbol{X}_1 \mid \boldsymbol{X}_2 = \boldsymbol{a}$ 仍服从多元正态</p>
+      $$E[\boldsymbol{X}_1 \mid \boldsymbol{X}_2 = \boldsymbol{a}] = \boldsymbol{\mu}_1 + \boldsymbol{\Sigma}_{12}\boldsymbol{\Sigma}_{22}^{-1}(\boldsymbol{a} - \boldsymbol{\mu}_2),$$
+      $$\text{Cov}(\boldsymbol{X}_1 \mid \boldsymbol{X}_2) = \boldsymbol{\Sigma}_{11} - \boldsymbol{\Sigma}_{12}\boldsymbol{\Sigma}_{22}^{-1}\boldsymbol{\Sigma}_{21}.$$
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>2.4 指数族分布</h3>
+    <div class="math-content">
+      <p>指数族（Exponential Family）的统一形式：</p>
+      $$f(x \mid \theta) = h(x)\,\exp\!\Big(\boldsymbol{\eta}(\theta)^T \boldsymbol{T}(x) - A(\theta)\Big),$$
+      <p>其中：</p>
+      <ul>
+        <li>$h(x)$：基准测度（base measure）</li>
+        <li>$\boldsymbol{\eta}(\theta)$：<strong>自然参数</strong>（natural parameter）</li>
+        <li>$\boldsymbol{T}(x)$：<strong>充分统计量</strong>（sufficient statistic）</li>
+        <li>$A(\theta)$：<strong>对数配分函数</strong>（log-partition function），起归一化作用</li>
+      </ul>
+
+      <p><strong>涵盖的常见分布</strong>：</p>
+      <table style="width:100%;border-collapse:collapse;margin:1em 0;">
+        <tr style="border-bottom:1px solid #555;">
+          <th style="text-align:left;padding:6px;">分布</th>
+          <th style="text-align:left;padding:6px;">自然参数 $\eta$</th>
+          <th style="text-align:left;padding:6px;">充分统计量 $T(x)$</th>
+          <th style="text-align:left;padding:6px;">$A(\eta)$</th>
+        </tr>
+        <tr style="border-bottom:1px solid #333;">
+          <td style="padding:6px;">Bernoulli</td>
+          <td style="padding:6px;">$\log\frac{p}{1-p}$</td>
+          <td style="padding:6px;">$x$</td>
+          <td style="padding:6px;">$\log(1+e^\eta)$</td>
+        </tr>
+        <tr style="border-bottom:1px solid #333;">
+          <td style="padding:6px;">Poisson</td>
+          <td style="padding:6px;">$\log\lambda$</td>
+          <td style="padding:6px;">$x$</td>
+          <td style="padding:6px;">$e^\eta$</td>
+        </tr>
+        <tr style="border-bottom:1px solid #333;">
+          <td style="padding:6px;">Normal（已知 $\sigma^2$）</td>
+          <td style="padding:6px;">$\mu/\sigma^2$</td>
+          <td style="padding:6px;">$x$</td>
+          <td style="padding:6px;">$\mu^2/(2\sigma^2)$</td>
+        </tr>
+      </table>
+
+      <p><strong>关键性质</strong>：对数配分函数的导数给出充分统计量的矩：</p>
+      $$\frac{\partial A(\eta)}{\partial \eta} = E[T(X)], \quad \frac{\partial^2 A(\eta)}{\partial \eta^2} = \text{Var}(T(X)).$$
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>2.5 与数据挖掘的桥梁</h3>
+    <div class="math-bridge">
+      <ul>
+        <li><strong>Ch02 线性回归</strong>：假设噪声 $\varepsilon \sim N(0, \sigma^2)$，则最小二乘等价于正态 MLE。</li>
+        <li><strong>Ch04 高斯朴素贝叶斯</strong>：特征在各类别下服从正态分布。</li>
+        <li><strong>Ch05 逻辑回归</strong>：输出为 Bernoulli 分布，损失函数即负对数似然。</li>
+        <li><strong>Ch11 Boosting</strong>：指数损失 $\ell(y,f)=e^{-yf}$ 与伯努利模型密切相关。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3. 极大似然估计 ===== -->
+<section class="chapter" id="topic-mle">
+  <h2>三、极大似然估计（MLE）</h2>
+
+  <div class="ch-math">
+    <h3>3.1 似然函数</h3>
+    <div class="math-content">
+      <p>给定独立同分布样本 $\{x_1, x_2, \ldots, x_n\}$，参数 $\theta$ 的<strong>似然函数</strong>定义为</p>
+      $$L(\theta) = \prod_{i=1}^{n} f(x_i \mid \theta).$$
+      <p>取对数得到<strong>对数似然</strong>（将乘积转化为求和，便于计算）：</p>
+      $$\ell(\theta) = \log L(\theta) = \sum_{i=1}^{n} \log f(x_i \mid \theta).$$
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>3.2 MLE 定义</h3>
+    <div class="math-content">
+      <p><strong>极大似然估计</strong>选择使似然函数最大的参数值：</p>
+      $$\hat{\theta}_{MLE} = \arg\max_{\theta}\; \ell(\theta) = \arg\max_{\theta}\; \sum_{i=1}^n \log f(x_i \mid \theta).$$
+      <p>直觉：选择让观测数据"最可能出现"的参数。</p>
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>3.3 求解方法：得分方程</h3>
+    <div class="math-content">
+      <p>当 $\ell(\theta)$ 可微时，令梯度为零（<strong>得分方程 / Score equation</strong>）：</p>
+      $$\nabla_\theta\, \ell(\theta) = \sum_{i=1}^n \nabla_\theta \log f(x_i \mid \theta) = \boldsymbol{0}.$$
+      <p>注意：</p>
+      <ul>
+        <li>需要检验二阶条件（Hessian 负定）以确认是极大值。</li>
+        <li>对数似然的极值点与似然函数相同（$\log$ 是单调递增函数）。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>3.4 正态分布的 MLE 推导</h3>
+    <div class="math-content">
+      <p>设 $X_1, \ldots, X_n \overset{i.i.d.}{\sim} N(\mu, \sigma^2)$，求 $\hat{\mu}_{MLE}$ 和 $\hat{\sigma}^2_{MLE}$。</p>
+
+      <p><strong>Step 1：写出对数似然</strong></p>
+      $$\ell(\mu, \sigma^2) = \sum_{i=1}^n \log\left[\frac{1}{\sqrt{2\pi}\sigma}\exp\!\left(-\frac{(x_i-\mu)^2}{2\sigma^2}\right)\right] = -\frac{n}{2}\log(2\pi) - \frac{n}{2}\log\sigma^2 - \frac{1}{2\sigma^2}\sum_{i=1}^n(x_i-\mu)^2.$$
+
+      <p><strong>Step 2：对 $\mu$ 求导令为零</strong></p>
+      $$\frac{\partial \ell}{\partial \mu} = \frac{1}{\sigma^2}\sum_{i=1}^n(x_i - \mu) = \frac{1}{\sigma^2}\left(\sum_i x_i - n\mu\right) = 0.$$
+      $$\boxed{\hat{\mu}_{MLE} = \frac{1}{n}\sum_{i=1}^n x_i = \bar{x}.}$$
+
+      <p><strong>Step 3：对 $\sigma^2$ 求导令为零</strong></p>
+      $$\frac{\partial \ell}{\partial \sigma^2} = -\frac{n}{2\sigma^2} + \frac{1}{2(\sigma^2)^2}\sum_{i=1}^n(x_i - \mu)^2 = 0.$$
+      $$\boxed{\hat{\sigma}^2_{MLE} = \frac{1}{n}\sum_{i=1}^n(x_i - \bar{x})^2.}$$
+      <p><em>注：这是有偏估计；无偏估计使用 $n-1$（Bessel 校正）。</em></p>
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>3.5 MLE 的渐近性质</h3>
+    <div class="math-content">
+      <p>在正则条件下，MLE 具有以下重要性质：</p>
+      <ol>
+        <li><strong>一致性（Consistency）</strong>：$\hat{\theta}_{MLE} \xrightarrow{P} \theta_0$（$n \to \infty$）。</li>
+        <li><strong>渐近正态性</strong>：$\sqrt{n}(\hat{\theta}_{MLE} - \theta_0) \xrightarrow{d} N(0, I(\theta_0)^{-1})$，其中 $I(\theta_0)$ 为 Fisher 信息量。</li>
+        <li><strong>不变性（Invariance）</strong>：若 $\hat{\theta}$ 是 $\theta$ 的 MLE，则对任意函数 $g$，$g(\hat{\theta})$ 是 $g(\theta)$ 的 MLE。</li>
+        <li><strong>渐近有效性</strong>：MLE 达到 Cramér-Rao 下界，是渐近方差最小的估计。</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>3.6 与数据挖掘的桥梁</h3>
+    <div class="math-bridge">
+      <ul>
+        <li><strong>Ch02 线性回归</strong>：假设 $y = \boldsymbol{w}^T\boldsymbol{x} + \varepsilon$，$\varepsilon \sim N(0, \sigma^2)$，最小化 MSE $\Leftrightarrow$ 最大化正态似然。</li>
+        <li><strong>Ch04 朴素贝叶斯</strong>：类别先验 $P(C_k)$ 和条件概率 $P(x_j \mid C_k)$ 均由 MLE 估计（频率计数）。</li>
+        <li><strong>Ch05 逻辑回归</strong>：$P(y=1 \mid \boldsymbol{x}) = \sigma(\boldsymbol{w}^T\boldsymbol{x})$，训练即对 Bernoulli 似然做 MLE，等价于最小化交叉熵损失。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4. 信息熵与KL散度 ===== -->
+<section class="chapter" id="topic-entropy">
+  <h2>四、信息熵与 KL 散度</h2>
+
+  <div class="ch-math">
+    <h3>4.1 信息熵（Shannon Entropy）</h3>
+    <div class="math-content">
+      <p>离散随机变量 $X$ 在有限集 $\mathcal{X}$ 上的<strong>信息熵</strong>定义为</p>
+      $$H(X) = H(P) = -\sum_{x \in \mathcal{X}} P(x)\,\log P(x),$$
+      <p>其中约定 $0 \log 0 = 0$（取极限 $\lim_{p\to 0^+} p\log p = 0$）。通常取 $\log_2$（单位 bit）或 $\ln$（单位 nat）。</p>
+
+      <p><strong>性质</strong>：</p>
+      <ol>
+        <li><strong>非负性</strong>：$H(P) \geq 0$，当且仅当 $P$ 为退化分布（确定事件）时 $H=0$。</li>
+        <li><strong>最大值</strong>：$H(P) \leq \log|\mathcal{X}|$，等号当且仅当 $P$ 为均匀分布。</li>
+      </ol>
+
+      <p><strong>证明上界</strong>：由 Jensen 不等式，因 $-\log$ 为凸函数：</p>
+      $$H(P) = \sum_x P(x)(-\log P(x)) \leq -\log\!\left(\sum_x P(x) \cdot P(x)\right) \text{（方向需调整）}$$
+      <p>更严格地，考虑 $D_{KL}(P \| U)$ 其中 $U$ 为均匀分布：</p>
+      $$D_{KL}(P \| U) = \sum_x P(x)\log\frac{P(x)}{1/|\mathcal{X}|} = \log|\mathcal{X}| - H(P) \geq 0.$$
+      <p>故 $H(P) \leq \log|\mathcal{X}|$，等号当 $P = U$。$\blacksquare$</p>
+
+      <ol start="3">
+        <li><strong>凹性</strong>：$H(P)$ 是 $P$ 的凹函数（可通过 $\frac{d^2}{dp^2}[-p\log p - (1-p)\log(1-p)] < 0$ 验证二元情形）。</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>4.2 交叉熵</h3>
+    <div class="math-content">
+      <p>用分布 $Q$ 编码来自分布 $P$ 的数据，平均需要的编码长度为<strong>交叉熵</strong>：</p>
+      $$H(P, Q) = -\sum_{x \in \mathcal{X}} P(x)\,\log Q(x).$$
+      <p>交叉熵可分解为</p>
+      $$H(P, Q) = H(P) + D_{KL}(P \| Q) \geq H(P).$$
+      <p>因此最小化交叉熵等价于最小化 KL 散度。</p>
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>4.3 KL 散度</h3>
+    <div class="math-content">
+      <p>从 $Q$ 到 $P$ 的 <strong>Kullback-Leibler 散度</strong>（相对熵）：</p>
+      $$D_{KL}(P \| Q) = \sum_{x \in \mathcal{X}} P(x)\,\log\frac{P(x)}{Q(x)}.$$
+
+      <p><strong>性质</strong>：</p>
+      <ol>
+        <li><strong>非负性</strong>（Gibbs 不等式）：$D_{KL}(P \| Q) \geq 0$。</li>
+        <li><strong>非对称性</strong>：一般 $D_{KL}(P \| Q) \neq D_{KL}(Q \| P)$。</li>
+        <li><strong>极小性</strong>：$D_{KL}(P \| Q) = 0 \;\Leftrightarrow\; P = Q$（几乎处处）。</li>
+      </ol>
+
+      <p><strong>Gibbs 不等式的证明</strong>：由 $-\log$ 的凸性及 Jensen 不等式：</p>
+      $$D_{KL}(P \| Q) = \sum_x P(x)\left(-\log\frac{Q(x)}{P(x)}\right) \geq -\log\!\left(\sum_x P(x)\frac{Q(x)}{P(x)}\right) = -\log\!\left(\sum_x Q(x)\right) = -\log 1 = 0.$$
+      <p>等号成立当且仅当 $\frac{Q(x)}{P(x)}$ 对所有 $P(x) > 0$ 取常数值，即 $P = Q$。$\blacksquare$</p>
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>4.4 互信息</h3>
+    <div class="math-content">
+      <p>随机变量 $X, Y$ 之间的<strong>互信息</strong>度量它们的统计依赖程度：</p>
+      $$I(X; Y) = D_{KL}\!\Big(P_{XY} \,\Big\|\, P_X \otimes P_Y\Big) = \sum_{x}\sum_{y} P(x,y)\,\log\frac{P(x,y)}{P(x)\,P(y)}.$$
+
+      <p>等价形式：</p>
+      $$I(X;Y) = H(X) - H(X \mid Y) = H(Y) - H(Y \mid X) = H(X) + H(Y) - H(X,Y).$$
+      <p>直觉：$I(X;Y)$ 表示"知道 $Y$ 后，$X$ 的不确定性减少的量"。</p>
+      <p><strong>性质</strong>：$I(X;Y) \geq 0$，等号当且仅当 $X \perp Y$。</p>
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>4.5 与数据挖掘的桥梁</h3>
+    <div class="math-bridge">
+      <ul>
+        <li><strong>Ch05 逻辑回归 &amp; 神经网络</strong>：训练损失为交叉熵 $H(P_{data}, P_{model})$，最小化它等价于让模型分布逼近数据分布。</li>
+        <li><strong>Ch06 最大熵原理</strong>：在已知约束下选择熵最大的分布，避免引入额外假设。</li>
+        <li><strong>Ch07 决策树</strong>：信息增益 $IG = H(\text{parent}) - \sum_k \frac{|D_k|}{|D|} H(D_k)$ 本质上是互信息 $I(Y; X_{\text{split}})$。</li>
+        <li><strong>Ch09 聚类</strong>：NMI（归一化互信息）作为聚类评价指标。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 5. 条件期望与混合分布 ===== -->
+<section class="chapter" id="topic-expectation">
+  <h2>五、条件期望与混合分布</h2>
+
+  <div class="ch-math">
+    <h3>5.1 数学期望</h3>
+    <div class="math-content">
+      <p><strong>离散情形</strong>：</p>
+      $$E[X] = \sum_{x \in \mathcal{X}} x\,P(X=x).$$
+      <p><strong>连续情形</strong>：</p>
+      $$E[X] = \int_{-\infty}^{+\infty} x\,f(x)\,dx.$$
+      <p><strong>随机变量函数的期望</strong>（LOTUS，无意识统计学家法则）：</p>
+      $$E[g(X)] = \sum_x g(x)P(x) \quad \text{或} \quad \int g(x)f(x)\,dx.$$
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>5.2 条件期望</h3>
+    <div class="math-content">
+      <p>给定 $Y=y$，$X$ 的<strong>条件期望</strong>为</p>
+      $$E[X \mid Y = y] = \sum_x x\,P(X=x \mid Y=y) \quad \text{（离散）},$$
+      $$E[X \mid Y = y] = \int x\,f_{X|Y}(x \mid y)\,dx \quad \text{（连续）}.$$
+      <p>注意 $E[X \mid Y]$ 是 $Y$ 的函数（随机变量），即 $\varphi(Y)$ 其中 $\varphi(y) = E[X \mid Y=y]$。</p>
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>5.3 全期望公式（Tower Property）</h3>
+    <div class="math-content">
+      <p><strong>全期望公式</strong>（迭代期望定律）：</p>
+      $$E[X] = E\big[E[X \mid Y]\big].$$
+
+      <p><strong>证明</strong>（离散情形）：</p>
+      $$E\big[E[X \mid Y]\big] = \sum_y E[X \mid Y=y]\,P(Y=y) = \sum_y \left(\sum_x x\,P(X=x \mid Y=y)\right) P(Y=y)$$
+      $$= \sum_x x \sum_y P(X=x \mid Y=y)\,P(Y=y) = \sum_x x \sum_y P(X=x, Y=y) = \sum_x x\,P(X=x) = E[X]. \quad \blacksquare$$
+      <p>这是全概率公式的期望版本，在 EM 算法的收敛性证明中起关键作用。</p>
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>5.4 混合分布</h3>
+    <div class="math-content">
+      <p><strong>有限混合模型</strong>：密度函数为多个分量密度的加权和</p>
+      $$f(x) = \sum_{k=1}^{K} \pi_k\,f_k(x), \quad \pi_k \geq 0, \quad \sum_{k=1}^K \pi_k = 1,$$
+      <p>其中 $\pi_k$ 为混合权重（mixing weight），$f_k$ 为第 $k$ 个分量密度。</p>
+
+      <p><strong>高斯混合模型（GMM）</strong>是最常用的混合分布：</p>
+      $$f(\boldsymbol{x}) = \sum_{k=1}^K \pi_k\,\mathcal{N}(\boldsymbol{x} \mid \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k).$$
+      <p>GMM 可以逼近任意连续密度（万能逼近性），因此表达能力极强。</p>
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>5.5 隐变量框架</h3>
+    <div class="math-content">
+      <p>引入<strong>隐变量</strong>（latent variable）$Z \in \{1, 2, \ldots, K\}$，$P(Z=k) = \pi_k$，则</p>
+      $$P(\boldsymbol{x} \mid Z=k) = f_k(\boldsymbol{x}),$$
+      $$f(\boldsymbol{x}) = \sum_{k=1}^K P(Z=k)\,P(\boldsymbol{x} \mid Z=k) = \sum_{k=1}^K \pi_k\,f_k(\boldsymbol{x}).$$
+      <p>这是对隐变量求<strong>边际化</strong>（marginalization）：$P(\boldsymbol{x}) = \sum_z P(\boldsymbol{x}, z)$。</p>
+
+      <p><strong>后验概率</strong>（"责任" / responsibility）：</p>
+      $$\gamma_k(\boldsymbol{x}) \triangleq P(Z=k \mid \boldsymbol{x}) = \frac{\pi_k\,f_k(\boldsymbol{x})}{\displaystyle\sum_{j=1}^K \pi_j\,f_j(\boldsymbol{x})}.$$
+
+      <p><strong>条件期望</strong>在 GMM 中的体现：</p>
+      $$E[\boldsymbol{x}] = E\big[E[\boldsymbol{x} \mid Z]\big] = \sum_k \pi_k\,\boldsymbol{\mu}_k.$$
+    </div>
+  </div>
+
+  <div class="ch-math">
+    <h3>5.6 与数据挖掘的桥梁</h3>
+    <div class="math-bridge">
+      <ul>
+        <li><strong>Ch10 EM 算法</strong>：
+          <ul>
+            <li><strong>E 步</strong>：计算 $Q(Z) = P(Z \mid X, \theta^{(t)})$，即后验分布（隐变量的条件期望）。</li>
+            <li><strong>M 步</strong>：最大化 $E_{Z \sim Q}[\log P(X, Z \mid \theta)]$，利用全期望公式保证似然单调递增。</li>
+            <li>GMM 是 EM 的经典应用：E 步算 $\gamma_k$，M 步更新 $\pi_k, \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k$。</li>
+          </ul>
+        </li>
+        <li><strong>Ch09 聚类</strong>：GMM 可视为"软聚类"，每个数据点以概率 $\gamma_k$ 属于第 $k$ 个簇，相比 K-Means 的硬分配更灵活。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 页脚 ===== -->
+<footer>
+  <p>数学系 · 数据挖掘前置知识</p>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
