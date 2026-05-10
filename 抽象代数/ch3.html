@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第三章 · 环</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          ZZ: '\\mathbb{Z}',
+          FF: '\\mathbb{F}',
+          grp: '\\mathrm',
+          abs: ['\\left| #1 \\right|', 1]
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">抽象代数</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第三章 · 环</h1>
+    <p>从群到环：环的定义、理想、商环与环同态基本定理，整环与域的关系。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">环的定义与基本性质</a></li>
+      <li><a href="#s2">理想</a></li>
+      <li><a href="#s3">商环</a></li>
+      <li><a href="#s4">环同态基本定理</a></li>
+      <li><a href="#s5">整环与除环</a></li>
+      <li><a href="#s6">综合例题</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 3.1 环的定义 ==================== -->
+  <div class="section" id="s1">
+    <h2>3.1 环的定义与基本性质</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 环</div>
+      <p>设 $R$ 是非空集合，配备两个二元运算 $+$（加法）和 $\cdot$（乘法）。若满足：</p>
+      <ol>
+        <li>$(R, +)$ 是 Abel 群（加法交换群）</li>
+        <li>$(R, \cdot)$ 满足结合律</li>
+        <li>乘法对加法满足分配律：$a(b+c) = ab + ac$，$(b+c)a = ba + ca$</li>
+      </ol>
+      <p>则称 $(R, +, \cdot)$ 为一个<strong>环</strong>。</p>
+      <p>若乘法还满足交换律，则称 $R$ 为<strong>交换环</strong>。若乘法有单位元，则称 $R$ 为<strong>有单位元的环</strong>（含幺环）。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例1 · 常见的环</div>
+      <table>
+        <tr><th>环</th><th>加法</th><th>乘法</th><th>交换</th><th>含幺</th></tr>
+        <tr><td>$(\ZZ, +, \times)$</td><td>整数加法</td><td>整数乘法</td><td>是</td><td>是（$1$）</td></tr>
+        <tr><td>$(\ZZ_n, +, \times)$</td><td>模 $n$ 加法</td><td>模 $n$ 乘法</td><td>是</td><td>是（$1$）</td></tr>
+        <tr><td>$(M_n(\RR), +, \times)$</td><td>矩阵加法</td><td>矩阵乘法</td><td>否</td><td>是（$I_n$）</td></tr>
+        <tr><td>$(\RR[x], +, \times)$</td><td>多项式加法</td><td>多项式乘法</td><td>是</td><td>是（$1$）</td></tr>
+      </table>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">环中乘法不一定可逆</div>
+      <p>环的定义不要求乘法有逆元。在 $\ZZ$ 中，$2$ 没有乘法逆元（$1/2 \notin \ZZ$）。这是环与域的关键区别。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">环的基本性质</div>
+      <p>设 $R$ 是环，$a, b \in R$，则：</p>
+      <ol>
+        <li>$0 \cdot a = a \cdot 0 = 0$</li>
+        <li>$(-a)b = a(-b) = -(ab)$</li>
+        <li>$(-a)(-b) = ab$</li>
+        <li>$a(b-c) = ab - ac$</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ==================== 3.2 理想 ==================== -->
+  <div class="section" id="s2">
+    <h2>3.2 理想</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 理想</div>
+      <p>设 $I$ 是环 $R$ 的非空子集。若：</p>
+      <ol>
+        <li>$(I, +)$ 是 $(R, +)$ 的子群</li>
+        <li>$\forall a \in I, r \in R$：$ra \in I$ 且 $ar \in I$</li>
+      </ol>
+      <p>则称 $I$ 为 $R$ 的一个<strong>理想</strong>（双边理想），记为 $I \trianglelefteq R$。</p>
+      <p>若只满足 $ra \in I$（不要求 $ar \in I$），称为<strong>左理想</strong>；只满足 $ar \in I$，称为<strong>右理想</strong>。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">理想 vs 子环</div>
+      <p>子环只要求加法子群和乘法封闭。理想多了一个"吸收"条件：$R$ 中任何元素乘以理想中的元素仍在理想中。</p>
+      <p>理想在环论中的地位类似正规子群在群论中的地位——它是构造商环的基础。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例2 · 常见的理想</div>
+      <ul>
+        <li>$n\ZZ = \{nk : k \in \ZZ\}$ 是 $\ZZ$ 的理想</li>
+        <li>环 $R$ 本身和 $\{0\}$ 是平凡理想</li>
+        <li>$\{A \in M_n(\RR) : A_{11} = 0\}$ 是 $M_n(\RR)$ 的理想（实际上只有 $\{0\}$ 和 $M_n(\RR)$ 本身）</li>
+      </ul>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 主理想</div>
+      <p>由单个元素 $a \in R$ 生成的理想</p>
+      $$(a) = \{ra + as + \sum_{i} r_i a s_i + na : r, s, r_i, s_i \in R, n \in \ZZ\}$$
+      <p>称为<strong>主理想</strong>。在交换环中简化为 $(a) = \{ra : r \in R\}$。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 3.3 商环 ==================== -->
+  <div class="section" id="s3">
+    <h2>3.3 商环</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 商环（剩余类环）</div>
+      <p>设 $I \trianglelefteq R$。加法商群 $R/I$ 在乘法</p>
+      $$(a + I)(b + I) = ab + I$$
+      <p>下构成环，称为 $R$ 模 $I$ 的<strong>商环</strong>（或<strong>剩余类环</strong>），记为 $R/I$。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例3 · 商环的例子</div>
+      <ul>
+        <li>$\ZZ / n\ZZ = \ZZ_n$（模 $n$ 剩余类环）</li>
+        <li>$\RR[x] / (x^2 + 1) \cong \mathbb{C}$（将 $x$ 对应到 $i$）</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ==================== 3.4 环同态基本定理 ==================== -->
+  <div class="section" id="s4">
+    <h2>3.4 环同态基本定理</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 环同态</div>
+      <p>设 $R, R'$ 是环。映射 $\varphi: R \to R'$ 若满足：</p>
+      <ol>
+        <li>$\varphi(a + b) = \varphi(a) + \varphi(b)$</li>
+        <li>$\varphi(ab) = \varphi(a)\varphi(b)$</li>
+      </ol>
+      <p>则称 $\varphi$ 为<strong>环同态</strong>。若 $\varphi$ 还是双射，则为<strong>环同构</strong>。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">环同态基本定理</div>
+      <p>设 $\varphi: R \to R'$ 是环同态，$\ker\varphi = \{r \in R : \varphi(r) = 0\}$，则</p>
+      <div class="formula-highlight">$$R / \ker\varphi \cong \operatorname{Im}\varphi$$</div>
+      <p>$\ker\varphi$ 是 $R$ 的理想。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 环同态基本定理的应用</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：证明 $\ZZ[x] / (x) \cong \ZZ$。</p>
+        <p><strong>证明</strong>：定义 $\varphi: \ZZ[x] \to \ZZ$，$\varphi(f(x)) = f(0)$（求常数项）。</p>
+        <p>$\varphi$ 是环同态：$\varphi(f+g) = (f+g)(0) = f(0) + g(0) = \varphi(f) + \varphi(g)$。</p>
+        <p>$\varphi(fg) = (fg)(0) = f(0)g(0) = \varphi(f)\varphi(g)$。</p>
+        <p>$\ker\varphi = \{f \in \ZZ[x] : f(0) = 0\} = \{f : x \mid f\} = (x)$。</p>
+        <p>$\operatorname{Im}\varphi = \ZZ$（满射）。</p>
+        <p>由同态基本定理：$\ZZ[x]/(x) \cong \ZZ$。$\blacksquare$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 3.5 整环与除环 ==================== -->
+  <div class="section" id="s5">
+    <h2>3.5 整环与除环</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 整环</div>
+      <p>交换含幺环 $R$ 若满足无零因子条件：</p>
+      $$ab = 0 \implies a = 0 \text{ 或 } b = 0$$
+      <p>则称 $R$ 为<strong>整环</strong>（Integral Domain）。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 除环与域</div>
+      <p><strong>除环</strong>（Division Ring）：含幺环中每个非零元素都有乘法逆元。</p>
+      <p><strong>域</strong>（Field）：交换的除环。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">环的层级关系</div>
+      $$\text{域} \subset \text{除环} \subset \text{整环} \subset \text{含幺交换环} \subset \text{环}$$
+      <p>例：$\ZZ \subset \QQ \subset \RR \subset \mathbb{C}$，依次是整环、域、域、域。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">零因子</div>
+      <p>$a \neq 0$ 且 $b \neq 0$ 但 $ab = 0$，则 $a, b$ 称为<strong>零因子</strong>。</p>
+      <p>例如 $\ZZ_6$ 中 $2 \cdot 3 = 0$，所以 $2$ 和 $3$ 都是零因子。$\ZZ_6$ 不是整环。</p>
+      <p>$\ZZ_p$（$p$ 素数）中没有零因子，是整环，实际上还是域。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 3.6 综合例题 ==================== -->
+  <div class="section" id="s6">
+    <h2>3.6 综合例题</h2>
+
+    <div class="box box-note">
+      <div class="box-title">本章核心要点</div>
+      <ol>
+        <li>环有加法和乘法两种运算，加法构成 Abel 群</li>
+        <li>理想是环论中类似正规子群的概念，是构造商环的基础</li>
+        <li>环同态基本定理 $R/\ker\varphi \cong \operatorname{Im}\varphi$ 与群论版本类似</li>
+        <li>整环 → 除环 → 域是逐步加强的条件</li>
+      </ol>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 判断环的类型</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：判断以下环的类型：</p>
+        <p>(a) $\ZZ_6$；(b) $\ZZ_7$；(c) $M_2(\RR)$；(d) $\RR[x]$</p>
+        <p><strong>解</strong>：</p>
+        <p>(a) $\ZZ_6$：交换含幺环，但 $2 \cdot 3 = 0$，有零因子，不是整环。</p>
+        <p>(b) $\ZZ_7$：$7$ 是素数，$\ZZ_7$ 是域（每个非零元都可逆）。</p>
+        <p>(c) $M_2(\RR)$：含幺非交换环，有零因子（如 $\begin{pmatrix}1&0\\0&0\end{pmatrix}\begin{pmatrix}0&0\\0&1\end{pmatrix}=0$），不是整环。</p>
+        <p>(d) $\RR[x]$：交换含幺整环，但不是域（$x$ 没有逆元）。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="ch2.html" class="prev">第二章</a>
+    <a href="ch4.html" class="next">第四章</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>抽象代数复习指南 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

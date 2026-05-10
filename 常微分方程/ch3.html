@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第三章 · 一阶微分方程解的存在唯一性</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          dd: '\\mathrm{d}',
+          eps: '\\varepsilon'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">常微分方程</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第三章 · 一阶微分方程解的存在唯一性</h1>
+    <p>从计算到理论：Picard 逐次逼近法、解的存在唯一性定理、Peano 存在定理与解的延拓。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">Picard 逐次逼近法</a></li>
+      <li><a href="#s2">解的存在唯一性定理</a></li>
+      <li><a href="#s3">Peano 存在定理</a></li>
+      <li><a href="#s4">解的延拓</a></li>
+      <li><a href="#s5">解对初值的连续依赖性</a></li>
+      <li><a href="#s6">综合例题</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 3.1 Picard 逐次逼近 ==================== -->
+  <div class="section" id="s1">
+    <h2>3.1 Picard 逐次逼近法</h2>
+
+    <p>考虑初值问题 $y' = f(x, y)$，$y(x_0) = y_0$。Picard 方法的基本思想是将微分方程转化为积分方程，然后用迭代法逐步逼近解。</p>
+
+    <div class="box box-formula">
+      <div class="box-title">积分方程形式</div>
+      <p>初值问题 $y' = f(x, y)$，$y(x_0) = y_0$ 等价于积分方程</p>
+      $$y(x) = y_0 + \int_{x_0}^{x} f(t, y(t)) \dd t$$
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">Picard 逐次逼近序列</div>
+      <p>定义函数序列 $\{\varphi_n(x)\}$：</p>
+      $$\varphi_0(x) = y_0$$
+      $$\varphi_n(x) = y_0 + \int_{x_0}^{x} f(t, \varphi_{n-1}(t)) \dd t, \quad n = 1, 2, 3, \ldots$$
+      <p>这个序列称为 <strong>Picard 逐次逼近序列</strong>。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例1 · Picard 逼近计算</div>
+      <p><strong>题目</strong>：用 Picard 方法求 $y' = y$，$y(0) = 1$ 的逐次逼近。</p>
+      <p><strong>解</strong>：$\varphi_0(x) = 1$</p>
+      <p>$\varphi_1(x) = 1 + \int_0^x 1 \dd t = 1 + x$</p>
+      <p>$\varphi_2(x) = 1 + \int_0^x (1+t) \dd t = 1 + x + \dfrac{x^2}{2}$</p>
+      <p>$\varphi_3(x) = 1 + x + \dfrac{x^2}{2} + \dfrac{x^3}{6}$</p>
+      <p>一般地，$\varphi_n(x) = \displaystyle\sum_{k=0}^{n} \frac{x^k}{k!}$，收敛到 $e^x$（精确解）。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 3.2 存在唯一性定理 ==================== -->
+  <div class="section" id="s2">
+    <h2>3.2 解的存在唯一性定理</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">Picard 存在唯一性定理</div>
+      <p>设 $f(x, y)$ 在矩形区域</p>
+      $$R: |x - x_0| \leq a, \quad |y - y_0| \leq b$$
+      <p>上满足：</p>
+      <ol>
+        <li>$f(x, y)$ 在 $R$ 上<strong>连续</strong>（保证解存在）</li>
+        <li>$f(x, y)$ 关于 $y$ 满足 <strong>Lipschitz 条件</strong>：$\exists\, L > 0$，使得</li>
+      </ol>
+      $$|f(x, y_1) - f(x, y_2)| \leq L |y_1 - y_2|, \quad \forall (x, y_1), (x, y_2) \in R$$
+      <p>则初值问题 $y' = f(x, y)$，$y(x_0) = y_0$ 在区间 $|x - x_0| \leq h$ 上存在<strong>唯一</strong>解，其中 $h = \min\left(a, \dfrac{b}{M}\right)$，$M = \max_R |f(x, y)|$。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">Lipschitz 条件</div>
+      <p>Lipschitz 条件比"连续"强，但比"有界偏导数"弱。实际应用中，最常用的判别方法是：</p>
+      <p>若 $\dfrac{\partial f}{\partial y}$ 在 $R$ 上连续（从而有界），则 $f$ 关于 $y$ 满足 Lipschitz 条件。</p>
+      <p>Lipschitz 条件保证了唯一性。仅有连续性只能保证存在性（Peano 定理）。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 验证 Lipschitz 条件</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：验证 $f(x, y) = x^2 + y^2$ 在 $|x| \leq 1, |y| \leq 1$ 上关于 $y$ 满足 Lipschitz 条件。</p>
+        <p><strong>解</strong>：$\dfrac{\partial f}{\partial y} = 2y$，在 $|y| \leq 1$ 上 $|2y| \leq 2$。</p>
+        <p>由中值定理：$|f(x, y_1) - f(x, y_2)| = |2\xi| \cdot |y_1 - y_2| \leq 2|y_1 - y_2|$</p>
+        <p>所以 Lipschitz 常数 $L = 2$。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 3.3 Peano 存在定理 ==================== -->
+  <div class="section" id="s3">
+    <h2>3.3 Peano 存在定理</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">Peano 存在定理</div>
+      <p>设 $f(x, y)$ 在矩形区域 $R$ 上<strong>连续</strong>，则初值问题 $y' = f(x, y)$，$y(x_0) = y_0$ 在 $|x - x_0| \leq h$ 上<strong>至少存在一个</strong>解。</p>
+      <p>（不要求 Lipschitz 条件，但不能保证唯一性。）</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">Peano vs Picard</div>
+      <table>
+        <tr><th></th><th>Peano 定理</th><th>Picard 定理</th></tr>
+        <tr><td>条件</td><td>$f$ 连续</td><td>$f$ 连续 + Lipschitz</td></tr>
+        <tr><td>结论</td><td>解存在（至少一个）</td><td>解存在且唯一</td></tr>
+        <tr><td>证明方法</td><td>紧性论证</td><td>逐次逼近（构造性）</td></tr>
+      </table>
+      <p>Picard 定理更强（条件更强，结论也更强），但 Peano 定理的条件更弱，适用范围更广。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 不满足 Lipschitz 条件的例子</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：$y' = \sqrt{|y|}$，$y(0) = 0$。讨论解的存在唯一性。</p>
+        <p><strong>解</strong>：$f(x, y) = \sqrt{|y|}$ 连续，所以 Peano 定理保证解存在。</p>
+        <p>但 $\dfrac{\partial f}{\partial y} = \dfrac{\operatorname{sgn}(y)}{2\sqrt{|y|}}$，当 $y \to 0$ 时趋于无穷，不满足 Lipschitz 条件。</p>
+        <p>实际上，$y = 0$ 和 $y = \dfrac{x^2}{4}$（$x \geq 0$）都是解，不唯一！</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 3.4 解的延拓 ==================== -->
+  <div class="section" id="s4">
+    <h2>3.4 解的延拓</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">解的延拓定理</div>
+      <p>设 $f(x, y)$ 在区域 $D$ 上连续且关于 $y$ 满足局部 Lipschitz 条件，则初值问题的解可以<strong>延拓</strong>到区域 $D$ 的边界。</p>
+      <p>具体地，解 $y = \varphi(x)$ 的最大存在区间 $(a, b)$ 满足：当 $x \to a^+$ 或 $x \to b^-$ 时，$(x, \varphi(x))$ 趋向 $D$ 的边界，或 $|\varphi(x)| \to \infty$。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">延拓定理的意义</div>
+      <p>局部存在唯一性定理给出的解可能只在一个小区间上存在。延拓定理告诉我们：只要 $f$ 的性质允许，解可以一直延伸到"边界"。</p>
+      <p>例如 $y' = y^2$，$y(0) = 1$ 的解 $y = \dfrac{1}{1-x}$ 在 $x \to 1^-$ 时趋于无穷，所以最大存在区间是 $(-\infty, 1)$。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 3.5 解对初值的连续依赖性 ==================== -->
+  <div class="section" id="s5">
+    <h2>3.5 解对初值的连续依赖性</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">解对初值的连续依赖性</div>
+      <p>设 $f(x, y)$ 在区域 $D$ 上连续且关于 $y$ 满足局部 Lipschitz 条件，$\varphi(x, x_0, y_0)$ 是初值问题的解。则 $\varphi$ 关于初值 $(x_0, y_0)$ <strong>连续</strong>。</p>
+      <p>直观理解：初值的微小变化只导致解的微小变化。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">物理意义</div>
+      <p>这个定理保证了微分方程模型的<strong>稳定性</strong>——如果初始条件的测量有小误差，预测结果也只有小误差。否则微分方程就无法用于实际预测。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 3.6 综合例题 ==================== -->
+  <div class="section" id="s6">
+    <h2>3.6 综合例题</h2>
+
+    <div class="box box-note">
+      <div class="box-title">本章核心要点</div>
+      <ol>
+        <li>Picard 逐次逼近法将微分方程转化为积分方程的迭代</li>
+        <li>存在唯一性需要两个条件：连续性（存在性）+ Lipschitz 条件（唯一性）</li>
+        <li>Lipschitz 条件通常通过 $\partial f / \partial y$ 有界来验证</li>
+        <li>Peano 定理只要连续性，但不能保证唯一</li>
+        <li>解可以延拓到区域边界或无穷</li>
+      </ol>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 存在唯一性的应用</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：讨论 $y' = y^{1/3}$，$y(0) = 0$ 的解的存在唯一性。</p>
+        <p><strong>解</strong>：$f(x, y) = y^{1/3}$ 在 $(0, 0)$ 附近连续，Peano 定理保证解存在。</p>
+        <p>$\dfrac{\partial f}{\partial y} = \dfrac{1}{3} y^{-2/3}$，在 $y = 0$ 处无界，不满足 Lipschitz 条件。</p>
+        <p>实际上 $y = 0$ 和 $y = \left(\dfrac{2x}{3}\right)^{3/2}$（$x \geq 0$）都是过原点的解，不唯一。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="ch2.html" class="prev">第二章</a>
+    <a href="ch4.html" class="next">第四章</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>常微分方程复习指南 · 基于王高雄教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第二章 · 正规子群与商群</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          ZZ: '\\mathbb{Z}',
+          FF: '\\mathbb{F}',
+          grp: '\\mathrm',
+          abs: ['\\left| #1 \\right|', 1]
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">抽象代数</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第二章 · 正规子群与商群</h1>
+    <p>群论的核心：正规子群、商群的构造，群同态基本定理与同构定理，理解"模掉"的思想。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">正规子群</a></li>
+      <li><a href="#s2">商群</a></li>
+      <li><a href="#s3">群同态</a></li>
+      <li><a href="#s4">群同态基本定理</a></li>
+      <li><a href="#s5">群同构定理</a></li>
+      <li><a href="#s6">群的直积</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 2.1 正规子群 ==================== -->
+  <div class="section" id="s1">
+    <h2>2.1 正规子群</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 正规子群</div>
+      <p>设 $N \leq G$。若对所有 $g \in G$，$n \in N$，都有 $gng^{-1} \in N$，则称 $N$ 为 $G$ 的<strong>正规子群</strong>，记为 $N \trianglelefteq G$。</p>
+      <p>等价条件：$\forall g \in G$，$gN = Ng$（左陪集等于右陪集）。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">正规子群的直觉</div>
+      <p>"正规"意味着子群在群的共轭作用下不变。可以理解为：$N$ 在 $G$ 中"对称"——从左边乘和从右边乘效果一样。</p>
+      <p>在 Abel 群中，任何子群都是正规的（因为 $gN = Ng$ 自动成立）。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">正规子群的判别</div>
+      <p>设 $N \leq G$，以下条件等价：</p>
+      <ol>
+        <li>$\forall g \in G$，$gNg^{-1} = N$</li>
+        <li>$\forall g \in G$，$gNg^{-1} \subseteq N$</li>
+        <li>$\forall g \in G$，$gN = Ng$</li>
+        <li>$N$ 是某个群同态的核</li>
+      </ol>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例1 · 正规子群的例子</div>
+      <ul>
+        <li>$A_n \trianglelefteq S_n$（交错群是正规子群）</li>
+        <li>$\{e\} \trianglelefteq G$，$G \trianglelefteq G$（平凡正规子群）</li>
+        <li>Abel 群的任何子群都是正规的</li>
+        <li>指数为 2 的子群必为正规子群</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ==================== 2.2 商群 ==================== -->
+  <div class="section" id="s2">
+    <h2>2.2 商群</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 商群</div>
+      <p>设 $N \trianglelefteq G$。$N$ 的所有左陪集构成的集合 $G/N = \{gN : g \in G\}$，在运算</p>
+      $$(aN)(bN) = (ab)N$$
+      <p>下构成群，称为 $G$ 模 $N$ 的<strong>商群</strong>。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">商群运算的良定义性</div>
+      <p>运算 $(aN)(bN) = (ab)N$ 是否与陪集代表元的选取无关？这就是<strong>良定义</strong>问题。</p>
+      <p>关键在于 $N$ 是正规子群！若 $N$ 不正规，不同代表元可能给出不同的结果，运算就不是良定义的。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">商群的阶</div>
+      $$|G/N| = [G : N] = \frac{|G|}{|N|}$$
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例2 · 商群的例子</div>
+      <ul>
+        <li>$\ZZ / n\ZZ \cong \ZZ_n$（整数模 $n$ 的剩余类群）</li>
+        <li>$S_n / A_n \cong \ZZ_2$（对称群模交错群）</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ==================== 2.3 群同态 ==================== -->
+  <div class="section" id="s3">
+    <h2>2.3 群同态</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 群同态</div>
+      <p>设 $(G, \cdot)$ 和 $(G', *)$ 是两个群。映射 $\varphi: G \to G'$ 若满足</p>
+      $$\varphi(a \cdot b) = \varphi(a) * \varphi(b), \quad \forall a, b \in G$$
+      <p>则称 $\varphi$ 为从 $G$ 到 $G'$ 的<strong>群同态</strong>。</p>
+      <p>若 $\varphi$ 还是双射，则称 $\varphi$ 为<strong>群同构</strong>，记为 $G \cong G'$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">同态的基本性质</div>
+      <p>设 $\varphi: G \to G'$ 是群同态，则：</p>
+      <ol>
+        <li>$\varphi(e_G) = e_{G'}$（单位元映到单位元）</li>
+        <li>$\varphi(a^{-1}) = \varphi(a)^{-1}$（逆元映到逆元）</li>
+        <li>若 $H \leq G$，则 $\varphi(H) \leq G'$（子群映到子群）</li>
+        <li>若 $H' \leq G'$，则 $\varphi^{-1}(H') \leq G$（原像仍是子群）</li>
+      </ol>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 核与像</div>
+      <p>群同态 $\varphi: G \to G'$ 的：</p>
+      <p><strong>核</strong>：$\ker\varphi = \{g \in G : \varphi(g) = e_{G'}\}$</p>
+      <p><strong>像</strong>：$\operatorname{Im}\varphi = \{\varphi(g) : g \in G\} = \varphi(G)$</p>
+      <p>$\ker\varphi \trianglelefteq G$（核是正规子群），$\operatorname{Im}\varphi \leq G'$。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">同态是"结构保持"的映射</div>
+      <p>群同态把群的运算结构"翻译"到另一个群中。核衡量的是"信息损失"——核越大，同态丢失的信息越多。</p>
+      <p>$\varphi$ 是单射 $\iff \ker\varphi = \{e\}$（没有信息损失）。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 2.4 群同态基本定理 ==================== -->
+  <div class="section" id="s4">
+    <h2>2.4 群同态基本定理</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">群同态基本定理（第一同构定理）</div>
+      <p>设 $\varphi: G \to G'$ 是群同态，则</p>
+      <div class="formula-highlight">$$G / \ker\varphi \cong \operatorname{Im}\varphi$$</div>
+      <p>具体地，映射 $\bar{\varphi}: G/\ker\varphi \to \operatorname{Im}\varphi$，$g\ker\varphi \mapsto \varphi(g)$ 是群同构。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">同态基本定理的意义</div>
+      <p>这个定理告诉我们：群同态的像本质上就是原群"模掉核"。它是构造商群的主要动机——商群就是同态像的抽象表示。</p>
+      <p>应用思路：要证明 $G/N \cong H$，只需找到一个同态 $\varphi: G \to H$ 使得 $\ker\varphi = N$ 且 $\operatorname{Im}\varphi = H$。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 同态基本定理的应用</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：证明 $\ZZ / n\ZZ \cong \ZZ_n$。</p>
+        <p><strong>证明</strong>：定义 $\varphi: \ZZ \to \ZZ_n$，$\varphi(k) = k \bmod n$。</p>
+        <p>$\varphi$ 是群同态：$\varphi(a+b) = (a+b) \bmod n = (a \bmod n) + (b \bmod n) = \varphi(a) + \varphi(b)$。</p>
+        <p>$\ker\varphi = \{k \in \ZZ : k \bmod n = 0\} = n\ZZ$。</p>
+        <p>$\operatorname{Im}\varphi = \ZZ_n$（满射）。</p>
+        <p>由同态基本定理：$\ZZ / n\ZZ \cong \ZZ_n$。$\blacksquare$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2.5 同构定理 ==================== -->
+  <div class="section" id="s5">
+    <h2>2.5 群同构定理</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">第二同构定理</div>
+      <p>设 $H \leq G$，$N \trianglelefteq G$，则</p>
+      $$HN / N \cong H / (H \cap N)$$
+      <p>其中 $HN = \{hn : h \in H, n \in N\}$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">第三同构定理</div>
+      <p>设 $N \trianglelefteq G$，$K \trianglelefteq G$，$N \leq K$，则</p>
+      $$(G/N) / (K/N) \cong G/K$$
+      <p>直观理解：先模掉 $N$，再模掉 $K/N$，等于直接模掉 $K$。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 2.6 直积 ==================== -->
+  <div class="section" id="s6">
+    <h2>2.6 群的直积</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 外直积</div>
+      <p>设 $G_1, G_2$ 是群。集合 $G_1 \times G_2$ 在分量运算下</p>
+      $$(a_1, a_2)(b_1, b_2) = (a_1 b_1, a_2 b_2)$$
+      <p>构成群，称为 $G_1$ 和 $G_2$ 的<strong>外直积</strong>（或<strong>直积</strong>）。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">直积的性质</div>
+      <ul>
+        <li>$|G_1 \times G_2| = |G_1| \cdot |G_2|$</li>
+        <li>$G_1 \times G_2 \cong G_2 \times G_1$</li>
+        <li>若 $G_1, G_2$ 都是 Abel 群，则 $G_1 \times G_2$ 也是</li>
+      </ul>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例3 · 直积的例子</div>
+      <ul>
+        <li>$\ZZ_2 \times \ZZ_2 \cong V_4$（Klein 四元群）</li>
+        <li>$\ZZ_2 \times \ZZ_3 \cong \ZZ_6$（因为 $\gcd(2,3)=1$）</li>
+        <li>一般地，$\ZZ_m \times \ZZ_n \cong \ZZ_{mn} \iff \gcd(m,n) = 1$</li>
+      </ul>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">本章核心要点</div>
+      <ol>
+        <li>正规子群 $N \trianglelefteq G$ 的本质是 $gN = Ng$</li>
+        <li>商群 $G/N$ 是"把 $N$ 压缩为单位元"后的群</li>
+        <li>同态基本定理 $G/\ker\varphi \cong \operatorname{Im}\varphi$ 是群论最重要的定理之一</li>
+        <li>构造同态证明同构是代数中的核心技巧</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="ch1.html" class="prev">第一章</a>
+    <a href="ch3.html" class="next">第三章</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>抽象代数复习指南 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

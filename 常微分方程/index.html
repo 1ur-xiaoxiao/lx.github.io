@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>常微分方程 · 复习指南</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          dd: '\\mathrm{d}',
+          eps: '\\varepsilon'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+  <a href="../index.html" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">常微分方程</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<!-- 主内容 -->
+<div class="main-content">
+
+  <!-- 英雄区 -->
+  <div class="hero">
+    <h1>常微分方程</h1>
+    <p>基于王高雄《常微分方程》教材 · 六章系统讲解 · 从初等解法到幂级数解法，完整覆盖常微分方程核心内容</p>
+  </div>
+
+  <!-- 六章总览卡片 -->
+  <div class="chapter-cards">
+
+    <div class="chapter-card">
+      <span class="card-number">1</span>
+      <h3>绪论</h3>
+      <p>常微分方程的基本概念：从实际问题引入微分方程，建立阶、解、通解与特解的基本语言。</p>
+      <ul>
+        <li>微分方程的基本概念与阶</li>
+        <li>解、通解与特解</li>
+        <li>初值问题与几何意义</li>
+        <li>微分方程的分类</li>
+      </ul>
+      <a href="ch1.html" class="card-link">进入第一章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">2</span>
+      <h3>一阶微分方程的初等解法</h3>
+      <p>掌握一阶方程的核心解法：可分离变量、齐次方程、线性方程、Bernoulli 方程与恰当方程。</p>
+      <ul>
+        <li>可分离变量方程</li>
+        <li>一阶线性方程与常数变易法</li>
+        <li>Bernoulli 方程与 Riccati 方程</li>
+        <li>恰当方程与积分因子</li>
+      </ul>
+      <a href="ch2.html" class="card-link">进入第二章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">3</span>
+      <h3>一阶微分方程解的存在唯一性</h3>
+      <p>从计算到理论的飞跃：Picard 逐次逼近法、Peano 存在定理与解的延拓定理。</p>
+      <ul>
+        <li>Picard 逐次逼近法</li>
+        <li>解的存在唯一性定理</li>
+        <li>Peano 存在定理</li>
+        <li>解的延拓与比较定理</li>
+      </ul>
+      <a href="ch3.html" class="card-link">进入第三章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">4</span>
+      <h3>高阶线性微分方程</h3>
+      <p>线性方程的完整理论：齐次方程的通解结构、常系数方程的特征根法与常数变易法。</p>
+      <ul>
+        <li>高阶线性方程的一般理论</li>
+        <li>常系数齐次方程与特征根法</li>
+        <li>常系数非齐次方程</li>
+        <li>常数变易法与降阶法</li>
+      </ul>
+      <a href="ch4.html" class="card-link">进入第四章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">5</span>
+      <h3>线性微分方程组</h3>
+      <p>从单个方程到方程组：矩阵指数函数、基解矩阵与常系数方程组的求解。</p>
+      <ul>
+        <li>一阶线性方程组的一般理论</li>
+        <li>基解矩阵与 Liouville 公式</li>
+        <li>常系数线性方程组</li>
+        <li>矩阵指数函数</li>
+      </ul>
+      <a href="ch5.html" class="card-link">进入第五章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">6</span>
+      <h3>常微分方程的幂级数解法</h3>
+      <p>当初等方法失效时：用幂级数求解微分方程，Frobenius 方法与正则奇点理论。</p>
+      <ul>
+        <li>幂级数解法的基本思想</li>
+        <li>常点邻域的幂级数解</li>
+        <li>正则奇点与 Frobenius 方法</li>
+        <li>Bessel 方程与 Legendre 方程</li>
+      </ul>
+      <a href="ch6.html" class="card-link">进入第六章 →</a>
+    </div>
+
+  </div>
+
+  <!-- 学习建议 -->
+  <div class="section" style="margin-top: 2rem;">
+    <h2>学习路线建议</h2>
+    <ol>
+      <li><strong>第一章</strong>建立微分方程的基本概念，理解什么是"解"以及解的几何意义。本章偏概念性，重在理解。</li>
+      <li><strong>第二章</strong>是计算核心，掌握各类一阶方程的识别与求解技巧。恰当方程和积分因子是难点，建议多做题练习。</li>
+      <li><strong>第三章</strong>是从计算到理论的转折，Picard 逐次逼近法的思想很重要。存在唯一性定理是后续高阶方程和方程组理论的基础。</li>
+      <li><strong>第四章</strong>是考试重点，特征根法和待定系数法必须熟练掌握。常数变易法虽然计算量大，但理解其思想对第五章有帮助。</li>
+      <li><strong>第五章</strong>将标量方程推广到向量方程，矩阵指数函数是核心工具。与线性代数知识联系紧密。</li>
+      <li><strong>第六章</strong>介绍幂级数解法，Frobenius 方法是难点。Bessel 方程和 Legendre 方程是物理学中的重要方程。</li>
+    </ol>
+  </div>
+
+</div>
+
+<!-- 页脚 -->
+<footer class="footer">
+  <p>常微分方程复习指南 · 基于王高雄教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

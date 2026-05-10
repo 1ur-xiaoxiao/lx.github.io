@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第二章 · 一阶微分方程的初等解法</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          dd: '\\mathrm{d}',
+          eps: '\\varepsilon'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">常微分方程</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第二章 · 一阶微分方程的初等解法</h1>
+    <p>掌握各类一阶方程的识别与求解：可分离变量、齐次方程、线性方程、Bernoulli 方程与恰当方程。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">可分离变量方程</a></li>
+      <li><a href="#s2">一阶线性方程</a></li>
+      <li><a href="#s3">Bernoulli 方程</a></li>
+      <li><a href="#s4">恰当方程</a></li>
+      <li><a href="#s5">积分因子</a></li>
+      <li><a href="#s6">综合例题</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 2.1 可分离变量方程 ==================== -->
+  <div class="section" id="s1">
+    <h2>2.1 可分离变量方程</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 可分离变量方程</div>
+      <p>形如</p>
+      $$\frac{\dd y}{\dd x} = f(x) g(y)$$
+      <p>的一阶方程称为<strong>可分离变量方程</strong>。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">求解方法</div>
+      <p>当 $g(y) \neq 0$ 时，分离变量：</p>
+      $$\frac{\dd y}{g(y)} = f(x) \dd x$$
+      <p>两边积分：</p>
+      $$\int \frac{\dd y}{g(y)} = \int f(x) \dd x + C$$
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例1 · 求解可分离变量方程</div>
+      <p><strong>题目</strong>：求解 $y' = \dfrac{x}{y}$。</p>
+      <p><strong>解</strong>：分离变量：$y \dd y = x \dd x$</p>
+      <p>两边积分：$\dfrac{y^2}{2} = \dfrac{x^2}{2} + C$</p>
+      <p>通解：$y^2 - x^2 = 2C$，即 $y^2 - x^2 = C'$（双曲线族）。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注意丢失的解</div>
+      <p>分离变量时除以 $g(y)$，可能丢失使 $g(y) = 0$ 的常数解。求解后需要检验。</p>
+      <p>例如 $y' = y^2$：分离变量得 $-\dfrac{1}{y} = x + C$，即 $y = -\dfrac{1}{x+C}$。但 $y = 0$ 也是解（使 $g(y) = y^2 = 0$），它不包含在通解中。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 2.2 一阶线性方程 ==================== -->
+  <div class="section" id="s2">
+    <h2>2.2 一阶线性方程</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 一阶线性方程</div>
+      <p>形如</p>
+      $$y' + P(x) y = Q(x)$$
+      <p>的方程称为<strong>一阶线性方程</strong>。当 $Q(x) \equiv 0$ 时称为<strong>齐次</strong>的，否则称为<strong>非齐次</strong>的。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">常数变易法与通解公式</div>
+      <p>先求齐次方程 $y' + P(x)y = 0$ 的通解：$y = Ce^{-\int P(x)\dd x}$。</p>
+      <p>将常数 $C$ 替换为函数 $C(x)$，代入非齐次方程，解得：</p>
+      <div class="formula-highlight">$$y = e^{-\int P(x)\dd x} \left[\int Q(x) e^{\int P(x)\dd x} \dd x + C\right]$$</div>
+      <p>这就是一阶线性方程的<strong>通解公式</strong>。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例2 · 求解一阶线性方程</div>
+      <p><strong>题目</strong>：求解 $y' + \dfrac{y}{x} = x^2$。</p>
+      <p><strong>解</strong>：$P(x) = \dfrac{1}{x}$，$Q(x) = x^2$。</p>
+      <p>$\int P(x)\dd x = \ln|x|$，$e^{\int P\dd x} = |x|$（取 $x > 0$ 时为 $x$）。</p>
+      <p>$y = \dfrac{1}{x}\left[\int x^2 \cdot x \dd x + C\right] = \dfrac{1}{x}\left[\dfrac{x^4}{4} + C\right] = \dfrac{x^3}{4} + \dfrac{C}{x}$</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">常数变易法的思想</div>
+      <p>常数变易法是线性微分方程理论的核心方法。其思想是：先求齐次方程的通解，再把通解中的常数"变易"为函数，代入非齐次方程确定这个函数。</p>
+      <p>这个方法不仅适用于一阶方程，也是高阶线性方程和线性方程组求解的基础（见第四、五章）。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 2.3 Bernoulli 方程 ==================== -->
+  <div class="section" id="s3">
+    <h2>2.3 Bernoulli 方程</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · Bernoulli 方程</div>
+      <p>形如</p>
+      $$y' + P(x) y = Q(x) y^n \quad (n \neq 0, 1)$$
+      <p>的方程称为 <strong>Bernoulli 方程</strong>。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">求解方法</div>
+      <p>令 $z = y^{1-n}$，则 $z' = (1-n) y^{-n} y'$。</p>
+      <p>原方程化为关于 $z$ 的一阶线性方程：</p>
+      $$z' + (1-n) P(x) z = (1-n) Q(x)$$
+      <p>用通解公式求出 $z$，再回代 $y = z^{\frac{1}{1-n}}$。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · Bernoulli 方程</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：求解 $y' + \dfrac{y}{x} = y^2 \ln x$。</p>
+        <p><strong>解</strong>：这是 Bernoulli 方程，$n = 2$。令 $z = y^{-1}$，则 $z' = -y^{-2} y'$。</p>
+        <p>原方程两边除以 $y^2$：$y^{-2} y' + \dfrac{y^{-1}}{x} = \ln x$</p>
+        <p>即 $-z' + \dfrac{z}{x} = \ln x$，或 $z' - \dfrac{z}{x} = -\ln x$。</p>
+        <p>这是一阶线性方程，$P(x) = -\dfrac{1}{x}$，$Q(x) = -\ln x$。</p>
+        <p>$e^{\int P\dd x} = e^{-\ln x} = \dfrac{1}{x}$</p>
+        <p>$z = x\left[\int -\ln x \cdot \dfrac{1}{x} \dd x + C\right] = x\left[-\dfrac{(\ln x)^2}{2} + C\right]$</p>
+        <p>回代 $y = \dfrac{1}{z} = \dfrac{1}{Cx - \frac{x(\ln x)^2}{2}}$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2.4 恰当方程 ==================== -->
+  <div class="section" id="s4">
+    <h2>2.4 恰当方程</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 恰当方程（全微分方程）</div>
+      <p>若存在函数 $u(x, y)$ 使得</p>
+      $$\dd u = M(x, y) \dd x + N(x, y) \dd y$$
+      <p>则方程 $M(x, y) \dd x + N(x, y) \dd y = 0$ 称为<strong>恰当方程</strong>（或<strong>全微分方程</strong>），其通解为 $u(x, y) = C$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">恰当方程的判别条件</div>
+      <p>设 $M, N$ 在单连通区域 $D$ 上有连续一阶偏导数，则</p>
+      $$M \dd x + N \dd y = 0 \text{ 是恰当方程} \iff \frac{\partial M}{\partial y} = \frac{\partial N}{\partial x}$$
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">恰当方程的求解</div>
+      <p>若 $\dfrac{\partial M}{\partial y} = \dfrac{\partial N}{\partial x}$，则：</p>
+      $$u(x, y) = \int_{x_0}^{x} M(t, y_0) \dd t + \int_{y_0}^{y} N(x, t) \dd t = C$$
+      <p>或更实用的方法：由 $\dfrac{\partial u}{\partial x} = M$ 积分得 $u = \int M \dd x + \varphi(y)$，再由 $\dfrac{\partial u}{\partial y} = N$ 确定 $\varphi(y)$。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 恰当方程</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：求解 $(2xy + 3) \dd x + (x^2 + 4y) \dd y = 0$。</p>
+        <p><strong>解</strong>：$M = 2xy + 3$，$N = x^2 + 4y$。</p>
+        <p>$\dfrac{\partial M}{\partial y} = 2x$，$\dfrac{\partial N}{\partial x} = 2x$，相等，是恰当方程。</p>
+        <p>由 $\dfrac{\partial u}{\partial x} = 2xy + 3$，积分得 $u = x^2 y + 3x + \varphi(y)$。</p>
+        <p>由 $\dfrac{\partial u}{\partial y} = x^2 + \varphi'(y) = x^2 + 4y$，得 $\varphi'(y) = 4y$，$\varphi(y) = 2y^2$。</p>
+        <p>通解：$x^2 y + 3x + 2y^2 = C$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2.5 积分因子 ==================== -->
+  <div class="section" id="s5">
+    <h2>2.5 积分因子</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 积分因子</div>
+      <p>若存在函数 $\mu(x, y) \neq 0$ 使得</p>
+      $$\mu M \dd x + \mu N \dd y = 0$$
+      <p>是恰当方程，则 $\mu(x, y)$ 称为原方程的<strong>积分因子</strong>。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">积分因子的存在性</div>
+      <p>理论上，只要 $M \dd x + N \dd y = 0$ 有解，就存在积分因子。但实际上找到积分因子往往很困难。</p>
+      <p>以下是一些特殊情况下的积分因子：</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">特殊情况的积分因子</div>
+      <table>
+        <tr><th>条件</th><th>积分因子</th></tr>
+        <tr><td>$\frac{1}{N}\left(\frac{\partial M}{\partial y} - \frac{\partial N}{\partial x}\right) = f(x)$</td><td>$\mu(x) = e^{\int f(x)\dd x}$</td></tr>
+        <tr><td>$\frac{1}{M}\left(\frac{\partial N}{\partial x} - \frac{\partial M}{\partial y}\right) = g(y)$</td><td>$\mu(y) = e^{\int g(y)\dd y}$</td></tr>
+        <tr><td>$M \dd x + N \dd y = 0$ 是齐次方程</td><td>$\mu = \frac{1}{xM + yN}$</td></tr>
+      </table>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 用积分因子求解</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：求解 $y \dd x - x \dd y = 0$。</p>
+        <p><strong>解</strong>：$M = y$，$N = -x$，$\dfrac{\partial M}{\partial y} = 1 \neq -1 = \dfrac{\partial N}{\partial x}$，不是恰当方程。</p>
+        <p>$\dfrac{1}{N}\left(\dfrac{\partial M}{\partial y} - \dfrac{\partial N}{\partial x}\right) = \dfrac{1}{-x}(1-(-1)) = -\dfrac{2}{x}$，只含 $x$。</p>
+        <p>积分因子 $\mu = e^{\int -\frac{2}{x}\dd x} = e^{-2\ln x} = \dfrac{1}{x^2}$。</p>
+        <p>乘以 $\mu$：$\dfrac{y}{x^2}\dd x - \dfrac{1}{x}\dd y = 0$，这是恰当方程。</p>
+        <p>通解：$\dfrac{y}{x} = C$，即 $y = Cx$。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2.6 综合例题 ==================== -->
+  <div class="section" id="s6">
+    <h2>2.6 综合例题</h2>
+
+    <div class="box box-note">
+      <div class="box-title">一阶方程求解策略</div>
+      <ol>
+        <li>先看是否能<strong>分离变量</strong></li>
+        <li>若 $y' + P(x)y = Q(x)$，用<strong>通解公式</strong></li>
+        <li>若 $y' + P(x)y = Q(x)y^n$，用 <strong>Bernoulli 代换</strong></li>
+        <li>若 $M\dd x + N\dd y = 0$ 且 $\dfrac{\partial M}{\partial y} = \dfrac{\partial N}{\partial x}$，是<strong>恰当方程</strong></li>
+        <li>否则尝试找<strong>积分因子</strong></li>
+        <li>以上都不行，考虑变量代换或其他技巧</li>
+      </ol>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 齐次方程</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：求解 $y' = \dfrac{y}{x} + \tan\dfrac{y}{x}$。</p>
+        <p><strong>解</strong>：这是齐次方程。令 $u = \dfrac{y}{x}$，则 $y = ux$，$y' = u'x + u$。</p>
+        <p>代入：$u'x + u = u + \tan u$，即 $u'x = \tan u$。</p>
+        <p>分离变量：$\dfrac{\dd u}{\tan u} = \dfrac{\dd x}{x}$，即 $\cot u \dd u = \dfrac{\dd x}{x}$</p>
+        <p>积分：$\ln|\sin u| = \ln|x| + C_1$，即 $\sin u = Cx$</p>
+        <p>回代：$\sin\dfrac{y}{x} = Cx$，通解为 $\sin\dfrac{y}{x} = Cx$。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · Riccati 方程（化归思想）</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：已知 $y_1 = x$ 是方程 $y' = y^2 - \dfrac{y}{x} + \dfrac{1}{x^2}$ 的一个特解，求通解。</p>
+        <p><strong>解</strong>：令 $y = y_1 + z = x + z$，代入方程。</p>
+        <p>$y' = 1 + z'$，$y^2 = x^2 + 2xz + z^2$</p>
+        <p>$1 + z' = x^2 + 2xz + z^2 - \dfrac{x+z}{x} + \dfrac{1}{x^2}$</p>
+        <p>$= x^2 + 2xz + z^2 - 1 - \dfrac{z}{x} + \dfrac{1}{x^2}$</p>
+        <p>利用 $y_1 = x$ 是特解，化简得 $z' = \left(2x - \dfrac{1}{x}\right)z + z^2$。</p>
+        <p>这是关于 $z$ 的 Bernoulli 方程（$n = 2$），令 $w = z^{-1}$ 可化为线性方程求解。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="ch1.html" class="prev">第一章</a>
+    <a href="ch3.html" class="next">第三章</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>常微分方程复习指南 · 基于王高雄教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

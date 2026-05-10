@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第四章 · 整环的因子分解</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          ZZ: '\\mathbb{Z}',
+          FF: '\\mathbb{F}',
+          grp: '\\mathrm',
+          abs: ['\\left| #1 \\right|', 1]
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">抽象代数</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第四章 · 整环的因子分解</h1>
+    <p>整数分解的推广：Euclid 整环、主理想整环与唯一分解整环，因子分解的三种理想模型。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">整除与相伴</a></li>
+      <li><a href="#s2">Euclid 整环 (ED)</a></li>
+      <li><a href="#s3">主理想整环 (PID)</a></li>
+      <li><a href="#s4">唯一分解整环 (UFD)</a></li>
+      <li><a href="#s5">三种整环的关系</a></li>
+      <li><a href="#s6">多项式环的因子分解</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 4.1 整除与相伴 ==================== -->
+  <div class="section" id="s1">
+    <h2>4.1 整除与相伴</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 整除与相伴</div>
+      <p>设 $R$ 是整环，$a, b \in R$。</p>
+      <p><strong>整除</strong>：若 $\exists\, c \in R$ 使得 $b = ac$，称 $a$ <strong>整除</strong> $b$，记为 $a \mid b$。</p>
+      <p><strong>相伴</strong>：若 $a \mid b$ 且 $b \mid a$，称 $a$ 与 $b$ <strong>相伴</strong>，记为 $a \sim b$。</p>
+      <p>$a \sim b \iff \exists\, u \in R^*$（单位）使得 $b = au$。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 不可约元与素元</div>
+      <p>设 $R$ 是整环，$a \in R$，$a$ 不是零也不是单位。</p>
+      <p><strong>不可约元</strong>：若 $a = bc$ 则 $b$ 或 $c$ 是单位（不能做"非平凡"分解）。</p>
+      <p><strong>素元</strong>：若 $a \mid bc$ 则 $a \mid b$ 或 $a \mid c$。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">素元 vs 不可约元</div>
+      <p>在一般整环中：素元 $\implies$ 不可约元，但反过来不一定成立。</p>
+      <p>在 UFD 中两者等价。这个区别是因子分解理论的关键。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 4.2 ED ==================== -->
+  <div class="section" id="s2">
+    <h2>4.2 Euclid 整环 (ED)</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · Euclid 整环</div>
+      <p>整环 $R$ 上若存在函数 $\delta: R \setminus \{0\} \to \NN \cup \{0\}$ 使得：</p>
+      <ol>
+        <li>$\forall a, b \in R$，$b \neq 0$，$\exists\, q, r \in R$ 使得 $a = bq + r$，其中 $r = 0$ 或 $\delta(r) < \delta(b)$</li>
+        <li>$\forall a, b \in R \setminus \{0\}$，$\delta(a) \leq \delta(ab)$</li>
+      </ol>
+      <p>则称 $R$ 为 <strong>Euclid 整环</strong>。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例1 · 经典的 ED</div>
+      <ul>
+        <li>$\ZZ$ 是 ED，$\delta(a) = |a|$（带余除法）</li>
+        <li>$\FF[x]$（域上多项式环）是 ED，$\delta(f) = \deg f$（多项式带余除法）</li>
+        <li>Gauss 整数环 $\ZZ[i] = \{a + bi : a, b \in \ZZ\}$ 是 ED，$\delta(a+bi) = a^2 + b^2$</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ==================== 4.3 PID ==================== -->
+  <div class="section" id="s3">
+    <h2>4.3 主理想整环 (PID)</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 主理想整环</div>
+      <p>整环 $R$ 中若每个理想都是主理想（由单个元素生成），则称 $R$ 为<strong>主理想整环</strong>（PID）。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">ED 是 PID</div>
+      <p>设 $R$ 是 Euclid 整环，则 $R$ 是主理想整环。</p>
+      <p><strong>证明思路</strong>：设 $I$ 是 $R$ 的理想，取 $I$ 中 $\delta$ 值最小的非零元素 $d$，证明 $I = (d)$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">PID 中不可约元等价于素元</div>
+      <p>在 PID 中，不可约元与素元等价。这是 PID 中因子分解唯一性的关键。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 4.4 UFD ==================== -->
+  <div class="section" id="s4">
+    <h2>4.4 唯一分解整环 (UFD)</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 唯一分解整环</div>
+      <p>整环 $R$ 若满足：</p>
+      <ol>
+        <li>$R$ 中每个非零非单位元素都可以分解为不可约元的乘积</li>
+        <li>分解在相伴意义下<strong>唯一</strong>（不计次序和单位因子）</li>
+      </ol>
+      <p>则称 $R$ 为<strong>唯一分解整环</strong>（UFD）。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">PID 是 UFD</div>
+      <p>主理想整环一定是唯一分解整环。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例2 · UFD 但不是 PID</div>
+      <p>$\ZZ[x]$ 是 UFD 但不是 PID。例如理想 $(2, x) = \{f \in \ZZ[x] : f(0) \text{ 是偶数}\}$ 不是主理想。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 4.5 三种整环的关系 ==================== -->
+  <div class="section" id="s5">
+    <h2>4.5 三种整环的关系</h2>
+
+    <div class="box box-formula">
+      <div class="box-title">核心关系链</div>
+      <div class="formula-highlight">$$\text{ED} \subset \text{PID} \subset \text{UFD} \subset \text{整环}$$</div>
+      <p>每个包含都是严格的（存在反例使反过来不成立）。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例3 · 反例</div>
+      <table>
+        <tr><th>类型</th><th>例子</th><th>说明</th></tr>
+        <tr><td>ED $\subset$ PID</td><td>$\ZZ$ 是 ED 也是 PID</td><td>所有 ED 都是 PID</td></tr>
+        <tr><td>PID $\not\supset$ UFD</td><td>$\ZZ[x]$ 是 UFD 不是 PID</td><td>$(2, x)$ 不是主理想</td></tr>
+        <tr><td>UFD $\not\supset$ 整环</td><td>$\ZZ[\sqrt{-5}]$ 不是 UFD</td><td>$6 = 2 \cdot 3 = (1+\sqrt{-5})(1-\sqrt{-5})$</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ==================== 4.6 多项式环 ==================== -->
+  <div class="section" id="s6">
+    <h2>4.6 多项式环的因子分解</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">Gauss 引理</div>
+      <p>$\ZZ[x]$ 中的本原多项式在 $\ZZ[x]$ 中可约 $\iff$ 在 $\QQ[x]$ 中可约。</p>
+      <p>推论：若 $\ZZ[x]$ 中本原多项式在 $\QQ$ 上不可约，则在 $\ZZ$ 上也不可约。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">$R[x]$ 是 UFD</div>
+      <p>若 $R$ 是 UFD，则 $R[x]$ 也是 UFD。</p>
+      <p>推论：$\ZZ[x_1, x_2, \ldots, x_n]$ 是 UFD，$\FF[x_1, x_2, \ldots, x_n]$（$\FF$ 是域）也是 UFD。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">Eisenstein 不可约判别法</div>
+      <p>设 $f(x) = a_n x^n + \cdots + a_0 \in \ZZ[x]$。若存在素数 $p$ 使得：</p>
+      <ol>
+        <li>$p \nmid a_n$</li>
+        <li>$p \mid a_i$（$i = 0, 1, \ldots, n-1$）</li>
+        <li>$p^2 \nmid a_0$</li>
+      </ol>
+      <p>则 $f(x)$ 在 $\QQ[x]$ 中不可约。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · Eisenstein 判别法</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：证明 $f(x) = x^5 + 3x^4 - 6x^2 + 9x + 3$ 在 $\QQ$ 上不可约。</p>
+        <p><strong>证明</strong>：取 $p = 3$：</p>
+        <p>$3 \nmid 1$（首项系数）✓</p>
+        <p>$3 \mid 3, 3 \mid 0, 3 \mid (-6), 3 \mid 9, 3 \mid 3$ ✓</p>
+        <p>$9 \nmid 3$（常数项）✓</p>
+        <p>由 Eisenstein 判别法，$f(x)$ 在 $\QQ$ 上不可约。$\blacksquare$</p>
+      </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">本章核心要点</div>
+      <ol>
+        <li>ED $\subset$ PID $\subset$ UFD，每层都有经典的判别条件</li>
+        <li>在 PID/UFD 中，不可约元等价于素元</li>
+        <li>$\ZZ[x]$ 和 $\FF[x]$ 都是 UFD 的重要例子</li>
+        <li>Eisenstein 判别法是判断多项式不可约的有力工具</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="ch3.html" class="prev">第三章</a>
+    <a href="ch5.html" class="next">第五章</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>抽象代数复习指南 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

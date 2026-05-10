@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第六章 · 常微分方程的幂级数解法</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          dd: '\\mathrm{d}',
+          eps: '\\varepsilon'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">常微分方程</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第六章 · 常微分方程的幂级数解法</h1>
+    <p>当初等方法失效时：用幂级数求解微分方程，Frobenius 方法与正则奇点理论。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">幂级数解法的基本思想</a></li>
+      <li><a href="#s2">常点邻域的幂级数解</a></li>
+      <li><a href="#s3">正则奇点与 Frobenius 方法</a></li>
+      <li><a href="#s4">Bessel 方程</a></li>
+      <li><a href="#s5">Legendre 方程</a></li>
+      <li><a href="#s6">综合例题</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 6.1 基本思想 ==================== -->
+  <div class="section" id="s1">
+    <h2>6.1 幂级数解法的基本思想</h2>
+
+    <p>许多重要的微分方程（如 Bessel 方程、Legendre 方程）无法用初等函数表示解。幂级数解法提供了构造解的系统方法。</p>
+
+    <div class="box box-formula">
+      <div class="box-title">基本思路</div>
+      <p>对二阶线性方程 $y'' + p(x)y' + q(x)y = 0$，假设解具有幂级数形式</p>
+      $$y = \sum_{n=0}^{\infty} a_n (x - x_0)^n$$
+      <p>代入方程，比较系数得到递推关系，从而确定系数 $a_n$。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 6.2 常点 ==================== -->
+  <div class="section" id="s2">
+    <h2>6.2 常点邻域的幂级数解</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 常点与奇点</div>
+      <p>对 $y'' + p(x)y' + q(x)y = 0$，若 $p(x)$ 和 $q(x)$ 在 $x_0$ 处解析（可展开为收敛幂级数），则 $x_0$ 称为方程的<strong>常点</strong>，否则称为<strong>奇点</strong>。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">常点邻域的幂级数解</div>
+      <p>若 $x_0$ 是方程的常点，则方程在 $x_0$ 的某个邻域内存在两个线性无关的幂级数解。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 常点处的幂级数解</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：求 $y'' - xy = 0$ 在 $x = 0$ 附近的幂级数解。</p>
+        <p><strong>解</strong>：$p(x) = 0$，$q(x) = -x$，$x = 0$ 是常点。设 $y = \displaystyle\sum_{n=0}^{\infty} a_n x^n$。</p>
+        <p>$y'' = \displaystyle\sum_{n=2}^{\infty} n(n-1) a_n x^{n-2} = \sum_{n=0}^{\infty} (n+2)(n+1) a_{n+2} x^n$</p>
+        <p>$xy = \displaystyle\sum_{n=0}^{\infty} a_n x^{n+1} = \sum_{n=1}^{\infty} a_{n-1} x^n$</p>
+        <p>代入 $y'' - xy = 0$，比较 $x^n$ 的系数：</p>
+        <p>$n = 0$：$2 \cdot 1 \cdot a_2 = 0$，$a_2 = 0$</p>
+        <p>$n \geq 1$：$(n+2)(n+1) a_{n+2} - a_{n-1} = 0$，即 $a_{n+2} = \dfrac{a_{n-1}}{(n+2)(n+1)}$</p>
+        <p>取 $a_0 = 1, a_1 = 0$：$a_3 = a_6 = \cdots = 0$，$a_2 = a_5 = \cdots = 0$，得 $y_1 = 1$（截断）。</p>
+        <p>取 $a_0 = 0, a_1 = 1$：$a_4 = \dfrac{a_1}{4 \cdot 3} = \dfrac{1}{12}$，$a_7 = \dfrac{a_4}{7 \cdot 6} = \dfrac{1}{504}$，……</p>
+        <p>$y_2 = x + \dfrac{x^4}{12} + \dfrac{x^7}{504} + \cdots$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 6.3 Frobenius 方法 ==================== -->
+  <div class="section" id="s3">
+    <h2>6.3 正则奇点与 Frobenius 方法</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 正则奇点</div>
+      <p>设 $x_0$ 是 $y'' + p(x)y' + q(x)y = 0$ 的奇点。若</p>
+      $$(x - x_0) p(x) \quad \text{和} \quad (x - x_0)^2 q(x)$$
+      <p>在 $x_0$ 处解析，则 $x_0$ 称为<strong>正则奇点</strong>，否则为<strong>非正则奇点</strong>。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">Frobenius 方法</div>
+      <p>在正则奇点 $x_0$ 处，设解具有形式：</p>
+      $$y = (x - x_0)^r \sum_{n=0}^{\infty} a_n (x - x_0)^n, \quad a_0 \neq 0$$
+      <p>代入方程得到<strong>指标方程</strong>（indicial equation），确定 $r$ 的值，再由递推关系确定 $a_n$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">Frobenius 定理</div>
+      <p>设 $x_0$ 是正则奇点，指标方程的两个根为 $r_1, r_2$（$r_1 \geq r_2$）。</p>
+      <ol>
+        <li>$r_1 - r_2 \notin \ZZ$：两个线性无关的 Frobenius 解</li>
+        <li>$r_1 = r_2$：一个 Frobenius 解，第二个解含对数项</li>
+        <li>$r_1 - r_2 \in \ZZ^+$：一个 Frobenius 解，第二个解可能含对数项</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ==================== 6.4 Bessel 方程 ==================== -->
+  <div class="section" id="s4">
+    <h2>6.4 Bessel 方程</h2>
+
+    <div class="box box-formula">
+      <div class="box-title">Bessel 方程</div>
+      $$x^2 y'' + xy' + (x^2 - \nu^2) y = 0$$
+      <p>$x = 0$ 是正则奇点。化为标准形式：$y'' + \dfrac{1}{x}y' + \left(1 - \dfrac{\nu^2}{x^2}\right)y = 0$。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">Bessel 函数</div>
+      <p>指标方程：$r(r-1) + r - \nu^2 = 0$，即 $r^2 = \nu^2$，$r = \pm\nu$。</p>
+      <p>当 $\nu \notin \ZZ$ 时，两个线性无关解为 <strong>Bessel 函数</strong>：</p>
+      $$J_\nu(x) = \sum_{k=0}^{\infty} \frac{(-1)^k}{k! \Gamma(k+\nu+1)} \left(\frac{x}{2}\right)^{2k+\nu}$$
+      $$J_{-\nu}(x) = \sum_{k=0}^{\infty} \frac{(-1)^k}{k! \Gamma(k-\nu+1)} \left(\frac{x}{2}\right)^{2k-\nu}$$
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">Bessel 方程的物理背景</div>
+      <p>Bessel 方程在物理学中无处不在：圆柱坐标下的热传导、波动问题都会导出 Bessel 方程。$J_\nu(x)$ 描述了圆对称系统的振动模式。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 6.5 Legendre 方程 ==================== -->
+  <div class="section" id="s5">
+    <h2>6.5 Legendre 方程</h2>
+
+    <div class="box box-formula">
+      <div class="box-title">Legendre 方程</div>
+      $$(1 - x^2) y'' - 2xy' + n(n+1) y = 0$$
+      <p>$x = 0$ 是常点，$x = \pm 1$ 是正则奇点。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">Legendre 多项式</div>
+      <p>当 $n$ 为非负整数时，方程有一个 $n$ 次多项式解——<strong>Legendre 多项式</strong>：</p>
+      $$P_n(x) = \frac{1}{2^n n!} \frac{\dd^n}{\dd x^n}(x^2 - 1)^n$$
+      <p>（Rodrigues 公式）</p>
+      <p>前几个：$P_0(x) = 1$，$P_1(x) = x$，$P_2(x) = \dfrac{3x^2 - 1}{2}$，$P_3(x) = \dfrac{5x^3 - 3x}{2}$</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">Legendre 方程的物理背景</div>
+      <p>Legendre 方程在球坐标下的 Laplace 方程分离变量时出现。$P_n(x)$ 是球谐函数的基础，在电磁学、量子力学中有广泛应用。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 6.6 综合例题 ==================== -->
+  <div class="section" id="s6">
+    <h2>6.6 综合例题</h2>
+
+    <div class="box box-note">
+      <div class="box-title">本章核心要点</div>
+      <ol>
+        <li>常点处的解可以展开为 Taylor 级数</li>
+        <li>正则奇点处用 Frobenius 方法，解含 $(x-x_0)^r$ 因子</li>
+        <li>指标方程决定 $r$ 的值，递推关系决定系数</li>
+        <li>Bessel 方程和 Legendre 方程是最重要的特殊函数方程</li>
+      </ol>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · Euler 方程的 Frobenius 解法</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：用 Frobenius 方法求 $x^2 y'' + xy' - y = 0$ 在 $x = 0$ 附近的解。</p>
+        <p><strong>解</strong>：$p(x) = \dfrac{1}{x}$，$q(x) = -\dfrac{1}{x^2}$，$x = 0$ 是正则奇点。</p>
+        <p>设 $y = x^r \displaystyle\sum_{n=0}^{\infty} a_n x^n$，代入得指标方程：</p>
+        <p>$r(r-1) + r - 1 = 0$，即 $r^2 - 1 = 0$，$r = \pm 1$。</p>
+        <p>$r_1 - r_2 = 2 \in \ZZ$，但代入后发现 $a_n = 0$（$n \geq 1$），得 $y_1 = x$。</p>
+        <p>第二个解：$y_2 = \dfrac{1}{x}$（$r = -1$），不含对数项。</p>
+        <p>通解：$y = C_1 x + C_2 \dfrac{1}{x}$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="ch5.html" class="prev">第五章</a>
+    <a href="index.html" class="next">首页</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>常微分方程复习指南 · 基于王高雄教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

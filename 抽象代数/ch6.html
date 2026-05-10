@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第六章 · Galois 理论</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          ZZ: '\\mathbb{Z}',
+          FF: '\\mathbb{F}',
+          grp: '\\mathrm',
+          abs: ['\\left| #1 \\right|', 1]
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">抽象代数</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第六章 · Galois 理论</h1>
+    <p>抽象代数的高峰：Galois 对应将域扩张与群联系起来，解决方程的可解性与尺规作图问题。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">Galois 群</a></li>
+      <li><a href="#s2">正规扩张与可分扩张</a></li>
+      <li><a href="#s3">Galois 对应</a></li>
+      <li><a href="#s4">方程的 Galois 群</a></li>
+      <li><a href="#s5">方程的可解性</a></li>
+      <li><a href="#s6">尺规作图</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 6.1 Galois 群 ==================== -->
+  <div class="section" id="s1">
+    <h2>6.1 Galois 群</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · Galois 群</div>
+      <p>设 $E/F$ 是域扩张。<strong>Galois 群</strong> $\operatorname{Gal}(E/F)$ 是所有保持 $F$ 中元素不动的 $E$ 的自同构构成的群：</p>
+      $$\operatorname{Gal}(E/F) = \{\sigma \in \operatorname{Aut}(E) : \sigma(a) = a, \forall a \in F\}$$
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例1 · 简单的 Galois 群</div>
+      <ul>
+        <li>$\operatorname{Gal}(\QQ(\sqrt{2})/\QQ) \cong \ZZ_2$（$\sqrt{2} \mapsto \pm\sqrt{2}$）</li>
+        <li>$\operatorname{Gal}(\CC/\RR) \cong \ZZ_2$（复共轭 $z \mapsto \bar{z}$）</li>
+        <li>$\operatorname{Gal}(\QQ(\sqrt[3]{2})/\QQ) = \{1\}$（$\sqrt[3]{2}$ 的其他根不在 $\QQ(\sqrt[3]{2})$ 中）</li>
+      </ul>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">Galois 群的阶</div>
+      <p>对有限 Galois 扩张 $E/F$：</p>
+      $$|\operatorname{Gal}(E/F)| = [E : F]$$
+    </div>
+  </div>
+
+  <!-- ==================== 6.2 正规扩张与可分扩张 ==================== -->
+  <div class="section" id="s2">
+    <h2>6.2 正规扩张与可分扩张</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 正规扩张</div>
+      <p>域扩张 $E/F$ 称为<strong>正规扩张</strong>，若 $E$ 是 $F[x]$ 中某个多项式族的分裂域。</p>
+      <p>等价条件：若 $f(x) \in F[x]$ 在 $E$ 中有一个根，则 $f(x)$ 在 $E$ 中完全分解。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 可分扩张</div>
+      <p>代数扩张 $E/F$ 称为<strong>可分扩张</strong>，若 $E$ 中每个元素在 $F$ 上的最小多项式都是可分的（无重根）。</p>
+      <p>特征为 0 的域上的代数扩张总是可分的。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">Galois 扩张</div>
+      <p>有限扩张 $E/F$ 是 <strong>Galois 扩张</strong> $\iff$ $E/F$ 既正规又可分 $\iff$ $E$ 是某个可分多项式的分裂域。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 6.3 Galois 对应 ==================== -->
+  <div class="section" id="s3">
+    <h2>6.3 Galois 对应</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">Galois 对应（基本定理）</div>
+      <p>设 $E/F$ 是有限 Galois 扩张，$G = \operatorname{Gal}(E/F)$。则在以下集合之间存在一一对应：</p>
+      $$\{F \text{ 的中间域 } K\} \longleftrightarrow \{G \text{ 的子群 } H\}$$
+      <p>对应关系：</p>
+      $$K \mapsto \operatorname{Gal}(E/K) \quad (\text{中间域} \to \text{子群})$$
+      $$H \mapsto E^H = \{a \in E : \sigma(a) = a, \forall \sigma \in H\} \quad (\text{子群} \to \text{中间域})$$
+      <p>且 $[E : K] = |H|$，$[K : F] = [G : H]$。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">Galois 对应的意义</div>
+      <p>Galois 对应是整个理论的核心：它把域论问题转化为群论问题。由于群论通常更易处理，这个对应非常有力。</p>
+      <p>特别地：$K/F$ 是正规扩张 $\iff \operatorname{Gal}(E/K) \trianglelefteq \operatorname{Gal}(E/F)$，此时 $\operatorname{Gal}(K/F) \cong G/H$。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · Galois 对应</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：描述 $\QQ(\sqrt{2}, \sqrt{3})/\QQ$ 的 Galois 对应。</p>
+        <p><strong>解</strong>：$E = \QQ(\sqrt{2}, \sqrt{3})$，$[E:\QQ] = 4$。</p>
+        <p>$G = \operatorname{Gal}(E/\QQ) \cong V_4 = \{1, \sigma, \tau, \sigma\tau\}$</p>
+        <p>其中 $\sigma(\sqrt{2}) = -\sqrt{2}, \sigma(\sqrt{3}) = \sqrt{3}$；$\tau(\sqrt{2}) = \sqrt{2}, \tau(\sqrt{3}) = -\sqrt{3}$。</p>
+        <p>Galois 对应：</p>
+        <table>
+          <tr><th>子群</th><th>固定域</th></tr>
+          <tr><td>$G$</td><td>$\QQ$</td></tr>
+          <tr><td>$\{1, \sigma\}$</td><td>$\QQ(\sqrt{3})$</td></tr>
+          <tr><td>$\{1, \tau\}$</td><td>$\QQ(\sqrt{2})$</td></tr>
+          <tr><td>$\{1, \sigma\tau\}$</td><td>$\QQ(\sqrt{6})$</td></tr>
+          <tr><td>$\{1\}$</td><td>$\QQ(\sqrt{2}, \sqrt{3})$</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 6.4 方程的 Galois 群 ==================== -->
+  <div class="section" id="s4">
+    <h2>6.4 方程的 Galois 群</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 方程的 Galois 群</div>
+      <p>设 $f(x) \in F[x]$，$E$ 是 $f(x)$ 的分裂域。$f(x)$ 的 <strong>Galois 群</strong>定义为 $\operatorname{Gal}(E/F)$。</p>
+      <p>Galois 群作用在 $f(x)$ 的根集上，可以看作根的置换群的子群。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">Galois 群的阶</div>
+      $$|\operatorname{Gal}(E/F)| = [E : F]$$
+      <p>$f(x)$ 在 $F$ 上不可约且 $[E : F] = n!$ $\iff$ $\operatorname{Gal}(E/F) \cong S_n$（$f$ 的 Galois 群是"最大的"）。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">不可约多项式的 Galois 群</div>
+      <p>设 $f(x)$ 是 $F$ 上的 $n$ 次不可约多项式，则 $\operatorname{Gal}(E/F)$ 可以看作 $S_n$ 的子群，且是<strong>传递</strong>的（对根的置换是传递的）。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 6.5 方程的可解性 ==================== -->
+  <div class="section" id="s5">
+    <h2>6.5 方程的可解性</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 可解群</div>
+      <p>群 $G$ 称为<strong>可解群</strong>，若存在正规列</p>
+      $$\{e\} = G_0 \trianglelefteq G_1 \trianglelefteq \cdots \trianglelefteq G_n = G$$
+      <p>使得每个商群 $G_{i+1}/G_i$ 都是 Abel 群。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">Galois 定理 · 方程的可解性</div>
+      <p>$F$ 上的多项式 $f(x)$ 可以用根式求解 $\iff$ $f(x)$ 的 Galois 群是可解群。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">$S_n$ 的可解性</div>
+      <ol>
+        <li>$S_n$（$n \leq 4$）是可解群</li>
+        <li>$S_n$（$n \geq 5$）不是可解群</li>
+      </ol>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">Abel-Ruffini 定理</div>
+      <p>$n \geq 5$ 时，一般 $n$ 次方程<strong>不能用根式求解</strong>。</p>
+      <p>例如一般五次方程 $x^5 + ax^4 + bx^3 + cx^2 + dx + e = 0$ 的 Galois 群是 $S_5$，不可解。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">Galois 的天才</div>
+      <p>Galois 在 20 岁时就建立了这套理论，彻底解决了困扰数学家三百年的"五次方程求根公式"问题。他的工作在去世后才被理解和认可，是数学史上最悲壮的故事之一。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 6.6 尺规作图 ==================== -->
+  <div class="section" id="s6">
+    <h2>6.6 尺规作图</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">尺规作图的代数刻画</div>
+      <p>一个实数 $\alpha$ 可以用尺规作图 $\iff$ 存在域链</p>
+      $$\QQ = F_0 \subset F_1 \subset \cdots \subset F_n$$
+      <p>使得 $\alpha \in F_n$，且 $[F_{i+1} : F_i] = 2$ 对所有 $i$ 成立。</p>
+      <p>推论：可作图的数的扩张次数必须是 2 的幂。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例2 · 三大古典问题</div>
+      <ol>
+        <li><strong>倍立方</strong>：作 $\sqrt[3]{2}$。$[\QQ(\sqrt[3]{2}) : \QQ] = 3$，不是 2 的幂，<strong>不可能</strong>。</li>
+        <li><strong>三等分角</strong>：一般角不可三等分（$\cos 20°$ 的最小多项式次数为 3）。</li>
+        <li><strong>化圆为方</strong>：作 $\sqrt{\pi}$。$\pi$ 是超越数，<strong>不可能</strong>。</li>
+      </ol>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例3 · 正多边形的可作图性</div>
+      <p>正 $n$ 边形可尺规作图 $\iff$ $n = 2^a p_1 p_2 \cdots p_k$，其中 $p_i$ 是互不相同的 <strong>Fermat 素数</strong>（形如 $2^{2^m} + 1$ 的素数）。</p>
+      <p>已知的 Fermat 素数：$3, 5, 17, 257, 65537$。</p>
+      <p>正 7 边形、正 9 边形、正 11 边形都不可尺规作图。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">Galois 理论的核心思想</div>
+      <ol>
+        <li>域扩张与子群的对应（Galois 对应）</li>
+        <li>方程的可解性取决于 Galois 群的结构</li>
+        <li>$S_5$ 不可解 $\implies$ 五次方程无根式解</li>
+        <li>尺规作图的限制本质上是域扩张次数的限制</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="ch5.html" class="prev">第五章</a>
+    <a href="index.html" class="next">首页</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>抽象代数复习指南 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

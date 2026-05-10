@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第一章 · 群</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          ZZ: '\\mathbb{Z}',
+          FF: '\\mathbb{F}',
+          grp: '\\mathrm',
+          abs: ['\\left| #1 \\right|', 1]
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">抽象代数</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第一章 · 群</h1>
+    <p>代数结构的起点：从群的定义出发，建立子群、Lagrange 定理、循环群与置换群的基本理论。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">群的定义与基本性质</a></li>
+      <li><a href="#s2">子群</a></li>
+      <li><a href="#s3">Lagrange 定理</a></li>
+      <li><a href="#s4">循环群</a></li>
+      <li><a href="#s5">置换群</a></li>
+      <li><a href="#s6">综合例题</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 1.1 群的定义 ==================== -->
+  <div class="section" id="s1">
+    <h2>1.1 群的定义与基本性质</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 群</div>
+      <p>设 $G$ 是一个非空集合，"$\cdot$" 是 $G$ 上的一个二元运算。若满足以下四条公理，则称 $(G, \cdot)$ 为一个<strong>群</strong>：</p>
+      <ol>
+        <li><strong>封闭性</strong>：$\forall a, b \in G$，$a \cdot b \in G$</li>
+        <li><strong>结合律</strong>：$\forall a, b, c \in G$，$(a \cdot b) \cdot c = a \cdot (b \cdot c)$</li>
+        <li><strong>单位元</strong>：$\exists\, e \in G$，$\forall a \in G$，$e \cdot a = a \cdot e = a$</li>
+        <li><strong>逆元</strong>：$\forall a \in G$，$\exists\, a^{-1} \in G$，$a \cdot a^{-1} = a^{-1} \cdot a = e$</li>
+      </ol>
+      <p>若还满足 <strong>交换律</strong> $a \cdot b = b \cdot a$，则称 $G$ 为<strong>交换群</strong>（或 <strong>Abel 群</strong>）。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例1 · 常见的群</div>
+      <table>
+        <tr><th>集合</th><th>运算</th><th>单位元</th><th>逆元</th><th>是否交换</th></tr>
+        <tr><td>$(\ZZ, +)$</td><td>加法</td><td>$0$</td><td>$-a$</td><td>是</td></tr>
+        <tr><td>$(\RR, +)$</td><td>加法</td><td>$0$</td><td>$-a$</td><td>是</td></tr>
+        <tr><td>$(\RR \setminus \{0\}, \times)$</td><td>乘法</td><td>$1$</td><td>$a^{-1}$</td><td>是</td></tr>
+        <tr><td>$(S_n, \circ)$</td><td>置换复合</td><td>恒等置换</td><td>逆置换</td><td>否（$n \geq 3$）</td></tr>
+        <tr><td>$(GL_n(\RR), \times)$</td><td>矩阵乘法</td><td>$I_n$</td><td>$A^{-1}$</td><td>否</td></tr>
+      </table>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">群的基本性质</div>
+      <p>设 $G$ 是群，则：</p>
+      <ol>
+        <li>单位元<strong>唯一</strong></li>
+        <li>每个元素的逆元<strong>唯一</strong></li>
+        <li>$(a^{-1})^{-1} = a$</li>
+        <li>$(a \cdot b)^{-1} = b^{-1} \cdot a^{-1}$（注意顺序反转）</li>
+        <li><strong>消去律</strong>：$ab = ac \Rightarrow b = c$，$ba = ca \Rightarrow b = c$</li>
+      </ol>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">群中没有"除法"，但有消去律</div>
+      <p>群不要求交换律，所以没有通常意义的"除法"。但消去律在群中成立——这是群的一个重要性质，在证明中经常用到。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 1.2 子群 ==================== -->
+  <div class="section" id="s2">
+    <h2>1.2 子群</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 子群</div>
+      <p>设 $H$ 是群 $G$ 的非空子集。若 $H$ 在 $G$ 的运算下也构成群，则称 $H$ 为 $G$ 的<strong>子群</strong>，记为 $H \leq G$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">子群判别法</div>
+      <p>设 $H$ 是群 $G$ 的<strong>非空</strong>子集，则 $H \leq G$ 当且仅当：</p>
+      <p><strong>判别法一</strong>（两条条件）：$\forall a, b \in H$：</p>
+      <ol>
+        <li>$a \cdot b \in H$（封闭性）</li>
+        <li>$a^{-1} \in H$（逆元封闭）</li>
+      </ol>
+      <p><strong>判别法二</strong>（一条条件）：$\forall a, b \in H$，$a b^{-1} \in H$。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例2 · 常见子群</div>
+      <ul>
+        <li>$n\ZZ = \{nk : k \in \ZZ\}$ 是 $(\ZZ, +)$ 的子群</li>
+        <li>$SL_n(\RR) = \{A \in GL_n(\RR) : \det A = 1\}$ 是 $GL_n(\RR)$ 的子群</li>
+        <li>任何群 $G$ 都有两个平凡子群：$\{e\}$ 和 $G$ 本身</li>
+      </ul>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">子群的交仍是子群</div>
+      <p>若 $H_1 \leq G$，$H_2 \leq G$，则 $H_1 \cap H_2 \leq G$。</p>
+      <p>更一般地，任意多个子群的交仍是子群。但子群的<strong>并</strong>一般不是子群。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 1.3 Lagrange 定理 ==================== -->
+  <div class="section" id="s3">
+    <h2>1.3 Lagrange 定理</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 陪集</div>
+      <p>设 $H \leq G$，$a \in G$。则</p>
+      <p><strong>左陪集</strong>：$aH = \{ah : h \in H\}$</p>
+      <p><strong>右陪集</strong>：$Ha = \{ha : h \in H\}$</p>
+      <p>$H$ 的所有左陪集的个数称为 $H$ 在 $G$ 中的<strong>指数</strong>，记为 $[G : H]$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">Lagrange 定理</div>
+      <p>设 $G$ 是有限群，$H \leq G$，则</p>
+      <div class="formula-highlight">$$|G| = |H| \cdot [G : H]$$</div>
+      <p>即子群的阶整除群的阶。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">Lagrange 定理的推论</div>
+      <ol>
+        <li>有限群中，任何元素的阶整除群的阶</li>
+        <li>若 $|G| = p$（素数），则 $G$ 是循环群</li>
+        <li>若 $|G| = n$，则 $a^n = e$ 对所有 $a \in G$ 成立</li>
+      </ol>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">Lagrange 定理的逆命题不成立</div>
+      <p>Lagrange 定理说"子群的阶整除群的阶"，但反过来不成立——给定一个整除 $|G|$ 的正整数 $d$，$G$ 不一定有阶为 $d$ 的子群。</p>
+      <p>例如 $A_4$（12 阶交错群）没有 6 阶子群。但 Sylow 定理给出了部分逆命题。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · Lagrange 定理的应用</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：证明素数阶群必为循环群。</p>
+        <p><strong>证明</strong>：设 $|G| = p$（素数），取 $a \in G$，$a \neq e$。</p>
+        <p>由 Lagrange 定理，$\langle a \rangle$ 的阶整除 $p$。由于 $p$ 是素数，$\langle a \rangle$ 的阶为 $1$ 或 $p$。</p>
+        <p>因为 $a \neq e$，$\langle a \rangle$ 至少含 $e$ 和 $a$ 两个元素，所以 $|\langle a \rangle| = p = |G|$。</p>
+        <p>因此 $\langle a \rangle = G$，即 $G = \langle a \rangle$ 是循环群。$\blacksquare$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1.4 循环群 ==================== -->
+  <div class="section" id="s4">
+    <h2>1.4 循环群</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 循环群</div>
+      <p>若群 $G$ 中存在元素 $a$ 使得 $G = \{a^n : n \in \ZZ\}$，则称 $G$ 为<strong>循环群</strong>，$a$ 为 $G$ 的<strong>生成元</strong>，记为 $G = \langle a \rangle$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">循环群的结构</div>
+      <p>循环群的结构完全由生成元的阶决定：</p>
+      <ol>
+        <li>若 $a$ 的阶为无穷，则 $\langle a \rangle \cong (\ZZ, +)$</li>
+        <li>若 $a$ 的阶为 $n$，则 $\langle a \rangle \cong (\ZZ_n, +)$</li>
+      </ol>
+      <p>因此<strong>循环群在同构意义下只有两种</strong>：$\ZZ$ 和 $\ZZ_n$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">循环群的子群</div>
+      <ol>
+        <li>$(\ZZ, +)$ 的子群恰好是 $n\ZZ$（$n = 0, 1, 2, \ldots$）</li>
+        <li>$(\ZZ_n, +)$ 的子群恰好是 $d\ZZ_n$，其中 $d$ 整除 $n$</li>
+        <li>循环群的子群仍是循环群</li>
+      </ol>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">生成元的个数</div>
+      <p>$\ZZ_n$ 的生成元个数为 $\varphi(n)$（Euler 函数），即与 $n$ 互素且小于 $n$ 的正整数的个数。</p>
+      <p>例如 $\ZZ_{12}$ 的生成元是 $\{1, 5, 7, 11\}$，共 $\varphi(12) = 4$ 个。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 1.5 置换群 ==================== -->
+  <div class="section" id="s5">
+    <h2>1.5 置换群</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 置换与对称群</div>
+      <p>有限集合 $\{1, 2, \ldots, n\}$ 到自身的双射称为<strong>$n$ 元置换</strong>。所有 $n$ 元置换在复合运算下构成的群称为<strong>$n$ 次对称群</strong>，记为 $S_n$。</p>
+      <p>$|S_n| = n!$</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 轮换与对换</div>
+      <p><strong>$k$-轮换</strong>：$(a_1\, a_2\, \cdots\, a_k)$ 表示 $a_1 \to a_2 \to \cdots \to a_k \to a_1$，其余元素不变。</p>
+      <p><strong>对换</strong>：2-轮换 $(a\, b)$，只交换 $a$ 和 $b$。</p>
+      <p>任何置换都可以分解为<strong>不相交轮换</strong>的乘积（分解唯一，不计顺序）。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">置换的奇偶性</div>
+      <p>任何置换都可以分解为对换的乘积。虽然分解方式不唯一，但<strong>对换个数的奇偶性是唯一确定的</strong>。</p>
+      <p><strong>偶置换</strong>：能分解为偶数个对换的乘积。</p>
+      <p><strong>奇置换</strong>：能分解为奇数个对换的乘积。</p>
+      <p>$n$ 次<strong>交错群</strong> $A_n$ 是所有偶置换构成的 $S_n$ 的子群，$|A_n| = \frac{n!}{2}$。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">轮换的阶</div>
+      <p>$k$-轮换的阶为 $k$。</p>
+      <p>不相交轮换乘积的阶为各轮换阶的<strong>最小公倍数</strong>。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 置换的计算</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：将 $\sigma = \begin{pmatrix} 1 & 2 & 3 & 4 & 5 \\ 3 & 1 & 5 & 2 & 4 \end{pmatrix}$ 分解为不相交轮换，并判断奇偶性。</p>
+        <p><strong>解</strong>：追踪每个元素的映射：</p>
+        <p>$1 \to 3 \to 5 \to 4 \to 2 \to 1$</p>
+        <p>所以 $\sigma = (1\, 3\, 5\, 4\, 2)$，是一个 5-轮换。</p>
+        <p>5-轮换可以分解为 $5-1=4$ 个对换：$(1\, 2)(1\, 4)(1\, 5)(1\, 3)$，是偶数个，所以 $\sigma$ 是偶置换。</p>
+        <p>$\sigma$ 的阶为 5。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1.6 综合例题 ==================== -->
+  <div class="section" id="s6">
+    <h2>1.6 综合例题</h2>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 证明群方程的可解性</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：设 $G$ 是群，$a, b \in G$。证明方程 $ax = b$ 和 $ya = b$ 在 $G$ 中都有唯一解。</p>
+        <p><strong>证明</strong>：</p>
+        <p>对于 $ax = b$：两边左乘 $a^{-1}$，得 $x = a^{-1}b$。这是唯一解，因为若 $ax_1 = ax_2$，由消去律得 $x_1 = x_2$。</p>
+        <p>对于 $ya = b$：两边右乘 $a^{-1}$，得 $y = ba^{-1}$。同理唯一。$\blacksquare$</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · Klein 四元群</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：构造一个 4 阶非循环群。</p>
+        <p><strong>解</strong>：Klein 四元群 $V_4 = \{e, a, b, c\}$，运算表如下：</p>
+        <table>
+          <tr><th>$\cdot$</th><th>$e$</th><th>$a$</th><th>$b$</th><th>$c$</th></tr>
+          <tr><td>$e$</td><td>$e$</td><td>$a$</td><td>$b$</td><td>$c$</td></tr>
+          <tr><td>$a$</td><td>$a$</td><td>$e$</td><td>$c$</td><td>$b$</td></tr>
+          <tr><td>$b$</td><td>$b$</td><td>$c$</td><td>$e$</td><td>$a$</td></tr>
+          <tr><td>$c$</td><td>$c$</td><td>$b$</td><td>$a$</td><td>$e$</td></tr>
+        </table>
+        <p>每个非单位元的阶都是 2。$V_4$ 是 Abel 群但不是循环群（没有 4 阶元素）。</p>
+        <p>$V_4 \cong \ZZ_2 \times \ZZ_2$，是 $S_4$ 的子群。</p>
+      </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">本章核心要点</div>
+      <ol>
+        <li>群的四条公理（封闭性、结合律、单位元、逆元）缺一不可</li>
+        <li>子群判别法二（$ab^{-1} \in H$）是最简洁的判别工具</li>
+        <li>Lagrange 定理 $|G| = |H| \cdot [G:H]$ 是有限群理论的基石</li>
+        <li>循环群在同构意义下只有 $\ZZ$ 和 $\ZZ_n$ 两种</li>
+        <li>任何置换都可唯一分解为不相交轮换的乘积</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="index.html" class="prev">首页</a>
+    <a href="ch2.html" class="next">第二章</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>抽象代数复习指南 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

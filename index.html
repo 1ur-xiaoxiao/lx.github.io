@@ -115,6 +115,8 @@ body::before {
 .course-card:nth-child(5) { animation-delay: 0.75s; }
 .course-card:nth-child(6) { animation-delay: 0.9s; }
 .course-card:nth-child(7) { animation-delay: 1.05s; }
+.course-card:nth-child(8) { animation-delay: 1.2s; }
+.course-card:nth-child(9) { animation-delay: 1.35s; }
 
 .course-card::before {
   content: '';
@@ -151,6 +153,14 @@ body::before {
 
 .course-card.la::before {
   background: linear-gradient(90deg, #6b46c1, #2b6cb0);
+}
+
+.course-card.ode::before {
+  background: linear-gradient(90deg, #3182ce, #e53e3e);
+}
+
+.course-card.aa::before {
+  background: linear-gradient(90deg, #805ad5, #dd6b20);
 }
 
 .course-card:hover {
@@ -258,7 +268,7 @@ body::before {
 
 <div class="header">
   <h1>数学系课程总览</h1>
-  <p>数学分析、高等代数、概率论、数理统计、复变函数、偏微分方程与数据挖掘 · 在线复习指南</p>
+  <p>数学分析、高等代数、概率论、数理统计、复变函数、偏微分方程、常微分方程、抽象代数与数据挖掘 · 在线复习指南</p>
 </div>
 
 <div class="cards">
@@ -345,10 +355,34 @@ body::before {
     </div>
     <div class="card-enter">进入课程 <span class="arrow">→</span></div>
   </a>
+
+  <a href="常微分方程/index.html" class="course-card ode">
+    <span class="card-icon">🔄</span>
+    <div class="card-title">常微分方程</div>
+    <div class="card-subtitle">基于王高雄教材 · 六章系统讲解<br>从初等解法到幂级数解法，完整覆盖常微分方程核心内容</div>
+    <div class="card-meta">
+      <span class="tag">6 个章节</span>
+      <span class="tag">存在唯一性</span>
+      <span class="tag">特征根法</span>
+    </div>
+    <div class="card-enter">进入课程 <span class="arrow">→</span></div>
+  </a>
+
+  <a href="抽象代数/index.html" class="course-card aa">
+    <span class="card-icon">🔮</span>
+    <div class="card-title">抽象代数</div>
+    <div class="card-subtitle">从群到域再到 Galois 理论 · 六章系统讲解<br>代数结构的定义、性质与经典定理完整梳理</div>
+    <div class="card-meta">
+      <span class="tag">6 个章节</span>
+      <span class="tag">群论</span>
+      <span class="tag">Galois 理论</span>
+    </div>
+    <div class="card-enter">进入课程 <span class="arrow">→</span></div>
+  </a>
 </div>
 
 <div class="footer">
-  数学系 · 七门课程 · 在线复习平台
+  数学系 · 九门课程 · 在线复习平台
 </div>
 
 </body>

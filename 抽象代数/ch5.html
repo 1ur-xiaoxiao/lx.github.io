@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第五章 · 域</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          ZZ: '\\mathbb{Z}',
+          FF: '\\mathbb{F}',
+          grp: '\\mathrm',
+          abs: ['\\left| #1 \\right|', 1]
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">抽象代数</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第五章 · 域</h1>
+    <p>域的扩张理论：从素域到扩域，分裂域的构造与存在性，有限域的优美结构。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">域的基本概念与素域</a></li>
+      <li><a href="#s2">域的扩张</a></li>
+      <li><a href="#s3">代数扩张</a></li>
+      <li><a href="#s4">分裂域</a></li>
+      <li><a href="#s5">有限域</a></li>
+      <li><a href="#s6">综合例题</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 5.1 素域 ==================== -->
+  <div class="section" id="s1">
+    <h2>5.1 域的基本概念与素域</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 域</div>
+      <p><strong>域</strong>是交换除环：$(F, +, \cdot)$ 满足 $(F, +)$ 是 Abel 群，$(F \setminus \{0\}, \cdot)$ 是 Abel 群，乘法对加法满足分配律。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 素域</div>
+      <p>不含任何真子域的域称为<strong>素域</strong>。任何域都包含一个素域作为子域。</p>
+      <p>素域只有两种（在同构意义下）：</p>
+      <ol>
+        <li>$\QQ$（特征为 0 的素域）</li>
+        <li>$\ZZ_p$（特征为素数 $p$ 的素域）</li>
+      </ol>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 域的特征</div>
+      <p>域 $F$ 的<strong>特征</strong> $\operatorname{char}(F)$ 是使得 $\underbrace{1 + 1 + \cdots + 1}_{n} = 0$ 的最小正整数 $n$。若不存在这样的 $n$，则特征为 0。</p>
+      <p>域的特征要么是 0，要么是素数。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 5.2 域的扩张 ==================== -->
+  <div class="section" id="s2">
+    <h2>5.2 域的扩张</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 域的扩张</div>
+      <p>若 $F$ 是 $K$ 的子域（$K$ 是 $F$ 的扩域），记为 $K/F$，称 $K$ 是 $F$ 的一个<strong>扩张</strong>。</p>
+      <p>$K$ 可以看作 $F$ 上的<strong>向量空间</strong>，其维数称为扩张次数，记为 $[K : F]$。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">扩张次数的乘法公式</div>
+      <p>设 $F \subseteq L \subseteq K$，则</p>
+      $$[K : F] = [K : L] \cdot [L : F]$$
+      <p>特别地，$[K : F]$ 有限 $\iff$ $K$ 中每个元素都是 $F$ 上的代数元。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例1 · 扩张次数</div>
+      <ul>
+        <li>$[\QQ(\sqrt{2}) : \QQ] = 2$（基为 $\{1, \sqrt{2}\}$）</li>
+        <li>$[\QQ(\sqrt{2}, \sqrt{3}) : \QQ] = 4$（基为 $\{1, \sqrt{2}, \sqrt{3}, \sqrt{6}\}$）</li>
+        <li>$[\CC : \RR] = 2$（基为 $\{1, i\}$）</li>
+        <li>$[\RR : \QQ] = \infty$（$\pi$ 和 $e$ 都是超越数）</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ==================== 5.3 代数扩张 ==================== -->
+  <div class="section" id="s3">
+    <h2>5.3 代数扩张</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 代数元与超越元</div>
+      <p>设 $K/F$ 是域扩张，$\alpha \in K$。若存在非零多项式 $f(x) \in F[x]$ 使得 $f(\alpha) = 0$，则 $\alpha$ 称为 $F$ 上的<strong>代数元</strong>，否则称为<strong>超越元</strong>。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 最小多项式</div>
+      <p>代数元 $\alpha$ 在 $F$ 上的<strong>最小多项式</strong>是满足 $f(\alpha) = 0$ 的最低次数的首一不可约多项式，记为 $\operatorname{irr}(\alpha, F)$。</p>
+      <p>$[F(\alpha) : F] = \deg \operatorname{irr}(\alpha, F)$</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">单扩张的结构</div>
+      <p>若 $\alpha$ 是 $F$ 上的代数元，$\operatorname{irr}(\alpha, F) = x^n + a_{n-1}x^{n-1} + \cdots + a_0$，则</p>
+      $$F(\alpha) \cong F[x] / (\operatorname{irr}(\alpha, F))$$
+      <p>$F(\alpha)$ 中每个元素可以唯一表示为 $c_0 + c_1\alpha + \cdots + c_{n-1}\alpha^{n-1}$（$c_i \in F$）。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 单扩张</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：描述 $\QQ(\sqrt[3]{2})$。</p>
+        <p><strong>解</strong>：$\sqrt[3]{2}$ 的最小多项式是 $x^3 - 2$（在 $\QQ$ 上不可约，由 Eisenstein 判别法，$p = 2$）。</p>
+        <p>$[\QQ(\sqrt[3]{2}) : \QQ] = 3$，基为 $\{1, \sqrt[3]{2}, (\sqrt[3]{2})^2\}$。</p>
+        <p>$\QQ(\sqrt[3]{2}) = \{a + b\sqrt[3]{2} + c\sqrt[3]{4} : a, b, c \in \QQ\}$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 5.4 分裂域 ==================== -->
+  <div class="section" id="s4">
+    <h2>5.4 分裂域</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 分裂域</div>
+      <p>设 $f(x) \in F[x]$，$E/F$ 是域扩张。若：</p>
+      <ol>
+        <li>$f(x)$ 在 $E[x]$ 中可以分解为一次因式的乘积</li>
+        <li>$E$ 由 $f(x)$ 的根和 $F$ 生成</li>
+      </ol>
+      <p>则称 $E$ 为 $f(x)$ 在 $F$ 上的<strong>分裂域</strong>。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">分裂域的存在唯一性</div>
+      <p>任何非常数多项式 $f(x) \in F[x]$ 的分裂域存在且在同构意义下唯一。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例2 · 分裂域</div>
+      <ul>
+        <li>$x^2 - 2$ 在 $\QQ$ 上的分裂域是 $\QQ(\sqrt{2})$</li>
+        <li>$x^4 - 2$ 在 $\QQ$ 上的分裂域是 $\QQ(\sqrt[4]{2}, i)$，次数为 8</li>
+        <li>$x^2 + 1$ 在 $\RR$ 上的分裂域是 $\CC$</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ==================== 5.5 有限域 ==================== -->
+  <div class="section" id="s5">
+    <h2>5.5 有限域</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">有限域的存在与唯一性</div>
+      <p>对每个素数幂 $q = p^n$，存在唯一的（同构意义下）$q$ 元域 $\FF_q$（或 $GF(q)$）。</p>
+      <p>$\FF_q$ 的特征为 $p$，是 $\ZZ_p$ 上的 $n$ 次扩张。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">有限域的乘法群</div>
+      <p>有限域 $\FF_q$ 的乘法群 $\FF_q^* = \FF_q \setminus \{0\}$ 是<strong>循环群</strong>，阶为 $q - 1$。</p>
+      <p>生成元称为 $\FF_q$ 的<strong>本原元</strong>。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">有限域的子域</div>
+      <p>$\FF_{p^n}$ 的子域恰好是 $\FF_{p^d}$，其中 $d$ 整除 $n$。</p>
+      <p>$\FF_{p^n}$ 中的元素都是 $x^{p^n} - x$ 的根。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例3 · $\FF_4$ 的构造</div>
+      <p>$\FF_4 = \FF_2[x]/(x^2 + x + 1)$，元素为 $\{0, 1, \alpha, \alpha+1\}$，其中 $\alpha^2 + \alpha + 1 = 0$。</p>
+      <p>$\FF_4^* = \{1, \alpha, \alpha+1\}$ 是 3 阶循环群，$\alpha$ 是本原元（$\alpha^2 = \alpha + 1$，$\alpha^3 = 1$）。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 有限域的计算</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：在 $\FF_8 = \FF_2[x]/(x^3 + x + 1)$ 中计算 $\alpha^5$，其中 $\alpha$ 是 $x$ 的像。</p>
+        <p><strong>解</strong>：$\alpha^3 = \alpha + 1$（在 $\FF_8$ 中）</p>
+        <p>$\alpha^4 = \alpha \cdot \alpha^3 = \alpha(\alpha + 1) = \alpha^2 + \alpha$</p>
+        <p>$\alpha^5 = \alpha \cdot \alpha^4 = \alpha(\alpha^2 + \alpha) = \alpha^3 + \alpha^2 = (\alpha + 1) + \alpha^2 = \alpha^2 + \alpha + 1$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 5.6 综合例题 ==================== -->
+  <div class="section" id="s6">
+    <h2>5.6 综合例题</h2>
+
+    <div class="box box-note">
+      <div class="box-title">本章核心要点</div>
+      <ol>
+        <li>素域只有 $\QQ$（特征 0）和 $\ZZ_p$（特征 $p$）</li>
+        <li>域的扩张次数满足乘法公式 $[K:F] = [K:L][L:F]$</li>
+        <li>分裂域存在且唯一，是 Galois 理论的基础</li>
+        <li>有限域 $\FF_q$（$q = p^n$）的乘法群是循环群</li>
+        <li>$\FF_{p^n}$ 的子域是 $\FF_{p^d}$（$d \mid n$）</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="ch4.html" class="prev">第四章</a>
+    <a href="ch6.html" class="next">第六章</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>抽象代数复习指南 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

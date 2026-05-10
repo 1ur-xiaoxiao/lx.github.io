@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第五章 · 线性微分方程组</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          dd: '\\mathrm{d}',
+          eps: '\\varepsilon'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">常微分方程</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第五章 · 线性微分方程组</h1>
+    <p>从单个方程到方程组：一阶线性方程组的一般理论、基解矩阵、Liouville 公式与常系数方程组的求解。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">一阶线性方程组的一般理论</a></li>
+      <li><a href="#s2">基解矩阵与 Liouville 公式</a></li>
+      <li><a href="#s3">常系数线性方程组</a></li>
+      <li><a href="#s4">矩阵指数函数</a></li>
+      <li><a href="#s5">综合例题</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 5.1 一般理论 ==================== -->
+  <div class="section" id="s1">
+    <h2>5.1 一阶线性方程组的一般理论</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 一阶线性方程组</div>
+      <p>$n$ 个未知函数 $y_1, y_2, \ldots, y_n$ 的一阶线性方程组：</p>
+      $$\mathbf{y}' = A(x) \mathbf{y} + \mathbf{f}(x)$$
+      <p>其中 $\mathbf{y} = (y_1, \ldots, y_n)^T$，$A(x)$ 是 $n \times n$ 矩阵，$\mathbf{f}(x)$ 是 $n$ 维向量。</p>
+      <p>$\mathbf{f}(x) \equiv \mathbf{0}$ 时为<strong>齐次</strong>的，否则为<strong>非齐次</strong>的。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">齐次方程组的通解结构</div>
+      <p>齐次方程组 $\mathbf{y}' = A(x)\mathbf{y}$ 有 $n$ 个线性无关的解 $\boldsymbol{\varphi}_1, \ldots, \boldsymbol{\varphi}_n$，通解为：</p>
+      $$\mathbf{y} = C_1 \boldsymbol{\varphi}_1 + C_2 \boldsymbol{\varphi}_2 + \cdots + C_n \boldsymbol{\varphi}_n$$
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">非齐次方程组的通解</div>
+      <p>$\mathbf{y}' = A(x)\mathbf{y} + \mathbf{f}(x)$ 的通解 = 齐次通解 + 非齐次特解：</p>
+      $$\mathbf{y} = C_1 \boldsymbol{\varphi}_1 + \cdots + C_n \boldsymbol{\varphi}_n + \boldsymbol{\varphi}^*$$
+    </div>
+  </div>
+
+  <!-- ==================== 5.2 基解矩阵 ==================== -->
+  <div class="section" id="s2">
+    <h2>5.2 基解矩阵与 Liouville 公式</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 基解矩阵</div>
+      <p>以齐次方程组 $\mathbf{y}' = A(x)\mathbf{y}$ 的 $n$ 个线性无关解为列构成的矩阵</p>
+      $$\Phi(x) = [\boldsymbol{\varphi}_1(x), \boldsymbol{\varphi}_2(x), \ldots, \boldsymbol{\varphi}_n(x)]$$
+      <p>称为<strong>基解矩阵</strong>。它满足矩阵方程 $\Phi' = A(x)\Phi$。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">Liouville 公式（Wronsky 行列式）</div>
+      <p>设 $W(x) = \det\Phi(x)$ 是基解矩阵的行列式，则</p>
+      $$W(x) = W(x_0) \exp\left(\int_{x_0}^{x} \operatorname{tr} A(t) \dd t\right)$$
+      <p>其中 $\operatorname{tr} A = a_{11} + a_{22} + \cdots + a_{nn}$ 是 $A$ 的迹。</p>
+      <p><strong>推论</strong>：$W(x)$ 要么恒为零，要么恒不为零。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">Liouville 公式的意义</div>
+      <p>Liouville 公式告诉我们 Wronsky 行列式的演化完全由 $A(x)$ 的迹决定。即使不知道解的具体形式，也可以判断解是否线性无关。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 5.3 常系数方程组 ==================== -->
+  <div class="section" id="s3">
+    <h2>5.3 常系数线性方程组</h2>
+
+    <div class="box box-formula">
+      <div class="box-title">特征值法</div>
+      <p>对 $\mathbf{y}' = A\mathbf{y}$（$A$ 为常数矩阵），求 $A$ 的特征值 $\lambda_1, \ldots, \lambda_n$ 和特征向量。</p>
+      <p>若 $\lambda$ 是特征值，$\mathbf{v}$ 是对应特征向量，则 $\mathbf{y} = e^{\lambda x}\mathbf{v}$ 是解。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">二阶方程组的处理</div>
+      <p>$n$ 阶常系数方程可通过引入新变量化为一阶方程组。例如 $y'' + ay' + by = 0$ 令 $y_1 = y, y_2 = y'$：</p>
+      $$\begin{pmatrix} y_1' \\ y_2' \end{pmatrix} = \begin{pmatrix} 0 & 1 \\ -b & -a \end{pmatrix} \begin{pmatrix} y_1 \\ y_2 \end{pmatrix}$$
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 常系数方程组</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：求解 $\begin{cases} y_1' = y_1 + y_2 \\ y_2' = 4y_1 + y_2 \end{cases}$</p>
+        <p><strong>解</strong>：$A = \begin{pmatrix} 1 & 1 \\ 4 & 1 \end{pmatrix}$</p>
+        <p>特征方程：$(1-\lambda)^2 - 4 = 0$，$\lambda^2 - 2\lambda - 3 = 0$，$\lambda_1 = 3, \lambda_2 = -1$。</p>
+        <p>$\lambda_1 = 3$：$(A - 3I)\mathbf{v} = 0$，$\begin{pmatrix} -2 & 1 \\ 4 & -2 \end{pmatrix}\mathbf{v} = 0$，$\mathbf{v}_1 = \begin{pmatrix} 1 \\ 2 \end{pmatrix}$</p>
+        <p>$\lambda_2 = -1$：$(A + I)\mathbf{v} = 0$，$\begin{pmatrix} 2 & 1 \\ 4 & 2 \end{pmatrix}\mathbf{v} = 0$，$\mathbf{v}_2 = \begin{pmatrix} 1 \\ -2 \end{pmatrix}$</p>
+        <p>通解：$\mathbf{y} = C_1 e^{3x}\begin{pmatrix} 1 \\ 2 \end{pmatrix} + C_2 e^{-x}\begin{pmatrix} 1 \\ -2 \end{pmatrix}$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 5.4 矩阵指数 ==================== -->
+  <div class="section" id="s4">
+    <h2>5.4 矩阵指数函数</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 矩阵指数</div>
+      <p>对 $n \times n$ 矩阵 $A$，定义</p>
+      $$e^A = I + A + \frac{A^2}{2!} + \frac{A^3}{3!} + \cdots = \sum_{k=0}^{\infty} \frac{A^k}{k!}$$
+      <p>级数对任何方阵都收敛。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">矩阵指数的性质</div>
+      <ol>
+        <li>$e^{(A+B)x} = e^{Ax} e^{Bx}$ 当且仅当 $AB = BA$</li>
+        <li>$(e^A)^{-1} = e^{-A}$</li>
+        <li>$\frac{\dd}{\dd x} e^{Ax} = A e^{Ax}$</li>
+        <li>$e^{Ax}\Big|_{x=0} = I$</li>
+      </ol>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">齐次方程组的解</div>
+      <p>$\mathbf{y}' = A\mathbf{y}$，$\mathbf{y}(0) = \mathbf{y}_0$ 的解为：</p>
+      $$\mathbf{y}(x) = e^{Ax} \mathbf{y}_0$$
+      <p>$e^{Ax}$ 就是满足 $\Phi(0) = I$ 的基解矩阵。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 矩阵指数的计算</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：计算 $e^{Ax}$，其中 $A = \begin{pmatrix} 0 & 1 \\ 0 & 0 \end{pmatrix}$。</p>
+        <p><strong>解</strong>：$A^2 = \begin{pmatrix} 0 & 0 \\ 0 & 0 \end{pmatrix} = O$，所以 $A^k = O$（$k \geq 2$）。</p>
+        <p>$e^{Ax} = I + Ax = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix} + x\begin{pmatrix} 0 & 1 \\ 0 & 0 \end{pmatrix} = \begin{pmatrix} 1 & x \\ 0 & 1 \end{pmatrix}$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 5.5 综合例题 ==================== -->
+  <div class="section" id="s5">
+    <h2>5.5 综合例题</h2>
+
+    <div class="box box-note">
+      <div class="box-title">本章核心要点</div>
+      <ol>
+        <li>一阶方程组 $\mathbf{y}' = A\mathbf{y}$ 的解由基解矩阵 $\Phi(x)$ 完全刻画</li>
+        <li>Liouville 公式 $W(x) = W(x_0)e^{\int \operatorname{tr} A \dd t}$</li>
+        <li>常系数方程组通过特征值-特征向量法求解</li>
+        <li>矩阵指数 $e^{Ax}$ 是齐次方程组的基解矩阵</li>
+      </ol>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 重特征值的情况</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：求解 $\mathbf{y}' = \begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix}\mathbf{y}$。</p>
+        <p><strong>解</strong>：$A = \begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix}$，特征值 $\lambda = 2$（二重）。</p>
+        <p>特征向量：$(A - 2I)\mathbf{v} = 0$，$\begin{pmatrix} 0 & 1 \\ 0 & 0 \end{pmatrix}\mathbf{v} = 0$，$\mathbf{v}_1 = \begin{pmatrix} 1 \\ 0 \end{pmatrix}$（只有一个线性无关的特征向量）。</p>
+        <p>需要广义特征向量：$(A - 2I)\mathbf{v}_2 = \mathbf{v}_1$，$\begin{pmatrix} 0 & 1 \\ 0 & 0 \end{pmatrix}\mathbf{v}_2 = \begin{pmatrix} 1 \\ 0 \end{pmatrix}$，取 $\mathbf{v}_2 = \begin{pmatrix} 0 \\ 1 \end{pmatrix}$。</p>
+        <p>通解：$\mathbf{y} = C_1 e^{2x}\begin{pmatrix} 1 \\ 0 \end{pmatrix} + C_2 e^{2x}\left(x\begin{pmatrix} 1 \\ 0 \end{pmatrix} + \begin{pmatrix} 0 \\ 1 \end{pmatrix}\right)$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="ch4.html" class="prev">第四章</a>
+    <a href="ch6.html" class="next">第六章</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>常微分方程复习指南 · 基于王高雄教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

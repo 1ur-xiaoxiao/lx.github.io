@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>抽象代数 · 复习指南</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          ZZ: '\\mathbb{Z}',
+          FF: '\\mathbb{F}',
+          grp: '\\mathrm',
+          abs: ['\\left| #1 \\right|', 1]
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+  <a href="../index.html" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">抽象代数</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<!-- 主内容 -->
+<div class="main-content">
+
+  <!-- 英雄区 -->
+  <div class="hero">
+    <h1>抽象代数</h1>
+    <p>从群到域再到 Galois 理论 · 六章系统讲解 · 代数结构的定义、性质与经典定理完整梳理</p>
+  </div>
+
+  <!-- 六章总览卡片 -->
+  <div class="chapter-cards">
+
+    <div class="chapter-card">
+      <span class="card-number">1</span>
+      <h3>群</h3>
+      <p>代数结构的起点：群的定义、子群、Lagrange 定理、循环群与置换群，建立抽象代数的基本语言。</p>
+      <ul>
+        <li>群的定义与基本性质</li>
+        <li>子群与子群判别法</li>
+        <li>Lagrange 定理</li>
+        <li>循环群与置换群</li>
+      </ul>
+      <a href="ch1.html" class="card-link">进入第一章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">2</span>
+      <h3>正规子群与商群</h3>
+      <p>群论的核心：正规子群、商群的构造，群同态基本定理与同构定理，理解"模掉"的思想。</p>
+      <ul>
+        <li>正规子群与商群</li>
+        <li>群同态与群同态基本定理</li>
+        <li>群同构定理</li>
+        <li>群的直积</li>
+      </ul>
+      <a href="ch2.html" class="card-link">进入第二章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">3</span>
+      <h3>环</h3>
+      <p>从群到环：环的定义、理想、商环与环同态基本定理，整环与域的关系。</p>
+      <ul>
+        <li>环的定义与基本性质</li>
+        <li>理想与商环</li>
+        <li>环同态基本定理</li>
+        <li>整环与除环</li>
+      </ul>
+      <a href="ch3.html" class="card-link">进入第三章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">4</span>
+      <h3>整环的因子分解</h3>
+      <p>整数分解的推广：Euclid 整环、主理想整环与唯一分解整环，因子分解的三种理想模型。</p>
+      <ul>
+        <li>Euclid 整环 (ED)</li>
+        <li>主理想整环 (PID)</li>
+        <li>唯一分解整环 (UFD)</li>
+        <li>ED ⊂ PID ⊂ UFD 的关系</li>
+      </ul>
+      <a href="ch4.html" class="card-link">进入第四章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">5</span>
+      <h3>域</h3>
+      <p>域的扩张理论：从素域到扩域，分裂域的构造与存在性，有限域的结构。</p>
+      <ul>
+        <li>域的基本概念与素域</li>
+        <li>域的扩张与扩张次数</li>
+        <li>分裂域与正规扩张</li>
+        <li>有限域的结构</li>
+      </ul>
+      <a href="ch5.html" class="card-link">进入第五章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">6</span>
+      <h3>Galois 理论</h3>
+      <p>抽象代数的高峰：Galois 对应将域扩张与群联系起来，解决方程的可解性与尺规作图问题。</p>
+      <ul>
+        <li>Galois 群与 Galois 对应</li>
+        <li>正规扩张与可分扩张</li>
+        <li>方程的 Galois 群</li>
+        <li>方程的可解性与尺规作图</li>
+      </ul>
+      <a href="ch6.html" class="card-link">进入第六章 →</a>
+    </div>
+
+  </div>
+
+  <!-- 学习建议 -->
+  <div class="section" style="margin-top: 2rem;">
+    <h2>学习路线建议</h2>
+    <ol>
+      <li><strong>第一章</strong>是全书基石，群的定义和 Lagrange 定理必须熟练掌握。循环群和置换群是最重要的两类具体群，建议通过具体例子理解抽象定义。</li>
+      <li><strong>第二章</strong>是群论的核心，"正规子群 → 商群 → 同态基本定理"这条主线贯穿始终。同构定理是后续学习的重要工具。</li>
+      <li><strong>第三章</strong>引入第二个代数结构——环。注意环比群多了乘法运算，但乘法不一定可逆。理想在环论中的地位类似正规子群在群论中的地位。</li>
+      <li><strong>第四章</strong>研究整环中的因子分解，ED ⊂ PID ⊂ UFD 是核心关系。每个层级都有经典的判别法。</li>
+      <li><strong>第五章</strong>进入域论，域扩张和分裂域是 Galois 理论的准备。有限域的结构定理是优美的结果。</li>
+      <li><strong>第六章</strong>是全书精华，Galois 对应将域扩张与群联系起来。方程可解性和尺规作图是 Galois 理论的经典应用。</li>
+    </ol>
+  </div>
+
+</div>
+
+<!-- 页脚 -->
+<footer class="footer">
+  <p>抽象代数复习指南 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第四章 · 高阶线性微分方程</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          dd: '\\mathrm{d}',
+          eps: '\\varepsilon'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">常微分方程</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第四章 · 高阶线性微分方程</h1>
+    <p>线性方程的完整理论：齐次方程的通解结构、常系数方程的特征根法、非齐次方程的待定系数法与常数变易法。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">高阶线性方程的一般理论</a></li>
+      <li><a href="#s2">常系数齐次方程</a></li>
+      <li><a href="#s3">常系数非齐次方程</a></li>
+      <li><a href="#s4">常数变易法</a></li>
+      <li><a href="#s5">降阶法</a></li>
+      <li><a href="#s6">综合例题</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 4.1 一般理论 ==================== -->
+  <div class="section" id="s1">
+    <h2>4.1 高阶线性方程的一般理论</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · $n$ 阶线性方程</div>
+      $$y^{(n)} + p_1(x) y^{(n-1)} + \cdots + p_n(x) y = f(x)$$
+      <p>当 $f(x) \equiv 0$ 时称为<strong>齐次</strong>的，否则称为<strong>非齐次</strong>的。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">叠加原理</div>
+      <p>设 $y_1, y_2, \ldots, y_k$ 是齐次方程的解，则它们的任意线性组合</p>
+      $$C_1 y_1 + C_2 y_2 + \cdots + C_k y_k$$
+      <p>也是齐次方程的解。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">齐次方程通解结构</div>
+      <p>$n$ 阶齐次方程有 $n$ 个线性无关的解 $y_1, y_2, \ldots, y_n$，通解为：</p>
+      $$y = C_1 y_1 + C_2 y_2 + \cdots + C_n y_n$$
+      <p>线性无关性可用 <strong>Wronsky 行列式</strong>判断：</p>
+      $$W(x) = \begin{vmatrix} y_1 & y_2 & \cdots & y_n \\ y_1' & y_2' & \cdots & y_n' \\ \vdots & \vdots & \ddots & \vdots \\ y_1^{(n-1)} & y_2^{(n-1)} & \cdots & y_n^{(n-1)} \end{vmatrix} \neq 0$$
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">非齐次方程通解结构</div>
+      <p>非齐次方程的通解 = 对应齐次方程的通解 + 非齐次方程的一个特解：</p>
+      $$y = C_1 y_1 + \cdots + C_n y_n + y^*$$
+    </div>
+  </div>
+
+  <!-- ==================== 4.2 常系数齐次方程 ==================== -->
+  <div class="section" id="s2">
+    <h2>4.2 常系数齐次方程</h2>
+
+    <div class="box box-formula">
+      <div class="box-title">特征方程法</div>
+      <p>对 $n$ 阶常系数齐次方程</p>
+      $$y^{(n)} + a_1 y^{(n-1)} + \cdots + a_n y = 0$$
+      <p>令 $y = e^{\lambda x}$，代入得<strong>特征方程</strong>：</p>
+      $$\lambda^n + a_1 \lambda^{n-1} + \cdots + a_n = 0$$
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">二阶常系数齐次方程的通解</div>
+      <p>方程 $y'' + py' + qy = 0$，特征方程 $\lambda^2 + p\lambda + q = 0$，判别式 $\Delta = p^2 - 4q$：</p>
+      <table>
+        <tr><th>特征根情况</th><th>通解</th></tr>
+        <tr><td>两个不等实根 $\lambda_1 \neq \lambda_2$</td><td>$y = C_1 e^{\lambda_1 x} + C_2 e^{\lambda_2 x}$</td></tr>
+        <tr><td>重根 $\lambda_1 = \lambda_2 = \lambda$</td><td>$y = (C_1 + C_2 x) e^{\lambda x}$</td></tr>
+        <tr><td>共轭复根 $\alpha \pm \beta i$</td><td>$y = e^{\alpha x}(C_1 \cos\beta x + C_2 \sin\beta x)$</td></tr>
+      </table>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例1 · 特征根法</div>
+      <p><strong>题目</strong>：求解 $y'' - 3y' + 2y = 0$。</p>
+      <p><strong>解</strong>：特征方程 $\lambda^2 - 3\lambda + 2 = 0$，解得 $\lambda_1 = 1, \lambda_2 = 2$。</p>
+      <p>通解：$y = C_1 e^x + C_2 e^{2x}$</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例2 · 重根情况</div>
+      <p><strong>题目</strong>：求解 $y'' - 4y' + 4y = 0$。</p>
+      <p><strong>解</strong>：特征方程 $\lambda^2 - 4\lambda + 4 = 0$，$\lambda = 2$（二重根）。</p>
+      <p>通解：$y = (C_1 + C_2 x) e^{2x}$</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例3 · 复根情况</div>
+      <p><strong>题目</strong>：求解 $y'' + y = 0$（简谐振动）。</p>
+      <p><strong>解</strong>：特征方程 $\lambda^2 + 1 = 0$，$\lambda = \pm i$。</p>
+      <p>通解：$y = C_1 \cos x + C_2 \sin x$</p>
+    </div>
+  </div>
+
+  <!-- ==================== 4.3 常系数非齐次方程 ==================== -->
+  <div class="section" id="s3">
+    <h2>4.3 常系数非齐次方程</h2>
+
+    <div class="box box-formula">
+      <div class="box-title">待定系数法</div>
+      <p>对 $y'' + py' + qy = f(x)$，当 $f(x)$ 为以下形式时，特解可用待定系数法：</p>
+      <p><strong>类型 1</strong>：$f(x) = P_m(x) e^{\alpha x}$</p>
+      <p>设 $y^* = x^k Q_m(x) e^{\alpha x}$，其中 $Q_m(x)$ 是 $m$ 次多项式，$k$ 是 $\alpha$ 作为特征根的重数。</p>
+      <p><strong>类型 2</strong>：$f(x) = e^{\alpha x}[P_m(x)\cos\beta x + P_n(x)\sin\beta x]$</p>
+      <p>设 $y^* = x^k e^{\alpha x}[R_l(x)\cos\beta x + S_l(x)\sin\beta x]$，其中 $l = \max(m, n)$。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 待定系数法</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：求解 $y'' - 3y' + 2y = e^{3x}$。</p>
+        <p><strong>解</strong>：齐次通解 $y = C_1 e^x + C_2 e^{2x}$（由例1）。</p>
+        <p>$f(x) = e^{3x}$，$\alpha = 3$ 不是特征根（$k = 0$），设 $y^* = Ae^{3x}$。</p>
+        <p>$y^{*'} = 3Ae^{3x}$，$y^{*''} = 9Ae^{3x}$</p>
+        <p>代入：$9A - 9A + 2A = 1$，得 $A = \dfrac{1}{2}$。</p>
+        <p>通解：$y = C_1 e^x + C_2 e^{2x} + \dfrac{1}{2}e^{3x}$</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 重根时的待定系数法</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：求解 $y'' - 2y' + y = xe^x$。</p>
+        <p><strong>解</strong>：特征方程 $\lambda^2 - 2\lambda + 1 = 0$，$\lambda = 1$（二重根）。</p>
+        <p>齐次通解 $y = (C_1 + C_2 x)e^x$。</p>
+        <p>$f(x) = xe^x$，$\alpha = 1$ 是二重特征根（$k = 2$），设 $y^* = x^2(Ax + B)e^x$。</p>
+        <p>代入方程比较系数，解得 $A = \dfrac{1}{6}$，$B = 0$。</p>
+        <p>通解：$y = (C_1 + C_2 x)e^x + \dfrac{x^3}{6}e^x$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 4.4 常数变易法 ==================== -->
+  <div class="section" id="s4">
+    <h2>4.4 常数变易法</h2>
+
+    <div class="box box-formula">
+      <div class="box-title">常数变易法</div>
+      <p>当 $f(x)$ 不适合待定系数法时，可用常数变易法。设齐次方程的基本解组为 $y_1, \ldots, y_n$，设</p>
+      $$y^* = u_1(x) y_1 + u_2(x) y_2 + \cdots + u_n(x) y_n$$
+      <p>其中 $u_i'(x)$ 满足方程组：</p>
+      $$\begin{cases} u_1' y_1 + u_2' y_2 + \cdots + u_n' y_n = 0 \\ u_1' y_1' + u_2' y_2' + \cdots + u_n' y_n' = 0 \\ \cdots \\ u_1' y_1^{(n-1)} + u_2' y_2^{(n-1)} + \cdots + u_n' y_n^{(n-1)} = f(x) \end{cases}$$
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">常数变易法 vs 待定系数法</div>
+      <table>
+        <tr><th></th><th>待定系数法</th><th>常数变易法</th></tr>
+        <tr><td>适用范围</td><td>$f(x)$ 为多项式、指数、三角函数的组合</td><td>任意 $f(x)$</td></tr>
+        <tr><td>计算量</td><td>较小</td><td>较大</td></tr>
+        <tr><td>通用性</td><td>有限</td><td>通用</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ==================== 4.5 降阶法 ==================== -->
+  <div class="section" id="s5">
+    <h2>4.5 降阶法</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">已知一个特解时的降阶</div>
+      <p>设 $y_1$ 是 $n$ 阶齐次方程的一个非零特解，令 $y = y_1 u$，代入方程可将阶数降低一阶。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">二阶方程的降阶</div>
+      <p>设 $y_1$ 是 $y'' + P(x)y' + Q(x)y = 0$ 的特解，令 $y = y_1 u$，则</p>
+      $$u'' + \left(\frac{2y_1'}{y_1} + P\right) u' = 0$$
+      <p>这是关于 $u'$ 的一阶方程，可分离变量求解。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 降阶法</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：已知 $y_1 = x$ 是 $x^2 y'' - xy' + y = 0$ 的解，求通解。</p>
+        <p><strong>解</strong>：令 $y = xu$，则 $y' = xu' + u$，$y'' = xu'' + 2u'$。</p>
+        <p>代入：$x^2(xu'' + 2u') - x(xu' + u) + xu = 0$</p>
+        <p>$x^3 u'' + 2x^2 u' - x^2 u' = 0$，即 $x^3 u'' + x^2 u' = 0$</p>
+        <p>$xu'' + u' = 0$，令 $v = u'$：$xv' + v = 0$</p>
+        <p>分离变量：$\dfrac{v'}{v} = -\dfrac{1}{x}$，$\ln|v| = -\ln|x|$，$v = \dfrac{1}{x}$</p>
+        <p>$u = \ln|x|$，所以 $y_2 = x\ln|x|$。</p>
+        <p>通解：$y = C_1 x + C_2 x\ln|x|$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 4.6 综合例题 ==================== -->
+  <div class="section" id="s6">
+    <h2>4.6 综合例题</h2>
+
+    <div class="box box-note">
+      <div class="box-title">本章核心要点</div>
+      <ol>
+        <li>齐次方程通解 = $n$ 个线性无关解的线性组合</li>
+        <li>非齐次方程通解 = 齐次通解 + 非齐次特解</li>
+        <li>常系数方程用特征根法，根据根的类型写通解</li>
+        <li>非齐次特解用待定系数法（特殊情况）或常数变易法（通用）</li>
+        <li>已知一个特解可用降阶法</li>
+      </ol>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · Euler 方程</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：求解 $x^2 y'' + 3xy' + y = 0$（Euler 方程）。</p>
+        <p><strong>解</strong>：令 $x = e^t$（$x > 0$），则 $t = \ln x$。</p>
+        <p>$y' = \dfrac{1}{x}\dfrac{\dd y}{\dd t}$，$y'' = \dfrac{1}{x^2}\left(\dfrac{\dd^2 y}{\dd t^2} - \dfrac{\dd y}{\dd t}\right)$</p>
+        <p>代入：$\dfrac{\dd^2 y}{\dd t^2} - \dfrac{\dd y}{\dd t} + 3\dfrac{\dd y}{\dd t} + y = 0$</p>
+        <p>$\dfrac{\dd^2 y}{\dd t^2} + 2\dfrac{\dd y}{\dd t} + y = 0$</p>
+        <p>特征方程 $\lambda^2 + 2\lambda + 1 = 0$，$\lambda = -1$（重根）。</p>
+        <p>$y = (C_1 + C_2 t)e^{-t} = (C_1 + C_2 \ln x) \cdot \dfrac{1}{x}$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="ch3.html" class="prev">第三章</a>
+    <a href="ch5.html" class="next">第五章</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>常微分方程复习指南 · 基于王高雄教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>
