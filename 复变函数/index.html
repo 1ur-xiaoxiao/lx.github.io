@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>复变函数 · 复习指南</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          CC: '\\mathbb{C}',
+          EE: '\\mathbb{E}',
+          dd: '\\mathrm{d}',
+          Res: '\\mathrm{Res}',
+          arg: '\\mathrm{arg}',
+          Arg: '\\mathrm{Arg}',
+          Log: '\\mathrm{Log}',
+          Re: '\\mathrm{Re}',
+          Im: '\\mathrm{Im}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+  <a href="../index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">复变函数复习</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<!-- 主内容 -->
+<div class="main-content">
+
+  <!-- 英雄区 -->
+  <div class="hero">
+    <h1>复变函数</h1>
+    <p>基于钟玉泉《复变函数论》· 数学系核心课程 · 系统梳理定义、定理与计算方法</p>
+  </div>
+
+  <!-- 六章总览卡片 -->
+  <div class="chapter-cards">
+
+    <div class="chapter-card">
+      <span class="card-number">1</span>
+      <h3>复数与复变函数</h3>
+      <p>从实数到复数的飞跃：复数的代数运算与几何表示，复平面上的点集拓扑，复变函数的极限与连续性。</p>
+      <ul>
+        <li>复数的代数运算、模与辐角</li>
+        <li>棣莫弗公式与复数方根</li>
+        <li>复平面上的点集：邻域、开集、闭集、连通域</li>
+        <li>复变函数的极限与连续性</li>
+      </ul>
+      <a href="ch1.html" class="card-link">进入第一章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">2</span>
+      <h3>解析函数</h3>
+      <p>复分析的核心概念：函数可导的苛刻条件催生出 Cauchy-Riemann 方程，解析性是复分析区别于实分析的关键。</p>
+      <ul>
+        <li>复变函数的导数与解析性</li>
+        <li>Cauchy-Riemann 条件（充要条件）</li>
+        <li>调和函数与共轭调和函数</li>
+        <li>解析函数的物理意义</li>
+      </ul>
+      <a href="ch2.html" class="card-link">进入第二章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">3</span>
+      <h3>初等函数</h3>
+      <p>实数域中熟悉的函数在复数域中的推广：指数、对数、幂函数呈现出全新的面貌——周期性、多值性、分支。</p>
+      <ul>
+        <li>指数函数 $e^z$ 的周期性</li>
+        <li>对数函数 $\log z$ 的多值性与分支</li>
+        <li>幂函数 $z^\alpha$ 与根式函数</li>
+        <li>三角函数与双曲函数</li>
+      </ul>
+      <a href="ch3.html" class="card-link">进入第三章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">4</span>
+      <h3>复积分</h3>
+      <p>复分析的基石：Cauchy 积分定理与积分公式是整个理论的支柱，由此推出一系列深刻的结果。</p>
+      <ul>
+        <li>复积分的定义、性质与计算</li>
+        <li>Cauchy-Goursat 定理</li>
+        <li>Cauchy 积分公式与高阶导数公式</li>
+        <li>Liouville 定理与代数基本定理</li>
+      </ul>
+      <a href="ch4.html" class="card-link">进入第四章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">5</span>
+      <h3>级数</h3>
+      <p>用无穷级数表示复变函数：Taylor 展开与 Laurent 展开揭示了函数在奇点附近的本质行为。</p>
+      <ul>
+        <li>复数项级数与一致收敛</li>
+        <li>幂级数与收敛半径</li>
+        <li>Taylor 展开定理</li>
+        <li>Laurent 展开与孤立奇点分类</li>
+      </ul>
+      <a href="ch5.html" class="card-link">进入第五章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">6</span>
+      <h3>留数</h3>
+      <p>复积分计算的利器：留数定理将围道积分化为简单的代数运算，并可用来计算实分析中困难的积分。</p>
+      <ul>
+        <li>留数的定义与计算方法</li>
+        <li>留数定理</li>
+        <li>实积分计算：三类典型积分</li>
+        <li>辐角原理与 Rouché 定理</li>
+      </ul>
+      <a href="ch6.html" class="card-link">进入第六章 →</a>
+    </div>
+
+  </div>
+
+  <!-- 学习建议 -->
+  <div class="section" style="margin-top: 2rem;">
+    <h2>学习路线建议</h2>
+    <ol>
+      <li><strong>第一章</strong>是基础，复数的几何表示和辐角的概念贯穿全书。棣莫弗公式和复数方根是常考题型。</li>
+      <li><strong>第二章</strong>是核心，Cauchy-Riemann 条件必须熟练掌握。调和函数与解析函数的关系是重要考点。</li>
+      <li><strong>第三章</strong>是工具，对数函数的多值性是难点。理解分支和主值的概念对后续学习至关重要。</li>
+      <li><strong>第四章</strong>是复分析的灵魂，Cauchy 积分公式是一切的起点。务必掌握各种推论（最大模原理、Liouville 定理等）。</li>
+      <li><strong>第五章</strong>是展开理论，Laurent 展开和孤立奇点分类是留数理论的前提。Taylor 展开与收敛半径是常考内容。</li>
+      <li><strong>第六章</strong>是应用高峰，留数定理计算实积分是考试重点。三类典型积分的公式要熟记。</li>
+    </ol>
+    <p style="margin-top: 1rem; color: var(--text-light);">每章包含严格定义、定理证明、典型例题和计算技巧，配有直觉解释帮助理解。推荐配合钟玉泉《复变函数论》教材使用。</p>
+  </div>
+
+</div>
+
+<!-- 页脚 -->
+<footer class="footer">
+  <p>复变函数复习指南 · 基于钟玉泉教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

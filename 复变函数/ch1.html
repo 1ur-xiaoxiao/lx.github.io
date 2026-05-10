@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第一章 · 复数与复变函数</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}', CC: '\\mathbb{C}', EE: '\\mathbb{E}',
+          dd: '\\mathrm{d}', Res: '\\mathrm{Res}', arg: '\\mathrm{arg}',
+          Arg: '\\mathrm{Arg}', Log: '\\mathrm{Log}', Re: '\\mathrm{Re}', Im: '\\mathrm{Im}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">复变函数复习</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第一章 · 复数与复变函数</h1>
+    <p>从实数域到复数域的推广：复数的代数运算、几何表示、棣莫弗公式，复平面上的点集拓扑，复变函数的基本概念。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">复数及其代数运算</a></li>
+      <li><a href="#s2">复数的几何表示</a></li>
+      <li><a href="#s3">棣莫弗公式与复数方根</a></li>
+      <li><a href="#s4">复平面上的点集</a></li>
+      <li><a href="#s5">复变函数的概念</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 第1节 ==================== -->
+  <div class="section" id="s1">
+    <h2>1.1 复数及其代数运算</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 1.1（复数）</div>
+      <p>设 $x, y \in \RR$，称 $z = x + iy$ 为一个<strong>复数</strong>，其中 $i$ 为虚数单位，满足 $i^2 = -1$。$x = \Re(z)$ 称为 $z$ 的<strong>实部</strong>，$y = \Im(z)$ 称为 $z$ 的<strong>虚部</strong>。</p>
+      <ul>
+        <li>当 $y = 0$ 时，$z = x$ 为实数。</li>
+        <li>当 $x = 0,\, y \ne 0$ 时，$z = iy$ 为纯虚数。</li>
+        <li>$z = 0$ 当且仅当 $x = 0$ 且 $y = 0$。</li>
+      </ul>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 1.2（共轭复数与模）</div>
+      <p>设 $z = x + iy$，定义：</p>
+      <ul>
+        <li><strong>共轭复数</strong>：$\bar{z} = x - iy$。</li>
+        <li><strong>模</strong>（绝对值）：$|z| = \sqrt{x^2 + y^2}$。</li>
+      </ul>
+    </div>
+
+    <h3>四则运算</h3>
+    <p>设 $z_1 = x_1 + iy_1$，$z_2 = x_2 + iy_2$，则：</p>
+    <div class="formula-highlight">
+      $$z_1 + z_2 = (x_1 + x_2) + i(y_1 + y_2)$$
+      $$z_1 - z_2 = (x_1 - x_2) + i(y_1 - y_2)$$
+      $$z_1 z_2 = (x_1 x_2 - y_1 y_2) + i(x_1 y_2 + x_2 y_1)$$
+      $$\frac{z_1}{z_2} = \frac{x_1 x_2 + y_1 y_2}{x_2^2 + y_2^2} + i\frac{x_2 y_1 - x_1 y_2}{x_2^2 + y_2^2} \quad (z_2 \ne 0)$$
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 1.1（模与共轭的基本性质）</div>
+      <p>设 $z, z_1, z_2 \in \CC$，则：</p>
+      <ol>
+        <li>$\overline{\bar{z}} = z$</li>
+        <li>$|z|^2 = z\bar{z}$</li>
+        <li>$\overline{z_1 + z_2} = \bar{z}_1 + \bar{z}_2$，$\overline{z_1 z_2} = \bar{z}_1 \bar{z}_2$</li>
+        <li>$|z_1 z_2| = |z_1|\,|z_2|$</li>
+        <li><strong>三角不等式</strong>：$|z_1 + z_2| \le |z_1| + |z_2|$，$\bigl||z_1| - |z_2|\bigr| \le |z_1 - z_2|$</li>
+      </ol>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 1.1</div>
+      <p>设 $z_1 = 3 + 4i$，$z_2 = 1 - 2i$，计算 $z_1 z_2$、$|z_1/z_2|$ 和 $\overline{z_1 z_2}$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-body">
+          <p><strong>计算乘积</strong>：</p>
+          $$z_1 z_2 = (3+4i)(1-2i) = 3 - 6i + 4i - 8i^2 = 3 - 2i + 8 = 11 - 2i$$
+          <p><strong>计算模的商</strong>：</p>
+          $$|z_1| = \sqrt{9+16} = 5, \quad |z_2| = \sqrt{1+4} = \sqrt{5}$$
+          $$\left|\frac{z_1}{z_2}\right| = \frac{|z_1|}{|z_2|} = \frac{5}{\sqrt{5}} = \sqrt{5}$$
+          <p><strong>共轭</strong>：$\overline{z_1 z_2} = \overline{11 - 2i} = 11 + 2i$。</p>
+          <p><strong>验证</strong>：$\bar{z}_1 \bar{z}_2 = (3-4i)(1+2i) = 3 + 6i - 4i - 8i^2 = 11 + 2i$。一致。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 1.2</div>
+      <p>设 $z = \dfrac{(3+4i)(2-i)}{(1+i)^2}$，求 $|z|$ 和 $z + \bar{z}$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-body">
+          <p><strong>利用模的性质计算 $|z|$</strong>：</p>
+          $$|3+4i| = 5, \quad |2-i| = \sqrt{5}, \quad |1+i| = \sqrt{2}$$
+          $$|z| = \frac{|3+4i| \cdot |2-i|}{|1+i|^2} = \frac{5\sqrt{5}}{2}$$
+          <p><strong>计算 $z + \bar{z} = 2\Re(z)$</strong>：</p>
+          $$(3+4i)(2-i) = 6 - 3i + 8i - 4i^2 = 10 + 5i$$
+          $$(1+i)^2 = 1 + 2i + i^2 = 2i$$
+          $$z = \frac{10+5i}{2i} = \frac{(10+5i)(-2i)}{(2i)(-2i)} = \frac{-20i - 10i^2}{4} = \frac{10 - 20i}{4} = \frac{5}{2} - 5i$$
+          $$z + \bar{z} = 2\Re(z) = 2 \cdot \frac{5}{2} = 5$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 第2节 ==================== -->
+  <div class="section" id="s2">
+    <h2>1.2 复数的几何表示</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 1.3（复平面）</div>
+      <p>建立直角坐标系：横轴为 <strong>实轴</strong>（$\Re$），纵轴为 <strong>虚轴</strong>（$\Im$）。复数 $z = x + iy$ 对应平面上的点 $(x, y)$，此平面称为<strong>复平面</strong>（$\CC$ 平面 / Argand 平面）。复数也可视为从原点到 $(x,y)$ 的向量。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 1.4（辐角）</div>
+      <p>设 $z \ne 0$，从正实轴到向量 $Oz$ 的有向角 $\theta$ 称为 $z$ 的<strong>辐角</strong>。满足 $z = |z|(\cos\theta + i\sin\theta)$ 的所有 $\theta$ 值构成辐角集 $\arg(z)$。</p>
+      <p>辐角的<strong>主值</strong> $\Arg(z)$ 通常取 $(-\pi, \pi]$ 中的唯一值，即：</p>
+      $$\Arg(z) = \begin{cases} \arctan\dfrac{y}{x}, & x > 0 \\[6pt] \arctan\dfrac{y}{x} + \pi, & x < 0,\, y \ge 0 \\[6pt] \arctan\dfrac{y}{x} - \pi, & x < 0,\, y < 0 \\[6pt] \dfrac{\pi}{2}, & x = 0,\, y > 0 \\[6pt] -\dfrac{\pi}{2}, & x = 0,\, y < 0 \end{cases}$$
+      <p>辐角的任意值满足 $\arg(z) = \Arg(z) + 2k\pi$，$k \in \mathbb{Z}$。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">公式：三角形式与指数形式</div>
+      <p>设 $r = |z|$，$\theta = \arg(z)$，则：</p>
+      <p><strong>三角形式</strong>：$z = r(\cos\theta + i\sin\theta)$</p>
+      <p><strong>指数形式</strong>（利用 Euler 公式 $e^{i\theta} = \cos\theta + i\sin\theta$）：</p>
+      $$z = re^{i\theta}$$
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注记：复数乘法的几何意义</div>
+      <p>设 $z_1 = r_1 e^{i\theta_1}$，$z_2 = r_2 e^{i\theta_2}$，则：</p>
+      $$z_1 z_2 = r_1 r_2 \, e^{i(\theta_1 + \theta_2)}$$
+      <p>即复数相乘时<strong>模相乘、辐角相加</strong>。几何上，$z_1 z_2$ 相当于将 $z_1$ 伸缩 $|z_2|$ 倍再旋转 $\arg(z_2)$ 弧度。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 1.3</div>
+      <p>将 $z = -1 + \sqrt{3}\,i$ 化为指数形式，并计算 $z^6$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-body">
+          <p><strong>求模和辐角</strong>：</p>
+          $$r = |z| = \sqrt{1 + 3} = 2$$
+          <p>$z$ 在第二象限，$\tan\theta = \dfrac{\sqrt{3}}{-1} = -\sqrt{3}$，故 $\theta = \pi - \dfrac{\pi}{3} = \dfrac{2\pi}{3}$。</p>
+          $$z = 2e^{i \cdot 2\pi/3}$$
+          <p><strong>计算 $z^6$</strong>：</p>
+          $$z^6 = 2^6 \cdot e^{i \cdot 6 \cdot 2\pi/3} = 64 \, e^{i \cdot 4\pi} = 64$$
+          <p>也可用棣莫弗公式：$z^6 = 2^6[\cos(4\pi) + i\sin(4\pi)] = 64$。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 1.4</div>
+      <p>设 $z_1 = 1 + i$，$z_2 = \sqrt{3} - i$，利用指数形式计算 $\dfrac{z_1}{z_2}$ 的三角形式。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-body">
+          <p><strong>化为指数形式</strong>：</p>
+          $$z_1 = \sqrt{2}\,e^{i\pi/4}, \quad z_2 = 2\,e^{-i\pi/6}$$
+          $$\frac{z_1}{z_2} = \frac{\sqrt{2}}{2}\,e^{i(\pi/4 + \pi/6)} = \frac{\sqrt{2}}{2}\,e^{i \cdot 5\pi/12}$$
+          <p><strong>三角形式</strong>：</p>
+          $$\frac{z_1}{z_2} = \frac{\sqrt{2}}{2}\left(\cos\frac{5\pi}{12} + i\sin\frac{5\pi}{12}\right)$$
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 第3节 ==================== -->
+  <div class="section" id="s3">
+    <h2>1.3 棣莫弗公式与复数方根</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 1.2（棣莫弗公式，De Moivre）</div>
+      <p>对任意正整数 $n$，有：</p>
+      $$(\cos\theta + i\sin\theta)^n = \cos n\theta + i\sin n\theta$$
+      <p>即 $(e^{i\theta})^n = e^{in\theta}$。利用二项式展开可推导 $\cos n\theta$ 和 $\sin n\theta$ 用 $\cos\theta, \sin\theta$ 表示的公式。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 1.5（用棣莫弗公式展开 $\cos 3\theta$）</div>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-body">
+          <p>由棣莫弗公式：</p>
+          $$\cos 3\theta + i\sin 3\theta = (\cos\theta + i\sin\theta)^3$$
+          <p>展开右边：</p>
+          $$(\cos\theta + i\sin\theta)^3 = \cos^3\theta + 3i\cos^2\theta\sin\theta - 3\cos\theta\sin^2\theta - i\sin^3\theta$$
+          <p>比较实部：</p>
+          $$\cos 3\theta = \cos^3\theta - 3\cos\theta\sin^2\theta = \cos^3\theta - 3\cos\theta(1-\cos^2\theta) = 4\cos^3\theta - 3\cos\theta$$
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 1.3（$n$ 次方根）</div>
+      <p>设 $w \ne 0$，方程 $z^n = w$（$n \ge 2$ 为正整数）恰有 $n$ 个不同的解。设 $w = \rho e^{i\varphi}$，则：</p>
+      $$z_k = \rho^{1/n} \, e^{i(\varphi + 2k\pi)/n}, \quad k = 0, 1, 2, \ldots, n-1$$
+      <p><strong>几何意义</strong>：$n$ 个根均匀分布在以原点为圆心、$\rho^{1/n}$ 为半径的圆周上，相邻两根的辐角差为 $\dfrac{2\pi}{n}$。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 1.6</div>
+      <p>求 $z^3 = 8$ 的全部根，并在复平面上标出。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-body">
+          <p>将 $8$ 写为指数形式：$8 = 8e^{i \cdot 0}$。由公式：</p>
+          $$z_k = 8^{1/3} e^{i(0 + 2k\pi)/3} = 2\,e^{i \cdot 2k\pi/3}, \quad k = 0, 1, 2$$
+          <p>三个根为：</p>
+          <ul>
+            <li>$z_0 = 2\,e^{0} = 2$</li>
+            <li>$z_1 = 2\,e^{i2\pi/3} = 2\left(-\dfrac{1}{2} + i\dfrac{\sqrt{3}}{2}\right) = -1 + \sqrt{3}\,i$</li>
+            <li>$z_2 = 2\,e^{i4\pi/3} = 2\left(-\dfrac{1}{2} - i\dfrac{\sqrt{3}}{2}\right) = -1 - \sqrt{3}\,i$</li>
+          </ul>
+          <p>三个根均匀分布在半径为 $2$ 的圆上，间隔 $120°$。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 1.7</div>
+      <p>求 $(1+i)$ 的全部四次方根。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-body">
+          <p>先将 $1+i$ 化为指数形式：</p>
+          $$1 + i = \sqrt{2}\,e^{i\pi/4}$$
+          <p>四次方根：</p>
+          $$z_k = 2^{1/4} \, e^{i(\pi/4 + 2k\pi)/4} = 2^{1/4}\,e^{i(\pi/16 + k\pi/2)}, \quad k = 0,1,2,3$$
+          <p>即四个根的辐角分别为 $\dfrac{\pi}{16}$、$\dfrac{\pi}{16} + \dfrac{\pi}{2}$、$\dfrac{\pi}{16} + \pi$、$\dfrac{\pi}{16} + \dfrac{3\pi}{2}$，模均为 $2^{1/4}$。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 第4节 ==================== -->
+  <div class="section" id="s4">
+    <h2>1.4 复平面上的点集</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 1.5（邻域）</div>
+      <p>设 $z_0 \in \CC$，$\delta > 0$，称集合</p>
+      $$U(z_0, \delta) = \{z \in \CC : |z - z_0| < \delta\}$$
+      <p>为 $z_0$ 的 <strong>$\delta$-邻域</strong>。称 $U^\circ(z_0, \delta) = U(z_0, \delta) \setminus \{z_0\}$ 为 $z_0$ 的 <strong>去心 $\delta$-邻域</strong>。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 1.6（开集、闭集）</div>
+      <p>设 $E \subset \CC$，</p>
+      <ul>
+        <li>若 $\forall\, z_0 \in E$，$\exists\,\delta > 0$ 使得 $U(z_0, \delta) \subset E$，则 $E$ 为<strong>开集</strong>。</li>
+        <li>若 $E$ 的余集 $\CC \setminus E$ 为开集，则 $E$ 为<strong>闭集</strong>。</li>
+        <li>$E$ 的<strong>闭包</strong> $\bar{E} = E \cup E'$，其中 $E'$ 为 $E$ 的所有聚点。</li>
+      </ul>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 1.7（区域与闭区域）</div>
+      <p>复平面上满足以下两个条件的点集 $D$ 称为<strong>区域</strong>（域 / 开域）：</p>
+      <ol>
+        <li>$D$ 是<strong>开集</strong>。</li>
+        <li>$D$ 是<strong>连通的</strong>，即 $D$ 中任意两点可用全部在 $D$ 中的折线连接。</li>
+      </ol>
+      <p>区域 $D$ 与其边界 $\partial D$ 的并集 $\bar{D} = D \cup \partial D$ 称为<strong>闭区域</strong>。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 1.8（单连通域与多连通域）</div>
+      <p>设 $D$ 为区域，</p>
+      <ul>
+        <li>若 $D$ 内任意简单闭曲线所围的区域全部属于 $D$，则 $D$ 为<strong>单连通域</strong>。直观上，$D$ 内无"洞"。</li>
+        <li>否则 $D$ 为<strong>多连通域</strong>（复连通域）。</li>
+      </ul>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注记</div>
+      <p>例如 $\{z : |z| < 1\}$ 是单连通域；$\{z : 0 < |z| < 2\}$ 是多连通域（因原点处有"洞"，内部有不包含在区域中的点）。有界开集不一定是区域——还需满足连通性。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 1.8</div>
+      <p>判断下列集合是区域还是闭区域，是否单连通：</p>
+      <ol>
+        <li>$D_1 = \{z : 1 < |z| < 3\}$</li>
+        <li>$D_2 = \{z : \Re(z) > 0,\, \Im(z) > 0\}$（第一象限）</li>
+        <li>$D_3 = \{z : |z| \le 1\}$</li>
+      </ol>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-body">
+          <ol>
+            <li>$D_1$ 是<strong>区域</strong>（开集且连通）。它是<strong>多连通域</strong>——圆环内部有"洞"（圆 $|z| \le 1$ 不在 $D_1$ 中）。</li>
+            <li>$D_2$ 是<strong>区域</strong>（开的半平面交集，连通）。它是<strong>单连通域</strong>——内部无洞。</li>
+            <li>$D_3$ 是<strong>闭区域</strong>（闭集，边界为 $|z|=1$）。注意它不是区域，因为它不是开集。</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 1.9</div>
+      <p>设 $E = \left\{z = x + iy : x > 0,\, 0 < y < \dfrac{1}{x}\right\}$，证明 $E$ 是区域但不是有界集。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-body">
+          <p><strong>开集</strong>：$E$ 是两个开半平面的交再与开集 $\{y > 0\}$ 取交，是开集。</p>
+          <p><strong>连通性</strong>：$E$ 中任意两点可用光滑曲线（如 $y = c/x$ 的一段）在 $E$ 内连接，故 $E$ 连通。因此 $E$ 是区域。</p>
+          <p><strong>无界</strong>：取 $x_n = n$，$y_n = \dfrac{1}{2n}$，则 $z_n = n + \dfrac{i}{2n} \in E$，但 $|z_n| \to \infty$。故 $E$ 无界。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 第5节 ==================== -->
+  <div class="section" id="s5">
+    <h2>1.5 复变函数的概念</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 1.9（复变函数）</div>
+      <p>设 $D$ 为复平面上的点集。若存在对应法则 $f$，使得 $D$ 中每一个 $z$ 对应唯一的 $w \in \CC$，则称 $f$ 为定义在 $D$ 上的<strong>复变函数</strong>，记作 $w = f(z)$。$D$ 为定义域，值域为 $f(D)$。</p>
+      <p>将 $z = x + iy$，$w = u + iv$ 分离实虚部，$f$ 可写为：</p>
+      $$w = f(z) = u(x,y) + iv(x,y)$$
+      <p>其中 $u(x,y)$ 和 $v(x,y)$ 是关于 $x, y$ 的二元实函数，分别称为 $f$ 的<strong>实部</strong>和<strong>虚部</strong>。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 1.10（极限）</div>
+      <p>设 $f(z)$ 在 $z_0$ 的去心邻域内有定义。若存在 $w_0 \in \CC$，使得 $\forall\,\varepsilon > 0$，$\exists\,\delta > 0$，当 $0 < |z - z_0| < \delta$ 时有 $|f(z) - w_0| < \varepsilon$，则称 $f(z)$ 当 $z \to z_0$ 时以 $w_0$ 为极限，记作 $\lim_{z \to z_0} f(z) = w_0$。</p>
+      <p>等价条件（化为二元实函数）：</p>
+      $$\lim_{z \to z_0} f(z) = w_0 \iff \begin{cases} \lim_{(x,y)\to(x_0,y_0)} u(x,y) = u_0 \\ \lim_{(x,y)\to(x_0,y_0)} v(x,y) = v_0 \end{cases}$$
+      <p>其中 $z_0 = x_0 + iy_0$，$w_0 = u_0 + iv_0$。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 1.11（连续性）</div>
+      <p>$f(z)$ 在 $z_0$ <strong>连续</strong> $\iff$ $\lim_{z \to z_0} f(z) = f(z_0)$。</p>
+      <p>等价地，$f(z) = u(x,y) + iv(x,y)$ 在 $z_0$ 连续 $\iff$ $u, v$ 在 $(x_0, y_0)$ 处均连续。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注记：映射的观点</div>
+      <p>复变函数 $w = f(z)$ 本质上是从 $\CC$ 的子集 $D$ 到 $\CC$ 的映射。它将 $z$ 平面上的点集映射为 $w$ 平面上的点集。例如 $w = z^2$ 将 $z$ 平面上的圆 $|z| = r$ 映射为 $w$ 平面上的圆 $|w| = r^2$；将射线 $\arg(z) = \theta$ 映射为射线 $\arg(w) = 2\theta$。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 1.10</div>
+      <p>设 $f(z) = z^2 + 2z$，求其实部 $u(x,y)$ 和虚部 $v(x,y)$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-body">
+          <p>令 $z = x + iy$：</p>
+          $$z^2 = (x+iy)^2 = x^2 - y^2 + 2ixy$$
+          $$f(z) = x^2 - y^2 + 2ixy + 2x + 2iy = (x^2 - y^2 + 2x) + i(2xy + 2y)$$
+          <p>故 $u(x,y) = x^2 - y^2 + 2x$，$v(x,y) = 2xy + 2y$。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 1.11</div>
+      <p>设 $f(z) = \dfrac{\bar{z}}{z}$（$z \ne 0$），求 $u(x,y)$、$v(x,y)$，并证明 $\lim_{z \to 0} f(z)$ 不存在。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-body">
+          <p><strong>分离实虚部</strong>：</p>
+          $$\frac{\bar{z}}{z} = \frac{x - iy}{x + iy} = \frac{(x-iy)^2}{x^2 + y^2} = \frac{x^2 - y^2 - 2ixy}{x^2 + y^2}$$
+          $$u(x,y) = \frac{x^2 - y^2}{x^2 + y^2}, \quad v(x,y) = \frac{-2xy}{x^2 + y^2}$$
+          <p><strong>证明极限不存在</strong>：沿不同路径趋近原点得到不同极限值。</p>
+          <ul>
+            <li>沿实轴（$y = 0$）：$f(x) = \dfrac{x^2}{x^2} = 1 \to 1$</li>
+            <li>沿虚轴（$x = 0$）：$f(iy) = \dfrac{-y^2}{y^2} = -1 \to -1$</li>
+          </ul>
+          <p>两路径极限不同，故 $\lim_{z \to 0} f(z)$ 不存在。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chapter-nav">
+    <a href="index.html" class="prev">首页</a>
+    <a href="ch2.html" class="next">第二章 · 解析函数</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>复变函数复习指南 · 基于钟玉泉教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

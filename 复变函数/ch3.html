@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第三章 · 初等函数</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}', CC: '\\mathbb{C}', EE: '\\mathbb{E}',
+          dd: '\\mathrm{d}', Res: '\\mathrm{Res}', arg: '\\mathrm{arg}',
+          Arg: '\\mathrm{Arg}', Log: '\\mathrm{Log}', Re: '\\mathrm{Re}', Im: '\\mathrm{Im}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">复变函数复习</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第三章 · 初等函数</h1>
+    <p>将实数域中熟悉的初等函数推广到复数域：指数函数获得周期性，对数函数变成多值函数，幂函数展现出全新的分支结构。理解这些推广是掌握复分析工具的关键。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">指数函数</a></li>
+      <li><a href="#s2">对数函数</a></li>
+      <li><a href="#s3">幂函数</a></li>
+      <li><a href="#s4">三角函数与双曲函数</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 3.1 指数函数 ==================== -->
+  <div class="section" id="s1">
+    <h2>3.1 指数函数</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 复指数函数</div>
+      <p>对任意 $z = x + iy \in \CC$，定义<strong>复指数函数</strong>为：</p>
+      $$e^z = e^{x+iy} = e^x(\cos y + i\sin y)$$
+      <p>其中 $e^x$ 为实指数函数，$\cos y, \sin y$ 为实三角函数。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">等价写法</div>
+      <p>利用模和辐角的语言，复指数函数可写为：</p>
+      $$e^z = |e^z| \cdot e^{i\arg(e^z)}, \quad \text{其中 } |e^z| = e^x,\ \arg(e^z) = y$$
+      <p>也就是说，$e^z$ 的<strong>模</strong>由实部决定，<strong>辐角</strong>由虚部决定。这是理解复指数函数映射性质的核心。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 · 指数函数的基本性质</div>
+      <p>复指数函数 $e^z$ 满足以下性质：</p>
+      <ol>
+        <li><strong>解析性</strong>：$e^z$ 在整个复平面 $\CC$ 上解析（整函数），且 $\dfrac{\dd}{\dd z}e^z = e^z$。</li>
+        <li><strong>加法定理</strong>：对任意 $z_1, z_2 \in \CC$，$e^{z_1+z_2} = e^{z_1} \cdot e^{z_2}$。</li>
+        <li><strong>周期性</strong>：$e^z$ 以 $2\pi i$ 为周期，即 $e^{z+2\pi i} = e^z$。这是复指数函数与实指数函数最本质的区别。</li>
+        <li><strong>无零点</strong>：对任意 $z \in \CC$，$e^z \neq 0$。因为 $|e^z| = e^x > 0$。</li>
+        <li><strong>值域</strong>：$e^z$ 的值域为 $\CC \setminus \{0\}$，即全体非零复数。</li>
+      </ol>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明 · 加法定理</div>
+      <p>设 $z_1 = x_1 + iy_1$，$z_2 = x_2 + iy_2$，则：</p>
+      $$e^{z_1} \cdot e^{z_2} = e^{x_1}(\cos y_1 + i\sin y_1) \cdot e^{x_2}(\cos y_2 + i\sin y_2)$$
+      $$= e^{x_1+x_2}[(\cos y_1\cos y_2 - \sin y_1\sin y_2) + i(\sin y_1\cos y_2 + \cos y_1\sin y_2)]$$
+      $$= e^{x_1+x_2}[\cos(y_1+y_2) + i\sin(y_1+y_2)] = e^{z_1+z_2}$$
+      <p>这里用到了实三角函数的和角公式。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">Euler 公式</div>
+      <p>在定义中令 $z = iy$，得到著名的 <strong>Euler 公式</strong>：</p>
+      $$e^{iy} = \cos y + i\sin y$$
+      <p>特别地，令 $y = \pi$：</p>
+      $$e^{i\pi} + 1 = 0$$
+      <p>这个等式将五个最重要的数学常数 $e, i, \pi, 1, 0$ 联系在一起。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 · 映射性质</div>
+      <p>$w = e^z$ 将复平面上的<strong>水平带域</strong> $y_0 < \Im z < y_0 + 2\pi$ 映为整个 $w$ 平面去掉从原点出发的射线 $\arg w = y_0$。</p>
+      <p>特别地：</p>
+      <ul>
+        <li>水平线 $y = c$（$c$ 为常数）映为射线 $\arg w = c$；</li>
+        <li>竖直线 $x = c$ 映为圆周 $|w| = e^c$；</li>
+        <li>宽度为 $2\pi$ 的水平带域恰好覆盖 $w$ 平面一次。</li>
+      </ul>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例1 · 计算具体值</div>
+      <p>计算 $e^{2+\pi i/3}$。</p>
+      <p><strong>解</strong>：由定义 $e^{2+\pi i/3} = e^2(\cos\frac{\pi}{3} + i\sin\frac{\pi}{3}) = e^2\left(\dfrac{1}{2} + i\dfrac{\sqrt{3}}{2}\right)$。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 解方程 $e^z = 1+i$</div>
+      <div class="collapsible-body">
+        <p><strong>解</strong>：设 $z = x + iy$，则 $e^z = e^x(\cos y + i\sin y) = 1 + i$。</p>
+        <p>取模：$e^x = |1+i| = \sqrt{2}$，故 $x = \ln\sqrt{2} = \dfrac{1}{2}\ln 2$。</p>
+        <p>取辐角：$y = \arg(1+i) = \dfrac{\pi}{4} + 2k\pi$，$k \in \ZZ$。</p>
+        <p>因此 $z = \dfrac{1}{2}\ln 2 + i\left(\dfrac{\pi}{4} + 2k\pi\right)$，$k \in \ZZ$。</p>
+        <p><strong>注</strong>：方程 $e^z = w$（$w \neq 0$）有无穷多个解，这正是因为 $e^z$ 的周期性。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 3.2 对数函数 ==================== -->
+  <div class="section" id="s2">
+    <h2>3.2 对数函数</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 对数函数</div>
+      <p>对 $z \neq 0$，满足 $e^w = z$ 的 $w$ 称为 $z$ 的<strong>对数</strong>，记为 $w = \log z$。</p>
+      <p>设 $z = re^{i\theta}$（$r = |z|$，$\theta = \arg z$），则：</p>
+      $$\log z = \ln|z| + i\arg z = \ln r + i(\theta + 2k\pi), \quad k \in \ZZ$$
+      <p>因此 $\log z$ 是一个<strong>多值函数</strong>，有无穷多个值。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 对数的主值</div>
+      <p>取 $k = 0$（即辐角取主值 $\Arg z \in (-\pi, \pi]$），定义<strong>对数的主值</strong>为：</p>
+      $$\log z = \ln|z| + i\Arg z$$
+      <p>注意：主值 $\log z$ 是一个单值函数，但它在负实轴上不连续（辐角在负实轴上有跳跃）。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">多值性的具体表现</div>
+      <p>对数函数 $\log z$ 的所有值为：</p>
+      $$\log z = \log z + 2k\pi i, \quad k \in \ZZ$$
+      <p>相邻两个值之间相差 $2\pi i$。这也说明 $\log z$ 与 $e^z$ 的关系：$\log z$ 是 $e^z$ 的"反函数"，但因为 $e^z$ 是周期函数，所以反函数是多值的。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">分支与支割线</div>
+      <p>为了从多值函数 $\log z$ 中选出一个<strong>单值连续分支</strong>，需要：</p>
+      <ol>
+        <li><strong>支割线</strong>（branch cut）：从原点出发沿某方向画一条射线，禁止自变量跨越此线；</li>
+        <li><strong>辐角范围</strong>：指定 $\arg z$ 的取值范围，如 $(\alpha, \alpha + 2\pi]$。</li>
+      </ol>
+      <p>最常见的选择是沿负实轴做支割线，取 $\Arg z \in (-\pi, \pi]$，得到主值分支 $\log z$。</p>
+      <p>每个单值连续分支都是解析函数，解析区域为割开的复平面。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 · 对数函数的运算性质</div>
+      <p>对 $z_1, z_2 \neq 0$，对数函数满足：</p>
+      <ol>
+        <li>$\log(z_1 z_2) = \log z_1 + \log z_2$（在多值意义下成立，即两边的值集合相等）</li>
+        <li>$\log\dfrac{z_1}{z_2} = \log z_1 - \log z_2$（多值意义下）</li>
+      </ol>
+      <p><strong>注意</strong>：对主值 $\log$，上述等式不一定成立，可能相差 $2\pi i$ 的整数倍。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例2 · 计算 $\log(-1)$ 和 $\log i$</div>
+      <p>$\log(-1)$：$|-1| = 1$，$\arg(-1) = \pi + 2k\pi$，所以 $\log(-1) = i(\pi + 2k\pi) = (2k+1)\pi i$。</p>
+      <p>主值 $\log(-1) = \pi i$。</p>
+      <p>$\log i$：$|i| = 1$，$\arg(i) = \dfrac{\pi}{2} + 2k\pi$，所以 $\log i = i\left(\dfrac{\pi}{2} + 2k\pi\right)$。</p>
+      <p>主值 $\log i = \dfrac{\pi}{2}i$。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 计算 $\log(1+i)$ 的所有值</div>
+      <div class="collapsible-body">
+        <p><strong>解</strong>：$1+i = \sqrt{2} \cdot e^{i\pi/4}$，故</p>
+        $$\log(1+i) = \ln\sqrt{2} + i\left(\frac{\pi}{4} + 2k\pi\right) = \frac{1}{2}\ln 2 + i\left(\frac{\pi}{4} + 2k\pi\right), \quad k \in \ZZ$$
+        <p>主值为 $\log(1+i) = \dfrac{1}{2}\ln 2 + \dfrac{\pi}{4}i$。</p>
+        <p><strong>注意</strong>：$\ln 2$ 表示实对数，是唯一的实数值。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 验证 $\log(-i) = -\dfrac{\pi}{2}i$</div>
+      <div class="collapsible-body">
+        <p><strong>解</strong>：$|-i| = 1$，$\Arg(-i) = -\dfrac{\pi}{2}$（因为 $-i$ 在负虚轴上，主值辐角取 $-\pi/2$）。</p>
+        <p>故 $\log(-i) = \ln 1 + i\left(-\dfrac{\pi}{2}\right) = -\dfrac{\pi}{2}i$。</p>
+        <p>验证：$e^{-\pi i/2} = \cos\left(-\dfrac{\pi}{2}\right) + i\sin\left(-\dfrac{\pi}{2}\right) = 0 + i(-1) = -i$。正确。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 3.3 幂函数 ==================== -->
+  <div class="section" id="s3">
+    <h2>3.3 幂函数</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 复幂函数</div>
+      <p>对 $z \neq 0$ 和任意复数 $a \in \CC$，定义<strong>幂函数</strong>为：</p>
+      $$z^a = e^{a\log z}$$
+      <p>由于 $\log z$ 是多值的，$z^a$ 通常也是多值函数。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">幂函数的多值性</div>
+      <p>将 $\log z = \ln|z| + i(\arg z + 2k\pi)$ 代入：</p>
+      $$z^a = e^{a[\ln|z| + i\arg z + 2k\pi i]} = |z|^a \cdot e^{ia\arg z} \cdot e^{2k\pi ia}$$
+      <p>其中 $|z|^a = e^{a\ln|z|}$（实幂函数意义下）。</p>
+      <p>关键在于因子 $e^{2k\pi ia}$：如果 $a$ 是整数，则此因子为 $1$（$k$ 任意），$z^a$ 是单值的；否则 $z^a$ 有无穷多个值。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 · 幂函数的单值性条件</div>
+      <p>$z^a$ 是单值函数的充要条件是 $a \in \ZZ$（$a$ 为整数）。</p>
+      <p>更细致地：</p>
+      <ul>
+        <li><strong>$a = n \in \ZZ$</strong>：$z^n$ 是单值函数。$n>0$ 时为整函数，$n<0$ 时在 $z=0$ 处有极点。</li>
+        <li><strong>$a = p/q$（$p,q$ 互素，$q > 1$）</strong>：$z^{p/q}$ 恰好有 $q$ 个不同的值。这是 $q$ 值函数。</li>
+        <li><strong>$a$ 为无理数或虚数</strong>：$z^a$ 有无穷多个值。</li>
+      </ul>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例3 · 计算 $i^i$</div>
+      <p>$i^i = e^{i\log i} = e^{i \cdot i(\pi/2 + 2k\pi)} = e^{-\pi/2 - 2k\pi}$，$k \in \ZZ$。</p>
+      <p>取 $k=0$ 得主值：$i^i = e^{-\pi/2} \approx 0.2079$。</p>
+      <p><strong>令人惊讶的事实</strong>：$i^i$ 的所有值都是<strong>正实数</strong>！</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例4 · 计算 $z^{1/2}$（平方根）</div>
+      <p>对 $z = re^{i\theta}$：</p>
+      $$z^{1/2} = e^{\frac{1}{2}\log z} = e^{\frac{1}{2}[\ln r + i(\theta + 2k\pi)]} = \sqrt{r} \cdot e^{i(\theta + 2k\pi)/2}$$
+      <p>$k=0$：$w_0 = \sqrt{r} \cdot e^{i\theta/2}$</p>
+      <p>$k=1$：$w_1 = \sqrt{r} \cdot e^{i(\theta/2 + \pi)} = -w_0$</p>
+      <p>$k=2$：$w_2 = \sqrt{r} \cdot e^{i(\theta/2 + 2\pi)} = w_0$（重复）</p>
+      <p>所以 $z^{1/2}$ 恰好有两个值 $\pm\sqrt{r} \cdot e^{i\theta/2}$，互为相反数。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">根式函数的分支</div>
+      <p>$z^{1/n}$ 有 $n$ 个不同的值，均匀分布在以原点为圆心、半径为 $|z|^{1/n}$ 的圆周上，相邻两个值之间夹角为 $2\pi/n$。</p>
+      <p>选取单值连续分支需要：做从原点出发的支割线，并指定 $\arg z$ 的范围，如 $\arg z \in (\alpha, \alpha + 2\pi)$。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 计算 $(1+i)^{1+i}$</div>
+      <div class="collapsible-body">
+        <p><strong>解</strong>：$(1+i)^{1+i} = e^{(1+i)\log(1+i)}$。</p>
+        <p>先求 $\log(1+i) = \dfrac{1}{2}\ln 2 + i\left(\dfrac{\pi}{4} + 2k\pi\right)$。</p>
+        <p>取主值 $k=0$：$\log(1+i) = \dfrac{1}{2}\ln 2 + \dfrac{\pi}{4}i$。</p>
+        <p>则 $(1+i)\log(1+i) = (1+i)\left(\dfrac{1}{2}\ln 2 + \dfrac{\pi}{4}i\right)$</p>
+        $$= \frac{1}{2}\ln 2 + \frac{\pi}{4}i + \frac{i}{2}\ln 2 + \frac{\pi}{4}i^2 = \left(\frac{1}{2}\ln 2 - \frac{\pi}{4}\right) + i\left(\frac{\pi}{4} + \frac{1}{2}\ln 2\right)$$
+        <p>所以 $(1+i)^{1+i} = e^{\frac{1}{2}\ln 2 - \frac{\pi}{4}} \cdot e^{i(\frac{\pi}{4} + \frac{1}{2}\ln 2)}$</p>
+        $$= \sqrt{2} \cdot e^{-\pi/4} \left[\cos\left(\frac{\pi}{4} + \frac{\ln 2}{2}\right) + i\sin\left(\frac{\pi}{4} + \frac{\ln 2}{2}\right)\right]$$
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 3.4 三角函数与双曲函数 ==================== -->
+  <div class="section" id="s4">
+    <h2>3.4 三角函数与双曲函数</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 复三角函数</div>
+      <p>由 Euler 公式 $e^{iz} = \cos z + i\sin z$，定义复三角函数为：</p>
+      $$\cos z = \frac{e^{iz} + e^{-iz}}{2}, \quad \sin z = \frac{e^{iz} - e^{-iz}}{2i}$$
+      $$\tan z = \frac{\sin z}{\cos z}, \quad \cot z = \frac{\cos z}{\sin z}, \quad \text{等}$$
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 · 复三角函数的性质</div>
+      <p>复三角函数保持了实三角函数的基本代数性质：</p>
+      <ol>
+        <li><strong>周期性</strong>：$\cos z$ 和 $\sin z$ 以 $2\pi$ 为周期。</li>
+        <li><strong>奇偶性</strong>：$\cos(-z) = \cos z$（偶函数），$\sin(-z) = -\sin z$（奇函数）。</li>
+        <li><strong>Pythagoras 恒等式</strong>：$\cos^2 z + \sin^2 z = 1$。</li>
+        <li><strong>和角公式</strong>：$\cos(z_1+z_2) = \cos z_1\cos z_2 - \sin z_1\sin z_2$，$\sin(z_1+z_2) = \sin z_1\cos z_2 + \cos z_1\sin z_2$。</li>
+        <li><strong>解析性</strong>：$\cos z$ 和 $\sin z$ 在 $\CC$ 上解析（整函数）。</li>
+      </ol>
+      <p><strong>与实函数的本质区别</strong>：</p>
+      <ul>
+        <li>$\sin z$ 和 $\cos z$ 不再是有界的！例如 $|\cos(iy)| = \dfrac{e^y + e^{-y}}{2} = \cosh y \to +\infty$（$y \to \pm\infty$）。</li>
+        <li>$\sin z = 0 \Leftrightarrow z = k\pi$（$k \in \ZZ$），$\cos z = 0 \Leftrightarrow z = \dfrac{\pi}{2} + k\pi$（$k \in \ZZ$），零点与实数域相同。</li>
+      </ul>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">三角函数的实部与虚部</div>
+      <p>设 $z = x + iy$，则：</p>
+      $$\cos(x+iy) = \cos x \cosh y - i\sin x \sinh y$$
+      $$\sin(x+iy) = \sin x \cosh y + i\cos x \sinh y$$
+      <p>其中 $\cosh y = \dfrac{e^y+e^{-y}}{2}$，$\sinh y = \dfrac{e^y-e^{-y}}{2}$ 为实双曲函数。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 复双曲函数</div>
+      <p>类比实双曲函数，定义：</p>
+      $$\cosh z = \frac{e^z + e^{-z}}{2}, \quad \sinh z = \frac{e^z - e^{-z}}{2}$$
+      $$\tanh z = \frac{\sinh z}{\cosh z}, \quad \coth z = \frac{\cosh z}{\sinh z}$$
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 · 三角函数与双曲函数的关系</div>
+      <p>复三角函数与双曲函数之间有如下基本关系：</p>
+      $$\cos(iz) = \cosh z, \quad \sin(iz) = i\sinh z$$
+      $$\cosh(iz) = \cos z, \quad \sinh(iz) = i\sin z$$
+      <p>由此可得：双曲函数与三角函数本质上通过虚数单位 $i$ 相互转化。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">双曲函数的实部与虚部</div>
+      <p>设 $z = x + iy$，则：</p>
+      $$\cosh(x+iy) = \cosh x \cos y + i\sinh x \sin y$$
+      $$\sinh(x+iy) = \sinh x \cos y + i\cosh x \sin y$$
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">复三角函数的无界性</div>
+      <p>在实数域中，$|\sin x| \leq 1$，$|\cos x| \leq 1$。但在复数域中，三角函数是<strong>无界的</strong>。</p>
+      <p>例如：$\cos(iy) = \cosh y$，当 $y \to \infty$ 时 $\cosh y \to \infty$。</p>
+      <p>更一般地：$|\cos z|^2 = \cos^2 x + \sinh^2 y$，$|\sin z|^2 = \sin^2 x + \sinh^2 y$，当 $|y| \to \infty$ 时都趋于无穷。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例5 · 计算 $\cos(1+2i)$</div>
+      <p>$\cos(1+2i) = \cos 1 \cdot \cosh 2 - i\sin 1 \cdot \sinh 2$</p>
+      <p>其中 $\cosh 2 = \dfrac{e^2+e^{-2}}{2} \approx 3.7622$，$\sinh 2 = \dfrac{e^2-e^{-2}}{2} \approx 3.6269$。</p>
+      <p>$\cos 1 \approx 0.5403$，$\sin 1 \approx 0.8415$。</p>
+      <p>故 $\cos(1+2i) \approx 0.5403 \times 3.7622 - i \times 0.8415 \times 3.6269 \approx 2.0327 - 3.0518i$。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 求 $\sin z$ 的所有零点</div>
+      <div class="collapsible-body">
+        <p><strong>解</strong>：$\sin z = 0 \Leftrightarrow \dfrac{e^{iz} - e^{-iz}}{2i} = 0 \Leftrightarrow e^{iz} = e^{-iz} \Leftrightarrow e^{2iz} = 1$。</p>
+        <p>设 $2iz = 2k\pi i$（$k \in \ZZ$），即 $z = k\pi$，$k \in \ZZ$。</p>
+        <p><strong>结论</strong>：$\sin z$ 的零点与实数域完全相同，都是 $z = k\pi$（$k \in \ZZ$）。这验证了 $\sin z$ 是实函数 $\sin x$ 的真正解析延拓。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 证明 $|\sin z|^2 = \sin^2 x + \sinh^2 y$</div>
+      <div class="collapsible-body">
+        <p><strong>证明</strong>：$\sin(x+iy) = \sin x\cosh y + i\cos x\sinh y$，故</p>
+        $$|\sin z|^2 = \sin^2 x \cosh^2 y + \cos^2 x \sinh^2 y$$
+        <p>利用 $\cosh^2 y = 1 + \sinh^2 y$：</p>
+        $$= \sin^2 x(1 + \sinh^2 y) + \cos^2 x \sinh^2 y = \sin^2 x + \sinh^2 y(\sin^2 x + \cos^2 x) = \sin^2 x + \sinh^2 y$$
+        <p>由此可以看出：当 $y \neq 0$ 时 $|\sin z| > |\sin x|$，当 $|y| \to \infty$ 时 $|\sin z| \to \infty$。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 章节导航 -->
+  <div class="chapter-nav">
+    <a href="ch2.html" class="prev">第二章 · 解析函数</a>
+    <a href="ch4.html" class="next">第四章 · 复积分</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>复变函数复习指南 · 基于钟玉泉教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

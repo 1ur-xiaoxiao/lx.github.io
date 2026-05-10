@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第六章 · 留数</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          CC: '\\mathbb{C}',
+          EE: '\\mathbb{E}',
+          dd: '\\mathrm{d}',
+          Res: '\\mathrm{Res}',
+          arg: '\\mathrm{arg}',
+          Arg: '\\mathrm{Arg}',
+          Log: '\\mathrm{Log}',
+          Re: '\\mathrm{Re}',
+          Im: '\\mathrm{Im}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">复变函数复习</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第六章 · 留数</h1>
+    <p>留数定理将围道积分化为代数运算，是计算复杂实积分的强力工具</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">6.1 留数的定义与计算</a></li>
+      <li><a href="#s2">6.2 留数定理</a></li>
+      <li><a href="#s3">6.3 实积分计算</a></li>
+      <li><a href="#s4">6.4 辐角原理与 Rouché 定理</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 6.1 留数的定义与计算 ==================== -->
+  <div class="section" id="s1">
+    <h2>6.1 留数的定义与计算</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 6.1（留数）</div>
+      <p>设 $z_0$ 是 $f(z)$ 的孤立奇点，$f(z)$ 在 $0 < |z - z_0| < R$ 内的 Laurent 展开为</p>
+      <p>$$f(z) = \sum_{n=-\infty}^{+\infty} a_n(z - z_0)^n,$$</p>
+      <p>则称系数 $a_{-1}$ 为 $f(z)$ 在 $z_0$ 处的 <strong>留数</strong>，记作 $\Res[f, z_0]$，即</p>
+      <p>$$\Res[f, z_0] = a_{-1} = \frac{1}{2\pi i} \oint_C f(z)\,\dd z,$$</p>
+      <p>其中 $C$ 为 $z_0$ 的去心邻域内绕 $z_0$ 的正向简单闭曲线。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注记</div>
+      <p>留数是 Laurent 展开中 $(z - z_0)^{-1}$ 项的系数。可去奇点的留数为 $0$（因为主要部分全为零），但反之不成立——留数为零并不意味着是可去奇点（例如 $f(z) = z^{-2}$ 在 $z = 0$ 处留数为零，但 $z = 0$ 是二阶极点）。</p>
+    </div>
+
+    <h3>留数的计算公式</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">公式 6.1（一阶极点的留数）</div>
+      <p>若 $z_0$ 是 $f(z)$ 的 <strong>一阶极点</strong>，则</p>
+      <p>$$\Res[f, z_0] = \lim_{z \to z_0} (z - z_0) f(z).$$</p>
+      <p>特别地，若 $f(z) = \dfrac{p(z)}{q(z)}$，$p(z_0) \ne 0$，$q(z_0) = 0$，$q'(z_0) \ne 0$（即 $z_0$ 是 $q$ 的单零点），则</p>
+      <p>$$\Res[f, z_0] = \frac{p(z_0)}{q'(z_0)}.$$</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">公式 6.2（$m$ 阶极点的留数）</div>
+      <p>若 $z_0$ 是 $f(z)$ 的 <strong>$m$ 阶极点</strong>，则</p>
+      <p>$$\Res[f, z_0] = \frac{1}{(m-1)!} \lim_{z \to z_0} \frac{\dd^{m-1}}{\dd z^{m-1}} \left[(z - z_0)^m f(z)\right].$$</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 6.1</div>
+      <p>求 $f(z) = \dfrac{1}{z(z-1)^2}$ 在各孤立奇点处的留数。</p>
+      <p><strong>解：</strong> 孤立奇点为 $z = 0$（一阶极点）和 $z = 1$（二阶极点）。</p>
+      <p>在 $z = 0$ 处：</p>
+      <p>$$\Res[f, 0] = \lim_{z\to 0} z \cdot \frac{1}{z(z-1)^2} = \lim_{z\to 0} \frac{1}{(z-1)^2} = 1.$$</p>
+      <p>在 $z = 1$ 处：</p>
+      <p>$$\Res[f, 1] = \lim_{z\to 1} \frac{\dd}{\dd z}\left[(z-1)^2 \cdot \frac{1}{z(z-1)^2}\right] = \lim_{z\to 1} \frac{\dd}{\dd z}\frac{1}{z} = \lim_{z\to 1}\left(-\frac{1}{z^2}\right) = -1.$$</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 6.2</div>
+      <p>求 $f(z) = \dfrac{z e^{iz}}{z^2 + 1}$ 在上半平面奇点处的留数。</p>
+      <p><strong>解：</strong> $z^2 + 1 = 0$ 的根为 $z = \pm i$。在上半平面只有 $z = i$。</p>
+      <p>$z = i$ 是一阶极点，用公式 $\dfrac{p(z_0)}{q'(z_0)}$：</p>
+      <p>$$\Res[f, i] = \frac{z e^{iz}}{2z}\bigg|_{z=i} = \frac{e^{i \cdot i}}{2} = \frac{e^{-1}}{2} = \frac{1}{2e}.$$</p>
+    </div>
+  </div>
+
+  <!-- ==================== 6.2 留数定理 ==================== -->
+  <div class="section" id="s2">
+    <h2>6.2 留数定理</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 6.1（留数定理）</div>
+      <p>设 $C$ 为正向简单闭曲线，$f(z)$ 在 $C$ 上及 $C$ 的内部除有限个孤立奇点 $z_1, z_2, \ldots, z_n$ 外解析，则</p>
+      <p>$$\oint_C f(z)\,\dd z = 2\pi i \sum_{k=1}^{n} \Res[f, z_k].$$</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明</div>
+      <p>以每个奇点 $z_k$ 为心，取充分小的正数 $\rho_k$，作圆周 $C_k: |z - z_k| = \rho_k$，使得各 $C_k$ 互不相交且都在 $C$ 的内部。</p>
+      <p>由 Cauchy 积分定理的推广（复合闭路定理），$f(z)$ 在由 $C$ 和各 $C_k$ 围成的多连通域上解析，故</p>
+      <p>$$\oint_C f(z)\,\dd z = \sum_{k=1}^{n} \oint_{C_k} f(z)\,\dd z.$$</p>
+      <p>由留数的定义，$\displaystyle\oint_{C_k} f(z)\,\dd z = 2\pi i\,\Res[f, z_k]$，代入即得</p>
+      <p>$$\oint_C f(z)\,\dd z = 2\pi i \sum_{k=1}^{n} \Res[f, z_k]. \qquad \blacksquare$$</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注记：留数定理的意义</div>
+      <p>留数定理将围道积分的计算转化为留数的代数求和。这是复分析中最重要的计算工具之一。应用留数定理的关键步骤：</p>
+      <ol>
+        <li>确定被积函数 $f(z)$ 在围道内部的所有孤立奇点；</li>
+        <li>分别计算各奇点处的留数；</li>
+        <li>将留数乘以 $2\pi i$ 后求和。</li>
+      </ol>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 6.3</div>
+      <p>计算 $\displaystyle\oint_{|z|=2} \frac{z}{(z-1)^2(z+1)}\,\dd z$。</p>
+      <p><strong>解：</strong> 被积函数在 $|z| < 2$ 内有两个奇点：$z = 1$（二阶极点）和 $z = -1$（一阶极点）。</p>
+      <p>在 $z = -1$ 处：</p>
+      <p>$$\Res[f, -1] = \lim_{z\to -1}(z+1)\cdot\frac{z}{(z-1)^2(z+1)} = \frac{-1}{(-2)^2} = -\frac{1}{4}.$$</p>
+      <p>在 $z = 1$ 处：</p>
+      <p>$$\Res[f, 1] = \lim_{z\to 1}\frac{\dd}{\dd z}\left[\frac{z}{z+1}\right] = \lim_{z\to 1}\frac{(z+1) - z}{(z+1)^2} = \frac{1}{4}.$$</p>
+      <p>因此</p>
+      <p>$$\oint_{|z|=2} f(z)\,\dd z = 2\pi i\left(-\frac{1}{4} + \frac{1}{4}\right) = 0.$$</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">推论（无穷远点的留数）</div>
+      <p>若 $f(z)$ 在扩充复平面上只有有限个孤立奇点，则所有有限奇点的留数与无穷远点留数之和为零：</p>
+      <p>$$\sum_{k=1}^{n} \Res[f, z_k] + \Res[f, \infty] = 0,$$</p>
+      <p>其中 $\Res[f, \infty] = -a_{-1}$（$a_{-1}$ 为 $f(z)$ 在 $z = \infty$ 处 Laurent 展开中 $z^{-1}$ 的系数），等价地</p>
+      <p>$$\Res[f, \infty] = -\frac{1}{2\pi i}\oint_{C^-} f(z)\,\dd z,$$</p>
+      <p>$C^-$ 取顺时针方向（即面向无穷远点的正方向）。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 6.3 实积分计算 ==================== -->
+  <div class="section" id="s3">
+    <h2>6.3 实积分计算</h2>
+
+    <p>留数定理的一个重要应用是计算实分析中难以处理的定积分。以下介绍三类典型应用。</p>
+
+    <!-- 第一类 -->
+    <h3>第一类：$\int_0^{2\pi} R(\cos\theta, \sin\theta)\,\dd\theta$ 型积分</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">方法概述</div>
+      <p>令 $z = e^{i\theta}$，$\dd\theta = \dd z/(iz)$，则</p>
+      <p>$$\cos\theta = \frac{z + z^{-1}}{2}, \quad \sin\theta = \frac{z - z^{-1}}{2i}.$$</p>
+      <p>积分变为单位圆周 $|z| = 1$ 上的围道积分：</p>
+      <p>$$\int_0^{2\pi} R(\cos\theta, \sin\theta)\,\dd\theta = \oint_{|z|=1} R\!\left(\frac{z+z^{-1}}{2}, \frac{z-z^{-1}}{2i}\right)\frac{\dd z}{iz}.$$</p>
+      <p>然后用留数定理计算。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例 6.4（第一类详细计算）</div>
+      <div class="collapsible-body">
+        <p><strong>题目：</strong> 计算 $\displaystyle I = \int_0^{2\pi} \frac{\dd\theta}{2 + \cos\theta}$。</p>
+        <p><strong>解：</strong> 令 $z = e^{i\theta}$，$\cos\theta = \dfrac{z + z^{-1}}{2}$，$\dd\theta = \dfrac{\dd z}{iz}$，则</p>
+        <p>$$I = \oint_{|z|=1} \frac{1}{2 + \frac{z+z^{-1}}{2}} \cdot \frac{\dd z}{iz} = \oint_{|z|=1} \frac{1}{i z\left(2 + \frac{z + z^{-1}}{2}\right)}\,\dd z$$</p>
+        <p>$$= \oint_{|z|=1} \frac{2}{i(z^2 + 4z + 1)}\,\dd z.$$</p>
+        <p>求 $z^2 + 4z + 1 = 0$ 的根：$z = \dfrac{-4 \pm \sqrt{16-4}}{2} = -2 \pm \sqrt{3}$。</p>
+        <p>$z_1 = -2 + \sqrt{3} \approx -0.268$，在单位圆内；$z_2 = -2 - \sqrt{3} \approx -3.732$，在单位圆外。</p>
+        <p>在 $z_1$ 处的留数（一阶极点）：</p>
+        <p>$$\Res\left[\frac{2}{i(z^2+4z+1)}, z_1\right] = \frac{2}{i \cdot 2z_1 + 4i} = \frac{2}{i(2z_1+4)} = \frac{2}{i \cdot 2\sqrt{3}} = \frac{1}{i\sqrt{3}}.$$</p>
+        <p>因此</p>
+        <p>$$I = 2\pi i \cdot \frac{1}{i\sqrt{3}} = \frac{2\pi}{\sqrt{3}}.$$</p>
+      </div>
+    </div>
+
+    <!-- 第二类 -->
+    <h3>第二类：$\int_{-\infty}^{+\infty} f(x)\,\dd x$ 型积分</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">方法概述</div>
+      <p>设 $f(z) = \dfrac{p(z)}{q(z)}$ 满足以下条件：</p>
+      <ol>
+        <li>$p(z)$、$q(z)$ 为多项式，$q(z)$ 在实轴上无零点，$\deg q \ge \deg p + 2$；</li>
+        <li>取上半平面的半圆围道 $C_R$（由实轴 $[-R, R]$ 和上半圆弧 $\Gamma_R$ 组成），则当 $R \to \infty$ 时，$\int_{\Gamma_R} f(z)\,\dd z \to 0$。</li>
+      </ol>
+      <p>此时</p>
+      <p>$$\int_{-\infty}^{+\infty} f(x)\,\dd x = 2\pi i \sum_{\text{上半平面}} \Res[f, z_k].$$</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注记：半圆弧积分的估计</div>
+      <p>在 $\Gamma_R: z = Re^{i\theta}$，$0 \le \theta \le \pi$ 上，当 $\deg q \ge \deg p + 2$ 时：</p>
+      <p>$$|f(z)| = \left|\frac{p(z)}{q(z)}\right| \le \frac{M}{R^2} \quad (\text{当 } R \text{ 充分大时}),$$</p>
+      <p>故 $\left|\int_{\Gamma_R} f(z)\,\dd z\right| \le \dfrac{M}{R^2} \cdot \pi R = \dfrac{\pi M}{R} \to 0$。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例 6.5（第二类详细计算）</div>
+      <div class="collapsible-body">
+        <p><strong>题目：</strong> 计算 $\displaystyle I = \int_{-\infty}^{+\infty} \frac{\dd x}{(x^2 + 1)(x^2 + 4)}$。</p>
+        <p><strong>解：</strong> 令 $f(z) = \dfrac{1}{(z^2+1)(z^2+4)} = \dfrac{1}{(z+i)(z-i)(z+2i)(z-2i)}$。</p>
+        <p>$\deg q = 4 \ge \deg p + 2 = 2$，条件满足。</p>
+        <p>上半平面的奇点：$z = i$ 和 $z = 2i$，均为一阶极点。</p>
+        <p>在 $z = i$ 处：</p>
+        <p>$$\Res[f, i] = \frac{1}{(z+i)(z^2+4)}\bigg|_{z=i} = \frac{1}{2i \cdot (-1+4)} = \frac{1}{6i}.$$</p>
+        <p>在 $z = 2i$ 处：</p>
+        <p>$$\Res[f, 2i] = \frac{1}{(z^2+1)(z+2i)}\bigg|_{z=2i} = \frac{1}{(-4+1)\cdot 4i} = \frac{1}{-12i} = -\frac{1}{12i}.$$</p>
+        <p>因此</p>
+        <p>$$I = 2\pi i\left(\frac{1}{6i} - \frac{1}{12i}\right) = 2\pi i \cdot \frac{1}{12i} = \frac{\pi}{6}.$$</p>
+      </div>
+    </div>
+
+    <!-- 第三类 -->
+    <h3>第三类：$\int_{-\infty}^{+\infty} f(x) e^{iax}\,\dd x$ 型积分（$a > 0$）</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">方法概述</div>
+      <p>设 $f(z) = \dfrac{p(z)}{q(z)}$ 满足 $\deg q \ge \deg p + 1$，且 $q$ 在实轴上无零点。考虑 $g(z) = f(z) e^{iaz}$，利用 Jordan 引理：</p>
+      <p><strong>Jordan 引理：</strong> 若 $a > 0$，$\Gamma_R$ 为上半圆弧，则当 $R \to \infty$ 时，</p>
+      <p>$$\int_{\Gamma_R} f(z) e^{iaz}\,\dd z \to 0.$$</p>
+      <p>从而</p>
+      <p>$$\int_{-\infty}^{+\infty} f(x) e^{iax}\,\dd x = 2\pi i \sum_{\text{上半平面}} \Res[f(z)e^{iaz}, z_k].$$</p>
+      <p>取实部和虚部可得</p>
+      <p>$$\int_{-\infty}^{+\infty} f(x)\cos(ax)\,\dd x \quad \text{和} \quad \int_{-\infty}^{+\infty} f(x)\sin(ax)\,\dd x.$$</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例 6.6（第三类详细计算）</div>
+      <div class="collapsible-body">
+        <p><strong>题目：</strong> 计算 $\displaystyle I = \int_{-\infty}^{+\infty} \frac{\cos x}{x^2 + 1}\,\dd x$。</p>
+        <p><strong>解：</strong> 考虑 $\displaystyle J = \int_{-\infty}^{+\infty} \frac{e^{ix}}{x^2+1}\,\dd x$，则 $I = \Re(J)$。</p>
+        <p>令 $g(z) = \dfrac{e^{iz}}{z^2+1}$，上半平面的奇点为 $z = i$（一阶极点）。</p>
+        <p>$$\Res[g, i] = \lim_{z\to i}(z-i)\cdot\frac{e^{iz}}{(z-i)(z+i)} = \frac{e^{i\cdot i}}{2i} = \frac{e^{-1}}{2i} = \frac{1}{2ei}.$$</p>
+        <p>因此</p>
+        <p>$$J = 2\pi i \cdot \frac{1}{2ei} = \frac{\pi}{e}.$$</p>
+        <p>由于 $J$ 已经是实数，$I = \Re(J) = \dfrac{\pi}{e}$。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 补充例题（含 $\sin$ 的积分）</div>
+      <div class="collapsible-body">
+        <p><strong>题目：</strong> 计算 $\displaystyle I = \int_0^{+\infty} \frac{\sin x}{x}\,\dd x$。</p>
+        <p><strong>解：</strong> 这是一个经典的 Dirichlet 积分。注意被积函数在 $x = 0$ 处可去（$\sin x / x \to 1$），在无穷远处条件收敛。</p>
+        <p>考虑 $\displaystyle J = \int_{-\infty}^{+\infty} \frac{e^{iz}}{z}\,\dd z$，但 $z = 0$ 在实轴上，需取小半圆绕过。</p>
+        <p>取围道 $C$ 由以下部分组成：$[-R, -\varepsilon]$、上半平面小半圆 $C_\varepsilon: z = \varepsilon e^{i\theta}$（$\theta$ 从 $\pi$ 到 $0$）、$[\varepsilon, R]$、上半平面大半圆 $\Gamma_R$。</p>
+        <p>$g(z) = e^{iz}/z$ 在上半平面无奇点（$z = 0$ 被绕过），故 $\oint_C g(z)\,\dd z = 0$。</p>
+        <p>由 Jordan 引理，$\int_{\Gamma_R} g(z)\,\dd z \to 0$。对小半圆 $C_\varepsilon$：</p>
+        <p>$$\int_{C_\varepsilon} \frac{e^{iz}}{z}\,\dd z \to -\pi i \quad (\varepsilon \to 0),$$</p>
+        <p>（因为被积函数在 $z = 0$ 处留数为 $1$，小半圆对应角度 $\pi$ 而非 $2\pi$，故贡献 $-i\pi \cdot 1 = -\pi i$）。</p>
+        <p>因此 $\displaystyle\text{P.V.}\int_{-\infty}^{+\infty}\frac{e^{ix}}{x}\,\dd x - \pi i = 0$，即</p>
+        <p>$$\text{P.V.}\int_{-\infty}^{+\infty}\frac{e^{ix}}{x}\,\dd x = \pi i.$$</p>
+        <p>取虚部：$\displaystyle\int_{-\infty}^{+\infty}\frac{\sin x}{x}\,\dd x = \pi$，由偶函数性质得</p>
+        <p>$$I = \int_0^{+\infty}\frac{\sin x}{x}\,\dd x = \frac{\pi}{2}.$$</p>
+      </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注记：三类积分总结</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>类型</th>
+              <th>积分形式</th>
+              <th>变量替换</th>
+              <th>围道</th>
+              <th>条件</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>第一类</td>
+              <td>$\int_0^{2\pi} R(\cos\theta,\sin\theta)\,\dd\theta$</td>
+              <td>$z = e^{i\theta}$</td>
+              <td>单位圆</td>
+              <td>$R$ 为有理函数</td>
+            </tr>
+            <tr>
+              <td>第二类</td>
+              <td>$\int_{-\infty}^{+\infty} f(x)\,\dd x$</td>
+              <td>上半平面</td>
+              <td>半圆围道</td>
+              <td>$\deg q \ge \deg p + 2$</td>
+            </tr>
+            <tr>
+              <td>第三类</td>
+              <td>$\int_{-\infty}^{+\infty} f(x)e^{iax}\,\dd x$</td>
+              <td>上半平面</td>
+              <td>半圆围道 + Jordan</td>
+              <td>$a > 0$，$\deg q \ge \deg p + 1$</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 6.4 辐角原理与 Rouché 定理 ==================== -->
+  <div class="section" id="s4">
+    <h2>6.4 辐角原理与 Rouché 定理</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 6.2（对数留数）</div>
+      <p>设 $f(z)$ 在简单闭曲线 $C$ 上及 $C$ 内除有限个极点外解析，且 $f(z)$ 在 $C$ 上无零点和极点，则</p>
+      <p>$$\frac{1}{2\pi i}\oint_C \frac{f'(z)}{f(z)}\,\dd z$$</p>
+      <p>称为 $f(z)$ 关于 $C$ 的 <strong>对数留数</strong>。名称来源于 $\dfrac{f'}{f} = (\log f)'$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 6.2（对数留数定理）</div>
+      <p>在上述条件下，</p>
+      <p>$$\frac{1}{2\pi i}\oint_C \frac{f'(z)}{f(z)}\,\dd z = N - P,$$</p>
+      <p>其中 $N$ 为 $f(z)$ 在 $C$ 内部的零点个数（计重数），$P$ 为极点个数（计重数）。</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明思路</div>
+      <p>若 $z_0$ 是 $f$ 的 $m$ 阶零点，则在 $z_0$ 附近 $f(z) = (z-z_0)^m \varphi(z)$，$\varphi(z_0) \ne 0$，故</p>
+      <p>$$\frac{f'(z)}{f(z)} = \frac{m}{z-z_0} + \frac{\varphi'(z)}{\varphi(z)}.$$</p>
+      <p>因此 $f'/f$ 在 $z_0$ 处有一阶极点，留数为 $m$。类似地，若 $z_0$ 是 $f$ 的 $n$ 阶极点，留数为 $-n$。由留数定理，对数留数等于所有留数之和，即 $N - P$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 6.3（辐角原理）</div>
+      <p>在定理 6.2 的条件下，</p>
+      <p>$$N - P = \frac{1}{2\pi}\Delta_C \arg f(z),$$</p>
+      <p>其中 $\Delta_C \arg f(z)$ 表示当 $z$ 沿 $C$ 正向绕行一周时，$f(z)$ 的辐角的总改变量。</p>
+      <p><strong>直观解释：</strong> 当 $z$ 绕 $C$ 一周时，$f(z)$ 在 $w$ 平面上画出一条闭曲线 $\Gamma$。$\Delta_C \arg f(z)$ 就是 $\Gamma$ 绕原点 $w = 0$ 的圈数（逆时针为正），恰好等于零点个数减去极点个数。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 6.4（Rouché 定理）</div>
+      <p>设 $f(z)$ 和 $g(z)$ 在简单闭曲线 $C$ 上及 $C$ 内解析。若在 $C$ 上</p>
+      <p>$$|f(z) - g(z)| < |g(z)|,$$</p>
+      <p>则 $f(z)$ 与 $g(z)$ 在 $C$ 内部有相同个数的零点（计重数）。</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明</div>
+      <p>条件表明在 $C$ 上 $|g(z)| > 0$，且 $\left|\dfrac{f(z)}{g(z)} - 1\right| < 1$，即 $f(z)/g(z)$ 的值落在以 $1$ 为心、$1$ 为半径的圆盘内，不包含原点。</p>
+      <p>设 $N_f$、$N_g$ 分别为 $f$、$g$ 在 $C$ 内的零点个数。由辐角原理：</p>
+      <p>$$N_f - N_g = \frac{1}{2\pi}\Delta_C\arg\frac{f(z)}{g(z)} = \frac{1}{2\pi}\Delta_C\arg\left(\frac{f}{g} - 1 + 1\right).$$</p>
+      <p>由于 $f/g - 1$ 的值始终在 $|w| < 1$ 内，$w + 1$ 不绕原点，故 $\Delta_C \arg(f/g) = 0$，从而 $N_f = N_g$。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 6.7（Rouché 定理的应用）</div>
+      <p>证明方程 $z^5 + 3z + 1 = 0$ 在 $|z| < 1$ 内恰有一个根。</p>
+      <p><strong>证明：</strong> 取 $g(z) = 3z$，$f(z) = z^5 + 3z + 1$，$C: |z| = 1$。</p>
+      <p>在 $|z| = 1$ 上：</p>
+      <p>$$|f(z) - g(z)| = |z^5 + 1| \le |z|^5 + 1 = 2 < 3 = |g(z)|.$$</p>
+      <p>由 Rouché 定理，$f(z)$ 与 $g(z) = 3z$ 在 $|z| < 1$ 内有相同个数的零点。$g(z) = 3z$ 在 $|z| < 1$ 内有一个零点（$z = 0$），故 $f(z)$ 在 $|z| < 1$ 内恰有一个根。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例 6.8（代数基本定理的证明）</div>
+      <div class="collapsible-body">
+        <p><strong>命题：</strong> $n$ 次多项式 $p(z) = a_n z^n + a_{n-1}z^{n-1} + \cdots + a_0$（$a_n \ne 0$）恰有 $n$ 个零点（计重数）。</p>
+        <p><strong>证明：</strong> 取 $R$ 充分大，令 $C: |z| = R$。设 $g(z) = a_n z^n$，则在 $C$ 上：</p>
+        <p>$$|p(z) - g(z)| = |a_{n-1}z^{n-1} + \cdots + a_0| \le |a_{n-1}|R^{n-1} + \cdots + |a_0|.$$</p>
+        <p>而 $|g(z)| = |a_n| R^n$。当 $R$ 充分大时，$|a_n|R^n > |a_{n-1}|R^{n-1} + \cdots + |a_0|$，即 $|p(z) - g(z)| < |g(z)|$。</p>
+        <p>由 Rouché 定理，$p(z)$ 在 $|z| < R$ 内有 $n$ 个零点。取 $R \to \infty$ 即得 $p(z)$ 恰有 $n$ 个零点。</p>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 6.9（辐角原理的应用）</div>
+      <p>确定 $f(z) = z^3 - 2z + 1$ 在 $|z| < 1$ 内的零点个数。</p>
+      <p><strong>解：</strong> 取 $g(z) = -2z$，$C: |z| = 1$。在 $C$ 上：</p>
+      <p>$$|f(z) - g(z)| = |z^3 + 1| \le |z|^3 + 1 = 2 = |g(z)|.$$</p>
+      <p>此时不等号不严格，需进一步分析。注意到等号成立仅当 $z^3$ 与 $1$ 同向且 $z^3$ 为正实数，即 $z = 1$。但在 $z = 1$ 处 $f(1) = 0$，$g(1) = -2$，$|f(1) - g(1)| = 2 = |g(1)|$，等号成立。</p>
+        <p>改用 $g(z) = z^3 + 1$，$f(z) - g(z) = -2z$。在 $|z| = 1$ 上 $|-2z| = 2$，$|z^3 + 1| \ge |1 - |z^3|| = 0$，不够好。</p>
+        <p>直接用辐角原理：在 $|z| = 1$ 上追踪 $\arg f(z)$ 的变化。可验证 $z = 1$ 是 $f$ 的根（$f(1) = 0$），因式分解得 $f(z) = (z-1)(z^2 + z - 1)$。$z^2 + z - 1 = 0$ 的根为 $z = \dfrac{-1 \pm \sqrt{5}}{2}$，模分别为 $\approx 0.618$ 和 $\approx 1.618$。故 $|z| < 1$ 内有 $z = 1$（在边界）和 $z = \dfrac{-1+\sqrt{5}}{2} \approx 0.618$，共一个内部零点。</p>
+    </div>
+  </div>
+
+  <!-- 章节导航 -->
+  <div class="chapter-nav">
+    <a href="ch5.html" class="prev">第五章 · 级数</a>
+    <a href="index.html" class="next">首页</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>复变函数复习指南 · 基于钟玉泉教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

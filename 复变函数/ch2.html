@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第二章 · 解析函数</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}', CC: '\\mathbb{C}', EE: '\\mathbb{E}',
+          dd: '\\mathrm{d}', Res: '\\mathrm{Res}', arg: '\\mathrm{arg}',
+          Arg: '\\mathrm{Arg}', Log: '\\mathrm{Log}', Re: '\\mathrm{Re}', Im: '\\mathrm{Im}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">复变函数复习</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第二章 · 解析函数</h1>
+    <p>复分析的核心：可导的苛刻条件催生 Cauchy-Riemann 方程，解析性是复分析区别于实分析的关键。解析函数与调和函数的深刻联系，以及在物理中的应用。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">复变函数的导数</a></li>
+      <li><a href="#s2">解析函数的概念</a></li>
+      <li><a href="#s3">Cauchy-Riemann 条件</a></li>
+      <li><a href="#s4">调和函数</a></li>
+      <li><a href="#s5">解析函数的物理意义</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 第1节 ==================== -->
+  <div class="section" id="s1">
+    <h2>2.1 复变函数的导数</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 2.1（复变函数的导数）</div>
+      <p>设函数 $f(z)$ 在区域 $D$ 内有定义，$z_0 \in D$。若极限</p>
+      $$f'(z_0) = \lim_{\Delta z \to 0} \frac{f(z_0 + \Delta z) - f(z_0)}{\Delta z}$$
+      <p>存在（且与 $\Delta z \to 0$ 的方式无关），则称 $f(z)$ 在 $z_0$ 处<strong>可导</strong>（可微），$f'(z_0)$ 为 $f$ 在 $z_0$ 处的导数。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注记：与实函数导数的关键区别</div>
+      <p>实函数 $f(x)$ 中 $\Delta x \to 0$ 只有两个方向（左、右），但复变函数中 $\Delta z \to 0$ 有<strong>无穷多种路径</strong>（沿任何方向、曲线趋近）。因此，复变函数可导的要求远比实函数苛刻。$f(z)$ 在 $z_0$ 可导要求<strong>所有方向的极限一致</strong>，这将导出 Cauchy-Riemann 条件。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 2.1（可导必连续）</div>
+      <p>若 $f(z)$ 在 $z_0$ 可导，则 $f(z)$ 在 $z_0$ 连续。</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明</div>
+      <p>设 $f'(z_0)$ 存在，令 $\Delta w = f(z_0 + \Delta z) - f(z_0)$，则：</p>
+      $$\lim_{\Delta z \to 0} \Delta w = \lim_{\Delta z \to 0} \frac{\Delta w}{\Delta z} \cdot \Delta z = f'(z_0) \cdot 0 = 0$$
+      <p>即 $\lim_{z \to z_0} f(z) = f(z_0)$，故 $f$ 在 $z_0$ 连续。$\square$</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">公式：求导法则</div>
+      <p>复变函数的求导法则与实函数形式上完全相同：</p>
+      <ol>
+        <li>$(c)' = 0$，$c$ 为常数</li>
+        <li>$(z^n)' = nz^{n-1}$，$n \in \mathbb{Z}$</li>
+        <li>$(f \pm g)' = f' \pm g'$</li>
+        <li>$(fg)' = f'g + fg'$</li>
+        <li>$\left(\dfrac{f}{g}\right)' = \dfrac{f'g - fg'}{g^2}$，$g \ne 0$</li>
+        <li>$[f(g(z))]' = f'(g(z)) \cdot g'(z)$（链式法则）</li>
+      </ol>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 2.1</div>
+      <p>利用导数定义验证 $f(z) = z^2$ 在任意点可导，并求 $f'(z)$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-body">
+          $$\frac{f(z + \Delta z) - f(z)}{\Delta z} = \frac{(z+\Delta z)^2 - z^2}{\Delta z} = \frac{2z\Delta z + (\Delta z)^2}{\Delta z} = 2z + \Delta z$$
+          <p>当 $\Delta z \to 0$ 时，极限为 $2z$，与路径无关。故 $f'(z) = 2z$。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 2.2</div>
+      <p>证明 $f(z) = \bar{z}$ 在复平面上处处不可导。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-body">
+          <p>计算差商：</p>
+          $$\frac{f(z + \Delta z) - f(z)}{\Delta z} = \frac{\overline{z + \Delta z} - \bar{z}}{\Delta z} = \frac{\overline{\Delta z}}{\Delta z}$$
+          <p>取 $\Delta z = \Delta x$（沿实轴趋近）：$\dfrac{\overline{\Delta x}}{\Delta x} = \dfrac{\Delta x}{\Delta x} = 1$。</p>
+          <p>取 $\Delta z = i\Delta y$（沿虚轴趋近）：$\dfrac{\overline{i\Delta y}}{i\Delta y} = \dfrac{-i\Delta y}{i\Delta y} = -1$。</p>
+          <p>两种路径极限不同，故 $f(z) = \bar{z}$ 在任意点 $z$ 处不可导。$\square$</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 第2节 ==================== -->
+  <div class="section" id="s2">
+    <h2>2.2 解析函数的概念</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 2.2（解析函数）</div>
+      <p>区分三个层次：</p>
+      <ol>
+        <li><strong>在一点可导</strong>：$f'(z_0)$ 存在。</li>
+        <li><strong>在一点解析</strong>：$f(z)$ 在 $z_0$ 的某个邻域内处处可导。即 $\exists\,\delta > 0$，$f$ 在 $U(z_0, \delta)$ 内处处可导。</li>
+        <li><strong>在区域 $D$ 内解析</strong>：$f(z)$ 在 $D$ 内每一点都解析。</li>
+      </ol>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注记：可导与解析的关系</div>
+      <ul>
+        <li><strong>在一点解析必在该点可导</strong>，反之不然。在孤立点可导不等于在该点解析——解析性要求在该点的整个邻域内可导。</li>
+        <li>$f(z) = |z|^2$ 在 $z = 0$ 处可导（$f'(0) = 0$），但在 $z = 0$ 处不解析（因在 $z = 0$ 的任何邻域内存在不可导点）。</li>
+        <li>多项式在整个 $\CC$ 上解析（称为<strong>整函数</strong>）。有理函数在分母不为零处解析。</li>
+      </ul>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 2.3</div>
+      <p>证明 $f(z) = |z|^2$ 仅在 $z = 0$ 处可导，且在该点不解析。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-body">
+          <p>$f(z) = z\bar{z}$，在 $z = 0$ 处：</p>
+          $$\frac{f(0+\Delta z) - f(0)}{\Delta z} = \frac{|\Delta z|^2}{\Delta z} = \frac{\Delta z \cdot \overline{\Delta z}}{\Delta z} = \overline{\Delta z} \to 0$$
+          <p>故 $f'(0) = 0$，$f$ 在 $z=0$ 可导。</p>
+          <p>在 $z_0 \ne 0$ 处，令 $\Delta z = \Delta x$：</p>
+          $$\frac{f(z_0 + \Delta x) - f(z_0)}{\Delta x} = \frac{|z_0 + \Delta x|^2 - |z_0|^2}{\Delta x} = \frac{(x_0+\Delta x)^2 + y_0^2 - x_0^2 - y_0^2}{\Delta x} = 2x_0 + \Delta x \to 2x_0$$
+          <p>令 $\Delta z = i\Delta y$：</p>
+          $$\frac{f(z_0 + i\Delta y) - f(z_0)}{i\Delta y} = \frac{x_0^2 + (y_0+\Delta y)^2 - x_0^2 - y_0^2}{i\Delta y} = \frac{2y_0 + \Delta y}{i} \to -2iy_0$$
+          <p>两个方向极限相等需 $2x_0 = -2iy_0$，即 $x_0 + iy_0 = 0$，即 $z_0 = 0$。故 $f$ 仅在 $z=0$ 可导。</p>
+          <p>在 $z=0$ 的任何邻域内都存在 $z \ne 0$ 不可导，故 $f$ 在 $z=0$ 不解析。$\square$</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 2.4</div>
+      <p>设 $f(z) = z^3 + 2z + 1$，证明 $f$ 在整个复平面上解析，并求 $f'(z)$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-body">
+          <p>$f(z)$ 是多项式。对任意 $z_0 \in \CC$：</p>
+          $$\frac{f(z_0+\Delta z)-f(z_0)}{\Delta z} = \frac{(z_0+\Delta z)^3 + 2(z_0+\Delta z) + 1 - z_0^3 - 2z_0 - 1}{\Delta z}$$
+          $$= \frac{3z_0^2\Delta z + 3z_0(\Delta z)^2 + (\Delta z)^3 + 2\Delta z}{\Delta z} = 3z_0^2 + 3z_0\Delta z + (\Delta z)^2 + 2$$
+          <p>当 $\Delta z \to 0$ 时，极限为 $3z_0^2 + 2$，与路径无关。故 $f'(z) = 3z^2 + 2$。</p>
+          <p>由于 $z_0$ 任意，$f$ 在 $\CC$ 上解析。$\square$</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 第3节 ==================== -->
+  <div class="section" id="s3">
+    <h2>2.3 Cauchy-Riemann 条件</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 2.2（C-R 条件：可导的必要条件）</div>
+      <p>设 $f(z) = u(x,y) + iv(x,y)$ 在 $z_0 = x_0 + iy_0$ 处可导，则 $u, v$ 在 $(x_0, y_0)$ 处满足 <strong>Cauchy-Riemann 方程</strong>：</p>
+      $$\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}, \quad \frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x}$$
+      <p>且此时：</p>
+      $$f'(z_0) = \frac{\partial u}{\partial x} + i\frac{\partial v}{\partial x} = \frac{\partial v}{\partial y} - i\frac{\partial u}{\partial y}$$
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明（必要条件）</div>
+      <p>设 $f'(z_0)$ 存在。分别令 $\Delta z = \Delta x \to 0$ 和 $\Delta z = i\Delta y \to 0$：</p>
+      <p><strong>沿实轴趋近</strong>（$\Delta z = \Delta x$）：</p>
+      $$f'(z_0) = \lim_{\Delta x \to 0} \frac{u(x_0+\Delta x, y_0) - u(x_0, y_0)}{\Delta x} + i\lim_{\Delta x \to 0} \frac{v(x_0+\Delta x, y_0) - v(x_0, y_0)}{\Delta x} = \frac{\partial u}{\partial x} + i\frac{\partial v}{\partial x} \quad (\star)$$
+      <p><strong>沿虚轴趋近</strong>（$\Delta z = i\Delta y$）：</p>
+      $$f'(z_0) = \lim_{\Delta y \to 0} \frac{u(x_0, y_0+\Delta y) - u(x_0, y_0)}{i\Delta y} + i\lim_{\Delta y \to 0} \frac{v(x_0, y_0+\Delta y) - v(x_0, y_0)}{i\Delta y} = \frac{1}{i}\frac{\partial u}{\partial y} + \frac{\partial v}{\partial y} = \frac{\partial v}{\partial y} - i\frac{\partial u}{\partial y} \quad (\star\star)$$
+      <p>$(\star)$ 和 $(\star\star)$ 应相等，比较实虚部：</p>
+      $$\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}, \quad \frac{\partial v}{\partial x} = -\frac{\partial u}{\partial y}$$
+      <p>此即 Cauchy-Riemann 方程。$\square$</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 2.3（C-R 条件：可导的充分条件）</div>
+      <p>设 $f(z) = u + iv$ 在 $z_0$ 的某邻域内有定义，$u(x,y)$ 和 $v(x,y)$ 在 $(x_0, y_0)$ 处<strong>可微</strong>（作为二元实函数），且满足 Cauchy-Riemann 方程，则 $f(z)$ 在 $z_0$ 处可导，且：</p>
+      $$f'(z_0) = \frac{\partial u}{\partial x} + i\frac{\partial v}{\partial x}$$
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 2.4（可导的充要条件）</div>
+      <p>$f(z) = u + iv$ 在 $z_0$ 处可导 $\iff$ $u, v$ 在 $(x_0, y_0)$ 可微且满足 C-R 方程。</p>
+      <p>$f(z)$ 在区域 $D$ 内解析 $\iff$ $u, v$ 在 $D$ 内可微且在 $D$ 内处处满足 C-R 方程。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注记</div>
+      <ul>
+        <li>C-R 方程只是必要条件（不加可微性假设），不是充分条件。</li>
+        <li>若 $u, v$ 具有连续一阶偏导数，则自动可微，此时 C-R 方程成为充要条件。</li>
+        <li>C-R 方程说明：可导函数的实部和虚部不是独立的——知道其一可确定另一个（至多相差常数）。</li>
+      </ul>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 2.5</div>
+      <p>验证 $f(z) = z^3$ 的实部和虚部满足 C-R 方程，并求 $f'(z)$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-body">
+          <p>$z^3 = (x+iy)^3 = x^3 + 3x^2(iy) + 3x(iy)^2 + (iy)^3 = (x^3 - 3xy^2) + i(3x^2y - y^3)$。</p>
+          <p>故 $u = x^3 - 3xy^2$，$v = 3x^2y - y^3$。</p>
+          <p><strong>验证 C-R 方程</strong>：</p>
+          $$\frac{\partial u}{\partial x} = 3x^2 - 3y^2, \quad \frac{\partial v}{\partial y} = 3x^2 - 3y^2 \quad \checkmark$$
+          $$\frac{\partial u}{\partial y} = -6xy, \quad -\frac{\partial v}{\partial x} = -6xy \quad \checkmark$$
+          <p>C-R 方程处处满足。偏导数连续，故 $f$ 在 $\CC$ 上解析。</p>
+          <p>$$f'(z) = \frac{\partial u}{\partial x} + i\frac{\partial v}{\partial x} = (3x^2 - 3y^2) + i(6xy) = 3(x^2 - y^2 + 2ixy) = 3(x+iy)^2 = 3z^2$$</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 2.6</div>
+      <p>设 $f(z) = u + iv$ 解析，且 $u = x^2 - y^2 + x$，求 $v(x,y)$ 和 $f(z)$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-body">
+          <p>由 C-R 方程 $\dfrac{\partial v}{\partial y} = \dfrac{\partial u}{\partial x} = 2x + 1$，积分得 $v = (2x+1)y + g(x)$。</p>
+          <p>由 $\dfrac{\partial v}{\partial x} = -\dfrac{\partial u}{\partial y} = 2y$，计算 $\dfrac{\partial v}{\partial x} = 2y + g'(x)$。</p>
+          <p>比较得 $g'(x) = 0$，故 $g(x) = C$（常数）。取 $C = 0$，则 $v = 2xy + y$。</p>
+          <p>$$f(z) = (x^2 - y^2 + x) + i(2xy + y) = (x^2 - y^2 + 2ixy) + (x + iy) = z^2 + z$$</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 第4节 ==================== -->
+  <div class="section" id="s4">
+    <h2>2.4 调和函数</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 2.3（调和函数）</div>
+      <p>若二元实函数 $\varphi(x,y)$ 在区域 $D$ 内具有二阶连续偏导数，且满足 <strong>Laplace 方程</strong>：</p>
+      $$\Delta \varphi = \frac{\partial^2 \varphi}{\partial x^2} + \frac{\partial^2 \varphi}{\partial y^2} = 0$$
+      <p>则称 $\varphi$ 为 $D$ 内的<strong>调和函数</strong>（其中 $\Delta = \dfrac{\partial^2}{\partial x^2} + \dfrac{\partial^2}{\partial y^2}$ 为 Laplace 算子）。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 2.5（解析函数的实部和虚部是调和函数）</div>
+      <p>若 $f(z) = u + iv$ 在区域 $D$ 内解析，则 $u(x,y)$ 和 $v(x,y)$ 都是 $D$ 内的调和函数。</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明</div>
+      <p>$f$ 解析意味着 $u, v$ 满足 C-R 方程且具有任意阶偏导数（解析函数无穷次可微）。对 C-R 方程求偏导：</p>
+      $$\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y} \implies \frac{\partial^2 u}{\partial x^2} = \frac{\partial^2 v}{\partial y \partial x}$$
+      $$\frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x} \implies \frac{\partial^2 u}{\partial y^2} = -\frac{\partial^2 v}{\partial x \partial y}$$
+      <p>由混合偏导数连续性知 $\dfrac{\partial^2 v}{\partial y \partial x} = \dfrac{\partial^2 v}{\partial x \partial y}$，故：</p>
+      $$\Delta u = \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = \frac{\partial^2 v}{\partial y \partial x} - \frac{\partial^2 v}{\partial x \partial y} = 0$$
+      <p>同理可证 $\Delta v = 0$。$\square$</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 2.4（共轭调和函数）</div>
+      <p>设 $u(x,y)$ 为区域 $D$ 内的调和函数。若 $v(x,y)$ 也是 $D$ 内的调和函数，且 $u, v$ 满足 C-R 方程：</p>
+      $$\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}, \quad \frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x}$$
+      <p>则称 $v$ 为 $u$ 的<strong>共轭调和函数</strong>。注意：$u$ 和 $v$ 的角色不对称——$u$ 的共轭调和函数是 $v$，但 $v$ 的共轭调和函数是 $-u$（而非 $u$）。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">公式：由实部求虚部的方法</div>
+      <p>已知 $u(x,y)$ 为调和函数，求其共轭调和函数 $v(x,y)$：</p>
+      <p><strong>方法</strong>：由 C-R 方程 $\dfrac{\partial v}{\partial y} = \dfrac{\partial u}{\partial x}$，对 $y$ 积分：</p>
+      $$v(x,y) = \int \frac{\partial u}{\partial x} \, \dd y + g(x)$$
+      <p>再由 $\dfrac{\partial v}{\partial x} = -\dfrac{\partial u}{\partial y}$ 确定 $g(x)$。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 2.7</div>
+      <p>$u(x,y) = e^x \cos y$ 是调和函数，求其共轭调和函数 $v(x,y)$ 及 $f(z) = u + iv$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-body">
+          <p><strong>验证调和性</strong>：$\dfrac{\partial^2 u}{\partial x^2} = e^x \cos y$，$\dfrac{\partial^2 u}{\partial y^2} = -e^x \cos y$，$\Delta u = 0$。</p>
+          <p><strong>求 $v$</strong>：由 $\dfrac{\partial v}{\partial y} = \dfrac{\partial u}{\partial x} = e^x \cos y$，对 $y$ 积分：</p>
+          $$v = e^x \sin y + g(x)$$
+          <p>由 $\dfrac{\partial v}{\partial x} = -\dfrac{\partial u}{\partial y}$：$e^x \sin y + g'(x) = -(-e^x \sin y) = e^x \sin y$。</p>
+          <p>故 $g'(x) = 0$，$g(x) = C$。取 $C = 0$：$v = e^x \sin y$。</p>
+          <p>$$f(z) = e^x \cos y + ie^x \sin y = e^x(\cos y + i\sin y) = e^x \cdot e^{iy} = e^{x+iy} = e^z$$</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 2.8</div>
+      <p>$u(x,y) = x^2 - y^2 + xy$ 是否为调和函数？若是，求其共轭调和函数。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-body">
+          <p><strong>验证调和性</strong>：</p>
+          $$\frac{\partial^2 u}{\partial x^2} = 2, \quad \frac{\partial^2 u}{\partial y^2} = -2, \quad \Delta u = 2 - 2 = 0$$
+          <p>是调和函数。</p>
+          <p><strong>求 $v$</strong>：$\dfrac{\partial v}{\partial y} = \dfrac{\partial u}{\partial x} = 2x + y$，积分得 $v = 2xy + \dfrac{y^2}{2} + g(x)$。</p>
+          <p>$\dfrac{\partial v}{\partial x} = 2y + g'(x) = -\dfrac{\partial u}{\partial y} = -(-2y + x) = 2y - x$。</p>
+          <p>故 $g'(x) = -x$，$g(x) = -\dfrac{x^2}{2} + C$。取 $C = 0$：</p>
+          $$v = 2xy + \frac{y^2}{2} - \frac{x^2}{2}$$
+          <p><strong>验证</strong>：$\Delta v = -1 + 1 = 0$。$\checkmark$</p>
+          <p>$$f(z) = \left(x^2 - y^2 + xy\right) + i\left(2xy + \frac{y^2}{2} - \frac{x^2}{2}\right)$$</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 第5节 ==================== -->
+  <div class="section" id="s5">
+    <h2>2.5 解析函数的物理意义</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 2.5（平面流速场）</div>
+      <p>考虑定常不可压缩流体在平面区域 $D$ 内的流动。流速 $\mathbf{v} = (v_x, v_y)$ 满足：</p>
+      <ul>
+        <li><strong>无源条件</strong>（连续性方程）：$\dfrac{\partial v_x}{\partial x} + \dfrac{\partial v_y}{\partial y} = 0$</li>
+        <li><strong>无旋条件</strong>：$\dfrac{\partial v_y}{\partial x} - \dfrac{\partial v_x}{\partial y} = 0$</li>
+      </ul>
+      <p>定义<strong>势函数</strong> $\\varphi$ 和<strong>流函数</strong> $\psi$：</p>
+      $$v_x = \frac{\partial \varphi}{\partial x}, \quad v_y = \frac{\partial \varphi}{\partial y} \qquad (\text{势函数})$$
+      $$v_x = \frac{\partial \psi}{\partial y}, \quad v_y = -\frac{\partial \psi}{\partial x} \qquad (\text{流函数})$$
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 2.6（解析函数与平面流动）</div>
+      <p>若 $\varphi$ 和 $\psi$ 满足无源无旋条件，则 $\varphi, \psi$ 均为调和函数，且它们互为共轭调和函数。构造复势函数：</p>
+      $$w = f(z) = \varphi(x,y) + i\psi(x,y)$$
+      <p>则 $f(z)$ 在 $D$ 内解析。复势函数完全刻画了平面流动的信息：</p>
+      <ul>
+        <li>$f'(z) = v_x - iv_y$，即 $f'(z)$ 的共轭给出流速向量。</li>
+        <li>$\varphi(x,y) = c_1$ 为<strong>等势线</strong>。</li>
+        <li>$\psi(x,y) = c_2$ 为<strong>流线</strong>。等势线与流线正交。</li>
+      </ul>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注记：电场中的应用</div>
+      <p>类似地，平面静电场中电位 $\varphi$ 也是调和函数。若定义复电位 $f(z) = \varphi + i\psi$（$\psi$ 为电通量函数），则 $f(z)$ 也解析。等位线 $\varphi = c_1$ 和电力线 $\psi = c_2$ 正交。</p>
+      <p><strong>一般规律</strong>：任何满足二维 Laplace 方程的物理量，都可以通过其共轭调和函数构造解析函数。这是解析函数物理应用的基础。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 2.9</div>
+      <p>设复势函数 $f(z) = z^2$，求流速场 $\mathbf{v}$、势函数 $\varphi$、流函数 $\psi$，并画出等势线和流线的大致形状。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-body">
+          <p>$z^2 = (x^2 - y^2) + 2ixy$，故：</p>
+          $$\varphi = x^2 - y^2, \quad \psi = 2xy$$
+          <p><strong>验证调和性</strong>：$\Delta\varphi = 2 + (-2) = 0$，$\Delta\psi = 0 + 0 = 0$。$\checkmark$</p>
+          <p><strong>流速</strong>：</p>
+          $$f'(z) = 2z = 2(x+iy) \implies \overline{f'(z)} = 2(x-iy)$$
+          <p>即 $v_x = 2x$，$v_y = 2y$（取 $\overline{f'(z)} = v_x - iv_y$ 的实虚部）。</p>
+          <p><strong>等势线</strong>：$x^2 - y^2 = c$——双曲线族（以 $y = \pm x$ 为渐近线）。</p>
+          <p><strong>流线</strong>：$2xy = c$——双曲线族（以坐标轴为渐近线）。</p>
+          <p>两族曲线在非零交点处正交，这反映了解析函数的一个普遍性质。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 2.10</div>
+      <p>已知势函数 $\varphi = 2x - 3y$，验证它是调和函数，求共轭调和函数 $\psi$ 和复势 $f(z)$，并给出流速场。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-body">
+          <p><strong>验证</strong>：$\Delta\varphi = 0 + 0 = 0$，是调和函数（平凡地，线性函数总是调和的）。</p>
+          <p><strong>求 $\psi$</strong>：由 C-R 方程：</p>
+          $$\frac{\partial \psi}{\partial y} = \frac{\partial \varphi}{\partial x} = 2 \implies \psi = 2y + g(x)$$
+          $$\frac{\partial \psi}{\partial x} = g'(x) = -\frac{\partial \varphi}{\partial y} = 3 \implies g(x) = 3x + C$$
+          <p>取 $C = 0$：$\psi = 3x + 2y$。</p>
+          <p><strong>复势</strong>：</p>
+          $$f(z) = (2x - 3y) + i(3x + 2y) = 2(x+iy) + 3i(x+iy) = (2 + 3i)z$$
+          <p><strong>流速</strong>：$f'(z) = 2 + 3i$，故 $\overline{f'(z)} = 2 - 3i$，即 $v_x = 2$，$v_y = 3$。这是一个均匀流场。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chapter-nav">
+    <a href="ch1.html" class="prev">第一章 · 复数与复变函数</a>
+    <a href="ch3.html" class="next">第三章 · 初等函数</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>复变函数复习指南 · 基于钟玉泉教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>
