@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>偏微分方程 · 复习指南</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          CC: '\\mathbb{C}',
+          NN: '\\mathbb{N}',
+          ZZ: '\\mathbb{Z}',
+          dd: '\\mathrm{d}',
+          pd: '\\partial',
+          lap: '\\Delta',
+          grad: '\\nabla',
+          div: '\\mathrm{div}',
+          rot: '\\mathrm{rot}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+  <a href="../index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">偏微分方程复习</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<!-- 主内容 -->
+<div class="main-content">
+
+  <!-- 英雄区 -->
+  <div class="hero">
+    <h1>偏微分方程</h1>
+    <p>基于陈祖墀《偏微分方程》· 数学系核心课程 · 三类经典方程完整推导与求解</p>
+  </div>
+
+  <!-- 六章总览卡片 -->
+  <div class="chapter-cards">
+
+    <div class="chapter-card">
+      <span class="card-number">1</span>
+      <h3>绪论与一阶方程</h3>
+      <p>PDE 的入门：从基本概念出发，掌握一阶方程的特征线法，理解通解与特解的关系。</p>
+      <ul>
+        <li>PDE 的基本概念（阶、解、定解条件）</li>
+        <li>一阶拟线性方程与特征线法</li>
+        <li>一阶非线性方程（Charpit 方法）</li>
+        <li>全积分、通解与特解</li>
+      </ul>
+      <a href="ch1.html" class="card-link">进入第一章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">2</span>
+      <h3>二阶方程的分类与标准型</h3>
+      <p>三大家族的划分：通过判别式将二阶线性 PDE 分为双曲、抛物、椭圆三类，并化为标准型。</p>
+      <ul>
+        <li>二阶线性方程的一般形式</li>
+        <li>判别式与方程分类</li>
+        <li>自变量变换化标准型</li>
+        <li>叠加原理与齐次化原理</li>
+      </ul>
+      <a href="ch2.html" class="card-link">进入第二章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">3</span>
+      <h3>波动方程</h3>
+      <p>描述波的传播：从弦振动出发，推导 d'Alembert 公式，讨论能量守恒与解的唯一性。</p>
+      <ul>
+        <li>弦振动方程的推导</li>
+        <li>d'Alembert 公式与特征线</li>
+        <li>半无界问题与延拓法</li>
+        <li>能量积分与唯一性定理</li>
+      </ul>
+      <a href="ch3.html" class="card-link">进入第三章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">4</span>
+      <h3>热传导方程</h3>
+      <p>描述扩散过程：Fourier 变换法求解初值问题，极值原理揭示热传导的不可逆性。</p>
+      <ul>
+        <li>热传导方程的物理推导</li>
+        <li>Fourier 变换法求解初值问题</li>
+        <li>半无界问题与延拓法</li>
+        <li>极值原理与最大模估计</li>
+      </ul>
+      <a href="ch4.html" class="card-link">进入第四章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">5</span>
+      <h3>拉普拉斯方程</h3>
+      <p>稳态问题的核心：调和函数的深刻性质，Green 函数法，Poisson 积分公式。</p>
+      <ul>
+        <li>调和函数与基本解</li>
+        <li>Green 公式与 Green 函数</li>
+        <li>极值原理</li>
+        <li>球上 Dirichlet 问题与 Poisson 积分公式</li>
+      </ul>
+      <a href="ch5.html" class="card-link">进入第五章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">6</span>
+      <h3>傅里叶方法与边值问题</h3>
+      <p>分离变量法的系统化：Sturm-Liouville 理论为 Fourier 展开提供严格的数学基础。</p>
+      <ul>
+        <li>分离变量法</li>
+        <li>Sturm-Liouville 问题</li>
+        <li>本征值与本征函数</li>
+        <li>非齐次问题与本征函数展开法</li>
+      </ul>
+      <a href="ch6.html" class="card-link">进入第六章 →</a>
+    </div>
+
+  </div>
+
+  <!-- 学习建议 -->
+  <div class="section" style="margin-top: 2rem;">
+    <h2>学习路线建议</h2>
+    <ol>
+      <li><strong>第一章</strong>是基础，特征线法是贯穿一阶方程的核心方法。理解通解与特解的关系对后续学习至关重要。</li>
+      <li><strong>第二章</strong>是框架，方程分类决定了后续三章的结构。务必掌握判别式和化标准型的技巧。</li>
+      <li><strong>第三章</strong>（波动方程）是双曲型的代表，d'Alembert 公式是最优美的结果之一。特征线与能量方法是两大工具。</li>
+      <li><strong>第四章</strong>（热传导方程）是抛物型的代表，极值原理是核心。Fourier 变换法是最强大的求解工具。</li>
+      <li><strong>第五章</strong>（Laplace 方程）是椭圆型的代表，Green 函数法和极值原理是两大支柱。调和函数的性质是考试重点。</li>
+      <li><strong>第六章</strong>将分离变量法系统化，Sturm-Liouville 理论是 Fourier 方法的严格基础。本征函数展开法是求解非齐次问题的通用工具。</li>
+    </ol>
+    <p style="margin-top: 1rem; color: var(--text-light);">每章包含严格定义、定理证明、典型例题和计算技巧，配有物理解释帮助建立直觉。推荐配合陈祖墀《偏微分方程》教材使用。</p>
+  </div>
+
+</div>
+
+<!-- 页脚 -->
+<footer class="footer">
+  <p>偏微分方程复习指南 · 基于陈祖墀教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

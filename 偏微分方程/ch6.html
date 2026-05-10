@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第六章 · 傅里叶方法与边值问题</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}', CC: '\\mathbb{C}', NN: '\\mathbb{N}', ZZ: '\\mathbb{Z}',
+          dd: '\\mathrm{d}', pd: '\\partial', lap: '\\Delta', grad: '\\nabla',
+          div: '\\mathrm{div}', rot: '\\mathrm{rot}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+<nav class="navbar">
+  <a href="../index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">偏微分方程复习</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+  <div class="chapter-header">
+    <h1>第六章 · 傅里叶方法与边值问题</h1>
+    <p>分离变量法、Sturm-Liouville理论与非齐次问题</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">6.1 分离变量法</a></li>
+      <li><a href="#s2">6.2 Sturm-Liouville问题</a></li>
+      <li><a href="#s3">6.3 常见本征值问题</a></li>
+      <li><a href="#s4">6.4 Fourier级数展开求解</a></li>
+      <li><a href="#s5">6.5 非齐次问题</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 6.1 ==================== -->
+  <div class="section" id="s1">
+    <h2>6.1 分离变量法</h2>
+
+    <div class="box-definition">
+      <div class="box-title">定义 6.1.1 (分离变量法的基本思想)</div>
+      <p>分离变量法（Fourier方法）是求解线性偏微分方程边值问题的最基本方法。其核心思想是：假设解可以写成各变量的函数之积</p>
+      $$u(x, t) = X(x) \cdot T(t)$$
+      <p>代入方程后，利用"变量分离"将偏微分方程化为若干个常微分方程，再利用叠加原理构造一般解。</p>
+    </div>
+
+    <div class="box-example">
+      <div class="box-title">例题 6.1.1 (两端固定弦的自由振动)</div>
+      <p>考虑初边值问题</p>
+      $$\begin{cases} u_{tt} = a^2 u_{xx}, & 0 < x < l, \ t > 0 \\ u(0, t) = u(l, t) = 0, & t \geq 0 \\ u(x, 0) = \varphi(x), \ u_t(x, 0) = \psi(x), & 0 \leq x \leq l \end{cases}$$
+      <div class="collapsible">
+        <button class="collapsible-toggle">查看完整求解过程</button>
+        <div class="collapsible-content">
+          <p><strong>第一步：分离变量。</strong></p>
+          <p>设 $u(x,t) = X(x)T(t)$，代入 $u_{tt} = a^2 u_{xx}$：</p>
+          $$X(x)T''(t) = a^2 X''(x)T(t)$$
+          <p>两边除以 $a^2 X(x)T(t)$：</p>
+          $$\frac{T''(t)}{a^2 T(t)} = \frac{X''(x)}{X(x)} = -\lambda$$
+          <p>其中 $-\lambda$ 为分离常数（左侧仅为 $t$ 的函数，右侧仅为 $x$ 的函数，故必为常数）。</p>
+
+          <p><strong>第二步：求解 $X$ 的常微分方程（本征值问题）。</strong></p>
+          $$\begin{cases} X''(x) + \lambda X(x) = 0, & 0 < x < l \\ X(0) = X(l) = 0 \end{cases}$$
+          <p>分三种情况讨论：</p>
+          <p><em>情况一：$\lambda < 0$。</em> 设 $\lambda = -\mu^2$（$\mu > 0$），通解 $X = C_1 e^{\mu x} + C_2 e^{-\mu x}$。由 $X(0) = 0$ 得 $C_1 + C_2 = 0$；由 $X(l) = 0$ 得 $C_1(e^{\mu l} - e^{-\mu l}) = 0$。因 $e^{\mu l} \neq e^{-\mu l}$，故 $C_1 = C_2 = 0$，无非平凡解。</p>
+          <p><em>情况二：$\lambda = 0$。</em> 通解 $X = C_1 x + C_2$。由 $X(0) = C_2 = 0$，$X(l) = C_1 l = 0$，得 $C_1 = C_2 = 0$，无非平凡解。</p>
+          <p><em>情况三：$\lambda > 0$。</em> 通解 $X = C_1 \cos\sqrt{\lambda} x + C_2 \sin\sqrt{\lambda} x$。由 $X(0) = C_1 = 0$，$X(l) = C_2 \sin\sqrt{\lambda} l = 0$。要非平凡解，$C_2 \neq 0$，故 $\sin\sqrt{\lambda} l = 0$，即 $\sqrt{\lambda} l = n\pi$（$n = 1, 2, 3, \dots$）。</p>
+          <p>因此<strong>本征值</strong>和<strong>本征函数</strong>为</p>
+          $$\lambda_n = \left(\frac{n\pi}{l}\right)^2, \quad X_n(x) = \sin\frac{n\pi x}{l}, \quad n = 1, 2, 3, \dots$$
+
+          <p><strong>第三步：求解 $T$ 的常微分方程。</strong></p>
+          $$T''(t) + a^2 \lambda_n T(t) = T''(t) + \left(\frac{n\pi a}{l}\right)^2 T(t) = 0$$
+          <p>通解为</p>
+          $$T_n(t) = A_n \cos\frac{n\pi a t}{l} + B_n \sin\frac{n\pi a t}{l}$$
+
+          <p><strong>第四步：叠加原理构造一般解。</strong></p>
+          $$u(x,t) = \sum_{n=1}^{\infty} \left(A_n \cos\frac{n\pi a t}{l} + B_n \sin\frac{n\pi a t}{l}\right) \sin\frac{n\pi x}{l}$$
+
+          <p><strong>第五步：由初始条件确定系数。</strong></p>
+          <p>由 $u(x,0) = \varphi(x)$：</p>
+          $$\varphi(x) = \sum_{n=1}^{\infty} A_n \sin\frac{n\pi x}{l}$$
+          <p>由正弦级数的系数公式：</p>
+          $$A_n = \frac{2}{l} \int_0^l \varphi(x) \sin\frac{n\pi x}{l} \, \dd x$$
+          <p>由 $u_t(x,0) = \psi(x)$：</p>
+          $$\psi(x) = \sum_{n=1}^{\infty} B_n \cdot \frac{n\pi a}{l} \sin\frac{n\pi x}{l}$$
+          $$B_n = \frac{2}{n\pi a} \int_0^l \psi(x) \sin\frac{n\pi x}{l} \, \dd x$$
+        </div>
+      </div>
+    </div>
+
+    <div class="box-note">
+      <div class="box-title">注记：分离变量法的适用条件</div>
+      <p>分离变量法适用于：<strong>(1)</strong> 线性方程；<strong>(2)</strong> 区域具有规则的几何形状（矩形、圆、球等）；<strong>(3)</strong> 边值条件为齐次的（非齐次时需先化为齐次）。其理论基础是 Sturm-Liouville 理论。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 6.2 ==================== -->
+  <div class="section" id="s2">
+    <h2>6.2 Sturm-Liouville问题</h2>
+
+    <div class="box-definition">
+      <div class="box-title">定义 6.2.1 (正则 Sturm-Liouville 问题)</div>
+      <p><strong>正则S-L问题</strong>是如下常微分方程本征值问题：在区间 $(a, b)$ 上求非平凡解 $X(x)$ 和常数 $\lambda$，使得</p>
+      $$\frac{\dd}{\dd x}\left[p(x) \frac{\dd X}{\dd x}\right] + [q(x) + \lambda r(x)] X = 0, \quad a < x < b$$
+      <p>满足边值条件</p>
+      $$\begin{cases} \alpha_1 X(a) + \alpha_2 X'(a) = 0 \\ \beta_1 X(b) + \beta_2 X'(b) = 0 \end{cases}$$
+      <p>其中 $p(x) > 0$，$r(x) > 0$，$\alpha_1^2 + \alpha_2^2 > 0$，$\beta_1^2 + \beta_2^2 > 0$。</p>
+    </div>
+
+    <div class="box-theorem">
+      <div class="box-title">定理 6.2.1 (S-L问题的基本性质)</div>
+      <p>正则Sturm-Liouville问题具有以下性质：</p>
+      <p><strong>(1) 本征值的存在性：</strong> 存在无穷多个实本征值 $\lambda_1 \leq \lambda_2 \leq \cdots$，且 $\lambda_n \to +\infty$。</p>
+      <p><strong>(2) 本征值的实性：</strong> 所有本征值均为实数。</p>
+      <p><strong>(3) 正交性：</strong> 不同本征值对应的本征函数关于权函数 $r(x)$ 正交：若 $\lambda_m \neq \lambda_n$，则</p>
+      $$\int_a^b r(x) X_m(x) X_n(x) \, \dd x = 0$$
+      <p><strong>(4) 完备性：</strong> 本征函数系 $\{X_n\}_{n=1}^\infty$ 在 $L^2_r(a,b)$ 中完备，即任意 $f \in L^2_r(a,b)$ 可展开为</p>
+      $$f(x) = \sum_{n=1}^{\infty} c_n X_n(x), \quad c_n = \frac{\int_a^b r(x) f(x) X_n(x) \, \dd x}{\int_a^b r(x) X_n^2(x) \, \dd x}$$
+    </div>
+
+    <div class="box-proof">
+      <div class="box-title">证明：本征值为实数</div>
+      <p>设 $\lambda$ 为本征值，$X$ 为对应的本征函数。对方程取复共轭（注意 $p, q, r$ 为实函数）：</p>
+      $$(pX')' + (q + \bar{\lambda} r)\bar{X} = 0$$
+      <p>将原方程乘以 $\bar{X}$，共轭方程乘以 $X$，相减并在 $(a,b)$ 上积分：</p>
+      $$\int_a^b \left[\bar{X}(pX')' - X(p\bar{X}')'\right] \dd x + (\lambda - \bar{\lambda}) \int_a^b r|X|^2 \, \dd x = 0$$
+      <p>左边第一项经分部积分和边值条件可化为零，故 $(\lambda - \bar{\lambda}) \int_a^b r|X|^2 \, \dd x = 0$。因 $r > 0$，$X$ 不恒为零，故 $\lambda = \bar{\lambda}$，即 $\lambda \in \RR$。</p>
+    </div>
+
+    <div class="box-proof">
+      <div class="box-title">证明：本征函数的正交性</div>
+      <p>设 $\lambda_m \neq \lambda_n$，对应的本征函数为 $X_m, X_n$，则</p>
+      $$(pX_m')' + (q + \lambda_m r) X_m = 0 \quad \cdots (1)$$
+      $$(pX_n')' + (q + \lambda_n r) X_n = 0 \quad \cdots (2)$$
+      <p>$(1) \times X_n - (2) \times X_m$：</p>
+      $$X_n(pX_m')' - X_m(pX_n')' + (\lambda_m - \lambda_n) r X_m X_n = 0$$
+      <p>在 $(a,b)$ 上积分，左边前两项经分部积分和边值条件化为零，得</p>
+      $$(\lambda_m - \lambda_n) \int_a^b r(x) X_m(x) X_n(x) \, \dd x = 0$$
+      <p>因 $\lambda_m \neq \lambda_n$，故 $\int_a^b r X_m X_n \, \dd x = 0$。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 6.3 ==================== -->
+  <div class="section" id="s3">
+    <h2>6.3 常见本征值问题</h2>
+
+    <div class="box-formula">
+      <div class="box-title">公式 6.3.1 (弦振动问题)</div>
+      <p>两端固定弦：$X'' + \lambda X = 0$，$X(0) = X(l) = 0$。</p>
+      $$\lambda_n = \left(\frac{n\pi}{l}\right)^2, \quad X_n(x) = \sin\frac{n\pi x}{l}, \quad n = 1, 2, 3, \dots$$
+      <p>正交性：$\int_0^l \sin\frac{m\pi x}{l} \sin\frac{n\pi x}{l} \, \dd x = \frac{l}{2} \delta_{mn}$。</p>
+      <p>一端固定一端自由：$X'' + \lambda X = 0$，$X(0) = X'(l) = 0$。</p>
+      $$\lambda_n = \left(\frac{(2n-1)\pi}{2l}\right)^2, \quad X_n(x) = \sin\frac{(2n-1)\pi x}{2l}, \quad n = 1, 2, 3, \dots$$
+    </div>
+
+    <div class="box-formula">
+      <div class="box-title">公式 6.3.2 (圆域上的本征值问题——Bessel方程)</div>
+      <p>在极坐标下对圆域 $B_R(0)$ 求解 $\lap u = 0$，分离变量后得到<strong>Bessel方程</strong>：</p>
+      $$r^2 R'' + rR' + (\lambda r^2 - m^2) R = 0$$
+      <p>其中 $m = 0, 1, 2, \dots$（由角向周期性决定）。令 $t = \sqrt{\lambda} r$，$R(r) = J_m(t)$，得标准Bessel方程</p>
+      $$t^2 J_m'' + t J_m' + (t^2 - m^2) J_m = 0$$
+      <p>本征值由有界性条件 $R(0)$ 有界及边界条件确定：</p>
+      $$\lambda_{mn} = \left(\frac{j_{m,n}}{R}\right)^2, \quad R_{mn}(r) = J_m\left(\frac{j_{m,n} r}{R}\right)$$
+      <p>其中 $j_{m,n}$ 为 $m$ 阶Bessel函数 $J_m$ 的第 $n$ 个正零点。</p>
+    </div>
+
+    <div class="box-formula">
+      <div class="box-title">公式 6.3.3 (球域上的本征值问题——Legendre方程)</div>
+      <p>在球坐标下对球域求解 $\lap u = 0$，分离变量后角向部分得到<strong>Legendre方程</strong>：</p>
+      $$(1 - x^2)P'' - 2xP' + l(l+1)P = 0, \quad -1 < x < 1$$
+      <p>其中 $x = \cos\theta$。当 $l = 0, 1, 2, \dots$ 时，存在有界解——<strong>Legendre多项式</strong>：</p>
+      $$P_l(x) = \frac{1}{2^l l!} \frac{\dd^l}{\dd x^l}(x^2 - 1)^l$$
+      <p>正交性：$\int_{-1}^{1} P_m(x) P_l(x) \, \dd x = \frac{2}{2l+1} \delta_{ml}$。</p>
+    </div>
+
+    <div class="box-note">
+      <div class="box-title">注记：本征函数系的统一框架</div>
+      <p>所有上述本征值问题均为Sturm-Liouville问题的特例。弦振动对应 $p=1, q=0, r=1$；Bessel方程可化为S-L标准形，权函数 $r(r) = r$；Legendre方程中 $p(x) = 1-x^2$，权函数 $r(x) = 1$。S-L理论保证了各类本征函数系的正交性和完备性。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 6.4 ==================== -->
+  <div class="section" id="s4">
+    <h2>6.4 Fourier级数展开求解</h2>
+
+    <div class="box-example">
+      <div class="box-title">例题 6.4.1 (热传导方程的分离变量法)</div>
+      <p>求解初边值问题</p>
+      $$\begin{cases} u_t = k u_{xx}, & 0 < x < l, \ t > 0 \\ u(0, t) = u(l, t) = 0 \\ u(x, 0) = f(x) \end{cases}$$
+      <div class="collapsible">
+        <button class="collapsible-toggle">查看完整求解过程</button>
+        <div class="collapsible-content">
+          <p><strong>分离变量：</strong> 设 $u(x,t) = X(x)T(t)$，代入方程得</p>
+          $$\frac{T'}{kT} = \frac{X''}{X} = -\lambda$$
+          <p><strong>本征值问题：</strong> $X'' + \lambda X = 0$，$X(0) = X(l) = 0$。由6.3节，</p>
+          $$\lambda_n = \left(\frac{n\pi}{l}\right)^2, \quad X_n(x) = \sin\frac{n\pi x}{l}$$
+          <p><strong>时间方程：</strong> $T' + k\lambda_n T = 0$，解为</p>
+          $$T_n(t) = C_n e^{-k\lambda_n t} = C_n e^{-k(n\pi/l)^2 t}$$
+          <p><strong>叠加：</strong></p>
+          $$u(x,t) = \sum_{n=1}^{\infty} C_n e^{-k(n\pi/l)^2 t} \sin\frac{n\pi x}{l}$$
+          <p><strong>确定系数：</strong> 由 $u(x,0) = f(x)$：</p>
+          $$C_n = \frac{2}{l} \int_0^l f(x) \sin\frac{n\pi x}{l} \, \dd x$$
+          <p><strong>物理意义：</strong> 各模态以指数速率 $e^{-k(n\pi/l)^2 t}$ 衰减，高频模态衰减更快（$\lambda_n$ 越大衰减越快），故长时间后温度分布趋于均匀。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box-example">
+      <div class="box-title">例题 6.4.2 (Laplace方程在矩形域上的Dirichlet问题)</div>
+      <p>求解</p>
+      $$\begin{cases} \lap u = u_{xx} + u_{yy} = 0, & 0 < x < a, \ 0 < y < b \\ u(x, 0) = 0, \ u(x, b) = f(x) \\ u(0, y) = 0, \ u(a, y) = 0 \end{cases}$$
+      <div class="collapsible">
+        <button class="collapsible-toggle">查看完整求解过程</button>
+        <div class="collapsible-content">
+          <p><strong>分离变量：</strong> 设 $u(x,y) = X(x)Y(y)$，代入 $u_{xx} + u_{yy} = 0$：</p>
+          $$\frac{X''}{X} = -\frac{Y''}{Y} = -\lambda$$
+          <p><strong>$X$ 的本征值问题：</strong> $X'' + \lambda X = 0$，$X(0) = X(a) = 0$。</p>
+          $$\lambda_n = \left(\frac{n\pi}{a}\right)^2, \quad X_n(x) = \sin\frac{n\pi x}{a}, \quad n = 1, 2, 3, \dots$$
+          <p><strong>$Y$ 的方程：</strong> $Y'' - \lambda_n Y = 0$，即 $Y'' - (n\pi/a)^2 Y = 0$。通解为</p>
+          $$Y_n(y) = A_n \cosh\frac{n\pi y}{a} + B_n \sinh\frac{n\pi y}{a}$$
+          <p>由 $u(x,0) = 0$ 得 $Y_n(0) = A_n = 0$，故 $Y_n(y) = B_n \sinh\frac{n\pi y}{a}$。</p>
+          <p><strong>叠加：</strong></p>
+          $$u(x,y) = \sum_{n=1}^{\infty} B_n \sinh\frac{n\pi y}{a} \sin\frac{n\pi x}{a}$$
+          <p><strong>确定系数：</strong> 由 $u(x,b) = f(x)$：</p>
+          $$f(x) = \sum_{n=1}^{\infty} B_n \sinh\frac{n\pi b}{a} \sin\frac{n\pi x}{a}$$
+          $$B_n \sinh\frac{n\pi b}{a} = \frac{2}{a} \int_0^a f(x) \sin\frac{n\pi x}{a} \, \dd x$$
+          $$B_n = \frac{2}{a \sinh(n\pi b/a)} \int_0^a f(x) \sin\frac{n\pi x}{a} \, \dd x$$
+          <p><strong>最终解：</strong></p>
+          $$u(x,y) = \sum_{n=1}^{\infty} \left(\frac{2}{a} \int_0^a f(\xi) \sin\frac{n\pi\xi}{a} \, \dd\xi\right) \frac{\sinh(n\pi y/a)}{\sinh(n\pi b/a)} \sin\frac{n\pi x}{a}$$
+        </div>
+      </div>
+    </div>
+
+    <div class="box-example">
+      <div class="box-title">例题 6.4.3 (圆域上的Dirichlet问题)</div>
+      <p>求解 $\lap u = 0$（$r < R$），$u(R, \varphi) = g(\varphi)$。</p>
+      <div class="collapsible">
+        <button class="collapsible-toggle">查看完整求解过程</button>
+        <div class="collapsible-content">
+          <p><strong>极坐标下Laplace方程：</strong></p>
+          $$u_{rr} + \frac{1}{r} u_r + \frac{1}{r^2} u_{\varphi\varphi} = 0$$
+          <p><strong>分离变量：</strong> 设 $u(r,\varphi) = R(r)\Phi(\varphi)$，代入得</p>
+          $$\frac{r^2 R'' + rR'}{R} = -\frac{\Phi''}{\Phi} = \lambda$$
+          <p><strong>角向方程：</strong> $\Phi'' + \lambda \Phi = 0$，周期条件 $\Phi(\varphi + 2\pi) = \Phi(\varphi)$。</p>
+          $$\lambda = m^2, \quad \Phi_m(\varphi) = a_m \cos m\varphi + b_m \sin m\varphi, \quad m = 0, 1, 2, \dots$$
+          <p><strong>径向方程：</strong> $r^2 R'' + rR' - m^2 R = 0$（Euler方程）。</p>
+          <p>$m = 0$ 时：$R_0 = C_0 + D_0 \ln r$。由 $R(0)$ 有界，$D_0 = 0$。</p>
+          <p>$m \geq 1$ 时：$R_m = C_m r^m + D_m r^{-m}$。由 $R(0)$ 有界，$D_m = 0$。</p>
+          <p><strong>叠加：</strong></p>
+          $$u(r,\varphi) = \frac{a_0}{2} + \sum_{m=1}^{\infty} r^m (a_m \cos m\varphi + b_m \sin m\varphi)$$
+          <p><strong>确定系数：</strong> 由 $u(R,\varphi) = g(\varphi)$：</p>
+          $$a_m = \frac{1}{\pi R^m} \int_0^{2\pi} g(\varphi) \cos m\varphi \, \dd\varphi, \quad b_m = \frac{1}{\pi R^m} \int_0^{2\pi} g(\varphi) \sin m\varphi \, \dd\varphi$$
+          <p>这与Poisson积分公式给出的结果一致。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 6.5 ==================== -->
+  <div class="section" id="s5">
+    <h2>6.5 非齐次问题</h2>
+
+    <div class="box-definition">
+      <div class="box-title">定义 6.5.1 (本征函数展开法)</div>
+      <p>对于含有非齐次项的方程，可将解按齐次问题的本征函数系展开，将偏微分方程化为关于展开系数的常微分方程。此方法称为<strong>本征函数展开法</strong>。</p>
+    </div>
+
+    <div class="box-example">
+      <div class="box-title">例题 6.5.1 (非齐次热传导方程)</div>
+      <p>求解</p>
+      $$\begin{cases} u_t = k u_{xx} + F(x,t), & 0 < x < l, \ t > 0 \\ u(0, t) = u(l, t) = 0 \\ u(x, 0) = \varphi(x) \end{cases}$$
+      <div class="collapsible">
+        <button class="collapsible-toggle">查看完整求解过程</button>
+        <div class="collapsible-content">
+          <p><strong>第一步：选取本征函数系。</strong></p>
+          <p>齐次问题的本征函数为 $X_n(x) = \sin\frac{n\pi x}{l}$（$n = 1, 2, 3, \dots$），对应本征值 $\lambda_n = (n\pi/l)^2$。</p>
+
+          <p><strong>第二步：将解和非齐次项按本征函数展开。</strong></p>
+          $$u(x,t) = \sum_{n=1}^{\infty} T_n(t) \sin\frac{n\pi x}{l}$$
+          $$F(x,t) = \sum_{n=1}^{\infty} f_n(t) \sin\frac{n\pi x}{l}, \quad f_n(t) = \frac{2}{l} \int_0^l F(x,t) \sin\frac{n\pi x}{l} \, \dd x$$
+
+          <p><strong>第三步：代入方程，比较系数。</strong></p>
+          $$\sum_{n=1}^{\infty} T_n'(t) \sin\frac{n\pi x}{l} = k \sum_{n=1}^{\infty} \left[-\lambda_n T_n(t)\right] \sin\frac{n\pi x}{l} + \sum_{n=1}^{\infty} f_n(t) \sin\frac{n\pi x}{l}$$
+          <p>由正交性，对每个 $n$：</p>
+          $$T_n'(t) + k\lambda_n T_n(t) = f_n(t)$$
+
+          <p><strong>第四步：求解一阶线性ODE。</strong></p>
+          <p>初始条件：$T_n(0) = \varphi_n = \frac{2}{l}\int_0^l \varphi(x)\sin\frac{n\pi x}{l}\, \dd x$。由常数变易法：</p>
+          $$T_n(t) = \varphi_n e^{-k\lambda_n t} + \int_0^t f_n(\tau) e^{-k\lambda_n(t-\tau)} \, \dd\tau$$
+
+          <p><strong>最终解：</strong></p>
+          $$u(x,t) = \sum_{n=1}^{\infty} \left[\varphi_n e^{-k\lambda_n t} + \int_0^t f_n(\tau) e^{-k\lambda_n(t-\tau)} \, \dd\tau\right] \sin\frac{n\pi x}{l}$$
+        </div>
+      </div>
+    </div>
+
+    <div class="box-theorem">
+      <div class="box-title">定理 6.5.1 (Duhamel原理)</div>
+      <p>设 $w(x,t;\tau)$ 为如下齐次方程的解（$\tau$ 为参数）：</p>
+      $$\begin{cases} w_t = k w_{xx}, & t > \tau \\ w(x, \tau; \tau) = F(x, \tau) \\ w(0, t; \tau) = w(l, t; \tau) = 0 \end{cases}$$
+      <p>则非齐次方程 $u_t = k u_{xx} + F(x,t)$ 满足零初始条件的解为</p>
+      $$u(x,t) = \int_0^t w(x, t; \tau) \, \dd\tau$$
+      <p>Duhamel原理将非齐次问题化为一族齐次问题，其物理意义为：非齐次项 $F(x,t)$ 的效果可视为在各时刻 $\tau$ "注入"的瞬时效应的叠加。</p>
+    </div>
+
+    <div class="box-example">
+      <div class="box-title">例题 6.5.2 (非齐次波动方程)</div>
+      <p>求解</p>
+      $$\begin{cases} u_{tt} = a^2 u_{xx} + f(x,t), & 0 < x < l, \ t > 0 \\ u(0,t) = u(l,t) = 0 \\ u(x,0) = 0, \ u_t(x,0) = 0 \end{cases}$$
+      <div class="collapsible">
+        <button class="collapsible-toggle">查看完整求解过程</button>
+        <div class="collapsible-content">
+          <p><strong>本征函数展开：</strong> 设 $u(x,t) = \sum_{n=1}^{\infty} T_n(t) \sin\frac{n\pi x}{l}$，$f(x,t) = \sum_{n=1}^{\infty} f_n(t) \sin\frac{n\pi x}{l}$。</p>
+          <p>代入方程得</p>
+          $$T_n''(t) + a^2\lambda_n T_n(t) = f_n(t), \quad \lambda_n = \left(\frac{n\pi}{l}\right)^2$$
+          <p>初始条件：$T_n(0) = 0$，$T_n'(0) = 0$。</p>
+          <p>由常数变易法（或 Laplace 变换），解为</p>
+          $$T_n(t) = \frac{1}{n\pi a/l} \int_0^t f_n(\tau) \sin\frac{n\pi a(t-\tau)}{l} \, \dd\tau$$
+          <p>最终解：</p>
+          $$u(x,t) = \sum_{n=1}^{\infty} \left[\frac{l}{n\pi a} \int_0^t f_n(\tau) \sin\frac{n\pi a(t-\tau)}{l} \, \dd\tau\right] \sin\frac{n\pi x}{l}$$
+          <p>这与Duhamel原理给出的结果一致：$w(x,t;\tau)$ 为以 $F(x,\tau)$ 为初始位移的自由振动解，对 $\tau$ 积分即得 $u$。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box-example">
+      <div class="box-title">例题 6.5.3 (非齐次Laplace方程——Poisson方程)</div>
+      <p>用本征函数展开法求解</p>
+      $$\begin{cases} \lap u = u_{xx} + u_{yy} = -1, & 0 < x < a, \ 0 < y < b \\ u(0,y) = u(a,y) = 0 \\ u(x,0) = u(x,b) = 0 \end{cases}$$
+      <div class="collapsible">
+        <button class="collapsible-toggle">查看完整求解过程</button>
+        <div class="collapsible-content">
+          <p><strong>按 $x$ 方向的本征函数展开：</strong></p>
+          $$u(x,y) = \sum_{n=1}^{\infty} Y_n(y) \sin\frac{n\pi x}{a}$$
+          <p>将 $-1$ 展开为正弦级数：</p>
+          $$-1 = \sum_{n=1}^{\infty} c_n \sin\frac{n\pi x}{a}, \quad c_n = \frac{2}{a}\int_0^a (-1)\sin\frac{n\pi x}{a} \, \dd x = \begin{cases} -\frac{4}{n\pi} & n \text{ 为奇数} \\ 0 & n \text{ 为偶数} \end{cases}$$
+          <p>代入方程得</p>
+          $$Y_n'' - \left(\frac{n\pi}{a}\right)^2 Y_n = c_n$$
+          <p>特解：$Y_n^{(p)} = \frac{c_n}{-(n\pi/a)^2} = -\frac{c_n a^2}{n^2\pi^2}$。齐次解：$A_n \cosh\frac{n\pi y}{a} + B_n \sinh\frac{n\pi y}{a}$。</p>
+          <p>由 $Y_n(0) = 0$ 和 $Y_n(b) = 0$ 确定常数：</p>
+          $$A_n = -Y_n^{(p)} = \frac{c_n a^2}{n^2\pi^2}, \quad B_n = Y_n^{(p)} \cdot \frac{1 - \cosh(n\pi b/a)}{\sinh(n\pi b/a)}$$
+          <p>最终解可写为</p>
+          $$u(x,y) = \frac{8a^2}{\pi^3} \sum_{k=0}^{\infty} \frac{1}{(2k+1)^3} \left[1 - \frac{\cosh\frac{(2k+1)\pi(y - b/2)}{a}}{\cosh\frac{(2k+1)\pi b}{2a}}\right] \sin\frac{(2k+1)\pi x}{a}$$
+        </div>
+      </div>
+    </div>
+
+    <div class="box-note">
+      <div class="box-title">注记：分离变量法的总结</div>
+      <p>分离变量法的核心步骤可归纳为：</p>
+      <p><strong>(1)</strong> 将偏微分方程分离为若干常微分方程；</p>
+      <p><strong>(2)</strong> 求解本征值问题，得到本征值和本征函数系；</p>
+      <p><strong>(3)</strong> 利用叠加原理构造级数形式的解；</p>
+      <p><strong>(4)</strong> 利用本征函数的正交性和完备性确定展开系数；</p>
+      <p><strong>(5)</strong> 验证解的收敛性和满足方程的合法性（正则性）。</p>
+      <p>对于非齐次问题，本征函数展开法或Duhamel原理是处理非齐次项的两种有效手段。</p>
+    </div>
+  </div>
+
+  <div class="chapter-nav">
+    <a href="ch5.html" class="prev">第五章</a>
+    <a href="index.html" class="next">首页</a>
+  </div>
+</div>
+
+<footer class="footer">
+  <p>偏微分方程复习指南 · 基于陈祖墀教材 · 仅供学习参考</p>
+</footer>
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

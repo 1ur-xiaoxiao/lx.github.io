@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第三章 · 波动方程</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}', CC: '\\mathbb{C}', NN: '\\mathbb{N}', ZZ: '\\mathbb{Z}',
+          dd: '\\mathrm{d}', pd: '\\partial', lap: '\\Delta', grad: '\\nabla',
+          div: '\\mathrm{div}', rot: '\\mathrm{rot}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+<nav class="navbar">
+  <a href="../index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">偏微分方程复习</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+  <div class="chapter-header">
+    <h1>第三章 · 波动方程</h1>
+    <p>双曲型方程的典型代表——从弦振动出发，以 d'Alembert 公式和能量方法为核心工具</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">3.1 方程的推导</a></li>
+      <li><a href="#s2">3.2 一维波动方程的初值问题</a></li>
+      <li><a href="#s3">3.3 半无界问题</a></li>
+      <li><a href="#s4">3.4 高维波动方程简介</a></li>
+      <li><a href="#s5">3.5 能量积分与唯一性</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 3.1 ==================== -->
+  <div class="section" id="s1">
+    <h2>3.1 方程的推导</h2>
+
+    <h3>物理模型与假设</h3>
+    <p>考虑一根长度为 $l$ 的柔软均匀细弦，两端固定在 $x$ 轴上，在平衡位置附近做微小横振动。设 $u(x,t)$ 表示弦上坐标为 $x$ 的点在时刻 $t$ 的横向位移。</p>
+
+    <div class="box box-note">
+      <div class="box-title">基本假设</div>
+      <ol>
+        <li>弦是完全柔软的（无抗弯刚度），弦的张力沿切线方向；</li>
+        <li>振动是微小的，即 $|\pd u/\pd x| \ll 1$，从而张力的水平分量近似为常数 $T_0$；</li>
+        <li>弦是均匀的，线密度 $\rho$ 为常数；</li>
+        <li>只考虑横向振动，忽略重力和阻尼。</li>
+      </ol>
+    </div>
+
+    <h3>推导过程</h3>
+    <p>取弦上微元 $[x, x+\Delta x]$，在 $x$ 处张力 $T_1$ 与水平方向夹角为 $\alpha_1$，在 $x+\Delta x$ 处张力 $T_2$ 与水平方向夹角为 $\alpha_2$。由水平方向力平衡：</p>
+    $$T_2 \cos\alpha_2 = T_1 \cos\alpha_1 = T_0 = \text{const}.$$
+
+    <p>由竖直方向的 Newton 第二定律：</p>
+    $$T_2 \sin\alpha_2 - T_1 \sin\alpha_1 = \rho \Delta x \cdot \frac{\pd^2 u}{\pd t^2}.$$
+
+    <p>在小振动假设下 $\tan\alpha \approx \sin\alpha = \pd u/\pd x$，因此</p>
+    $$T_0\left[\frac{\pd u}{\pd x}\bigg|_{x+\Delta x} - \frac{\pd u}{\pd x}\bigg|_{x}\right] = \rho \Delta x \cdot \frac{\pd^2 u}{\pd t^2}.$$
+
+    <p>两边除以 $\Delta x$ 并令 $\Delta x \to 0$，得</p>
+
+    <div class="box box-formula">
+      <div class="box-title">一维波动方程</div>
+      $$\frac{\pd^2 u}{\pd t^2} = a^2 \frac{\pd^2 u}{\pd x^2}, \quad a = \sqrt{\frac{T_0}{\rho}}.$$
+      其中 $a$ 为波速。
+    </div>
+
+    <h3>定解条件</h3>
+    <div class="box box-definition">
+      <div class="box-title">初始条件与边界条件</div>
+      <p><strong>初始条件：</strong></p>
+      $$u(x,0) = \varphi(x), \quad u_t(x,0) = \psi(x), \quad 0 \le x \le l.$$
+      <p>其中 $\varphi(x)$ 为初始位移，$\psi(x)$ 为初始速度。</p>
+      <p><strong>边界条件（两端固定）：</strong></p>
+      $$u(0,t) = 0, \quad u(l,t) = 0, \quad t \ge 0.$$
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 3.1.1</div>
+      <p><strong>问题：</strong>一根长 $l$ 的弦，初始位移为 $\varphi(x) = \sin(\pi x/l)$，初始速度 $\psi(x)=0$，两端固定，写出定解问题。</p>
+      <p><strong>解：</strong>定解问题为</p>
+      $$\begin{cases} u_{tt} = a^2 u_{xx}, & 0 < x < l,\ t > 0, \\ u(0,t) = u(l,t) = 0, \\ u(x,0) = \sin\frac{\pi x}{l},\quad u_t(x,0) = 0. \end{cases}$$
+      <p>物理直觉：初始形状恰好是一个正弦半波，振动时应保持正弦形态做简谐振荡。由分离变量法可验证解为 $u(x,t) = \sin\frac{\pi x}{l}\cos\frac{\pi a t}{l}$。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 3.1.2</div>
+      <p><strong>问题：</strong>设 $\rho(x)$ 不是常数而是 $x$ 的函数（非均匀弦），重新推导方程。</p>
+      <p><strong>解：</strong>此时微元 $[x,x+\Delta x]$ 的质量为 $\rho(x)\Delta x$，取极限后得</p>
+      $$\rho(x)\frac{\pd^2 u}{\pd t^2} = T_0 \frac{\pd^2 u}{\pd x^2},$$
+      <p>即</p>
+      $$\frac{\pd^2 u}{\pd t^2} = \frac{T_0}{\rho(x)}\frac{\pd^2 u}{\pd x^2}.$$
+      <p>此时波速随位置变化，方程不再是常系数的。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 3.2 ==================== -->
+  <div class="section" id="s2">
+    <h2>3.2 一维波动方程的初值问题</h2>
+
+    <p>考虑全空间上的初值问题（Cauchy 问题）：</p>
+    $$\begin{cases} u_{tt} = a^2 u_{xx}, & x \in \RR,\ t > 0, \\ u(x,0) = \varphi(x),\quad u_t(x,0) = \psi(x). \end{cases}$$
+
+    <div class="box box-theorem">
+      <div class="box-title">d'Alembert 公式</div>
+      <p>若 $\varphi \in C^2(\RR)$，$\psi \in C^1(\RR)$，则初值问题的解为</p>
+      $$\boxed{u(x,t) = \frac{1}{2}[\varphi(x+at) + \varphi(x-at)] + \frac{1}{2a}\int_{x-at}^{x+at}\psi(s)\,\dd s.}$$
+    </div>
+
+    <h3>推导过程</h3>
+    <p>引入特征变换 $\xi = x + at$，$\eta = x - at$。由链式法则，$\pd/\pd x = \pd/\pd\xi + \pd/\pd\eta$，$\pd/\pd t = a(\pd/\pd\xi - \pd/\pd\eta)$，代入 $u_{tt} = a^2 u_{xx}$ 得</p>
+    $$\frac{\pd^2 u}{\pd\xi\,\pd\eta} = 0.$$
+
+    <p>逐次积分得通解 $u(x,t) = f(x+at) + g(x-at)$，其中 $f,g$ 为任意二次可微函数。代入初始条件：</p>
+    $$f(x) + g(x) = \varphi(x), \quad af'(x) - ag'(x) = \psi(x).$$
+
+    <p>第二式积分得 $f(x) - g(x) = \frac{1}{a}\int_0^x \psi(s)\,\dd s + C$，联立即得</p>
+    $$f(x) = \frac{1}{2}\varphi(x) + \frac{1}{2a}\int_0^x\psi(s)\,\dd s + \frac{C}{2},$$
+    $$g(x) = \frac{1}{2}\varphi(x) - \frac{1}{2a}\int_0^x\psi(s)\,\dd s - \frac{C}{2}.$$
+
+    <p>将 $f(x+at)$ 和 $g(x-at)$ 合并即得 d'Alembert 公式。</p>
+
+    <h3>特征线与几何结构</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">依赖区间、决定区域、影响区域</div>
+      <ul>
+        <li><strong>特征线：</strong>$x - at = c_1$ 和 $x + at = c_2$，是 $(x,t)$ 平面上的两族直线，斜率为 $\pm 1/a$。</li>
+        <li><strong>依赖区间：</strong>点 $(x_0, t_0)$ 处的解仅依赖于初始数据在区间 $[x_0 - at_0,\ x_0 + at_0]$ 上的值，此区间称为 $(x_0, t_0)$ 的依赖区间。</li>
+        <li><strong>决定区域：</strong>过 $(x_0, 0)$ 向上作两条特征线围成的三角形区域，该区域内任一点的值完全由区间 $[x_0 - at_0, x_0 + at_0]$ 上的初始数据决定。</li>
+        <li><strong>影响区域：</strong>点 $(x_0, 0)$ 发出的两条特征线之间的区域，即 $(x_0, 0)$ 处初始数据的改变能影响到的区域。</li>
+      </ul>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">特征线的物理意义</div>
+      <p>特征线 $x - at = c$ 表示沿正方向以速度 $a$ 传播的行波（右行波），$x + at = c$ 表示沿负方向传播的行波（左行波）。d'Alembert 公式表明：任何扰动都以速度 $a$ 向两个方向传播，且不会超过特征线。这正是双曲型方程的有限传播速度性质。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 3.2.1</div>
+      <p><strong>问题：</strong>求解初值问题 $u_{tt} = u_{xx}$，$u(x,0) = e^{-x^2}$，$u_t(x,0) = 0$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>由 d'Alembert 公式，$\psi(x)=0$，故</p>
+          $$u(x,t) = \frac{1}{2}[e^{-(x+t)^2} + e^{-(x-t)^2}].$$
+          <p>物理解释：初始的钟形曲线分裂为两个各以速度 $1$ 向左右传播的钟形波，振幅各为原来的一半。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 3.2.2</div>
+      <p><strong>问题：</strong>求解 $u_{tt} = 4u_{xx}$，$u(x,0)=0$，$u_t(x,0) = \begin{cases} 1, & |x| \le 1, \\ 0, & |x| > 1. \end{cases}$</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>这里 $a=2$，$\varphi(x)=0$。由 d'Alembert 公式：</p>
+          $$u(x,t) = \frac{1}{4}\int_{x-2t}^{x+2t}\psi(s)\,\dd s.$$
+          <p>对 $|x|<1$ 范围内，当 $t$ 很小时 $[x-2t, x+2t] \subset [-1,1]$，积分值为 $4t$，因此 $u=t$。当 $t$ 增大时需分段讨论积分区间与 $[-1,1]$ 的交集。</p>
+          <p>具体地，令 $I = [x-2t, x+2t] \cap [-1,1]$，则 $u(x,t) = \frac{1}{4}|I|$（$|I|$ 表示交集长度）。这描绘了一个矩形脉冲以速度 $2$ 向两侧扩散的过程。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 3.3 ==================== -->
+  <div class="section" id="s3">
+    <h2>3.3 半无界问题</h2>
+
+    <p>考虑半无界弦 $x > 0$ 上的波动方程，需要在 $x=0$ 处给定边界条件。</p>
+
+    <h3>Dirichlet 条件（固定端点）</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">Dirichlet 半无界问题</div>
+      $$\begin{cases} u_{tt} = a^2 u_{xx}, & x > 0,\ t > 0, \\ u(x,0) = \varphi(x),\quad u_t(x,0) = \psi(x), & x \ge 0, \\ u(0,t) = 0, & t \ge 0. \end{cases}$$
+    </div>
+
+    <p><strong>延拓法（反射法）：</strong>将初始数据 $\varphi, \psi$ 奇延拓到整个实轴：</p>
+    $$\tilde{\varphi}(x) = \begin{cases} \varphi(x), & x \ge 0, \\ -\varphi(-x), & x < 0, \end{cases} \quad \tilde{\psi}(x) = \begin{cases} \psi(x), & x \ge 0, \\ -\psi(-x), & x < 0. \end{cases}$$
+
+    <p>求解全空间问题 $u_{tt} = a^2 u_{xx}$，$u(x,0) = \tilde{\varphi}(x)$，$u_t(x,0) = \tilde{\psi}(x)$，由奇延拓的对称性自动满足 $u(0,t)=0$。由 d'Alembert 公式，当 $x > 0$ 时：</p>
+    $$u(x,t) = \frac{1}{2}[\varphi(x+at) + \varphi(x-at)] + \frac{1}{2a}\int_{x-at}^{x+at}\psi(s)\,\dd s \quad \text{（当 } x-at \ge 0 \text{）}.$$
+
+    <p>当 $x - at < 0$（即特征线反射）时，利用奇延拓可得：</p>
+    $$u(x,t) = \frac{1}{2}[\varphi(x+at) - \varphi(at-x)] + \frac{1}{2a}\left[\int_0^{x+at}\psi(s)\,\dd s + \int_0^{at-x}\psi(s)\,\dd s\right].$$
+
+    <h3>Neumann 条件（自由端点）</h3>
+    <p>若边界条件改为 $u_x(0,t)=0$，则需要对初始数据做<strong>偶延拓</strong>：</p>
+    $$\tilde{\varphi}(x) = \begin{cases} \varphi(x), & x \ge 0, \\ \varphi(-x), & x < 0. \end{cases}$$
+
+    <p>偶延拓后 $u_x(0,t)=0$ 自动满足。</p>
+
+    <div class="box box-example">
+      <div class="box-title">例题 3.3.1</div>
+      <p><strong>问题：</strong>求解半无界问题 $u_{tt} = u_{xx}$，$x>0$，$u(x,0) = 0$，$u_t(x,0) = 1$，$u(0,t) = 0$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>将 $\psi(x)=1$（$x\ge0$）奇延拓为 $\tilde\psi(x)=\operatorname{sgn}(x)$。由 d'Alembert 公式（$a=1$，$\varphi=0$）：</p>
+          $$u(x,t) = \frac{1}{2}\int_{x-t}^{x+t}\tilde{\psi}(s)\,\dd s.$$
+          <p>当 $x \ge t$（即 $x-t \ge 0$）：$u(x,t) = \frac{1}{2}\int_{x-t}^{x+t} 1\,\dd s = t$。</p>
+          <p>当 $0 < x < t$（即 $x-t < 0$）：</p>
+          $$u(x,t) = \frac{1}{2}\left[\int_{x-t}^0(-1)\,\dd s + \int_0^{x+t} 1\,\dd s\right] = \frac{1}{2}[(t-x) + (x+t)] \cdot \frac{1}{2} = \frac{1}{2}(2x) = x.$$
+          <p>综合：$u(x,t) = \min(x, t)$。物理意义：以速度 $1$ 从端点向右传播的波前，在波前到达之前位移为 $x$，之后位移为 $t$。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 3.3.2</div>
+      <p><strong>问题：</strong>求解 $u_{tt}=4u_{xx}$，$x>0$，$u(x,0)=x$，$u_t(x,0)=0$，$u_x(0,t)=0$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>Neumann 条件，偶延拓：$\tilde\varphi(x) = |x|$，$\tilde\psi(x) = 0$。$a=2$。</p>
+          $$u(x,t) = \frac{1}{2}[|x+2t| + |x-2t|].$$
+          <p>当 $x \ge 2t$：$u = \frac{1}{2}[(x+2t)+(x-2t)] = x$。</p>
+          <p>当 $0 < x < 2t$：$u = \frac{1}{2}[(x+2t)+(2t-x)] = 2t$。</p>
+          <p>综合：$u(x,t) = \max(x, 2t)$。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 3.4 ==================== -->
+  <div class="section" id="s4">
+    <h2>3.4 高维波动方程简介</h2>
+
+    <p>$n$ 维波动方程的一般形式为</p>
+    $$u_{tt} = a^2 \lap u = a^2 \sum_{i=1}^n \frac{\pd^2 u}{\pd x_i^2}.$$
+
+    <h3>三维波动方程——Poisson 公式</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">三维波动方程初值问题的 Kirchhoff-Poisson 公式</div>
+      <p>对于 $u_{tt} = a^2 \lap u$（$x \in \RR^3$），$u|_{t=0}=\varphi$，$u_t|_{t=0}=\psi$，解为：</p>
+      $$u(x,t) = \frac{\pd}{\pd t}\left[\frac{t}{4\pi a^2 t^2}\int_{|\xi|=at}\varphi(x+\xi)\,\dd S_\xi\right] + \frac{t}{4\pi a^2 t^2}\int_{|\xi|=at}\psi(x+\xi)\,\dd S_\xi.$$
+      <p>等价地，记 $M_{at}[\varphi](x) = \frac{1}{4\pi(at)^2}\int_{|\xi|=at}\varphi(x+\xi)\,\dd S_\xi$ 为 $\varphi$ 在球面 $|\xi|=at$ 上的平均值，则</p>
+      $$u(x,t) = \frac{\pd}{\pd t}\big[t \cdot M_{at}[\varphi](x)\big] + t \cdot M_{at}[\psi](x).$$
+    </div>
+
+    <p><strong>推导方法（球面平均值法）：</strong>令</p>
+    $$M(r,t) = \frac{1}{4\pi r^2}\int_{|\xi|=r} u(x+\xi, t)\,\dd S = \frac{1}{4\pi}\int_{|\omega|=1} u(x+r\omega, t)\,\dd S_\omega.$$
+
+    <p>可以证明 $M$ 满足</p>
+    $$M_{tt} = a^2\left(M_{rr} + \frac{2}{r}M_r\right),$$
+
+    <p>即 $(rM)_{tt} = a^2(rM)_{rr}$。这是一维波动方程！令 $v = rM$，用 d'Alembert 公式求解 $v$，再令 $r \to 0$ 即可得 Poisson 公式。</p>
+
+    <h3>Huygens 原理</h3>
+
+    <div class="box box-note">
+      <div class="box-title">Huygens 原理（三维）</div>
+      <p>在三维空间中，点 $(x_0, t_0)$ 处的解仅依赖于以 $x_0$ 为球心、$at_0$ 为半径的<strong>球面</strong>上的初始数据（而非实心球内的数据）。这意味着初始扰动经过某点后不会留下"余波"——信号传播是清晰的。</p>
+      <p><strong>对比二维：</strong>在二维中，解依赖于以 $x_0$ 为圆心、$at_0$ 为半径的整个圆盘上的初始数据，因此二维波传播存在"余波"（wake），Huygens 原理不成立。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 3.4.1</div>
+      <p><strong>问题：</strong>设三维波动方程 $u_{tt}=u_{xx}+u_{yy}+u_{zz}$ 的初始条件为 $\varphi(x,y,z)=0$，$\psi(x,y,z) = 1$（$|x|<1$）且 $\psi=0$（$|x|\ge 1$），求 $u(0,t)$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>$a=1$，$\varphi=0$，故 $u(x,t) = t\cdot M_t[\psi](x)$。在原点 $x=0$：</p>
+          $$u(0,t) = \frac{t}{4\pi t^2}\int_{|\xi|=t}\psi(\xi)\,\dd S_\xi = \frac{1}{4\pi t}\int_{|\xi|=t}\psi(\xi)\,\dd S_\xi.$$
+          <p>当 $t < 1$ 时球面 $|\xi|=t$ 完全在 $|\xi|<1$ 内，$\psi=1$，积分 $= 4\pi t^2$，故 $u(0,t) = t$。</p>
+          <p>当 $t > 1$ 时球面 $|\xi|=t$ 完全在 $|\xi|\ge 1$ 外，$\psi=0$，故 $u(0,t) = 0$。</p>
+          <p>当 $t=1$ 时，过渡情况。这体现了 Huygens 原理：扰动到达原点后又离开了，不留余波。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 3.4.2</div>
+      <p><strong>问题：</strong>对二维波动方程（描述薄膜振动），写出初值问题解的表达式。</p>
+      <p><strong>解：</strong>二维初值问题 $u_{tt}=a^2(u_{xx}+u_{yy})$ 的解由 Poisson 平均值公式给出。利用降维法（Hadamard 降维），从三维解出发：</p>
+      $$u(x_1,x_2,t) = \frac{1}{2\pi a}\frac{\pd}{\pd t}\iint_{|\xi|\le at}\frac{\varphi(x_1+\xi_1,x_2+\xi_2)}{\sqrt{a^2t^2-|\xi|^2}}\,\dd\xi_1\dd\xi_2 + \frac{1}{2\pi a}\iint_{|\xi|\le at}\frac{\psi(x_1+\xi_1,x_2+\xi_2)}{\sqrt{a^2t^2-|\xi|^2}}\,\dd\xi_1\dd\xi_2.$$
+      <p>注意分母中的 $\sqrt{a^2t^2-|\xi|^2}$ 使得积分在球面边缘（$|\xi|=at$）处有奇性，这导致二维波传播存在余波效应。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 3.5 ==================== -->
+  <div class="section" id="s5">
+    <h2>3.5 能量积分与唯一性</h2>
+
+    <h3>能量积分</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">能量积分</div>
+      <p>对于波动方程 $u_{tt} = a^2 u_{xx}$，定义<strong>能量积分</strong>：</p>
+      $$E(t) = \frac{1}{2}\int_{-\infty}^{+\infty}\left[u_t^2(x,t) + a^2 u_x^2(x,t)\right]\dd x.$$
+      <p>第一项为动能，第二项为势能（弹性势能的离散化形式）。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">能量守恒定理</div>
+      <p>若 $u$ 是波动方程的解且在无穷远处足够快地趋于零，则</p>
+      $$E(t) = E(0) = \text{const}.$$
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明</div>
+      <p>对 $E(t)$ 关于 $t$ 求导：</p>
+      $$\frac{\dd E}{\dd t} = \int_{-\infty}^{+\infty}(u_t u_{tt} + a^2 u_x u_{xt})\,\dd x.$$
+      <p>代入 $u_{tt} = a^2 u_{xx}$：</p>
+      $$\frac{\dd E}{\dd t} = a^2\int_{-\infty}^{+\infty}(u_t u_{xx} + u_x u_{xt})\,\dd x = a^2\int_{-\infty}^{+\infty}\frac{\pd}{\pd x}(u_t u_x)\,\dd x.$$
+      <p>由 $u$ 在无穷远处趋于零，边界项消失，故 $\dd E/\dd t = 0$，即 $E(t) = \text{const}$。$\square$</p>
+    </div>
+
+    <h3>初值问题解的唯一性</h3>
+
+    <div class="box box-theorem">
+      <div class="box-title">唯一性定理</div>
+      <p>波动方程初值问题</p>
+      $$u_{tt} = a^2 u_{xx}, \quad u(x,0) = \varphi(x), \quad u_t(x,0) = \psi(x)$$
+      <p>在适当光滑性假设下，解是唯一的。</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明（能量法）</div>
+      <p>设 $u_1, u_2$ 是同一初值问题的两个解，令 $w = u_1 - u_2$，则 $w$ 满足</p>
+      $$w_{tt} = a^2 w_{xx}, \quad w(x,0) = 0, \quad w_t(x,0) = 0.$$
+      <p>$w$ 的能量积分为 $E(t) = \frac{1}{2}\int_{-\infty}^{+\infty}(w_t^2 + a^2 w_x^2)\dd x$。由能量守恒：</p>
+      $$E(t) = E(0) = \frac{1}{2}\int_{-\infty}^{+\infty}[w_t^2(x,0) + a^2 w_x^2(x,0)]\dd x.$$
+      <p>由 $w(x,0) = 0$ 得 $w_x(x,0) = 0$，又 $w_t(x,0) = 0$，故 $E(0) = 0$。</p>
+      <p>因被积函数非负，$E(t) = 0$ 对一切 $t$ 成立，故 $w_t \equiv 0$，$w_x \equiv 0$，从而 $w \equiv \text{const}$。又 $w(x,0)=0$，故 $w \equiv 0$，即 $u_1 = u_2$。$\square$</p>
+    </div>
+
+    <h3>解的稳定性</h3>
+
+    <div class="box box-theorem">
+      <div class="box-title">稳定性（对初值的连续依赖性）</div>
+      <p>若初值 $(\varphi_1, \psi_1)$ 与 $(\varphi_2, \psi_2)$ 在能量范数下接近，即</p>
+      $$\int_{-\infty}^{+\infty}[(\varphi_1-\varphi_2)_x^2 + (\psi_1-\psi_2)^2]\dd x < \varepsilon,$$
+      <p>则对应解 $u_1, u_2$ 对一切 $t$ 满足</p>
+      $$\frac{1}{2}\int_{-\infty}^{+\infty}[(u_1-u_2)_t^2 + a^2(u_1-u_2)_x^2]\dd x < \frac{\varepsilon}{2}\max(1, a^2).$$
+      <p>这由能量守恒直接得到。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 3.5.1</div>
+      <p><strong>问题：</strong>利用能量法证明：若 $u$ 是有界弦 $[0,l]$ 上两端固定（$u(0,t)=u(l,t)=0$）的波动方程的解，则 $E(t) = \frac{1}{2}\int_0^l(u_t^2 + a^2 u_x^2)\dd x$ 为常数。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>同前面的计算，$\frac{\dd E}{\dd t} = a^2\int_0^l \frac{\pd}{\pd x}(u_t u_x)\dd x = a^2[u_t(l,t)u_x(l,t) - u_t(0,t)u_x(0,t)]$。</p>
+          <p>由 $u(0,t) = u(l,t) = 0$，对 $t$ 求导得 $u_t(0,t) = u_t(l,t) = 0$，故边界项为零，$E(t) = \text{const}$。</p>
+          <p><strong>注意：</strong>对 Neumann 条件 $u_x(0,t)=u_x(l,t)=0$，同样由边界条件使边界项消失，能量守恒仍成立。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 3.5.2</div>
+      <p><strong>问题：</strong>设 $u$ 满足 $u_{tt}=u_{xx}$，$u(x,0)=\varphi(x)$，$u_t(x,0)=\psi(x)$，且 $\varphi,\psi$ 具紧支集（仅在有限区间非零）。证明：对固定的 $x_0$，当 $t$ 足够大时 $u(x_0,t)=0$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>由 d'Alembert 公式，$u(x_0,t)$ 依赖于 $\varphi$ 和 $\psi$ 在 $[x_0-t, x_0+t]$ 上的值。设 $\varphi, \psi$ 的支集包含在 $[-R, R]$ 内。</p>
+          <p>当 $t > R + |x_0|$ 时，$[x_0-t, x_0+t]$ 与 $[-R,R]$ 的交集信息完全包含在依赖区间内，但 d'Alembert 公式的两个行波 $f(x+at)$ 和 $g(x-at)$ 分别向左右传播，当 $t$ 足够大时两个行波完全分离。</p>
+          <p>具体地，$f$ 的支集在 $(-\infty, R]$，$g$ 的支集在 $[-R, +\infty)$。当 $x_0+t > R$ 且 $x_0-t < -R$ 时两个函数在 $x_0$ 处取值都在支集外（支集有限，行波已离开），故 $u(x_0,t)=0$。</p>
+          <p>这体现了波动方程的<strong>有限传播速度</strong>性质。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 章节导航 -->
+  <div class="chapter-nav">
+    <a href="ch2.html" class="prev">第二章 · 二阶方程的分类与标准型</a>
+    <a href="ch4.html" class="next">第四章 · 热传导方程</a>
+  </div>
+</div>
+
+<footer class="footer">
+  <p>偏微分方程复习指南 · 基于陈祖墀教材 · 仅供学习参考</p>
+</footer>
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

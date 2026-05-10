@@ -86,7 +86,7 @@ body::before {
 /* Cards container */
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 32px;
   max-width: 1200px;
   width: 100%;
@@ -111,6 +111,7 @@ body::before {
 .course-card:nth-child(1) { animation-delay: 0.15s; }
 .course-card:nth-child(2) { animation-delay: 0.3s; }
 .course-card:nth-child(3) { animation-delay: 0.45s; }
+.course-card:nth-child(4) { animation-delay: 0.6s; }
 
 .course-card::before {
   content: '';
@@ -131,6 +132,10 @@ body::before {
 
 .course-card.ca::before {
   background: linear-gradient(90deg, #d69e2e, #e53e3e);
+}
+
+.course-card.pde::before {
+  background: linear-gradient(90deg, #38a169, #3182ce);
 }
 
 .course-card:hover {
@@ -238,7 +243,7 @@ body::before {
 
 <div class="header">
   <h1>数学系课程总览</h1>
-  <p>机器学习、概率统计与复变函数 · 在线复习指南</p>
+  <p>机器学习、概率统计、复变函数与偏微分方程 · 在线复习指南</p>
 </div>
 
 <div class="cards">
@@ -274,6 +279,18 @@ body::before {
       <span class="tag">6 个章节</span>
       <span class="tag">定理证明</span>
       <span class="tag">积分计算</span>
+    </div>
+    <div class="card-enter">进入课程 <span class="arrow">→</span></div>
+  </a>
+
+  <a href="偏微分方程/index.html" class="course-card pde">
+    <span class="card-icon">🌊</span>
+    <div class="card-title">偏微分方程</div>
+    <div class="card-subtitle">基于陈祖墀教材 · 六章系统讲解<br>波动方程、热传导方程、Laplace 方程三类经典 PDE 完整推导</div>
+    <div class="card-meta">
+      <span class="tag">6 个章节</span>
+      <span class="tag">定理证明</span>
+      <span class="tag">边值问题</span>
     </div>
     <div class="card-enter">进入课程 <span class="arrow">→</span></div>
   </a>

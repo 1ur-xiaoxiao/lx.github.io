@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第二章 · 二阶线性偏微分方程的分类与标准型</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}', CC: '\\mathbb{C}', NN: '\\mathbb{N}', ZZ: '\\mathbb{Z}',
+          dd: '\\mathrm{d}', pd: '\\partial', lap: '\\Delta', grad: '\\nabla',
+          div: '\\mathrm{div}', rot: '\\mathrm{rot}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">偏微分方程复习</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第二章 · 二阶线性偏微分方程的分类与标准型</h1>
+    <p>通过判别式将二阶线性 PDE 划分为双曲、抛物、椭圆三大类型，并化为标准型</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">2.1 二阶线性方程的一般形式</a></li>
+      <li><a href="#s2">2.2 方程的分类</a></li>
+      <li><a href="#s3">2.3 化标准型</a></li>
+      <li><a href="#s4">2.4 叠加原理与齐次化</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 2.1 ==================== -->
+  <div class="section" id="s1">
+    <h2>2.1 二阶线性方程的一般形式</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 2.1（二阶线性 PDE 的一般形式）</div>
+      <p>两个自变量 $x, y$ 的二阶线性偏微分方程的一般形式为</p>
+      <p>$$a_{11}u_{xx} + 2a_{12}u_{xy} + a_{22}u_{yy} + b_1 u_x + b_2 u_y + cu = f,$$</p>
+      <p>其中 $a_{11}, a_{12}, a_{22}, b_1, b_2, c, f$ 均为 $(x, y)$ 的已知函数（系数），$u = u(x, y)$ 为未知函数。</p>
+      <p>左侧的二次偏导数项 $a_{11}u_{xx} + 2a_{12}u_{xy} + a_{22}u_{yy}$ 称为方程的<strong>主部</strong>（principal part）。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 2.2（系数矩阵与判别式）</div>
+      <p>方程主部的<strong>系数矩阵</strong>为</p>
+      <p>$$A = \begin{pmatrix} a_{11} & a_{12} \\ a_{12} & a_{22} \end{pmatrix}.$$</p>
+      <p>定义<strong>判别式</strong></p>
+      <p>$$\Delta = a_{12}^2 - a_{11}a_{22}.$$</p>
+      <p>注意：若方程写为 $a u_{xx} + 2b u_{xy} + c u_{yy} + \cdots$（系数为 $a, 2b, c$），则 $\Delta = b^2 - ac$。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注记：齐次与非齐次</div>
+      <p>若 $f \equiv 0$，方程称为<strong>齐次</strong>的；否则称为<strong>非齐次</strong>的。齐次方程的解构成线性空间，非齐次方程的解 = 特解 + 齐次方程的通解。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 2.1</div>
+      <p>写出方程 $3u_{xx} + 10u_{xy} + 3u_{yy} = 0$ 的系数矩阵和判别式，并初步判断类型。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>与一般形式对比：$a_{11} = 3,\; 2a_{12} = 10 \Rightarrow a_{12} = 5,\; a_{22} = 3$。</p>
+          <p>系数矩阵为</p>
+          <p>$$A = \begin{pmatrix} 3 & 5 \\ 5 & 3 \end{pmatrix}.$$</p>
+          <p>判别式 $\Delta = a_{12}^2 - a_{11}a_{22} = 25 - 9 = 16 > 0$，故该方程为<strong>双曲型</strong>。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 2.2</div>
+      <p>判断方程 $u_{xx} + 2u_{xy} + u_{yy} + u_x - u = \sin x$ 的类型，并确定齐次性。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>$a_{11} = 1,\; a_{12} = 1,\; a_{22} = 1,\; b_1 = 1,\; b_2 = 0,\; c = -1,\; f = \sin x$。</p>
+          <p>判别式 $\Delta = 1^2 - 1 \times 1 = 0$，故该方程为<strong>抛物型</strong>。</p>
+          <p>因 $f = \sin x \neq 0$，方程为<strong>非齐次</strong>的。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2.2 ==================== -->
+  <div class="section" id="s2">
+    <h2>2.2 方程的分类</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">定义 2.3（方程的分类）</div>
+      <p>在区域 $\Omega$ 内某点 $(x_0, y_0)$ 处，根据判别式 $\Delta = a_{12}^2 - a_{11}a_{22}$ 的符号：</p>
+      <ul>
+        <li>$\Delta > 0$：方程在该点为<strong>双曲型</strong>（hyperbolic）；</li>
+        <li>$\Delta = 0$：方程在该点为<strong>抛物型</strong>（parabolic）；</li>
+        <li>$\Delta < 0$：方程在该点为<strong>椭圆型</strong>（elliptic）。</li>
+      </ul>
+      <p>若方程在区域 $\Omega$ 内每一点均为同一类型，则称方程在 $\Omega$ 内为该类型。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 2.1（系数矩阵的正定性与分类）</div>
+      <p>分类也可通过系数矩阵 $A$ 的特征值判定：</p>
+      <ul>
+        <li>$A$ 有两个异号实特征值 $\Longleftrightarrow$ 双曲型；</li>
+        <li>$A$ 有一个零特征值（秩为 1）$\Longleftrightarrow$ 抛物型；</li>
+        <li>$A$ 有两个同号实特征值（正定或负定）$\Longleftrightarrow$ 椭圆型。</li>
+      </ul>
+    </div>
+
+    <h3>物理背景</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">三类方程的典型代表与物理背景</div>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>类型</th>
+            <th>判别式</th>
+            <th>典型方程</th>
+            <th>物理背景</th>
+          </tr>
+          <tr>
+            <td>双曲型</td>
+            <td>$\Delta > 0$</td>
+            <td>$u_{tt} - a^2 u_{xx} = 0$</td>
+            <td>波动方程、弦振动</td>
+          </tr>
+          <tr>
+            <td>抛物型</td>
+            <td>$\Delta = 0$</td>
+            <td>$u_t - a^2 u_{xx} = 0$</td>
+            <td>热传导方程、扩散</td>
+          </tr>
+          <tr>
+            <td>椭圆型</td>
+            <td>$\Delta < 0$</td>
+            <td>$u_{xx} + u_{yy} = 0$</td>
+            <td>Laplace 方程、稳态位势</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注记：混合型方程</div>
+      <p>在区域的不同部分可能呈现不同类型，称为<strong>混合型方程</strong>。例如 Tricomi 方程 $y u_{xx} + u_{yy} = 0$：在 $y > 0$ 时为椭圆型，在 $y < 0$ 时为双曲型，在 $y = 0$ 时为抛物型。这类方程在跨音速流体力学中有重要应用。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 2.3</div>
+      <p>判断方程 $x^2 u_{xx} - y^2 u_{yy} = 0$ 在各象限的类型。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>$a_{11} = x^2,\; a_{12} = 0,\; a_{22} = -y^2$。判别式</p>
+          <p>$$\Delta = 0 - x^2 \cdot (-y^2) = x^2 y^2 \ge 0.$$</p>
+          <p>当 $xy \neq 0$ 时，$\Delta = x^2 y^2 > 0$，方程为<strong>双曲型</strong>。</p>
+          <p>当 $x = 0$ 或 $y = 0$ 时，$\Delta = 0$，方程退化。</p>
+          <p>因此，方程在第一、二、三、四象限均为双曲型，在坐标轴上退化。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 2.4</div>
+      <p>判断方程 $u_{xx} + 2u_{xy} + 5u_{yy} = 0$ 的类型，并求系数矩阵的特征值。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>$a_{11} = 1,\; a_{12} = 1,\; a_{22} = 5$。</p>
+          <p>判别式 $\Delta = 1 - 5 = -4 < 0$，方程为<strong>椭圆型</strong>。</p>
+          <p>系数矩阵 $A = \begin{pmatrix} 1 & 1 \\ 1 & 5 \end{pmatrix}$。</p>
+          <p>特征方程 $\det(A - \lambda I) = (1-\lambda)(5-\lambda) - 1 = \lambda^2 - 6\lambda + 4 = 0$。</p>
+          <p>$$\lambda = \frac{6 \pm \sqrt{36 - 16}}{2} = 3 \pm \sqrt{5}.$$</p>
+          <p>$\lambda_1 = 3 + \sqrt{5} > 0$，$\lambda_2 = 3 - \sqrt{5} > 0$，两个特征值同号（正定），与椭圆型一致。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2.3 ==================== -->
+  <div class="section" id="s3">
+    <h2>2.3 化标准型</h2>
+
+    <p>通过适当的自变量变换 $(x, y) \mapsto (\xi, \eta)$，可将方程的主部化为<strong>标准型</strong>，从而揭示方程的本质结构。</p>
+
+    <h3>自变量变换与特征方程</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">特征方程</div>
+      <p>设变换为 $\xi = \xi(x, y),\; \eta = \eta(x, y)$。变换后方程主部系数中的交叉项消失的条件导出<strong>特征方程</strong>：</p>
+      <p>$$a_{11}\left(\frac{\dd y}{\dd x}\right)^2 - 2a_{12}\frac{\dd y}{\dd x} + a_{22} = 0.$$</p>
+      <p>解此常微分方程得到的积分曲线族即为<strong>特征曲线族</strong>，取 $\xi, \eta$ 为沿特征曲线的不变量即可化标准型。</p>
+    </div>
+
+    <h3>三类标准型</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">双曲型标准型（$\Delta > 0$）</div>
+      <p>特征方程有两个不同的实根，得到两族实特征曲线。取 $\xi, \eta$ 分别为两族特征曲线的不变量，方程化为</p>
+      <p>$$u_{\xi\eta} = \Phi(\xi, \eta, u, u_\xi, u_\eta) \quad \text{（第一标准型）}.$$</p>
+      <p>再令 $\alpha = \frac{\xi + \eta}{2},\; \beta = \frac{\xi - \eta}{2}$，可进一步化为</p>
+      <p>$$u_{\alpha\alpha} - u_{\beta\beta} = \tilde\Phi(\alpha, \beta, u, u_\alpha, u_\beta) \quad \text{（第二标准型）}.$$</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">抛物型标准型（$\Delta = 0$）</div>
+      <p>特征方程有重根，只得到一族特征曲线。取 $\xi$ 为该族特征曲线的不变量，$\eta$ 为任意与 $\xi$ 独立的函数，方程化为</p>
+      <p>$$u_{\eta\eta} = \Phi(\xi, \eta, u, u_\xi, u_\eta).$$</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">椭圆型标准型（$\Delta < 0$）</div>
+      <p>特征方程有一对共轭复根，取 $\xi = \text{Re}\,\zeta,\; \eta = \text{Im}\,\zeta$（$\zeta$ 为复特征不变量），方程化为</p>
+      <p>$$u_{\xi\xi} + u_{\eta\eta} = \Phi(\xi, \eta, u, u_\xi, u_\eta).$$</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 2.2（化标准型的步骤总结）</div>
+      <ol>
+        <li>写出方程主部的系数 $a_{11}, a_{12}, a_{22}$；</li>
+        <li>求特征方程 $a_{11}\lambda^2 - 2a_{12}\lambda + a_{22} = 0$（其中 $\lambda = \dd y / \dd x$）；</li>
+        <li>根据根的类型（两个不同实根、重根、共轭复根）确定方程类型；</li>
+        <li>解特征方程求特征曲线族，取适当的 $\xi, \eta$；</li>
+        <li>利用链式法则计算变换后的偏导数，代入原方程得到标准型。</li>
+      </ol>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 2.5</div>
+      <p>将方程 $u_{xx} + 4u_{xy} + 3u_{yy} = 0$ 化为标准型。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p><strong>第一步：判别类型</strong></p>
+          <p>$a_{11} = 1,\; a_{12} = 2,\; a_{22} = 3$。$\Delta = 4 - 3 = 1 > 0$，方程为<strong>双曲型</strong>。</p>
+
+          <p><strong>第二步：求特征方程</strong></p>
+          <p>$$\lambda^2 - 4\lambda + 3 = 0 \implies (\lambda - 1)(\lambda - 3) = 0,$$</p>
+          <p>得 $\lambda_1 = 1,\; \lambda_2 = 3$。</p>
+
+          <p><strong>第三步：求特征曲线</strong></p>
+          <p>由 $\dd y / \dd x = 1$：$y - x = C_1$；由 $\dd y / \dd x = 3$：$y - 3x = C_2$。</p>
+          <p>取 $\xi = y - x,\; \eta = y - 3x$。</p>
+
+          <p><strong>第四步：变换方程</strong></p>
+          <p>计算变换后的偏导数：</p>
+          <p>$$u_x = -u_\xi - 3u_\eta, \quad u_y = u_\xi + u_\eta,$$</p>
+          <p>$$u_{xx} = u_{\xi\xi} + 6u_{\xi\eta} + 9u_{\eta\eta},$$</p>
+          <p>$$u_{xy} = -u_{\xi\xi} - 4u_{\xi\eta} - 3u_{\eta\eta},$$</p>
+          <p>$$u_{yy} = u_{\xi\xi} + 2u_{\xi\eta} + u_{\eta\eta}.$$</p>
+          <p>代入原方程：</p>
+          <p>$$(u_{\xi\xi} + 6u_{\xi\eta} + 9u_{\eta\eta}) + 4(-u_{\xi\xi} - 4u_{\xi\eta} - 3u_{\eta\eta}) + 3(u_{\xi\xi} + 2u_{\xi\eta} + u_{\eta\eta})$$</p>
+          <p>$$= (1 - 4 + 3)u_{\xi\xi} + (6 - 16 + 6)u_{\xi\eta} + (9 - 12 + 3)u_{\eta\eta} = -4u_{\xi\eta} = 0.$$</p>
+          <p>即标准型为</p>
+          <p>$$u_{\xi\eta} = 0.$$</p>
+          <p>通解为 $u = f(\xi) + g(\eta) = f(y - x) + g(y - 3x)$，$f, g$ 为任意函数。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 2.6</div>
+      <p>将方程 $u_{xx} + 2u_{xy} + 5u_{yy} = 0$ 化为标准型。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p><strong>判别类型</strong>：$a_{11} = 1,\; a_{12} = 1,\; a_{22} = 5$。$\Delta = 1 - 5 = -4 < 0$，<strong>椭圆型</strong>。</p>
+
+          <p><strong>特征方程</strong>：$\lambda^2 - 2\lambda + 5 = 0$。</p>
+          <p>$$\lambda = \frac{2 \pm \sqrt{4 - 20}}{2} = 1 \pm 2i.$$</p>
+          <p>复特征曲线族：$y = (1 + 2i)x + C$，即 $\zeta = y - (1 + 2i)x$ 为复不变量。</p>
+
+          <p><strong>分离实部和虚部</strong>：</p>
+          <p>$$\zeta = (y - x) - 2ix \implies \xi = y - x,\; \eta = -2x \text{（即 } \eta = -2x \text{）}.$$</p>
+          <p>取 $\xi = y - x,\; \eta = 2x$（取 $\eta$ 的绝对值不影响类型判定）。</p>
+
+          <p><strong>变换方程</strong>：</p>
+          <p>$$u_x = -u_\xi + 2u_\eta, \quad u_y = u_\xi,$$</p>
+          <p>$$u_{xx} = u_{\xi\xi} - 4u_{\xi\eta} + 4u_{\eta\eta},$$</p>
+          <p>$$u_{xy} = -u_{\xi\xi} + 2u_{\xi\eta},$$</p>
+          <p>$$u_{yy} = u_{\xi\xi}.$$</p>
+          <p>代入：</p>
+          <p>$$(u_{\xi\xi} - 4u_{\xi\eta} + 4u_{\eta\eta}) + 2(-u_{\xi\xi} + 2u_{\xi\eta}) + 5u_{\xi\xi}$$</p>
+          <p>$$= 4u_{\xi\xi} + 4u_{\eta\eta} = 0.$$</p>
+          <p>标准型为</p>
+          <p>$$u_{\xi\xi} + u_{\eta\eta} = 0.$$</p>
+          <p>即在新坐标系下为 Laplace 方程。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注记：低阶项的处理</div>
+      <p>化标准型主要针对方程的<strong>主部</strong>。低阶项 $b_1 u_x + b_2 u_y + cu$ 在变换后仍保留，标准型通常为</p>
+      <p>$$\text{主部标准型} + \tilde{b}_1 u_\xi + \tilde{b}_2 u_\eta + \tilde{c}u = \tilde{f}.$$</p>
+      <p>主部的标准形式决定了方程的基本性质和求解方法。在考试中，通常只需将主部化为标准型即可。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 2.4 ==================== -->
+  <div class="section" id="s4">
+    <h2>2.4 叠加原理与齐次化</h2>
+
+    <h3>线性叠加原理</h3>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 2.3（叠加原理）</div>
+      <p>设 $L$ 为线性微分算子，即 $L(au + bv) = aLu + bLv$。则：</p>
+      <ol>
+        <li>若 $u_1, u_2$ 分别是 $Lu = f_1$ 和 $Lu = f_2$ 的解，则 $u_1 + u_2$ 是 $Lu = f_1 + f_2$ 的解。</li>
+        <li>若 $\{u_n\}_{n=1}^\infty$ 是 $Lu = f_n$ 的解，且级数 $u = \sum_{n=1}^\infty c_n u_n$ 一致收敛并可逐项微分，则 $u$ 是 $Lu = \sum_{n=1}^\infty c_n f_n$ 的解。</li>
+        <li>特别地，齐次方程 $Lu = 0$ 的解的任意（收敛的）线性组合仍是齐次方程的解。</li>
+      </ol>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注记：叠加原理的意义</div>
+      <p>叠加原理是<strong>线性 PDE 理论的基石</strong>。它使得我们可以：</p>
+      <ul>
+        <li>将复杂的非齐次问题分解为若干简单问题之和；</li>
+        <li>利用 Fourier 级数/积分将一般初值分解为基本模式的叠加；</li>
+        <li>Green 函数法的核心就是叠加原理的应用。</li>
+      </ul>
+      <p><strong>注意</strong>：叠加原理<strong>仅适用于线性方程</strong>。对非线性方程，两个解之和一般不是解。</p>
+    </div>
+
+    <h3>Duhamel 原理（齐次化原理）</h3>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 2.4（Duhamel 原理）</div>
+      <p>设齐次问题</p>
+      <p>$$\begin{cases} v_{tt} = a^2 v_{xx}, & x \in \RR,\; t > s, \\ v(x, s) = 0,\; v_t(x, s) = f(x, s), \end{cases}$$</p>
+      <p>的解为 $v = v(x, t; s)$（参数 $s$ 表示"激发时刻"），则非齐次问题</p>
+      <p>$$\begin{cases} u_{tt} = a^2 u_{xx} + f(x, t), & x \in \RR,\; t > 0, \\ u(x, 0) = 0,\; u_t(x, 0) = 0 \end{cases}$$</p>
+      <p>的解为</p>
+      <p>$$u(x, t) = \int_0^t v(x, t; s)\,\dd s.$$</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明思路</div>
+      <p>将非齐次项 $f(x, t)$ 视为在不同时刻 $s$ 持续"注入"的激励。在时刻 $s$ 注入的 $f(x, s)\,\dd s$ 引起的响应为 $v(x, t; s)\,\dd s$。由叠加原理，总响应为所有这些响应的积分。</p>
+      <p>严格验证：设 $w(x, t; s) = v(x, t; s)$（$t \ge s$），则</p>
+      <p>$$u(x, t) = \int_0^t w(x, t; s)\,\dd s.$$</p>
+      <p>利用 Leibniz 积分法则对 $t$ 求导：</p>
+      <p>$$u_t = w(x, t; t) + \int_0^t w_t(x, t; s)\,\dd s = 0 + \int_0^t w_t\,\dd s,$$</p>
+      <p>$$u_{tt} = w_t(x, t; t) + \int_0^t w_{tt}\,\dd s = f(x, t) + \int_0^t a^2 w_{xx}\,\dd s = f(x, t) + a^2 u_{xx}.$$</p>
+      <p>初始条件的验证同样利用 $w(x, t; s)|_{t=s} = 0$ 和 $w_t(x, t; s)|_{t=s} = f(x, s)$。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 2.7</div>
+      <p>利用叠加原理，将非齐次问题 $u_{xx} + u_{yy} = g(x, y)$ 的求解转化为求 $u_{xx} + u_{yy} = 0$ 的解。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>设 $u_p$ 为非齐次方程的一个<strong>特解</strong>（即 $u_p$ 满足 $(u_p)_{xx} + (u_p)_{yy} = g$），令</p>
+          <p>$$v = u - u_p,$$</p>
+          <p>则 $v_{xx} + v_{yy} = (u_{xx} + u_{yy}) - ((u_p)_{xx} + (u_p)_{yy}) = g - g = 0$。</p>
+          <p>因此 $v$ 满足齐次 Laplace 方程，原问题化为：</p>
+          <ol>
+            <li>找一个特解 $u_p$；</li>
+            <li>求解齐次问题 $v_{xx} + v_{yy} = 0$（附加相应边界/初始条件）；</li>
+            <li>$u = v + u_p$。</li>
+          </ol>
+          <p>例如，若 $g(x, y) = x^2$，可取 $u_p = \frac{x^4}{12}$（验证 $(u_p)_{xx} = x^2$，$(u_p)_{yy} = 0$，满足方程）。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 2.8</div>
+      <p>利用叠加原理，将初值问题</p>
+      <p>$$u_{tt} = u_{xx} + \sin(2t), \quad u(x, 0) = 0,\; u_t(x, 0) = \cos x$$</p>
+      <p>分解为齐次问题的叠加。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>令 $u = u^{(1)} + u^{(2)}$，其中</p>
+          <p><strong>子问题 1</strong>（齐次方程 + 非齐次初值）：</p>
+          <p>$$u^{(1)}_{tt} = u^{(1)}_{xx}, \quad u^{(1)}(x, 0) = 0,\; u^{(1)}_t(x, 0) = \cos x.$$</p>
+          <p><strong>子问题 2</strong>（非齐次方程 + 零初值）：</p>
+          <p>$$u^{(2)}_{tt} = u^{(2)}_{xx} + \sin(2t), \quad u^{(2)}(x, 0) = 0,\; u^{(2)}_t(x, 0) = 0.$$</p>
+          <p>子问题 1 可用 d'Alembert 公式求解；子问题 2 可用 Duhamel 原理化为齐次问题的积分。这样将一个复杂问题分解为两个较简单的问题。</p>
+          <p>具体地，子问题 1 的解（由 d'Alembert 公式）为</p>
+          <p>$$u^{(1)}(x, t) = \frac{1}{2}\int_{x-t}^{x+t} \cos s\,\dd s = \frac{1}{2}[\sin(x+t) - \sin(x-t)] = \cos x \sin t.$$</p>
+          <p>子问题 2 中，$f(x, t) = \sin(2t)$ 不依赖于 $x$，故可猜特解 $u^{(2)} = \alpha(t)$，代入得 $\alpha''(t) = \sin(2t)$，$\alpha(0) = 0,\; \alpha'(0) = 0$，解得 $\alpha(t) = \frac{t}{2} - \frac{\sin(2t)}{4}$。</p>
+          <p>因此 $u(x, t) = \cos x \sin t + \frac{t}{2} - \frac{\sin(2t)}{4}$。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chapter-nav">
+    <a href="ch1.html" class="prev">第一章</a>
+    <a href="ch3.html" class="next">第三章</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>偏微分方程复习指南 · 基于陈祖墀教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

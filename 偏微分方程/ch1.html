@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第一章 · 绪论与一阶偏微分方程</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}', CC: '\\mathbb{C}', NN: '\\mathbb{N}', ZZ: '\\mathbb{Z}',
+          dd: '\\mathrm{d}', pd: '\\partial', lap: '\\Delta', grad: '\\nabla',
+          div: '\\mathrm{div}', rot: '\\mathrm{rot}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">偏微分方程复习</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第一章 · 绪论与一阶偏微分方程</h1>
+    <p>从偏微分方程的基本概念出发，系统掌握一阶拟线性方程的特征线法和非线性方程的 Charpit 方法</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">1.1 偏微分方程的基本概念</a></li>
+      <li><a href="#s2">1.2 一阶拟线性方程</a></li>
+      <li><a href="#s3">1.3 一阶非线性方程</a></li>
+      <li><a href="#s4">1.4 一阶方程的其他问题</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 1.1 ==================== -->
+  <div class="section" id="s1">
+    <h2>1.1 偏微分方程的基本概念</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 1.1（偏微分方程）</div>
+      <p>含有未知函数 $u(x_1, x_2, \ldots, x_n)$ 及其偏导数的关系式</p>
+      <p>$$F\!\left(x_1, \ldots, x_n,\; u,\; \frac{\pd u}{\pd x_1}, \ldots, \frac{\pd u}{\pd x_n},\; \frac{\pd^2 u}{\pd x_1^2}, \ldots\right) = 0$$</div>
+      <p>称为<strong>偏微分方程</strong>（PDE）。其中出现的最高阶偏导数的阶数称为该方程的<strong>阶</strong>。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 1.2（解与通解）</div>
+      <p>若函数 $u = \varphi(x_1, \ldots, x_n)$ 在区域 $\Omega \subset \RR^n$ 上具有方程中出现的各阶连续偏导数，且代入方程后使之成为恒等式，则称 $\varphi$ 为方程在 $\Omega$ 上的一个<strong>经典解</strong>。</p>
+      <p>含有任意函数且任意函数的个数等于方程阶数的解称为<strong>通解</strong>。不含任意常数（或任意函数）的特定解称为<strong>特解</strong>。</p>
+    </div>
+
+    <h3>定解条件与定解问题</h3>
+
+    <p>仅有 PDE 本身通常不能唯一确定解，还需附加适当的<strong>定解条件</strong>：</p>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 1.3（初始条件与边界条件）</div>
+      <p><strong>初始条件</strong>（Cauchy 条件）：描述未知函数在初始时刻 $t=0$ 的状态，如</p>
+      <p>$$u(x, 0) = \varphi(x), \quad u_t(x, 0) = \psi(x).$$</p>
+      <p><strong>边界条件</strong>：描述未知函数在区域边界 $\pd\Omega$ 上的行为，常见的有：</p>
+      <ul>
+        <li><strong>Dirichlet 条件</strong>（第一类）：$u\big|_{\pd\Omega} = g$；</li>
+        <li><strong>Neumann 条件</strong>（第二类）：$\frac{\pd u}{\pd n}\bigg|_{\pd\Omega} = g$；</li>
+        <li><strong>Robin 条件</strong>（第三类）：$\left(\alpha u + \beta \frac{\pd u}{\pd n}\right)\bigg|_{\pd\Omega} = g$。</li>
+      </ul>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 1.4（定解问题的类型）</div>
+      <p><strong>初值问题</strong>（Cauchy 问题）：只有初始条件，无边界条件，适用于无界区域 $-\infty < x < +\infty$。</p>
+      <p><strong>边值问题</strong>：只有边界条件，无初始条件，适用于稳态问题。</p>
+      <p><strong>混合问题</strong>（初边值问题）：既有初始条件又有边界条件，适用于有界区域上的演化问题。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 1.1</div>
+      <p>验证 $u(x, y) = e^{-y}\sin x$ 是方程 $u_{xx} + u_{yy} = 0$ 的解。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>计算偏导数：</p>
+          <p>$$u_x = e^{-y}\cos x, \quad u_{xx} = -e^{-y}\sin x,$$</p>
+          <p>$$u_y = -e^{-y}\sin x, \quad u_{yy} = e^{-y}\sin x.$$</p>
+          <p>因此 $u_{xx} + u_{yy} = -e^{-y}\sin x + e^{-y}\sin x = 0$，方程成立。故 $u(x,y) = e^{-y}\sin x$ 确为该方程的解。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 1.2</div>
+      <p>求一阶方程 $\frac{\pd u}{\pd x} = 0$ 的通解，并说明其意义。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>方程表明 $u$ 关于 $x$ 的偏导数为零，因此 $u$ 不依赖于 $x$，只与 $y$ 有关。通解为</p>
+          <p>$$u(x, y) = f(y),$$</p>
+          <p>其中 $f$ 为任意可微函数。若附加条件 $u(0, y) = y^2$，则 $f(y) = y^2$，特解为 $u(x,y) = y^2$。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1.2 ==================== -->
+  <div class="section" id="s2">
+    <h2>1.2 一阶拟线性方程</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 1.5（拟线性方程）</div>
+      <p>形如</p>
+      <p>$$a(x, y, u)\frac{\pd u}{\pd x} + b(x, y, u)\frac{\pd u}{\pd y} = c(x, y, u)$$</p>
+      <p>的方程称为<strong>一阶拟线性方程</strong>。其中 $a, b, c$ 是 $x, y, u$ 的已知函数，对最高阶偏导数 $u_x, u_y$ 而言是线性的。</p>
+    </div>
+
+    <h3>特征线法</h3>
+
+    <p>求解拟线性方程的核心方法是<strong>特征线法</strong>。将 PDE 转化为一组常微分方程（特征方程组）：</p>
+
+    <div class="box box-formula">
+      <div class="box-title">特征方程组</div>
+      <p>$$\frac{\dd x}{a(x, y, u)} = \frac{\dd y}{b(x, y, u)} = \frac{\dd u}{c(x, y, u)}.$$</p>
+      <p>等价地写成参数形式（以 $s$ 为参数）：</p>
+      <p>$$\frac{\dd x}{\dd s} = a, \quad \frac{\dd y}{\dd s} = b, \quad \frac{\dd u}{\dd s} = c.$$</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 1.1（通解的结构）</div>
+      <p>若由特征方程组求得两个独立首次积分</p>
+      <p>$$\Phi_1(x, y, u) = C_1, \quad \Phi_2(x, y, u) = C_2,$$</p>
+      <p>则拟线性方程的通解由隐式关系 $\Phi_1 = F(\Phi_2)$ 或等价地 $\Phi_2 = G(\Phi_1)$ 给出，其中 $F$（或 $G$）为任意可微函数。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 1.3</div>
+      <p>求方程 $u\frac{\pd u}{\pd x} + \frac{\pd u}{\pd y} = 1$ 的通解。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>这里 $a = u,\; b = 1,\; c = 1$。特征方程组为</p>
+          <p>$$\frac{\dd x}{u} = \frac{\dd y}{1} = \frac{\dd u}{1}.$$</p>
+          <p><strong>第一步</strong>：取 $\frac{\dd y}{1} = \frac{\dd u}{1}$，得 $\dd y = \dd u$，积分得第一个首次积分</p>
+          <p>$$\Phi_1 = u - y = C_1.$$</p>
+          <p><strong>第二步</strong>：取 $\frac{\dd x}{u} = \frac{\dd u}{1}$，得 $\dd x = u\,\dd u$，积分得</p>
+          <p>$$x = \frac{u^2}{2} + C_2,$$</p>
+          <p>即第二个首次积分</p>
+          <p>$$\Phi_2 = x - \frac{u^2}{2} = C_2.$$</p>
+          <p><strong>第三步</strong>：通解为 $\Phi_2 = F(\Phi_1)$，即</p>
+          <p>$$x - \frac{u^2}{2} = F(u - y),$$</p>
+          <p>其中 $F$ 为任意可微函数。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 1.4</div>
+      <p>求方程 $x\frac{\pd u}{\pd x} + y\frac{\pd u}{\pd y} = u$ 满足初始条件 $u(x, 1) = x^2$ 的特解。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>特征方程组为</p>
+          <p>$$\frac{\dd x}{x} = \frac{\dd y}{y} = \frac{\dd u}{u}.$$</p>
+          <p><strong>首次积分</strong>：由 $\frac{\dd x}{x} = \frac{\dd y}{y}$，得 $\ln|x| = \ln|y| + \text{const}$，即</p>
+          <p>$$\Phi_1 = \frac{x}{y} = C_1.$$</p>
+          <p>由 $\frac{\dd x}{x} = \frac{\dd u}{u}$，得 $\ln|x| = \ln|u| + \text{const}$，即</p>
+          <p>$$\Phi_2 = \frac{u}{x} = C_2.$$</p>
+          <p><strong>通解</strong>：$\frac{u}{x} = F\!\left(\frac{x}{y}\right)$，即 $u = x\,F\!\left(\frac{x}{y}\right)$。</p>
+          <p><strong>代入初始条件</strong>：$u(x, 1) = x^2$ 意味着 $x\,F(x) = x^2$，故 $F(x) = x$。</p>
+          <p><strong>特解</strong>：$u = x \cdot \frac{x}{y} = \frac{x^2}{y}$。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1.3 ==================== -->
+  <div class="section" id="s3">
+    <h2>1.3 一阶非线性方程</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 1.6（完全非线性方程）</div>
+      <p>形如</p>
+      <p>$$F(x, y, u, p, q) = 0, \quad p = \frac{\pd u}{\pd x},\; q = \frac{\pd u}{\pd y}$$</p>
+      <p>且 $F$ 对 $p, q$ 为非线性的方程称为<strong>完全非线性一阶方程</strong>。</p>
+    </div>
+
+    <h3>全积分、通解与特解</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 1.7（全积分）</div>
+      <p>含两个独立参数 $a, b$ 的解族 $u = \varphi(x, y, a, b)$ 称为方程 $F(x, y, u, u_x, u_y) = 0$ 的<strong>全积分</strong>（完全积分）。要求 $\varphi$ 对 $a, b$ 的 Jacobi 行列式</p>
+      <p>$$\frac{\pd(\varphi_a, \varphi_b)}{\pd(x, y)} \neq 0.$$</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注记：全积分、通解与特解的关系</div>
+      <p>由全积分 $u = \varphi(x, y, a, b)$ 出发：</p>
+      <ul>
+        <li>令 $b = F(a)$（$F$ 为任意函数），包络得到<strong>通解</strong>（含一个任意函数）；</li>
+        <li>令 $a = a_0,\; b = b_0$（常数），得到<strong>特解</strong>；</li>
+        <li>求通解的包络（奇解）可得<strong>奇异解</strong>。</li>
+      </ul>
+    </div>
+
+    <h3>Charpit 方法（特征方程组）</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">Charpit 特征方程组</div>
+      <p>对于 $F(x, y, u, p, q) = 0$，其特征方程组为：</p>
+      <p>$$\frac{\dd x}{F_p} = \frac{\dd y}{F_q} = \frac{\dd u}{pF_p + qF_q} = \frac{-\dd p}{F_x + pF_u} = \frac{-\dd q}{F_y + qF_u}.$$</p>
+    </div>
+
+    <p>求解思路：由 $F = 0$ 和特征方程组联立，先求出 $p, q$（含参数 $a$），再积分 $u = \varphi(x, y, a, b)$。</p>
+
+    <div class="box box-example">
+      <div class="box-title">例 1.5</div>
+      <p>求方程 $u_x^2 + u_y^2 = 1$ 的全积分。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>这里 $F = p^2 + q^2 - 1 = 0$，故 $F_p = 2p,\; F_q = 2q,\; F_x = F_y = F_u = 0$。</p>
+          <p>Charpit 方程组简化为</p>
+          <p>$$\frac{\dd x}{2p} = \frac{\dd y}{2q} = \frac{\dd u}{2p^2 + 2q^2} = \frac{\dd p}{0} = \frac{\dd q}{0}.$$</p>
+          <p>由 $\dd p = 0$ 得 $p = a$（常数）。代入 $F = 0$：$a^2 + q^2 = 1$，故 $q = \pm\sqrt{1 - a^2}$。</p>
+          <p>由 $\dd u = p\,\dd x + q\,\dd y$，积分得</p>
+          <p>$$u = ax \pm \sqrt{1 - a^2}\,y + b.$$</p>
+          <p>这就是含两个参数 $a, b$ 的<strong>全积分</strong>，其中 $|a| \le 1$。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 1.6</div>
+      <p>求方程 $u_x u_y = u$ 的全积分。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>$F = pq - u = 0$，故 $F_p = q,\; F_q = p,\; F_u = -1,\; F_x = F_y = 0$。</p>
+          <p>Charpit 方程组：</p>
+          <p>$$\frac{\dd x}{q} = \frac{\dd y}{p} = \frac{\dd u}{2pq} = \frac{\dd p}{p} = \frac{\dd q}{q}.$$</p>
+          <p>由 $\frac{\dd p}{p} = \frac{\dd q}{q}$ 得 $\ln|p| = \ln|q| + \text{const}$，即 $p = aq$（$a$ 为参数）。</p>
+          <p>代入 $F = 0$：$aq^2 = u$，故 $q = \sqrt{u/a}$（取正号），$p = a\sqrt{u/a} = \sqrt{au}$。</p>
+          <p>由 $\dd u = p\,\dd x + q\,\dd y$，注意到 $p = \sqrt{au}$ 为常数（$u$ 沿特征方向的积分），设 $u = b^2$（$b$ 为另一参数），则</p>
+          <p>$$\dd u = \sqrt{a}\,b\,\dd x + \frac{b}{\sqrt{a}}\,\dd y = 0 \text{ 沿特定方向}.$$</p>
+          <p>更直接地，令 $p = a$（常数），由 $F = 0$ 得 $q = u/a$，再由</p>
+          <p>$$\dd u = a\,\dd x + \frac{u}{a}\,\dd y$$</p>
+          <p>这是关于 $u$ 的一阶 ODE（视 $x$ 为参数沿 $y$ 方向），解之：固定 $x$，$\frac{\dd u}{\dd y} = \frac{u}{a}$ 得 $u = C(x)e^{y/a}$。代入 $\frac{\pd u}{\pd x} = C'(x)e^{y/a} = a$，得 $C'(x) = ae^{-y/a}$ 不合理。换方法：直接令 $p = a,\; q = b$ 代入 $F=0$，得 $ab = u$，故</p>
+          <p>$$u = ax + by + c, \quad ab = u.$$</p>
+          <p>但需 $ab = ax + by + c$ 对所有 $x, y$ 成立，故 $a = b = 0$ 不可行。正确做法：令 $p = a$（常数），则 $q = u/a$。</p>
+          <p>由 $\dd u = p\,\dd x + q\,\dd y = a\,\dd x + \frac{u}{a}\,\dd y$，这是线性 ODE（$x$ 视作固定时）：</p>
+          <p>$$\frac{\pd u}{\pd y} - \frac{u}{a} = a \implies u = Ce^{y/a} - a^2.$$</p>
+          <p>再由 $\frac{\pd u}{\pd x} = C'e^{y/a} = a$，得 $C' = ae^{-y/a}$ 不合理。</p>
+          <p>采用标准 Charpit 方法：由 $\frac{\dd p}{p} = \frac{\dd q}{q}$ 得 $p = aq$，代入 $pq = u$ 得 $aq^2 = u$。</p>
+          <p>由 $\dd u = p\,\dd x + q\,\dd y$ 和 $p = aq$，得 $\dd u = aq\,\dd x + q\,\dd y$。又 $\dd u = \dd(aq^2) = 2aq\,\dd q$，故</p>
+          <p>$$2aq\,\dd q = aq\,\dd x + q\,\dd y \implies 2a\,\dd q = a\,\dd x + \dd y.$$</p>
+          <p>积分得 $2aq = ax + y + b$，即</p>
+          <p>$$q = \frac{ax + y + b}{2a}, \quad p = aq = \frac{ax + y + b}{2}.$$</p>
+          <p>$$u = pq = \frac{(ax + y + b)^2}{4a}.$$</p>
+          <p>这就是含参数 $a, b$ 的<strong>全积分</strong>。验证：$u_x = \frac{a(ax+y+b)}{2a} = \frac{ax+y+b}{2} = p$，$u_y = \frac{ax+y+b}{2a} = q$，$u_x u_y = \frac{(ax+y+b)^2}{4a} = u$。正确。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1.4 ==================== -->
+  <div class="section" id="s4">
+    <h2>1.4 一阶方程的其他问题</h2>
+
+    <h3>Cauchy 问题的特征线法</h3>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 1.2（Cauchy 问题的提法）</div>
+      <p>对一阶拟线性方程 $au_x + bu_y = c$，给定初始曲线 $\Gamma$：</p>
+      <p>$$x = x_0(s), \quad y = y_0(s), \quad u = u_0(s), \quad s \in I,$$</p>
+      <p>求满足方程且在 $\Gamma$ 上取给定值的解 $u(x, y)$。</p>
+    </div>
+
+    <p>特征线法求解 Cauchy 问题的步骤：</p>
+    <ol>
+      <li>写出特征方程组 $\frac{\dd x}{a} = \frac{\dd y}{b} = \frac{\dd u}{c}$；</li>
+      <li>以初始曲线 $\Gamma$ 上的点 $(x_0(s), y_0(s), u_0(s))$ 为初始值，求解特征 ODE；</li>
+      <li>从解中消去参数 $s$ 和特征参数 $t$，得到 $u = u(x, y)$。</li>
+    </ol>
+
+    <div class="box box-example">
+      <div class="box-title">例 1.7</div>
+      <p>求 Cauchy 问题 $u_x + u_y = u$，初始条件 $u(x, 0) = \cos x$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>特征方程组：$\frac{\dd x}{1} = \frac{\dd y}{1} = \frac{\dd u}{u}$。</p>
+          <p>令 $\dd x = \dd y = \dd t$，则初始条件取为 $x(0) = s,\; y(0) = 0,\; u(0) = \cos s$。</p>
+          <p>由 $\frac{\dd x}{\dd t} = 1$ 得 $x = s + t$。</p>
+          <p>由 $\frac{\dd y}{\dd t} = 1$ 得 $y = t$。</p>
+          <p>由 $\frac{\dd u}{\dd t} = u$ 得 $u = \cos s \cdot e^t$。</p>
+          <p>消参数：$t = y$，$s = x - y$，故</p>
+          <p>$$u(x, y) = \cos(x - y)\,e^y.$$</p>
+          <p><strong>验证</strong>：$u_x = -\sin(x-y)e^y$，$u_y = \sin(x-y)e^y + \cos(x-y)e^y$，$u_x + u_y = \cos(x-y)e^y = u$。初始条件：$u(x, 0) = \cos x$。全部满足。</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>特征线与解的存在性</h3>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 1.3（特征条件与解的存在性）</div>
+      <p>Cauchy 问题有唯一经典解的<strong>必要条件</strong>是初始曲线 $\Gamma$ 不是方程的特征线，即</p>
+      <p>$$\frac{\dd x_0}{\dd s} \cdot b - \frac{\dd y_0}{\dd s} \cdot a \neq 0.$$</p>
+      <p>若 $\Gamma$ 本身是特征线，则初始数据之间需满足相容性条件，否则解不存在。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注记：横截条件的几何意义</div>
+      <p>上述条件等价于初始曲线的方向向量 $(x_0'(s), y_0'(s))$ 与特征方向 $(a, b)$ 不平行，即初始曲线与特征线<strong>横截</strong>（transversal）。几何上，解由沿初始曲线发出的特征线族"织成"；若初始曲线恰好是特征线，特征线族无法"织出"解曲面。</p>
+    </div>
+
+    <h3>Cauchy-Kovalevskaya 定理</h3>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 1.4（Cauchy-Kovalevskaya 定理，陈述）</div>
+      <p>若 PDE 可以写成对某个自变量（如 $x_n$）的最高阶导数的显式形式，且方程中的所有函数以及初始条件中的数据都是<strong>实解析</strong>的，则 Cauchy 问题在初始超平面附近存在唯一的<strong>实解析</strong>解。</p>
+      <p>具体地，对二阶方程</p>
+      <p>$$\frac{\pd^2 u}{\pd t^2} = F\!\left(t, x, u, \frac{\pd u}{\pd t}, \frac{\pd u}{\pd x}, \frac{\pd^2 u}{\pd t \pd x}, \frac{\pd^2 u}{\pd x^2}\right),$$</p>
+      <p>给定初始条件 $u|_{t=0} = \varphi(x),\; u_t|_{t=0} = \psi(x)$，若 $F, \varphi, \psi$ 均为实解析函数，则存在 $t = 0$ 附近唯一的实解析解。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注记</div>
+      <ul>
+        <li>Cauchy-Kovalevskaya 定理是<strong>局部存在性</strong>定理，仅保证解在初始超平面附近存在。</li>
+        <li>定理要求<strong>解析性</strong>条件，这比连续可微要强得多。Hadamard 给出了反例说明连续可微条件不足以保证解的存在性。</li>
+        <li>该定理在 PDE 理论中有基础性地位，但实际求解中更常用特征线法、分离变量法等具体方法。</li>
+      </ul>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 1.8</div>
+      <p>用特征线法求解 Cauchy 问题：$yu_x + xu_y = 0$，$u(0, y) = y^3$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>特征方程组：$\frac{\dd x}{y} = \frac{\dd y}{x} = \frac{\dd u}{0}$。</p>
+          <p>由 $\frac{\dd u}{0}$ 知 $u$ 沿特征线为常数。</p>
+          <p>由 $\frac{\dd x}{y} = \frac{\dd y}{x}$ 得 $x\,\dd x = y\,\dd y$，积分得 $x^2 - y^2 = C$（双曲型特征线）。</p>
+          <p>故通解为 $u = f(x^2 - y^2)$，$f$ 为任意函数。</p>
+          <p>代入初始条件：$u(0, y) = f(-y^2) = y^3$。令 $t = -y^2$，则 $y = \sqrt{-t}$（$t \le 0$），$f(t) = (-t)^{3/2} = |t|^{3/2}$。</p>
+          <p>特解为</p>
+          <p>$$u(x, y) = |x^2 - y^2|^{3/2}.$$</p>
+          <p>验证：$u_x = 3x|x^2-y^2|^{1/2}\text{sgn}(x^2-y^2)$，$u_y = -3y|x^2-y^2|^{1/2}\text{sgn}(x^2-y^2)$，$yu_x + xu_y = 3xy|x^2-y^2|^{1/2}\text{sgn}(x^2-y^2) - 3xy|x^2-y^2|^{1/2}\text{sgn}(x^2-y^2) = 0$。正确。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chapter-nav">
+    <a href="index.html" class="prev">首页</a>
+    <a href="ch2.html" class="next">第二章</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>偏微分方程复习指南 · 基于陈祖墀教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>
