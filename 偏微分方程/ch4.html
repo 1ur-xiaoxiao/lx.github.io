@@ -234,6 +234,123 @@
     </div>
   </div>
 
+  <!-- 可视化 · 热传导方程的解 -->
+  <div class="section" id="viz-heat">
+    <h2>可视化 · 热传导方程的解</h2>
+    <p>观察热传导方程 $u_t = u_{xx}$ 初值问题的解随时间的演化。初始温度分布为 $\varphi(x)$，热量逐渐扩散趋于均匀。</p>
+    <div style="margin:1rem 0;">
+      <label>初始条件:
+        <select id="heat-ic" style="padding:0.3rem;border-radius:6px;border:1px solid var(--border);">
+          <option value="gauss">φ(x) = e^{-x²}</option>
+          <option value="step">φ(x) = 矩形脉冲</option>
+          <option value="sincos">φ(x) = sin(πx)·1_[0,1](x)</option>
+        </select>
+      </label>
+      <button id="heat-btn" style="margin-left:1rem;padding:0.4rem 1rem;border-radius:6px;border:1px solid var(--border);background:var(--bg-white);cursor:pointer;">播放/暂停</button>
+    </div>
+    <canvas id="canvas-heat" width="700" height="300" style="width:100%;max-width:700px;"></canvas>
+    <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.5rem;">$u(x,t) = \int_{-\infty}^{+\infty} \frac{1}{2\sqrt{\pi t}} e^{-(x-\xi)^2/(4t)} \varphi(\xi)\,d\xi$（热核卷积）</p>
+    <script>
+    (function(){
+      var canvas = document.getElementById('canvas-heat');
+      if(!canvas) return;
+      var ctx = canvas.getContext('2d');
+      var W, H, dpr;
+      var XMIN=-8, XMAX=8;
+      var t=0.05, playing=false;
+
+      function resize(){
+        var rect = canvas.getBoundingClientRect();
+        var cw = rect.width || 700;
+        dpr = window.devicePixelRatio || 1;
+        canvas.width = Math.round(cw*dpr);
+        canvas.height = Math.round(300*dpr);
+        canvas.style.width = cw+'px';
+        canvas.style.height = '300px';
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        W=cw; H=300;
+      }
+
+      function phi(x,ic){
+        if(ic==='gauss') return Math.exp(-x*x);
+        if(ic==='step') return (Math.abs(x)<=1)?1:0;
+        if(ic==='sincos') return (x>=0&&x<=1)?Math.sin(Math.PI*x):0;
+        return 0;
+      }
+
+      function heatK(z,tt){
+        return Math.exp(-z*z/(4*tt))/(2*Math.sqrt(Math.PI*tt));
+      }
+
+      function heatU(x,tv,ic){
+        var a=-15, b=15, n=400;
+        var h=(b-a)/n, s=0;
+        for(var i=0;i<=n;i++){
+          var xi=a+i*h;
+          var w=heatK(x-xi,tv)*phi(xi,ic);
+          s+=(i===0||i===n)?w*0.5:w;
+        }
+        return s*h;
+      }
+
+      function x2s(x){ return 50+(x-XMIN)/(XMAX-XMIN)*(W-80); }
+      function y2s(y){ return (H-30)-y*(H-70); }
+
+      function drawAxes(){
+        ctx.save();
+        ctx.strokeStyle='#bbb'; ctx.lineWidth=1;
+        ctx.beginPath(); ctx.moveTo(50,H-30); ctx.lineTo(W-30,H-30); ctx.stroke();
+        var x0=x2s(0);
+        ctx.beginPath(); ctx.moveTo(x0,20); ctx.lineTo(x0,H-30); ctx.stroke();
+        ctx.fillStyle='#888'; ctx.font='11px sans-serif'; ctx.textAlign='center';
+        for(var v=-8;v<=8;v+=2) ctx.fillText(v,x2s(v),H-15);
+        ctx.fillText('x',W-18,H-15);
+        ctx.textAlign='right';
+        ctx.fillText('1',x0-5,y2s(1)+4); ctx.fillText('u',x0-5,25);
+        ctx.textAlign='left'; ctx.fillStyle='#555'; ctx.font='13px sans-serif';
+        ctx.fillText('t = '+t.toFixed(3),55,38);
+        ctx.restore();
+      }
+
+      function drawCurve(fn,color,lw,dash){
+        ctx.save(); ctx.strokeStyle=color; ctx.lineWidth=lw;
+        if(dash) ctx.setLineDash(dash);
+        ctx.beginPath();
+        var N=350;
+        for(var i=0;i<=N;i++){
+          var x=XMIN+(XMAX-XMIN)*i/N;
+          var v=fn(x), sx=x2s(x), sy=y2s(v);
+          i===0?ctx.moveTo(sx,sy):ctx.lineTo(sx,sy);
+        }
+        ctx.stroke(); ctx.restore();
+      }
+
+      function draw(){
+        var ic=document.getElementById('heat-ic').value;
+        ctx.clearRect(0,0,W,H);
+        drawAxes();
+        drawCurve(function(x){return phi(x,ic);},'rgba(66,133,244,0.35)',1.5,[5,5]);
+        drawCurve(function(x){return heatU(x,t,ic);},'#e63946',2.5,null);
+        ctx.save(); ctx.font='11px sans-serif';
+        ctx.fillStyle='rgba(66,133,244,0.6)'; ctx.fillText('φ(x) 初始',W-130,25);
+        ctx.fillStyle='#e63946'; ctx.fillText('u(x,t)',W-130,40);
+        ctx.restore();
+      }
+
+      function animate(){
+        if(playing){ t+=0.004; if(t>3) t=0.05; }
+        draw();
+        requestAnimationFrame(animate);
+      }
+
+      document.getElementById('heat-btn').addEventListener('click',function(){playing=!playing;});
+      document.getElementById('heat-ic').addEventListener('change',function(){t=0.05;});
+      window.addEventListener('resize',function(){resize();});
+      resize(); animate();
+    })();
+    </script>
+  </div>
+
   <!-- ==================== 4.3 ==================== -->
   <div class="section" id="s3">
     <h2>4.3 半无界问题</h2>

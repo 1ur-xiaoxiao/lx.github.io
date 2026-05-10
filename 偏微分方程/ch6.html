@@ -276,6 +276,146 @@
     </div>
   </div>
 
+  <!-- 可视化 · Fourier 级数逼近 -->
+  <div class="section" id="viz-fourier">
+    <h2>可视化 · Fourier 级数逼近</h2>
+    <p>观察 Fourier 级数如何逼近周期函数。增加项数 $N$，观察逼近效果。</p>
+    <div style="margin:1rem 0;">
+      <label>函数:
+        <select id="fourier-fn" style="padding:0.3rem;border-radius:6px;border:1px solid var(--border);">
+          <option value="square">方波</option>
+          <option value="sawtooth">锯齿波</option>
+          <option value="triangle">三角波</option>
+        </select>
+      </label>
+      <label style="margin-left:1rem;">项数 N = <span id="fourier-n-val">3</span> <input type="range" id="fourier-n-slider" min="1" max="50" step="1" value="3"></label>
+    </div>
+    <canvas id="canvas-fourier" width="700" height="300" style="width:100%;max-width:700px;"></canvas>
+    <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.5rem;">蓝线: 原函数　|　红线: Fourier 部分和 $S_N(x) = \frac{a_0}{2} + \sum_{k=1}^{N}(a_k\cos kx + b_k\sin kx)$</p>
+    <script>
+    (function(){
+      var canvas = document.getElementById('canvas-fourier');
+      if(!canvas) return;
+      var ctx = canvas.getContext('2d');
+      var W, H, dpr;
+      var XMIN=-2*Math.PI, XMAX=2*Math.PI;
+
+      function resize(){
+        var rect = canvas.getBoundingClientRect();
+        var cw = rect.width || 700;
+        dpr = window.devicePixelRatio || 1;
+        canvas.width = Math.round(cw*dpr);
+        canvas.height = Math.round(300*dpr);
+        canvas.style.width = cw+'px';
+        canvas.style.height = '300px';
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        W=cw; H=300;
+      }
+
+      function origFn(x,fn){
+        // Reduce x to [-pi, pi]
+        var xp = x - 2*Math.PI*Math.round(x/(2*Math.PI));
+        if(fn==='square') return Math.sin(xp)>0?1:(Math.sin(xp)<0?-1:0);
+        if(fn==='sawtooth') return xp;
+        if(fn==='triangle') return Math.abs(xp);
+        return 0;
+      }
+
+      function fourierSum(x,fn,N){
+        var s=0;
+        if(fn==='square'){
+          for(var k=1;k<=N;k++){
+            var m=2*k-1;
+            s+=Math.sin(m*x)/m;
+          }
+          s*=4/Math.PI;
+        } else if(fn==='sawtooth'){
+          for(var k=1;k<=N;k++){
+            s+=2*Math.pow(-1,k+1)*Math.sin(k*x)/k;
+          }
+        } else if(fn==='triangle'){
+          s=Math.PI/2;
+          for(var k=1;k<=N;k++){
+            var m=2*k-1;
+            s-=4/(Math.PI*m*m)*Math.cos(m*x);
+          }
+        }
+        return s;
+      }
+
+      function getYRange(fn){
+        if(fn==='square') return [-1.5,1.5];
+        if(fn==='sawtooth') return [-4,4];
+        return [-0.5,Math.PI+0.5];
+      }
+
+      function x2s(x){ return 50+(x-XMIN)/(XMAX-XMIN)*(W-80); }
+      function makeY2s(ymin,ymax){ return function(y){ return (H-30)-(y-ymin)/(ymax-ymin)*(H-60); }; }
+
+      function drawAxes(ymin,ymax,y2s){
+        ctx.save();
+        ctx.strokeStyle='#bbb'; ctx.lineWidth=1;
+        var y0=y2s(0);
+        if(y0<20) y0=20; if(y0>H-30) y0=H-30;
+        ctx.beginPath(); ctx.moveTo(50,y0); ctx.lineTo(W-30,y0); ctx.stroke();
+        var x0=x2s(0);
+        ctx.beginPath(); ctx.moveTo(x0,20); ctx.lineTo(x0,H-30); ctx.stroke();
+        ctx.fillStyle='#888'; ctx.font='11px sans-serif'; ctx.textAlign='center';
+        var ticks=[-2*Math.PI,-Math.PI,0,Math.PI,2*Math.PI];
+        var labels=['-2π','-π','0','π','2π'];
+        for(var i=0;i<ticks.length;i++) ctx.fillText(labels[i],x2s(ticks[i]),y0+14);
+        ctx.fillText('x',W-18,y0+14);
+        ctx.restore();
+      }
+
+      function draw(){
+        var fn=document.getElementById('fourier-fn').value;
+        var N=parseInt(document.getElementById('fourier-n-slider').value);
+        var range=getYRange(fn);
+        var y2s=makeY2s(range[0],range[1]);
+
+        ctx.clearRect(0,0,W,H);
+        drawAxes(range[0],range[1],y2s);
+
+        // Original function
+        ctx.save(); ctx.strokeStyle='rgba(66,133,244,0.5)'; ctx.lineWidth=1.8;
+        ctx.beginPath();
+        var P=600;
+        for(var i=0;i<=P;i++){
+          var x=XMIN+(XMAX-XMIN)*i/P;
+          var v=origFn(x,fn), sx=x2s(x), sy=y2s(v);
+          i===0?ctx.moveTo(sx,sy):ctx.lineTo(sx,sy);
+        }
+        ctx.stroke(); ctx.restore();
+
+        // Fourier partial sum
+        ctx.save(); ctx.strokeStyle='#e63946'; ctx.lineWidth=2.2;
+        ctx.beginPath();
+        for(var i=0;i<=P;i++){
+          var x=XMIN+(XMAX-XMIN)*i/P;
+          var v=fourierSum(x,fn,N), sx=x2s(x), sy=y2s(v);
+          i===0?ctx.moveTo(sx,sy):ctx.lineTo(sx,sy);
+        }
+        ctx.stroke(); ctx.restore();
+
+        // Legend
+        ctx.save(); ctx.font='12px sans-serif';
+        ctx.fillStyle='rgba(66,133,244,0.7)'; ctx.fillText('原函数 f(x)',W-140,25);
+        ctx.fillStyle='#e63946'; ctx.fillText('S_'+N+'(x)  Fourier 部分和',W-200,42);
+        ctx.restore();
+      }
+
+      document.getElementById('fourier-n-slider').addEventListener('input',function(){
+        document.getElementById('fourier-n-val').textContent=this.value;
+        draw();
+      });
+      document.getElementById('fourier-fn').addEventListener('change',function(){draw();});
+      window.addEventListener('resize',function(){resize();draw();});
+      resize(); draw();
+    })();
+    </script>
+  </div>
+
   <!-- ==================== 6.5 ==================== -->
   <div class="section" id="s5">
     <h2>6.5 非齐次问题</h2>

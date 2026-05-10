@@ -132,6 +132,358 @@
     </div>
   </div>
 
+  <!-- ==================== 可视化：初等函数的映射效果 ==================== -->
+  <div class="section" id="viz-mapping">
+    <h2>可视化 · 初等函数的映射效果</h2>
+    <p>观察复变初等函数如何将 $z$ 平面上的网格映射到 $w$ 平面。选择不同的函数，理解其映射性质。</p>
+    <div style="margin:1rem 0;">
+      <select id="map-fn" style="padding:0.4rem;border-radius:6px;border:1px solid var(--border);">
+        <option value="exp">w = e^z</option>
+        <option value="z2">w = z²</option>
+        <option value="inv">w = 1/z</option>
+        <option value="sqrt">w = √z (主支)</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+      <div><p style="text-align:center;font-size:0.85rem;font-weight:600;">z 平面（原像）</p><canvas id="canvas-zplane" width="300" height="300" style="width:100%;max-width:300px;border:1px solid var(--border-light);border-radius:8px;"></canvas></div>
+      <div><p style="text-align:center;font-size:0.85rem;font-weight:600;">w 平面（像）</p><canvas id="canvas-wplane" width="300" height="300" style="width:100%;max-width:300px;border:1px solid var(--border-light);border-radius:8px;"></canvas></div>
+    </div>
+    <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.5rem;">左图为 $z$ 平面上的矩形网格，右图为经函数映射后的像。</p>
+  </div>
+
+  <script>
+  (function() {
+    var cZ = document.getElementById('canvas-zplane');
+    var cW = document.getElementById('canvas-wplane');
+    var ctxZ = cZ.getContext('2d');
+    var ctxW = cW.getContext('2d');
+    var sel = document.getElementById('map-fn');
+    var dpr = window.devicePixelRatio || 1;
+
+    var GRID = 12; // number of grid lines in each direction
+    var HCOLOR = 'rgba(52,152,219,0.6)';
+    var VCOLOR = 'rgba(231,76,60,0.6)';
+
+    // Complex arithmetic helpers
+    function cAdd(a, b) { return [a[0]+b[0], a[1]+b[1]]; }
+    function cMul(a, b) { return [a[0]*b[0]-a[1]*b[1], a[0]*b[1]+a[1]*b[0]]; }
+    function cInv(a) { var d = a[0]*a[0]+a[1]*a[1]; return [a[0]/d, -a[1]/d]; }
+    function cAbs(a) { return Math.sqrt(a[0]*a[0]+a[1]*a[1]); }
+    function cArg(a) { return Math.atan2(a[1], a[0]); }
+    function cExp(a) { var ex = Math.exp(a[0]); return [ex*Math.cos(a[1]), ex*Math.sin(a[1])]; }
+    function cSqrt(a) {
+      var r = cAbs(a);
+      var th = cArg(a);
+      // principal branch: arg in (-pi, pi], sqrt has arg in (-pi/2, pi/2]
+      return [Math.sqrt(r)*Math.cos(th/2), Math.sqrt(r)*Math.sin(th/2)];
+    }
+
+    function mapFn(z, fn) {
+      switch(fn) {
+        case 'exp':  return cExp(z);
+        case 'z2':   return cMul(z, z);
+        case 'inv':  return cInv(z);
+        case 'sqrt': return cSqrt(z);
+        default:     return z;
+      }
+    }
+
+    function setupCanvas(canvas, ctx, w) {
+      canvas.style.width = w + 'px';
+      canvas.style.height = w + 'px';
+      canvas.width = w * dpr;
+      canvas.height = w * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function drawAxes(ctx, w, xMin, xMax, yMin, yMax, label) {
+      var cx = w/2, cy = w/2;
+      // Grid background
+      ctx.clearRect(0, 0, w, w);
+      ctx.fillStyle = '#fafbfc';
+      ctx.fillRect(0, 0, w, w);
+
+      // Axes
+      var ax = cx - (0/(xMax-xMin))*w; // not used directly
+      ctx.strokeStyle = '#aab';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      // x-axis (y=0)
+      var y0 = cy - (0 - yMin)/(yMax - yMin) * w;
+      if (y0 >= 0 && y0 <= w) { ctx.moveTo(0, y0); ctx.lineTo(w, y0); }
+      // y-axis (x=0)
+      var x0 = cx - (0 - xMin)/(xMax - xMin) * w;
+      // remap: x_screen = (x - xMin)/(xMax - xMin) * w, y_screen = (yMax - y)/(yMax - yMin) * w
+      // Actually let's use a cleaner approach
+      ctx.stroke();
+    }
+
+    // Coordinate transform: complex (x,y) -> screen (sx, sy)
+    // We center the view and scale to fit
+    function toScreen(x, y, w, scale, cx_scr, cy_scr) {
+      var sx = cx_scr + x * scale;
+      var sy = cy_scr - y * scale; // flip y
+      return [sx, sy];
+    }
+
+    function drawGrid(ctx, w, fn) {
+      ctx.clearRect(0, 0, w, w);
+      ctx.fillStyle = '#fafbfc';
+      ctx.fillRect(0, 0, w, w);
+
+      // Determine view bounds for z-plane
+      var xMin, xMax, yMin, yMax;
+      if (fn === 'exp') {
+        xMin = -2; xMax = 2; yMin = -Math.PI; yMax = Math.PI;
+      } else if (fn === 'z2') {
+        xMin = -2; xMax = 2; yMin = -2; yMax = 2;
+      } else if (fn === 'inv') {
+        xMin = -2; xMax = 2; yMin = -2; yMax = 2;
+      } else { // sqrt
+        xMin = -2; xMax = 2; yMin = -2; yMax = 2;
+      }
+
+      var scaleX = w / (xMax - xMin);
+      var scaleY = w / (yMax - yMin);
+      var scale = Math.min(scaleX, scaleY);
+      var cx_scr = w / 2;
+      var cy_scr = w / 2;
+
+      function toS(x, y) { return toScreen(x, y, w, scale, cx_scr, cy_scr); }
+      function fromS(sx, sy) {
+        return [(sx - cx_scr)/scale, -(sy - cy_scr)/scale];
+      }
+
+      // Draw grid lines
+      var nLines = GRID;
+      var dx = (xMax - xMin) / nLines;
+      var dy = (yMax - yMin) / nLines;
+
+      // Vertical lines (x = const)
+      ctx.lineWidth = 1;
+      for (var i = 0; i <= nLines; i++) {
+        var x = xMin + i * dx;
+        ctx.strokeStyle = VCOLOR;
+        ctx.beginPath();
+        var steps = 80;
+        for (var s = 0; s <= steps; s++) {
+          var y = yMin + s * (yMax - yMin) / steps;
+          var sp = toS(x, y);
+          if (s === 0) ctx.moveTo(sp[0], sp[1]);
+          else ctx.lineTo(sp[0], sp[1]);
+        }
+        ctx.stroke();
+      }
+
+      // Horizontal lines (y = const)
+      for (var j = 0; j <= nLines; j++) {
+        var y = yMin + j * dy;
+        ctx.strokeStyle = HCOLOR;
+        ctx.beginPath();
+        var steps = 80;
+        for (var s = 0; s <= steps; s++) {
+          var x = xMin + s * (xMax - xMin) / steps;
+          var sp = toS(x, y);
+          if (s === 0) ctx.moveTo(sp[0], sp[1]);
+          else ctx.lineTo(sp[0], sp[1]);
+        }
+        ctx.stroke();
+      }
+
+      // Axes
+      ctx.strokeStyle = '#667';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      var origin = toS(0, 0);
+      ctx.moveTo(0, origin[1]); ctx.lineTo(w, origin[1]);
+      ctx.moveTo(origin[0], 0); ctx.lineTo(origin[0], w);
+      ctx.stroke();
+
+      // Tick marks and labels
+      ctx.fillStyle = '#667';
+      ctx.font = (w*0.035) + 'px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      for (var i = Math.ceil(xMin); i <= Math.floor(xMax); i++) {
+        if (i === 0) continue;
+        var sp = toS(i, 0);
+        ctx.fillText(i, sp[0], origin[1] + 2);
+      }
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      for (var j = Math.ceil(yMin); j <= Math.floor(yMax); j++) {
+        if (j === 0) continue;
+        var sp = toS(0, j);
+        ctx.fillText(j + 'i', origin[0] - 3, sp[1]);
+      }
+
+      // Border
+      ctx.strokeStyle = '#dde';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(0, 0, w, w);
+    }
+
+    function drawZPlane(w) {
+      drawGrid(ctxZ, w, sel.value);
+    }
+
+    function drawWPlane(w) {
+      var fn = sel.value;
+      ctxW.clearRect(0, 0, w, w);
+      ctxW.fillStyle = '#fafbfc';
+      ctxW.fillRect(0, 0, w, w);
+
+      // We'll collect all mapped points to determine w-plane bounds
+      var xMin_z, xMax_z, yMin_z, yMax_z;
+      if (fn === 'exp') {
+        xMin_z = -2; xMax_z = 2; yMin_z = -Math.PI; yMax_z = Math.PI;
+      } else if (fn === 'z2') {
+        xMin_z = -2; xMax_z = 2; yMin_z = -2; yMax_z = 2;
+      } else if (fn === 'inv') {
+        xMin_z = -2; xMax_z = 2; yMin_z = -2; yMax_z = 2;
+      } else {
+        xMin_z = -2; xMax_z = 2; yMin_z = -2; yMax_z = 2;
+      }
+
+      // First pass: compute all mapped points to find bounds
+      var nLines = GRID;
+      var dx = (xMax_z - xMin_z) / nLines;
+      var dy = (yMax_z - yMin_z) / nLines;
+      var steps = 60;
+
+      var allPts = [];
+      // From vertical lines
+      for (var i = 0; i <= nLines; i++) {
+        var x = xMin_z + i * dx;
+        for (var s = 0; s <= steps; s++) {
+          var y = yMin_z + s * (yMax_z - yMin_z) / steps;
+          var z = [x, y];
+          var wv = mapFn(z, fn);
+          if (isFinite(wv[0]) && isFinite(wv[1])) allPts.push(wv);
+        }
+      }
+      // From horizontal lines
+      for (var j = 0; j <= nLines; j++) {
+        var y = yMin_z + j * dy;
+        for (var s = 0; s <= steps; s++) {
+          var x = xMin_z + s * (xMax_z - xMin_z) / steps;
+          var z = [x, y];
+          var wv = mapFn(z, fn);
+          if (isFinite(wv[0]) && isFinite(wv[1])) allPts.push(wv);
+        }
+      }
+
+      if (allPts.length === 0) return;
+
+      // Compute bounds with some padding
+      var wMinX = Infinity, wMaxX = -Infinity, wMinY = Infinity, wMaxY = -Infinity;
+      for (var i = 0; i < allPts.length; i++) {
+        if (allPts[i][0] < wMinX) wMinX = allPts[i][0];
+        if (allPts[i][0] > wMaxX) wMaxX = allPts[i][0];
+        if (allPts[i][1] < wMinY) wMinY = allPts[i][1];
+        if (allPts[i][1] > wMaxY) wMaxY = allPts[i][1];
+      }
+
+      // For exp mapping, the image covers a wide range; cap it
+      if (fn === 'exp') {
+        wMinX = -7.5; wMaxX = 7.5; wMinY = -7.5; wMaxY = 7.5;
+      } else {
+        // Add 10% padding
+        var padX = (wMaxX - wMinX) * 0.1 || 1;
+        var padY = (wMaxY - wMinY) * 0.1 || 1;
+        wMinX -= padX; wMaxX += padX;
+        wMinY -= padY; wMaxY += padY;
+      }
+
+      // Ensure square aspect ratio
+      var rangeX = wMaxX - wMinX;
+      var rangeY = wMaxY - wMinY;
+      var maxRange = Math.max(rangeX, rangeY);
+      var midX = (wMinX + wMaxX) / 2;
+      var midY = (wMinY + wMaxY) / 2;
+      wMinX = midX - maxRange/2; wMaxX = midX + maxRange/2;
+      wMinY = midY - maxRange/2; wMaxY = midY + maxRange/2;
+
+      var scaleX_w = w / (wMaxX - wMinX);
+      var scaleY_w = w / (wMaxY - wMinY);
+      var scale_w = Math.min(scaleX_w, scaleY_w);
+      var cx_scr_w = w / 2;
+      var cy_scr_w = w / 2;
+
+      function toSW(x, y) {
+        return [cx_scr_w + (x - midX) * scale_w, cy_scr_w - (y - midY) * scale_w];
+      }
+
+      // Draw mapped grid - vertical lines (x = const in z)
+      var prev = null;
+      for (var i = 0; i <= nLines; i++) {
+        var x = xMin_z + i * dx;
+        ctxW.strokeStyle = VCOLOR;
+        ctxW.lineWidth = 1;
+        ctxW.beginPath();
+        var started = false;
+        for (var s = 0; s <= steps; s++) {
+          var y = yMin_z + s * (yMax_z - yMin_z) / steps;
+          var z = [x, y];
+          var wv = mapFn(z, fn);
+          if (!isFinite(wv[0]) || !isFinite(wv[1])) { started = false; continue; }
+          var sp = toSW(wv[0], wv[1]);
+          if (!started) { ctxW.moveTo(sp[0], sp[1]); started = true; }
+          else ctxW.lineTo(sp[0], sp[1]);
+        }
+        ctxW.stroke();
+      }
+
+      // Draw mapped grid - horizontal lines (y = const in z)
+      for (var j = 0; j <= nLines; j++) {
+        var y = yMin_z + j * dy;
+        ctxW.strokeStyle = HCOLOR;
+        ctxW.lineWidth = 1;
+        ctxW.beginPath();
+        var started = false;
+        for (var s = 0; s <= steps; s++) {
+          var x = xMin_z + s * (xMax_z - xMin_z) / steps;
+          var z = [x, y];
+          var wv = mapFn(z, fn);
+          if (!isFinite(wv[0]) || !isFinite(wv[1])) { started = false; continue; }
+          var sp = toSW(wv[0], wv[1]);
+          if (!started) { ctxW.moveTo(sp[0], sp[1]); started = true; }
+          else ctxW.lineTo(sp[0], sp[1]);
+        }
+        ctxW.stroke();
+      }
+
+      // Draw axes in w-plane
+      ctxW.strokeStyle = '#667';
+      ctxW.lineWidth = 1.5;
+      ctxW.beginPath();
+      var originW = toSW(0, 0);
+      ctxW.moveTo(0, originW[1]); ctxW.lineTo(w, originW[1]);
+      ctxW.moveTo(originW[0], 0); ctxW.lineTo(originW[0], w);
+      ctxW.stroke();
+
+      // Border
+      ctxW.strokeStyle = '#dde';
+      ctxW.lineWidth = 1;
+      ctxW.strokeRect(0, 0, w, w);
+    }
+
+    function render() {
+      var container = cZ.parentElement.parentElement;
+      var w = Math.min(300, (container.clientWidth - 16) / 2);
+      if (w < 150) w = 150;
+      setupCanvas(cZ, ctxZ, w);
+      setupCanvas(cW, ctxW, w);
+      drawZPlane(w);
+      drawWPlane(w);
+    }
+
+    sel.addEventListener('change', render);
+    window.addEventListener('resize', render);
+    render();
+  })();
+  </script>
+
   <!-- ==================== 3.2 对数函数 ==================== -->
   <div class="section" id="s2">
     <h2>3.2 对数函数</h2>

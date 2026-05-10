@@ -269,6 +269,146 @@
     </div>
   </div>
 
+  <!-- ==================== 可视化：单位根的几何分布 ==================== -->
+  <div class="section" id="viz-roots">
+    <h2>可视化 · 单位根的几何分布</h2>
+    <p>$z^n = 1$ 的 $n$ 个根均匀分布在单位圆上。拖动滑块改变 $n$，观察根的分布。</p>
+    <div style="margin:1rem 0;">
+      <label>n = <span id="roots-n-val">3</span> <input type="range" id="roots-n-slider" min="2" max="12" step="1" value="3"></label>
+    </div>
+    <canvas id="canvas-roots" width="400" height="400" style="width:100%;max-width:400px;"></canvas>
+    <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.5rem;">$z^n=1$ 的 $n$ 个根: $\omega_k = e^{2\pi ik/n},\ k=0,1,\ldots,n-1$</p>
+  </div>
+
+  <script>
+  (function() {
+    var canvas = document.getElementById('canvas-roots');
+    var ctx = canvas.getContext('2d');
+    var slider = document.getElementById('roots-n-slider');
+    var valSpan = document.getElementById('roots-n-val');
+    var dpr = window.devicePixelRatio || 1;
+
+    var COLORS = [
+      '#e74c3c','#3498db','#2ecc71','#f39c12','#9b59b6',
+      '#1abc9c','#e67e22','#34495e','#e84393','#00cec9',
+      '#6c5ce7','#fd79a8'
+    ];
+
+    function drawRoots() {
+      var n = parseInt(slider.value);
+      valSpan.textContent = n;
+
+      var container = canvas.parentElement;
+      var w = Math.min(400, container.clientWidth);
+      canvas.style.width = w + 'px';
+      canvas.style.height = w + 'px';
+      canvas.width = w * dpr;
+      canvas.height = w * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      var cx = w / 2, cy = w / 2;
+      var R = w * 0.38;
+
+      // Background
+      ctx.clearRect(0, 0, w, w);
+
+      // Draw unit circle
+      ctx.beginPath();
+      ctx.arc(cx, cy, R, 0, 2 * Math.PI);
+      ctx.strokeStyle = '#aab';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Draw axes
+      ctx.strokeStyle = '#dde';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(cx - R * 1.15, cy); ctx.lineTo(cx + R * 1.15, cy);
+      ctx.moveTo(cx, cy - R * 1.15); ctx.lineTo(cx, cy + R * 1.15);
+      ctx.stroke();
+
+      // Axis labels
+      ctx.fillStyle = '#889';
+      ctx.font = (w * 0.035) + 'px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('Re', cx + R * 1.1, cy + w * 0.04);
+      ctx.fillText('Im', cx + w * 0.04, cy - R * 1.05);
+
+      // Compute roots and draw lines + dots
+      var roots = [];
+      for (var k = 0; k < n; k++) {
+        var angle = 2 * Math.PI * k / n - Math.PI / 2; // start from top
+        roots.push({ x: cx + R * Math.cos(angle), y: cy + R * Math.sin(angle), angle: angle, k: k });
+      }
+
+      // Draw lines from origin to each root
+      for (var k = 0; k < n; k++) {
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(roots[k].x, roots[k].y);
+        ctx.strokeStyle = COLORS[k % COLORS.length] + '60';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
+
+      // Draw angle arc between first two roots (showing 2pi/n)
+      if (n >= 2) {
+        var a0 = roots[0].angle;
+        var a1 = roots[1].angle;
+        ctx.beginPath();
+        ctx.arc(cx, cy, R * 0.2, a0, a1);
+        ctx.strokeStyle = '#e74c3c';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Angle label
+        var midAngle = (a0 + a1) / 2;
+        var labelR = R * 0.32;
+        ctx.fillStyle = '#e74c3c';
+        ctx.font = 'bold ' + (w * 0.032) + 'px serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('2π/' + n, cx + labelR * Math.cos(midAngle), cy + labelR * Math.sin(midAngle));
+      }
+
+      // Draw root dots and labels
+      ctx.textBaseline = 'middle';
+      for (var k = 0; k < n; k++) {
+        var r = roots[k];
+
+        // Dot
+        ctx.beginPath();
+        ctx.arc(r.x, r.y, w * 0.022, 0, 2 * Math.PI);
+        ctx.fillStyle = COLORS[k % COLORS.length];
+        ctx.fill();
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Label
+        var lx = cx + (R + w * 0.06) * Math.cos(r.angle);
+        var ly = cy + (R + w * 0.06) * Math.sin(r.angle);
+        ctx.fillStyle = '#445';
+        ctx.font = 'bold ' + (w * 0.035) + 'px serif';
+        var ha = Math.cos(r.angle) > 0.1 ? 'left' : (Math.cos(r.angle) < -0.1 ? 'right' : 'center');
+        ctx.textAlign = ha;
+        ctx.fillText('\u03C9' + k, lx, ly);
+      }
+
+      // Title in center
+      ctx.fillStyle = '#667';
+      ctx.font = (w * 0.03) + 'px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(n + '个' + n + '次单位根', cx, cy + R * 1.25);
+    }
+
+    slider.addEventListener('input', drawRoots);
+    window.addEventListener('resize', drawRoots);
+    drawRoots();
+  })();
+  </script>
+
   <!-- ==================== 第4节 ==================== -->
   <div class="section" id="s4">
     <h2>1.4 复平面上的点集</h2>

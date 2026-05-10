@@ -296,6 +296,189 @@
     </div>
   </div>
 
+    <!-- 可视化 · 中心极限定理 -->
+    <div class="section" id="viz-clt">
+      <h2>可视化 · 中心极限定理的直观演示</h2>
+      <p>从均匀分布 $U(0,1)$ 中重复抽样 $n$ 个样本并求均值，观察其分布如何趋近正态分布。点击"重新采样"按钮运行新的模拟。</p>
+      <div style="margin:1rem 0;">
+        <label>样本量 n = <span id="n-val">1</span> <input type="range" id="n-slider" min="1" max="50" step="1" value="1"></label>
+        <button id="clt-btn" style="margin-left:1rem;padding:0.4rem 1rem;border-radius:6px;border:1px solid var(--border);background:var(--bg-white);cursor:pointer;">重新采样</button>
+      </div>
+      <canvas id="canvas-clt" width="700" height="350" style="width:100%;max-width:700px;"></canvas>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.5rem;">直方图: 样本均值的模拟分布　|　红线: 理论正态分布 $N(1/2, 1/(12n))$</p>
+    </div>
+    <script>
+    (function() {
+      var canvas = document.getElementById('canvas-clt');
+      if (!canvas) return;
+      var ctx = canvas.getContext('2d');
+      var dpr = window.devicePixelRatio || 1;
+      var W = 700, H = 350;
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      canvas.style.width = '100%';
+      canvas.style.maxWidth = W + 'px';
+      canvas.style.height = 'auto';
+      ctx.scale(dpr, dpr);
+
+      var pad = { top: 20, right: 20, bottom: 40, left: 50 };
+      var plotW = W - pad.left - pad.right;
+      var plotH = H - pad.top - pad.bottom;
+      var N_SAMPLES = 10000;
+      var N_BINS = 50;
+
+      function normalPDF(x, mu, sigma) {
+        if (sigma === 0) return 0;
+        var z = (x - mu) / sigma;
+        return Math.exp(-0.5 * z * z) / (sigma * Math.sqrt(2 * Math.PI));
+      }
+
+      function simulate(n) {
+        var means = new Float64Array(N_SAMPLES);
+        for (var i = 0; i < N_SAMPLES; i++) {
+          var sum = 0;
+          for (var j = 0; j < n; j++) {
+            sum += Math.random();
+          }
+          means[i] = sum / n;
+        }
+        return means;
+      }
+
+      function drawCLT() {
+        var n = parseInt(document.getElementById('n-slider').value);
+        document.getElementById('n-val').textContent = n;
+
+        var means = simulate(n);
+        var mu = 0.5;
+        var sigma = Math.sqrt(1.0 / (12 * n));
+
+        // Determine x range: cover most of the distribution
+        var xMin = Math.max(0, mu - 4.5 * sigma);
+        var xMax = Math.min(1, mu + 4.5 * sigma);
+        if (xMax - xMin < 0.1) { xMin = mu - 0.05; xMax = mu + 0.05; }
+
+        // Build histogram
+        var bins = new Float64Array(N_BINS);
+        var binW = (xMax - xMin) / N_BINS;
+        for (var i = 0; i < N_SAMPLES; i++) {
+          var idx = Math.floor((means[i] - xMin) / binW);
+          if (idx >= 0 && idx < N_BINS) bins[idx]++;
+        }
+        // Normalize to density
+        var maxDensity = 0;
+        for (var b = 0; b < N_BINS; b++) {
+          var density = bins[b] / (N_SAMPLES * binW);
+          if (density > maxDensity) maxDensity = density;
+        }
+
+        // Also consider the theoretical peak
+        var theoPeak = normalPDF(mu, mu, sigma);
+        var yMax = Math.max(maxDensity, theoPeak) * 1.15;
+
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, W, H);
+
+        function toCX(x) { return pad.left + (x - xMin) / (xMax - xMin) * plotW; }
+        function toCY(y) { return pad.top + (1 - y / yMax) * plotH; }
+
+        // Grid
+        ctx.strokeStyle = '#e0e0e0';
+        ctx.lineWidth = 0.5;
+        var nGridY = 5;
+        for (var gy = 0; gy <= nGridY; gy++) {
+          var yVal = yMax * gy / nGridY;
+          var cy = toCY(yVal);
+          ctx.beginPath(); ctx.moveTo(pad.left, cy); ctx.lineTo(pad.left + plotW, cy); ctx.stroke();
+        }
+
+        // Axes
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.moveTo(pad.left, pad.top + plotH); ctx.lineTo(pad.left + plotW, pad.top + plotH); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(pad.left, pad.top); ctx.lineTo(pad.left, pad.top + plotH); ctx.stroke();
+
+        // X labels
+        ctx.fillStyle = '#333';
+        ctx.font = '12px sans-serif';
+        ctx.textAlign = 'center';
+        var nXL = 8;
+        for (var lx = 0; lx <= nXL; lx++) {
+          var xVal = xMin + (xMax - xMin) * lx / nXL;
+          ctx.fillText(xVal.toFixed(2), toCX(xVal), pad.top + plotH + 16);
+        }
+
+        // Y labels
+        ctx.textAlign = 'right';
+        for (var gy = 0; gy <= nGridY; gy++) {
+          var yVal = yMax * gy / nGridY;
+          ctx.fillText(yVal.toFixed(1), pad.left - 6, toCY(yVal) + 4);
+        }
+
+        // Histogram bars
+        ctx.fillStyle = 'rgba(59, 130, 246, 0.5)';
+        ctx.strokeStyle = 'rgba(59, 130, 246, 0.8)';
+        ctx.lineWidth = 1;
+        for (var b = 0; b < N_BINS; b++) {
+          var density = bins[b] / (N_SAMPLES * binW);
+          var x0 = xMin + b * binW;
+          var x1 = x0 + binW;
+          var bx = toCX(x0);
+          var bw = toCX(x1) - bx;
+          var by = toCY(density);
+          var bh = toCY(0) - by;
+          ctx.fillRect(bx, by, bw, bh);
+          ctx.strokeRect(bx, by, bw, bh);
+        }
+
+        // Theoretical normal curve (red)
+        if (sigma > 0) {
+          ctx.strokeStyle = '#dc2626';
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          var steps = 400;
+          for (var i = 0; i <= steps; i++) {
+            var x = xMin + (xMax - xMin) * i / steps;
+            var y = normalPDF(x, mu, sigma);
+            var px = toCX(x);
+            var py = toCY(y);
+            if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+          }
+          ctx.stroke();
+        }
+
+        // Legend
+        ctx.font = '13px sans-serif';
+        ctx.fillStyle = 'rgba(59, 130, 246, 0.8)';
+        ctx.fillRect(pad.left + 10, pad.top + 6, 16, 12);
+        ctx.fillStyle = '#333';
+        ctx.textAlign = 'left';
+        ctx.fillText('模拟直方图 (N=' + N_SAMPLES + ')', pad.left + 32, pad.top + 16);
+        ctx.strokeStyle = '#dc2626';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath(); ctx.moveTo(pad.left + 10, pad.top + 28); ctx.lineTo(pad.left + 26, pad.top + 28); ctx.stroke();
+        ctx.fillStyle = '#333';
+        ctx.fillText('理论 N(' + mu.toFixed(1) + ', ' + (sigma * sigma).toFixed(4) + ')', pad.left + 32, pad.top + 33);
+      }
+
+      var animating = false;
+      function triggerDraw() {
+        if (!animating) {
+          animating = true;
+          requestAnimationFrame(function() {
+            drawCLT();
+            animating = false;
+          });
+        }
+      }
+
+      document.getElementById('n-slider').addEventListener('input', triggerDraw);
+      document.getElementById('clt-btn').addEventListener('click', triggerDraw);
+      drawCLT();
+    })();
+    </script>
+
   <!-- ==================== 4.5 综合例题 ==================== -->
   <div class="section" id="s5">
     <h2>4.5 综合例题与应用</h2>

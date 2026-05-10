@@ -417,6 +417,143 @@
       </div>
     </div>
 
+    <!-- 可视化 · 正态分布 -->
+    <div class="section" id="viz-normal">
+      <h2>可视化 · 正态分布的 PDF 与 CDF</h2>
+      <p>拖动滑块调节参数 $\mu$ 和 $\sigma$，观察正态分布概率密度函数和分布函数的变化。</p>
+      <div style="margin:1rem 0;">
+        <label>μ = <span id="mu-val">0</span> <input type="range" id="mu-slider" min="-3" max="3" step="0.1" value="0"></label>
+        <label style="margin-left:1rem;">σ = <span id="sigma-val">1</span> <input type="range" id="sigma-slider" min="0.3" max="3" step="0.1" value="1"></label>
+      </div>
+      <canvas id="canvas-normal" width="700" height="350" style="width:100%;max-width:700px;"></canvas>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.5rem;">蓝线: 概率密度函数 $f(x)$　|　红线: 分布函数 $\Phi(x)$</p>
+    </div>
+    <script>
+    (function() {
+      var canvas = document.getElementById('canvas-normal');
+      if (!canvas) return;
+      var ctx = canvas.getContext('2d');
+      var dpr = window.devicePixelRatio || 1;
+      var W = 700, H = 350;
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      canvas.style.width = '100%';
+      canvas.style.maxWidth = W + 'px';
+      canvas.style.height = 'auto';
+      ctx.scale(dpr, dpr);
+
+      var pad = { top: 20, right: 20, bottom: 40, left: 50 };
+      var plotW = W - pad.left - pad.right;
+      var plotH = H - pad.top - pad.bottom;
+      var xMin = -5, xMax = 5;
+
+      function normalPDF(x, mu, sigma) {
+        var z = (x - mu) / sigma;
+        return Math.exp(-0.5 * z * z) / (sigma * Math.sqrt(2 * Math.PI));
+      }
+
+      function normalCDF(x, mu, sigma) {
+        // Abramowitz & Stegun approximation
+        var z = (x - mu) / sigma;
+        var a1 = 0.254829592, a2 = -0.284496736, a3 = 1.421413741;
+        var a4 = -1.453152027, a5 = 1.061405429, p = 0.3275911;
+        var sign = z < 0 ? -1 : 1;
+        z = Math.abs(z) / Math.sqrt(2);
+        var t = 1.0 / (1.0 + p * z);
+        var y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-z * z);
+        return 0.5 * (1.0 + sign * y);
+      }
+
+      function toCanvasX(x) { return pad.left + (x - xMin) / (xMax - xMin) * plotW; }
+      function toCanvasY(y) { return pad.top + (1 - y) * plotH; }
+
+      function draw() {
+        var mu = parseFloat(document.getElementById('mu-slider').value);
+        var sigma = parseFloat(document.getElementById('sigma-slider').value);
+        document.getElementById('mu-val').textContent = mu.toFixed(1);
+        document.getElementById('sigma-val').textContent = sigma.toFixed(1);
+
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, W, H);
+
+        // Grid
+        ctx.strokeStyle = '#e0e0e0';
+        ctx.lineWidth = 0.5;
+        for (var gx = Math.ceil(xMin); gx <= Math.floor(xMax); gx++) {
+          var cx = toCanvasX(gx);
+          ctx.beginPath(); ctx.moveTo(cx, pad.top); ctx.lineTo(cx, pad.top + plotH); ctx.stroke();
+        }
+        for (var gy = 0; gy <= 1; gy += 0.2) {
+          var cy = toCanvasY(gy);
+          ctx.beginPath(); ctx.moveTo(pad.left, cy); ctx.lineTo(pad.left + plotW, cy); ctx.stroke();
+        }
+
+        // Axes
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 1.5;
+        // X axis
+        ctx.beginPath(); ctx.moveTo(pad.left, toCanvasY(0)); ctx.lineTo(pad.left + plotW, toCanvasY(0)); ctx.stroke();
+        // Y axis
+        ctx.beginPath(); ctx.moveTo(toCanvasX(0), pad.top); ctx.lineTo(toCanvasX(0), pad.top + plotH); ctx.stroke();
+
+        // Axis labels
+        ctx.fillStyle = '#333';
+        ctx.font = '12px sans-serif';
+        ctx.textAlign = 'center';
+        for (var lx = Math.ceil(xMin); lx <= Math.floor(xMax); lx++) {
+          ctx.fillText(lx, toCanvasX(lx), toCanvasY(0) + 16);
+        }
+        ctx.textAlign = 'right';
+        for (var ly = 0; ly <= 1; ly += 0.2) {
+          ctx.fillText(ly.toFixed(1), pad.left - 6, toCanvasY(ly) + 4);
+        }
+
+        // X axis label
+        ctx.textAlign = 'center';
+        ctx.fillText('x', pad.left + plotW + 14, toCanvasY(0) + 4);
+
+        // PDF curve (blue)
+        ctx.strokeStyle = '#2563eb';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        var steps = 500;
+        for (var i = 0; i <= steps; i++) {
+          var x = xMin + (xMax - xMin) * i / steps;
+          var y = normalPDF(x, mu, sigma);
+          var px = toCanvasX(x);
+          var py = toCanvasY(Math.min(y, 1));
+          if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+        ctx.stroke();
+
+        // CDF curve (red)
+        ctx.strokeStyle = '#dc2626';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        for (var i = 0; i <= steps; i++) {
+          var x = xMin + (xMax - xMin) * i / steps;
+          var y = normalCDF(x, mu, sigma);
+          var px = toCanvasX(x);
+          var py = toCanvasY(y);
+          if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+        ctx.stroke();
+
+        // Legend
+        ctx.font = '13px sans-serif';
+        ctx.fillStyle = '#2563eb';
+        ctx.fillText('—— f(x) 概率密度', pad.left + plotW - 170, pad.top + 16);
+        ctx.fillStyle = '#dc2626';
+        ctx.fillText('—— Φ(x) 分布函数', pad.left + plotW - 170, pad.top + 34);
+      }
+
+      document.getElementById('mu-slider').addEventListener('input', draw);
+      document.getElementById('sigma-slider').addEventListener('input', draw);
+      draw();
+    })();
+    </script>
+
     <h3>常见连续分布汇总</h3>
     <div class="table-wrapper">
       <table>
