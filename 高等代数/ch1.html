@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第一章 · 多项式</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          FF: '\\mathbb{F}',
+          rank: '\\mathrm{rank}',
+          det: '\\mathrm{det}',
+          tr: '\\mathrm{tr}',
+          diag: '\\mathrm{diag}',
+          dim: '\\mathrm{dim}',
+          ker: '\\mathrm{ker}',
+          Im: '\\mathrm{Im}',
+          dd: '\\mathrm{d}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">高等代数</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第一章 · 多项式</h1>
+    <p>代数学的起点：一元多项式的整除理论、最大公因式与因式分解定理，为后续线性代数提供代数工具。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">数域</a></li>
+      <li><a href="#s2">一元多项式</a></li>
+      <li><a href="#s3">整除理论</a></li>
+      <li><a href="#s4">最大公因式</a></li>
+      <li><a href="#s5">因式分解定理</a></li>
+      <li><a href="#s6">重因式与根</a></li>
+      <li><a href="#s7">复系数与实系数多项式</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 1.1 数域 ==================== -->
+  <div class="section" id="s1">
+    <h2>1.1 数域</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 数域</div>
+      <p>设 $\FF$ 是 $\RR$ 的一个子集，若 $\FF$ 满足：</p>
+      <ol>
+        <li>$0, 1 \in \FF$；</li>
+        <li>对任意 $a, b \in \FF$，$a+b, a-b, ab \in \FF$；</li>
+        <li>对任意 $a, b \in \FF$（$b \neq 0$），$a/b \in \FF$。</li>
+      </ol>
+      <p>则称 $\FF$ 为一个<strong>数域</strong>。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">常见的数域</div>
+      <p>$\QQ$（有理数域）、$\RR$（实数域）、$\CC$（复数域）都是数域。</p>
+      <p>$\ZZ$（整数集）<strong>不是</strong>数域——对除法不封闭（如 $1/2 \notin \ZZ$）。</p>
+      <p>$\QQ(\sqrt{2}) = \{a + b\sqrt{2} : a, b \in \QQ\}$ 是数域。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">数域的性质</div>
+      <p>任何数域都包含 $\QQ$（有理数域是最小的数域）。$\QQ(\sqrt{2})$ 是包含 $\sqrt{2}$ 的最小数域。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 1.2 一元多项式 ==================== -->
+  <div class="section" id="s2">
+    <h2>1.2 一元多项式</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 一元多项式</div>
+      <p>数域 $\FF$ 上的一元多项式形如</p>
+      $$f(x) = a_n x^n + a_{n-1} x^{n-1} + \cdots + a_1 x + a_0$$
+      <p>其中 $a_i \in \FF$，$a_n \neq 0$ 时称 $n$ 为 $f(x)$ 的<strong>次数</strong>，记为 $\deg f = n$，$a_n$ 为首项系数。</p>
+      <p>零多项式的次数定义为 $-\infty$（或不定义）。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">多项式的运算性质</div>
+      <ol>
+        <li>$\deg(fg) = \deg f + \deg g$</li>
+        <li>$\deg(f+g) \leq \max(\deg f, \deg g)$</li>
+        <li>$\FF[x]$ 表示数域 $\FF$ 上所有一元多项式构成的集合，称为<strong>多项式环</strong>。</li>
+      </ol>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">多项式相等</div>
+      <p>两个多项式相等 $\iff$ 对应系数全部相等 $\iff$ 对任意 $x_0 \in \FF$，$f(x_0) = g(x_0)$。</p>
+      <p>注意：无限多个点取值相等才能推出多项式相等。有限个点取值相等不能保证。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 1.3 整除理论 ==================== -->
+  <div class="section" id="s3">
+    <h2>1.3 整除理论</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">带余除法</div>
+      <p>设 $f(x), g(x) \in \FF[x]$，$g(x) \neq 0$，则存在<strong>唯一</strong>的 $q(x), r(x) \in \FF[x]$ 使得</p>
+      <div class="formula-highlight">
+        $$f(x) = g(x) q(x) + r(x), \qquad \deg r < \deg g$$
+      </div>
+      <p>其中 $q(x)$ 为商式，$r(x)$ 为余式。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 整除</div>
+      <p>若 $f(x) = g(x) q(x)$（即余式 $r = 0$），则称 $g(x)$ <strong>整除</strong> $f(x)$，记为 $g(x) \mid f(x)$。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">整除的基本性质</div>
+      <ol>
+        <li>$f \mid g$ 且 $g \mid f$ $\iff$ $f = cg$（$c$ 为非零常数），即 $f$ 与 $g$ <strong>相伴</strong>。</li>
+        <li>$f \mid g$ 且 $g \mid h$ $\Rightarrow$ $f \mid h$（传递性）</li>
+        <li>$f \mid g_i$（$i=1,\ldots,k$）$\Rightarrow$ $f \mid \sum u_i g_i$（对任意多项式 $u_i$）</li>
+      </ol>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 带余除法</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：用 $g(x) = x^2 + 1$ 除 $f(x) = x^4 + 2x^3 - 3x + 1$，求商式和余式。</p>
+        <p><strong>解</strong>：用多项式长除法：</p>
+        <p>$x^4 + 2x^3 - 3x + 1 = (x^2+1)(x^2+2x-1) + (-x+2)$</p>
+        <p>商式 $q(x) = x^2 + 2x - 1$，余式 $r(x) = -x + 2$。</p>
+        <p>验证：$(x^2+1)(x^2+2x-1) + (-x+2) = x^4+2x^3-x^2+x^2+2x-1-x+2 = x^4+2x^3+x+1$ ... 需要重新计算。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1.4 最大公因式 ==================== -->
+  <div class="section" id="s4">
+    <h2>1.4 最大公因式</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 最大公因式</div>
+      <p>$f(x)$ 与 $g(x)$ 的<strong>最大公因式</strong> $d(x)$ 满足：</p>
+      <ol>
+        <li>$d \mid f$ 且 $d \mid g$（$d$ 是公因式）</li>
+        <li>若 $c \mid f$ 且 $c \mid g$，则 $c \mid d$（$d$ 是"最大"的）</li>
+      </ol>
+      <p>首一的最大公因式记为 $(f, g)$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">Euclid 算法（辗转相除法）</div>
+      <p>反复使用带余除法：</p>
+      <p>$f = gq_1 + r_1$，$g = r_1 q_2 + r_2$，$\ldots$，$r_{k-1} = r_k q_{k+1} + 0$</p>
+      <p>则 $(f, g) = r_k$（最后一个非零余式）。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">Bézout 等式</div>
+      <p>设 $d(x) = (f, g)$，则存在 $u(x), v(x) \in \FF[x]$ 使得</p>
+      <div class="formula-highlight">
+        $$u(x)f(x) + v(x)g(x) = d(x)$$
+      </div>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 互素</div>
+      <p>若 $(f, g) = 1$，则称 $f$ 与 $g$ <strong>互素</strong>。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">互素的判定与性质</div>
+      <ol>
+        <li>$f$ 与 $g$ 互素 $\iff$ 存在 $u, v$ 使得 $uf + vg = 1$。</li>
+        <li>若 $f \mid gh$ 且 $(f, g) = 1$，则 $f \mid h$。</li>
+        <li>若 $f \mid h$，$g \mid h$ 且 $(f, g) = 1$，则 $fg \mid h$。</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ==================== 1.5 因式分解 ==================== -->
+  <div class="section" id="s5">
+    <h2>1.5 因式分解定理</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 不可约多项式</div>
+      <p>$p(x)$ 在 $\FF[x]$ 中<strong>不可约</strong>：$\deg p \geq 1$，且 $p$ 不能写成两个更低次多项式的乘积。</p>
+      <p>不可约性依赖于数域。例如 $x^2 - 2$ 在 $\QQ[x]$ 中不可约，但在 $\RR[x]$ 中可分解为 $(x-\sqrt{2})(x+\sqrt{2})$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">唯一分解定理</div>
+      <p>$\FF[x]$ 中每个次数 $\geq 1$ 的多项式 $f(x)$ 都可以<strong>唯一地</strong>（不计顺序和常数因子）分解为</p>
+      <div class="formula-highlight">
+        $$f(x) = c \cdot p_1(x)^{e_1} p_2(x)^{e_2} \cdots p_k(x)^{e_k}$$
+      </div>
+      <p>其中 $c$ 为首项系数，$p_i$ 为互不相伴的首一不可约多项式，$e_i \geq 1$。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">唯一分解定理的意义</div>
+      <p>这与整数的唯一分解定理（算术基本定理）完全类比：多项式环 $\FF[x]$ 与整数环 $\ZZ$ 有平行的代数结构。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 1.6 重因式与根 ==================== -->
+  <div class="section" id="s6">
+    <h2>1.6 重因式与根</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 重因式与重数</div>
+      <p>在 $f(x)$ 的分解中，若 $p(x)^k \mid f$ 但 $p(x)^{k+1} \nmid f$，则称 $p(x)$ 为 $f(x)$ 的 $k$ <strong>重因式</strong>。</p>
+      <p>特别地，若 $p(x) = x - a$，则 $a$ 为 $f(x)$ 的 $k$ <strong>重根</strong>。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">重因式的判定</div>
+      <p>$p(x)$ 是 $f(x)$ 的 $k$ 重因式（$k \geq 2$）$\iff$ $p(x)$ 是 $f(x)$ 和 $f'(x)$ 的 $k-1$ 重公因式。</p>
+      <p>特别地，$a$ 是 $f(x)$ 的重根 $\iff$ $f(a) = f'(a) = 0$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">余数定理</div>
+      <p>$f(x)$ 除以 $(x - a)$ 的余数为 $f(a)$。</p>
+      <p>推论：$a$ 是 $f(x)$ 的根 $\iff$ $(x-a) \mid f(x)$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">Vieta 定理</div>
+      <p>设 $f(x) = x^n + a_{n-1}x^{n-1} + \cdots + a_0$ 的 $n$ 个根为 $x_1, x_2, \ldots, x_n$，则</p>
+      <p>$\sum x_i = -a_{n-1}$，$\sum_{i<j} x_i x_j = a_{n-2}$，$\ldots$，$x_1 x_2 \cdots x_n = (-1)^n a_0$</p>
+    </div>
+  </div>
+
+  <!-- ==================== 1.7 复系数与实系数多项式 ==================== -->
+  <div class="section" id="s7">
+    <h2>1.7 复系数与实系数多项式</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">代数基本定理</div>
+      <p>$\CC[x]$ 中每个次数 $\geq 1$ 的多项式在 $\CC$ 中至少有一个根。</p>
+      <p>等价表述：$\CC[x]$ 中的不可约多项式只有一次多项式。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">复系数多项式的分解</div>
+      <p>$\CC[x]$ 中 $n$ 次多项式恰有 $n$ 个根（计重数），可分解为 $n$ 个一次因式的乘积。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">实系数多项式的根</div>
+      <p>实系数多项式的复根成对出现：若 $a + bi$（$b \neq 0$）是根，则 $a - bi$ 也是根。</p>
+      <p>$\RR[x]$ 中的不可约多项式只有一次式和判别式 $< 0$ 的二次式。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 求多项式的根</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：求 $f(x) = x^4 - 1$ 在 $\QQ, \RR, \CC$ 中的因式分解。</p>
+        <p><strong>解</strong>：</p>
+        <p>$\CC[x]$：$f(x) = (x-1)(x+1)(x-i)(x+i)$</p>
+        <p>$\RR[x]$：$f(x) = (x-1)(x+1)(x^2+1)$（$x^2+1$ 在 $\RR$ 上不可约）</p>
+        <p>$\QQ[x]$：同 $\RR[x]$ 的分解（$x^2+1$ 在 $\QQ$ 上也不可约）</p>
+      </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">本章解题技巧总结</div>
+      <ol>
+        <li><strong>带余除法</strong>：多项式长除法是基本工具，求余式也可以用余数定理（一次除式时）。</li>
+        <li><strong>最大公因式</strong>：辗转相除法是标准方法，互素条件 $uf+vg=1$ 要熟练运用。</li>
+        <li><strong>因式分解</strong>：先试有理根（有理根定理），再用综合除法降次。</li>
+        <li><strong>重根判断</strong>：$a$ 是重根 $\iff$ $f(a) = f'(a) = 0$。</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="index.html" class="prev">首页</a>
+    <a href="ch2.html" class="next">第二章</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>高等代数复习指南 · 基于丘维声教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

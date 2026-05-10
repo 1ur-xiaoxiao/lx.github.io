@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第三章 · 线性方程组</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          FF: '\\mathbb{F}',
+          rank: '\\mathrm{rank}',
+          det: '\\mathrm{det}',
+          tr: '\\mathrm{tr}',
+          diag: '\\mathrm{diag}',
+          dim: '\\mathrm{dim}',
+          ker: '\\mathrm{ker}',
+          Im: '\\mathrm{Im}',
+          dd: '\\mathrm{d}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">高等代数</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第三章 · 线性方程组</h1>
+    <p>从具体到抽象：Gauss 消元法的矩阵语言、向量的线性相关性理论，以及线性方程组解的完整结构。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">Gauss 消元法</a></li>
+      <li><a href="#s2">$n$ 维向量与线性组合</a></li>
+      <li><a href="#s3">线性相关性</a></li>
+      <li><a href="#s4">向量组的秩</a></li>
+      <li><a href="#s5">矩阵的秩</a></li>
+      <li><a href="#s6">线性方程组解的结构</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 3.1 Gauss 消元法 ==================== -->
+  <div class="section" id="s1">
+    <h2>3.1 Gauss 消元法</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 初等行变换</div>
+      <p>矩阵的三种<strong>初等行变换</strong>：</p>
+      <ol>
+        <li>交换两行</li>
+        <li>某行乘以非零常数</li>
+        <li>某行加上另一行的倍数</li>
+      </ol>
+      <p>初等行变换不改变线性方程组的解。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 行阶梯形与行最简形</div>
+      <p><strong>行阶梯形</strong>：每个非零行的第一个非零元素（主元）的列标严格递增，主元下方全为零。</p>
+      <p><strong>行最简形</strong>：在行阶梯形基础上，每个主元为 1，主元所在列的其他元素全为零。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">Gauss 消元法的步骤</div>
+      <p>将增广矩阵 $(A|b)$ 通过初等行变换化为行阶梯形，然后回代求解。化为行最简形则可直接读出解。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · Gauss 消元法</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：解方程组 $\begin{cases} x + 2y + 3z = 1 \\ 2x + 5y + 7z = 3 \\ 3x + 7y + 10z = 4 \end{cases}$</p>
+        <p><strong>解</strong>：增广矩阵 $\begin{pmatrix} 1 & 2 & 3 & | & 1 \\ 2 & 5 & 7 & | & 3 \\ 3 & 7 & 10 & | & 4 \end{pmatrix}$</p>
+        <p>$R_2 - 2R_1$，$R_3 - 3R_1$：$\begin{pmatrix} 1 & 2 & 3 & | & 1 \\ 0 & 1 & 1 & | & 1 \\ 0 & 1 & 1 & | & 1 \end{pmatrix}$</p>
+        <p>$R_3 - R_2$：$\begin{pmatrix} 1 & 2 & 3 & | & 1 \\ 0 & 1 & 1 & | & 1 \\ 0 & 0 & 0 & | & 0 \end{pmatrix}$</p>
+        <p>$\rank A = \rank(A|b) = 2 < 3$（未知数个数），有无穷多解。</p>
+        <p>$z = t$（自由变量），$y = 1 - t$，$x = 1 - 2(1-t) - 3t = -1 - t$</p>
+        <p>通解：$(x,y,z) = (-1-t, 1-t, t) = (-1,1,0) + t(-1,-1,1)$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 3.2 向量 ==================== -->
+  <div class="section" id="s2">
+    <h2>3.2 $n$ 维向量与线性组合</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 线性组合与线性表出</div>
+      <p>设 $\alpha_1, \ldots, \alpha_m$ 为 $n$ 维向量，$k_1, \ldots, k_m \in \FF$，称 $k_1\alpha_1 + \cdots + k_m\alpha_m$ 为 $\alpha_1, \ldots, \alpha_m$ 的一个<strong>线性组合</strong>。</p>
+      <p>若 $\beta = k_1\alpha_1 + \cdots + k_m\alpha_m$，则称 $\beta$ 可由 $\alpha_1, \ldots, \alpha_m$ <strong>线性表出</strong>。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 向量组等价</div>
+      <p>若向量组 $A$ 中每个向量都可由向量组 $B$ 线性表出，且反之亦然，则称两个向量组<strong>等价</strong>。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 3.3 线性相关性 ==================== -->
+  <div class="section" id="s3">
+    <h2>3.3 线性相关性</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 线性相关与线性无关</div>
+      <p>向量组 $\alpha_1, \ldots, \alpha_m$ <strong>线性相关</strong>：存在不全为零的 $k_1, \ldots, k_m$ 使得 $k_1\alpha_1 + \cdots + k_m\alpha_m = 0$。</p>
+      <p><strong>线性无关</strong>：$k_1\alpha_1 + \cdots + k_m\alpha_m = 0$ 只有零解 $k_1 = \cdots = k_m = 0$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">线性相关性的判定</div>
+      <ol>
+        <li>$\alpha_1, \ldots, \alpha_m$ 线性相关 $\iff$ 其中至少有一个向量可由其余向量线性表出。</li>
+        <li>包含零向量的向量组一定线性相关。</li>
+        <li>单个非零向量线性无关。</li>
+        <li>$m > n$ 时，$n$ 维空间中 $m$ 个向量一定线性相关。</li>
+      </ol>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">线性表出与线性方程组</div>
+      <p>$\beta$ 可由 $\alpha_1, \ldots, \alpha_m$ 线性表出 $\iff$ 方程组 $x_1\alpha_1 + \cdots + x_m\alpha_m = \beta$ 有解 $\iff$ $\rank(\alpha_1, \ldots, \alpha_m) = \rank(\alpha_1, \ldots, \alpha_m, \beta)$。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">线性无关的几何直觉</div>
+      <p>二维空间中最多 2 个线性无关向量，三维空间中最多 3 个。$n$ 维空间中最多 $n$ 个线性无关向量。"线性无关"意味着每个向量都贡献了新的"方向"。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 3.4 向量组的秩 ==================== -->
+  <div class="section" id="s4">
+    <h2>3.4 向量组的秩</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 极大线性无关组与向量组的秩</div>
+      <p>向量组 $S$ 的<strong>极大线性无关组</strong>：$S$ 的一个线性无关子集，且 $S$ 中任何向量都可由它线性表出。</p>
+      <p>极大线性无关组中向量的个数称为向量组的<strong>秩</strong>，记为 $\rank S$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">秩的基本性质</div>
+      <ol>
+        <li>向量组线性无关 $\iff$ 极大无关组就是自身 $\iff$ 秩 = 向量个数。</li>
+        <li>向量组线性相关 $\iff$ 秩 $<$ 向量个数。</li>
+        <li>若 $A$ 的向量组可由 $B$ 的向量组线性表出，则 $\rank A \leq \rank B$。</li>
+        <li>等价的向量组有相同的秩。</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ==================== 3.5 矩阵的秩 ==================== -->
+  <div class="section" id="s5">
+    <h2>3.5 矩阵的秩</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 矩阵的秩</div>
+      <p>矩阵 $A$ 的<strong>行秩</strong> = 行向量组的秩，<strong>列秩</strong> = 列向量组的秩。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">行秩 = 列秩</div>
+      <p>对任意矩阵 $A$，$\rank A$（行秩）$= \rank A$（列秩）。统称为矩阵的<strong>秩</strong>。</p>
+      <p>$\rank A$ = $A$ 的行阶梯形中非零行的个数 = $A$ 中不为零的子式的最高阶数。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">秩的性质</div>
+      <ol>
+        <li>$\rank A = 0 \iff A = O$</li>
+        <li>$\rank A \leq \min(m, n)$（$A$ 为 $m \times n$ 矩阵）</li>
+        <li>$\rank(AB) \leq \min(\rank A, \rank B)$</li>
+        <li>$\rank(A+B) \leq \rank A + \rank B$</li>
+        <li>初等变换不改变矩阵的秩</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ==================== 3.6 解的结构 ==================== -->
+  <div class="section" id="s6">
+    <h2>3.6 线性方程组解的结构</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">有解判别定理</div>
+      <p>线性方程组 $AX = b$ 有解 $\iff$ $\rank A = \rank(A|b)$。</p>
+      <ul>
+        <li>$\rank A = \rank(A|b) = n$：唯一解</li>
+        <li>$\rank A = \rank(A|b) < n$：无穷多解</li>
+        <li>$\rank A \neq \rank(A|b)$：无解</li>
+      </ul>
+      <p>其中 $n$ 为未知数个数。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">齐次方程组的解空间</div>
+      <p>$AX = 0$ 的解集构成 $\FF^n$ 的一个子空间，称为<strong>解空间</strong>，维数为</p>
+      <div class="formula-highlight">
+        $$\dim(\ker A) = n - \rank A$$
+      </div>
+      <p>解空间的一组基称为<strong>基础解系</strong>，由 $n - \rank A$ 个线性无关的解向量组成。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">非齐次方程组的通解结构</div>
+      <p>若 $AX = b$ 有解，设 $\gamma_0$ 为一个特解，则通解为</p>
+      <div class="formula-highlight">
+        $$X = \gamma_0 + k_1\xi_1 + k_2\xi_2 + \cdots + k_{n-r}\xi_{n-r}$$
+      </div>
+      <p>其中 $\xi_1, \ldots, \xi_{n-r}$ 为对应齐次方程组 $AX=0$ 的基础解系，$k_i \in \FF$。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 求基础解系</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：求 $AX = 0$ 的基础解系，其中 $A = \begin{pmatrix} 1 & 2 & 3 \\ 2 & 5 & 7 \\ 3 & 7 & 10 \end{pmatrix}$。</p>
+        <p><strong>解</strong>：化为行最简形 $\begin{pmatrix} 1 & 0 & 1 \\ 0 & 1 & 1 \\ 0 & 0 & 0 \end{pmatrix}$</p>
+        <p>$\rank A = 2$，$n - r = 1$，自由变量 $z = t$。</p>
+        <p>$x = -t$，$y = -t$，基础解系 $\xi = (-1, -1, 1)^T$</p>
+        <p>通解：$X = t(-1, -1, 1)^T$</p>
+      </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">本章解题技巧总结</div>
+      <ol>
+        <li><strong>Gauss 消元</strong>：化增广矩阵为行阶梯形/行最简形，是所有方法的基础。</li>
+        <li><strong>线性相关性判断</strong>：转化为齐次方程组是否有非零解。</li>
+        <li><strong>求秩</strong>：化行阶梯形数非零行数。</li>
+        <li><strong>求基础解系</strong>：化行最简形，找自由变量，赋值取标准基。</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="ch2.html" class="prev">第二章</a>
+    <a href="ch4.html" class="next">第四章</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>高等代数复习指南 · 基于丘维声教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第五章 · 级数理论</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          eps: '\\varepsilon',
+          dd: '\\mathrm{d}',
+          sup: '\\sup',
+          inf: '\\inf'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">数学分析</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第五章 · 级数理论</h1>
+    <p>从有限到无限的飞跃：数项级数审敛法、函数项级数的一致收敛性、幂级数与 Fourier 级数。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">数项级数的基本概念</a></li>
+      <li><a href="#s2">正项级数审敛法</a></li>
+      <li><a href="#s3">一般项级数</a></li>
+      <li><a href="#s4">函数项级数与一致收敛</a></li>
+      <li><a href="#s5">幂级数</a></li>
+      <li><a href="#s6">Fourier 级数</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 5.1 数项级数 ==================== -->
+  <div class="section" id="s1">
+    <h2>5.1 数项级数的基本概念</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 级数的收敛与发散</div>
+      <p>给定数列 $\{a_n\}$，称 $\sum_{n=1}^{\infty} a_n = a_1 + a_2 + a_3 + \cdots$ 为<strong>无穷级数</strong>。</p>
+      <p>部分和 $S_n = \sum_{k=1}^n a_k$。若 $\lim_{n \to \infty} S_n = S$（有限），则称级数<strong>收敛</strong>，和为 $S$；否则称级数<strong>发散</strong>。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">级数收敛的必要条件</div>
+      <p>若 $\sum_{n=1}^{\infty} a_n$ 收敛，则 $\lim_{n \to \infty} a_n = 0$。</p>
+      <p><strong>注意</strong>：反之不成立！$a_n \to 0$ 不能保证级数收敛（如调和级数 $\sum 1/n$）。</p>
+      <p><strong>用途</strong>：若 $\lim a_n \neq 0$，则级数一定发散——这是最快的判别法。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">级数的基本性质</div>
+      <ol>
+        <li>$\sum ca_n = c \sum a_n$（$c$ 为常数）</li>
+        <li>$\sum (a_n \pm b_n) = \sum a_n \pm \sum b_n$（两个都收敛时）</li>
+        <li>改变级数的有限项不改变其敛散性</li>
+        <li>收敛级数加括号后仍收敛（反之不成立）</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ==================== 5.2 正项级数 ==================== -->
+  <div class="section" id="s2">
+    <h2>5.2 正项级数审敛法</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">比较审敛法</div>
+      <p>设 $0 \leq a_n \leq b_n$（$n$ 充分大），则：</p>
+      <ul>
+        <li>$\sum b_n$ 收敛 $\Rightarrow$ $\sum a_n$ 收敛</li>
+        <li>$\sum a_n$ 发散 $\Rightarrow$ $\sum b_n$ 发散</li>
+      </ul>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">比值审敛法（d'Alembert）</div>
+      <p>设 $\lim_{n \to \infty} \dfrac{a_{n+1}}{a_n} = \rho$，则：</p>
+      <ul>
+        <li>$\rho < 1$：级数收敛</li>
+        <li>$\rho > 1$（包括 $\rho = +\infty$）：级数发散</li>
+        <li>$\rho = 1$：无法判定</li>
+      </ul>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">根值审敛法（Cauchy）</div>
+      <p>设 $\lim_{n \to \infty} \sqrt[n]{a_n} = \rho$，则：</p>
+      <ul>
+        <li>$\rho < 1$：级数收敛</li>
+        <li>$\rho > 1$：级数发散</li>
+        <li>$\rho = 1$：无法判定</li>
+      </ul>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">积分审敛法</div>
+      <p>设 $f(x)$ 在 $[1, +\infty)$ 上非负、单调递减，且 $f(n) = a_n$，则</p>
+      $$\sum_{n=1}^{\infty} a_n \text{ 收敛} \iff \int_1^{+\infty} f(x)\dd x \text{ 收敛}$$
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">$p$-级数的敛散性</div>
+      <p>$\sum_{n=1}^{\infty} \dfrac{1}{n^p}$：$p > 1$ 时收敛，$p \leq 1$ 时发散。</p>
+      <p>特别地，$p=1$（调和级数 $\sum 1/n$）发散，$p=2$（$\sum 1/n^2 = \pi^2/6$）收敛。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 判断级数敛散性</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：判断 $\sum_{n=1}^{\infty} \dfrac{n!}{n^n}$ 的敛散性。</p>
+        <p><strong>解</strong>：用比值审敛法：</p>
+        <p>$\dfrac{a_{n+1}}{a_n} = \dfrac{(n+1)!}{(n+1)^{n+1}} \cdot \dfrac{n^n}{n!} = \dfrac{n^n}{(n+1)^n} = \dfrac{1}{\left(1+\frac{1}{n}\right)^n}$</p>
+        <p>$\lim_{n \to \infty} \dfrac{a_{n+1}}{a_n} = \dfrac{1}{e} < 1$</p>
+        <p>故级数收敛。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 5.3 一般项级数 ==================== -->
+  <div class="section" id="s3">
+    <h2>5.3 一般项级数</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">绝对收敛与条件收敛</div>
+      <p>若 $\sum |a_n|$ 收敛，则称 $\sum a_n$ <strong>绝对收敛</strong>。</p>
+      <p>若 $\sum a_n$ 收敛但 $\sum |a_n|$ 发散，则称 $\sum a_n$ <strong>条件收敛</strong>。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">绝对收敛必收敛</div>
+      <p>若 $\sum |a_n|$ 收敛，则 $\sum a_n$ 收敛。反之不成立。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">Leibniz 判别法（交错级数）</div>
+      <p>若 $a_n \geq 0$ 单调递减趋于 $0$，则交错级数 $\sum_{n=1}^{\infty} (-1)^{n-1} a_n$ 收敛。</p>
+      <p>典型例子：$\sum_{n=1}^{\infty} \dfrac{(-1)^{n-1}}{n} = \ln 2$（条件收敛）。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">Abel 判别法与 Dirichlet 判别法</div>
+      <p><strong>Abel 判别法</strong>：若 $\{a_n\}$ 单调有界，$\sum b_n$ 收敛，则 $\sum a_n b_n$ 收敛。</p>
+      <p><strong>Dirichlet 判别法</strong>：若 $\{a_n\}$ 单调趋于 $0$，$\sum b_n$ 的部分和有界，则 $\sum a_n b_n$ 收敛。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 5.4 函数项级数 ==================== -->
+  <div class="section" id="s4">
+    <h2>5.4 函数项级数与一致收敛</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 点态收敛与一致收敛</div>
+      <p>$\sum u_n(x)$ 在 $I$ 上<strong>点态收敛</strong>于 $S(x)$：对每个 $x_0 \in I$，$\sum u_n(x_0) = S(x_0)$。</p>
+      <p>$\sum u_n(x)$ 在 $I$ 上<strong>一致收敛</strong>于 $S(x)$：对任意 $\eps > 0$，存在 $N$（只依赖 $\eps$），当 $n > N$ 时对<strong>一切</strong> $x \in I$，</p>
+      $$|S_n(x) - S(x)| = \left|\sum_{k=n+1}^{\infty} u_k(x)\right| < \eps$$
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">Weierstrass $M$-判别法</div>
+      <p>若 $|u_n(x)| \leq M_n$ 对一切 $x \in I$ 成立，且 $\sum M_n$ 收敛，则 $\sum u_n(x)$ 在 $I$ 上<strong>一致收敛</strong>（且绝对收敛）。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">一致收敛的性质</div>
+      <p>若 $\sum u_n(x)$ 在 $I$ 上一致收敛于 $S(x)$，且每个 $u_n$ 连续，则：</p>
+      <ol>
+        <li>$S(x)$ 连续（连续函数的一致极限仍连续）</li>
+        <li>可以逐项积分：$\int_a^b S(x)\dd x = \sum \int_a^b u_n(x)\dd x$</li>
+      </ol>
+      <p>若 $\sum u_n(x)$ 逐项求导后的级数一致收敛，则可以逐项求导。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 5.5 幂级数 ==================== -->
+  <div class="section" id="s5">
+    <h2>5.5 幂级数</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">Abel 定理</div>
+      <p>若 $\sum_{n=0}^{\infty} a_n x^n$ 在 $x = x_0 \neq 0$ 处收敛，则对一切 $|x| < |x_0|$ 绝对收敛。</p>
+      <p>若在 $x = x_0$ 处发散，则对一切 $|x| > |x_0|$ 发散。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">收敛半径与收敛区间</div>
+      <p>存在 $R \geq 0$（收敛半径），使得 $\sum a_n x^n$ 在 $|x| < R$ 时绝对收敛，$|x| > R$ 时发散。</p>
+      <p>收敛区间为 $(-R, R)$（端点需单独判断）。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">收敛半径公式</div>
+      <p>$R = \lim_{n \to \infty} \left|\dfrac{a_n}{a_{n+1}}\right|$（比值法）或 $R = \lim_{n \to \infty} \dfrac{1}{\sqrt[n]{|a_n|}}$（根值法）</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">幂级数的逐项运算</div>
+      <p>在收敛区间内：</p>
+      <ol>
+        <li>逐项积分：$\int_0^x \sum a_n t^n \dd t = \sum \dfrac{a_n}{n+1} x^{n+1}$（收敛半径不变）</li>
+        <li>逐项求导：$\left(\sum a_n x^n\right)' = \sum n a_n x^{n-1}$（收敛半径不变）</li>
+      </ol>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 求收敛半径</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：求 $\sum_{n=1}^{\infty} \dfrac{x^n}{n}$ 的收敛半径和收敛区间。</p>
+        <p><strong>解</strong>：$a_n = \dfrac{1}{n}$，$R = \lim_{n \to \infty} \dfrac{1/n}{1/(n+1)} = \lim_{n \to \infty} \dfrac{n+1}{n} = 1$</p>
+        <p>收敛区间 $(-1, 1)$。端点判断：</p>
+        <p>$x = 1$：$\sum \dfrac{1}{n}$（调和级数，发散）</p>
+        <p>$x = -1$：$\sum \dfrac{(-1)^n}{n}$（Leibniz 级数，收敛）</p>
+        <p>收敛域为 $[-1, 1)$。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 5.6 Fourier 级数 ==================== -->
+  <div class="section" id="s6">
+    <h2>5.6 Fourier 级数</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · Fourier 系数与 Fourier 级数</div>
+      <p>设 $f$ 以 $2\pi$ 为周期且在 $[-\pi, \pi]$ 上可积，则 $f$ 的 <strong>Fourier 级数</strong> 为</p>
+      $$\frac{a_0}{2} + \sum_{n=1}^{\infty} (a_n \cos nx + b_n \sin nx)$$
+      <p>其中 <strong>Fourier 系数</strong> 为：</p>
+      $$a_n = \frac{1}{\pi}\int_{-\pi}^{\pi} f(x)\cos nx\,\dd x, \quad b_n = \frac{1}{\pi}\int_{-\pi}^{\pi} f(x)\sin nx\,\dd x$$
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">Dirichlet 收敛条件</div>
+      <p>若 $f$ 以 $2\pi$ 为周期，在 $[-\pi, \pi]$ 上分段光滑，则 $f$ 的 Fourier 级数在每一点 $x$ 收敛于</p>
+      $$\frac{f(x^+) + f(x^-)}{2}$$
+      <p>即在连续点收敛于 $f(x)$，在间断点收敛于左右极限的平均值。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">Parseval 等式</div>
+      <p>若 $f$ 在 $[-\pi, \pi]$ 上可积且平方可积，则</p>
+      <div class="formula-highlight">
+        $$\frac{1}{\pi}\int_{-\pi}^{\pi} [f(x)]^2\dd x = \frac{a_0^2}{2} + \sum_{n=1}^{\infty}(a_n^2 + b_n^2)$$
+      </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">本章解题技巧总结</div>
+      <ol>
+        <li><strong>正项级数</strong>：优先用比值/根值法，不行再用比较法或积分审敛法。</li>
+        <li><strong>一般项级数</strong>：先判断是否绝对收敛；交错级数用 Leibniz 判别法。</li>
+        <li><strong>幂级数</strong>：先求收敛半径，再单独判断端点。</li>
+        <li><strong>Fourier 级数</strong>：关键是正确计算 Fourier 系数，注意奇偶函数的简化。</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="ch4.html" class="prev">第四章</a>
+    <a href="ch6.html" class="next">第六章</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>数学分析复习指南 · 基于陈纪修教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

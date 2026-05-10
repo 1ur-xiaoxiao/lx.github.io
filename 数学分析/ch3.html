@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第三章 · 一元微分学</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          eps: '\\varepsilon',
+          dd: '\\mathrm{d}',
+          sup: '\\sup',
+          inf: '\\inf'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">数学分析</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第三章 · 一元微分学</h1>
+    <p>从变化率到 Taylor 展开：导数的几何直觉、微分中值定理体系、L'Hôpital 法则与 Taylor 公式。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">导数的定义与几何意义</a></li>
+      <li><a href="#s2">求导法则与导数公式</a></li>
+      <li><a href="#s3">微分</a></li>
+      <li><a href="#s4">微分中值定理</a></li>
+      <li><a href="#s5">L'Hôpital 法则</a></li>
+      <li><a href="#s6">Taylor 公式</a></li>
+      <li><a href="#s7">极值与凸性</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 3.1 导数的定义 ==================== -->
+  <div class="section" id="s1">
+    <h2>3.1 导数的定义与几何意义</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 导数</div>
+      <p>设 $f(x)$ 在 $x_0$ 的某邻域内有定义，若极限</p>
+      <div class="formula-highlight">
+        $$f'(x_0) = \lim_{\Delta x \to 0} \frac{f(x_0 + \Delta x) - f(x_0)}{\Delta x} = \lim_{x \to x_0} \frac{f(x) - f(x_0)}{x - x_0}$$
+      </div>
+      <p>存在，则称 $f$ 在 $x_0$ 处<strong>可导</strong>（可微），此极限值为 $f$ 在 $x_0$ 处的<strong>导数</strong>。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">导数的几何意义</div>
+      <p>$f'(x_0)$ 是曲线 $y = f(x)$ 在点 $(x_0, f(x_0))$ 处切线的斜率。</p>
+      <p>切线方程：$y - f(x_0) = f'(x_0)(x - x_0)$</p>
+      <p>法线方程：$y - f(x_0) = -\dfrac{1}{f'(x_0)}(x - x_0)$（$f'(x_0) \neq 0$ 时）</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 · 可导与连续的关系</div>
+      <p><strong>可导必连续，连续不一定可导。</strong></p>
+      <p>反例：$f(x) = |x|$ 在 $x=0$ 处连续但不可导（左导数为 $-1$，右导数为 $1$）。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 3.2 求导法则 ==================== -->
+  <div class="section" id="s2">
+    <h2>3.2 求导法则与导数公式</h2>
+
+    <div class="box box-formula">
+      <div class="box-title">四则运算法则</div>
+      <p>设 $f, g$ 可导，则：</p>
+      <ol>
+        <li>$(f \pm g)' = f' \pm g'$</li>
+        <li>$(fg)' = f'g + fg'$</li>
+        <li>$\left(\dfrac{f}{g}\right)' = \dfrac{f'g - fg'}{g^2}$（$g \neq 0$）</li>
+      </ol>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">链式法则（复合函数求导）</div>
+      <p>若 $u = g(x)$ 在 $x$ 可导，$y = f(u)$ 在 $u = g(x)$ 可导，则</p>
+      <div class="formula-highlight">
+        $$\frac{\dd y}{\dd x} = \frac{\dd y}{\dd u} \cdot \frac{\dd u}{\dd x} = f'(g(x)) \cdot g'(x)$$
+      </div>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">常用导数公式表</div>
+      <table>
+        <tr><th>$f(x)$</th><th>$f'(x)$</th><th>$f(x)$</th><th>$f'(x)$</th></tr>
+        <tr><td>$x^n$</td><td>$nx^{n-1}$</td><td>$e^x$</td><td>$e^x$</td></tr>
+        <tr><td>$\sin x$</td><td>$\cos x$</td><td>$\cos x$</td><td>$-\sin x$</td></tr>
+        <tr><td>$\tan x$</td><td>$\sec^2 x$</td><td>$\cot x$</td><td>$-\csc^2 x$</td></tr>
+        <tr><td>$\ln x$</td><td>$\dfrac{1}{x}$</td><td>$a^x$</td><td>$a^x \ln a$</td></tr>
+        <tr><td>$\arcsin x$</td><td>$\dfrac{1}{\sqrt{1-x^2}}$</td><td>$\arctan x$</td><td>$\dfrac{1}{1+x^2}$</td></tr>
+      </table>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">隐函数与参数方程求导</div>
+      <p><strong>隐函数</strong>：由 $F(x,y)=0$ 确定 $y=y(x)$，两边对 $x$ 求导（注意 $y$ 是 $x$ 的函数），解出 $\dfrac{\dd y}{\dd x}$。</p>
+      <p><strong>参数方程</strong>：$x = \varphi(t)$，$y = \psi(t)$，则</p>
+      $$\frac{\dd y}{\dd x} = \frac{\psi'(t)}{\varphi'(t)}, \qquad \frac{\dd^2 y}{\dd x^2} = \frac{\psi''(t)\varphi'(t) - \psi'(t)\varphi''(t)}{[\varphi'(t)]^3}$$
+    </div>
+  </div>
+
+  <!-- ==================== 3.3 微分 ==================== -->
+  <div class="section" id="s3">
+    <h2>3.3 微分</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 微分</div>
+      <p>若 $f$ 在 $x_0$ 处的增量可以写成</p>
+      $$\Delta y = f(x_0 + \Delta x) - f(x_0) = A \cdot \Delta x + o(\Delta x)$$
+      <p>其中 $A$ 是与 $\Delta x$ 无关的常数，则称 $f$ 在 $x_0$ 处<strong>可微</strong>，$A \cdot \Delta x$ 为 $f$ 在 $x_0$ 处的<strong>微分</strong>，记为 $\dd y = A \dd x = f'(x_0) \dd x$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 · 可导 $\iff$ 可微</div>
+      <p>对一元函数，可导与可微等价。微分 $\dd y = f'(x) \dd x$ 是增量 $\Delta y$ 的线性主部。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 3.4 微分中值定理 ==================== -->
+  <div class="section" id="s4">
+    <h2>3.4 微分中值定理</h2>
+
+    <p>微分中值定理是微分学的理论核心，将函数值与导数值联系起来。</p>
+
+    <div class="box box-theorem">
+      <div class="box-title">Rolle 定理</div>
+      <p>若 $f$ 满足：(1) 在 $[a,b]$ 上连续，(2) 在 $(a,b)$ 内可导，(3) $f(a) = f(b)$，</p>
+      <p>则存在 $\xi \in (a,b)$ 使得 $f'(\xi) = 0$。</p>
+      <p><strong>几何直觉</strong>：两端等高的光滑曲线，中间必有一点切线水平。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">Lagrange 中值定理</div>
+      <p>若 $f$ 在 $[a,b]$ 上连续，在 $(a,b)$ 内可导，则存在 $\xi \in (a,b)$ 使得</p>
+      <div class="formula-highlight">
+        $$f'(\xi) = \frac{f(b) - f(a)}{b - a}$$
+      </div>
+      <p><strong>几何直觉</strong>：光滑曲线上必有一点的切线平行于端点连线。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">Cauchy 中值定理</div>
+      <p>若 $f, g$ 在 $[a,b]$ 上连续，在 $(a,b)$ 内可导，且 $g'(x) \neq 0$，则存在 $\xi \in (a,b)$ 使得</p>
+      $$\frac{f'(\xi)}{g'(\xi)} = \frac{f(b) - f(a)}{g(b) - g(a)}$$
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">三大中值定理的关系</div>
+      <p>Rolle 定理 $\xrightarrow{f(a)=f(b)}$ 特例</p>
+      <p>Lagrange 中值定理 $\xrightarrow{g(x)=x}$ 特例</p>
+      <p>Cauchy 中值定理 $\xrightarrow{}$ 最一般形式</p>
+      <p>证明链：Rolle $\Rightarrow$ Lagrange $\Rightarrow$ Cauchy，每一级都是前一级的推广。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · Lagrange 中值定理的应用</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：证明 $|\sin b - \sin a| \leq |b - a|$。</p>
+        <p><strong>证明</strong>：设 $f(x) = \sin x$，$f$ 在 $[a,b]$ 上连续，在 $(a,b)$ 内可导。</p>
+        <p>由 Lagrange 中值定理，存在 $\xi \in (a,b)$ 使得 $\sin b - \sin a = \cos\xi \cdot (b-a)$。</p>
+        <p>$|\sin b - \sin a| = |\cos\xi| \cdot |b-a| \leq |b-a|$。$\square$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 3.5 L'Hôpital 法则 ==================== -->
+  <div class="section" id="s5">
+    <h2>3.5 L'Hôpital 法则</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">L'Hôpital 法则（$\dfrac{0}{0}$ 型）</div>
+      <p>若 (1) $\lim_{x \to x_0} f(x) = \lim_{x \to x_0} g(x) = 0$，(2) $f, g$ 在 $x_0$ 附近可导且 $g'(x) \neq 0$，(3) $\lim_{x \to x_0} \dfrac{f'(x)}{g'(x)} = A$（或 $\infty$），</p>
+      <p>则 $\lim_{x \to x_0} \dfrac{f(x)}{g(x)} = \lim_{x \to x_0} \dfrac{f'(x)}{g'(x)} = A$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">L'Hôpital 法则（$\dfrac{\infty}{\infty}$ 型）</div>
+      <p>条件类似，将 $\lim f(x) = \lim g(x) = 0$ 改为 $\lim f(x) = \lim g(x) = \infty$，结论相同。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">使用 L'Hôpital 法则的注意事项</div>
+      <ol>
+        <li>必须是 $\dfrac{0}{0}$ 或 $\dfrac{\infty}{\infty}$ 型才能使用。</li>
+        <li>其他不定式（$0 \cdot \infty$，$\infty - \infty$，$0^0$，$1^\infty$，$\infty^0$）需先转化为 $\dfrac{0}{0}$ 或 $\dfrac{\infty}{\infty}$ 型。</li>
+        <li>若 $\lim \dfrac{f'}{g'}$ 不存在，不能推出 $\lim \dfrac{f}{g}$ 不存在——此时 L'Hôpital 法则失效，需用其他方法。</li>
+      </ol>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · $1^\infty$ 型不定式</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：求 $\lim_{x \to 0^+} x^x$。</p>
+        <p><strong>解</strong>：$x^x = e^{x \ln x}$，需求 $\lim_{x \to 0^+} x \ln x$（$0 \cdot \infty$ 型）。</p>
+        <p>转化为 $\dfrac{\infty}{\infty}$ 型：$\lim_{x \to 0^+} \dfrac{\ln x}{1/x}$</p>
+        <p>由 L'Hôpital：$\lim_{x \to 0^+} \dfrac{1/x}{-1/x^2} = \lim_{x \to 0^+} (-x) = 0$</p>
+        <p>故 $\lim_{x \to 0^+} x^x = e^0 = 1$。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 3.6 Taylor 公式 ==================== -->
+  <div class="section" id="s6">
+    <h2>3.6 Taylor 公式</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">Taylor 公式（带 Lagrange 余项）</div>
+      <p>若 $f$ 在 $x_0$ 的某邻域内有 $n+1$ 阶导数，则对邻域内任意 $x$，存在 $\xi$ 介于 $x_0$ 与 $x$ 之间，使得</p>
+      <div class="formula-highlight">
+        $$f(x) = \sum_{k=0}^{n} \frac{f^{(k)}(x_0)}{k!}(x - x_0)^k + \frac{f^{(n+1)}(\xi)}{(n+1)!}(x - x_0)^{n+1}$$
+      </div>
+      <p>其中 $\sum_{k=0}^{n} \frac{f^{(k)}(x_0)}{k!}(x - x_0)^k$ 称为 $f$ 在 $x_0$ 处的 $n$ 阶 <strong>Taylor 多项式</strong>，最后一项为 <strong>Lagrange 余项</strong>。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">Maclaurin 公式（$x_0 = 0$ 的特例）</div>
+      <div class="formula-highlight">
+        $$f(x) = f(0) + f'(0)x + \frac{f''(0)}{2!}x^2 + \cdots + \frac{f^{(n)}(0)}{n!}x^n + R_n(x)$$
+      </div>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">常用 Maclaurin 展开</div>
+      <p>$e^x = 1 + x + \dfrac{x^2}{2!} + \cdots + \dfrac{x^n}{n!} + o(x^n)$</p>
+      <p>$\sin x = x - \dfrac{x^3}{3!} + \dfrac{x^5}{5!} - \cdots + \dfrac{(-1)^n x^{2n+1}}{(2n+1)!} + o(x^{2n+2})$</p>
+      <p>$\cos x = 1 - \dfrac{x^2}{2!} + \dfrac{x^4}{4!} - \cdots + \dfrac{(-1)^n x^{2n}}{(2n)!} + o(x^{2n+1})$</p>
+      <p>$\ln(1+x) = x - \dfrac{x^2}{2} + \dfrac{x^3}{3} - \cdots + \dfrac{(-1)^{n-1} x^n}{n} + o(x^n)$</p>
+      <p>$(1+x)^a = 1 + ax + \dfrac{a(a-1)}{2!}x^2 + \cdots + \dfrac{a(a-1)\cdots(a-n+1)}{n!}x^n + o(x^n)$</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 用 Taylor 公式求极限</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：求 $\lim_{x \to 0} \dfrac{\cos x - e^{-\frac{x^2}{2}}}{x^4}$。</p>
+        <p><strong>解</strong>：展开到 $x^4$ 项：</p>
+        <p>$\cos x = 1 - \dfrac{x^2}{2} + \dfrac{x^4}{24} + o(x^4)$</p>
+        <p>$e^{-\frac{x^2}{2}} = 1 - \dfrac{x^2}{2} + \dfrac{1}{2}\left(\dfrac{x^2}{2}\right)^2 + o(x^4) = 1 - \dfrac{x^2}{2} + \dfrac{x^4}{8} + o(x^4)$</p>
+        <p>$\cos x - e^{-\frac{x^2}{2}} = \left(\dfrac{1}{24} - \dfrac{1}{8}\right)x^4 + o(x^4) = -\dfrac{1}{12}x^4 + o(x^4)$</p>
+        <p>原式 $= -\dfrac{1}{12}$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 3.7 极值与凸性 ==================== -->
+  <div class="section" id="s7">
+    <h2>3.7 极值与凸性</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">极值的必要条件（Fermat 引理）</div>
+      <p>若 $f$ 在 $x_0$ 处可导且取极值，则 $f'(x_0) = 0$。</p>
+      <p><strong>注意</strong>：$f'(x_0) = 0$ 只是极值的必要条件，不是充分条件（如 $f(x)=x^3$ 在 $x=0$）。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">极值的充分条件</div>
+      <p><strong>一阶判别法</strong>：若 $f'(x_0) = 0$，且 $f'$ 在 $x_0$ 两侧变号（左正右负取极大，左负右正取极小），则 $f$ 在 $x_0$ 取极值。</p>
+      <p><strong>二阶判别法</strong>：若 $f'(x_0) = 0$，$f''(x_0) \neq 0$：</p>
+      <ul>
+        <li>$f''(x_0) < 0$：$f$ 在 $x_0$ 取<strong>极大值</strong></li>
+        <li>$f''(x_0) > 0$：$f$ 在 $x_0$ 取<strong>极小值</strong></li>
+      </ul>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 凸函数</div>
+      <p>设 $f$ 在区间 $I$ 上有定义。若对任意 $x_1, x_2 \in I$ 和 $\lambda \in (0,1)$，</p>
+      $$f(\lambda x_1 + (1-\lambda)x_2) \leq \lambda f(x_1) + (1-\lambda)f(x_2)$$
+      <p>则称 $f$ 为 $I$ 上的<strong>凸函数</strong>（下凸/凹向上）。不等号反向则为<strong>凹函数</strong>。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">凸性的判定</div>
+      <p>$f$ 在 $(a,b)$ 内<strong>凸</strong> $\iff$ $f''(x) \geq 0$（$f'$ 单调递增）</p>
+      <p>$f$ 在 $(a,b)$ 内<strong>凹</strong> $\iff$ $f''(x) \leq 0$（$f'$ 单调递减）</p>
+      <p>拐点：凸凹性改变的点，满足 $f''(x_0) = 0$ 且 $f''$ 在 $x_0$ 两侧变号。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">本章解题技巧总结</div>
+      <ol>
+        <li><strong>中值定理证明题</strong>：构造辅助函数是关键，常用技巧是将要证的等式改写为某函数的导数为零。</li>
+        <li><strong>L'Hôpital 法则</strong>：先验型（$0/0$ 或 $\infty/\infty$），可反复使用直到不再是不定式。</li>
+        <li><strong>Taylor 公式求极限</strong>：将分子分母都展开到同阶（通常到第一个非零项出现）。</li>
+        <li><strong>极值问题</strong>：先找驻点（$f'=0$），再用二阶导数或一阶导数变号法判定。</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="ch2.html" class="prev">第二章</a>
+    <a href="ch4.html" class="next">第四章</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>数学分析复习指南 · 基于陈纪修教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

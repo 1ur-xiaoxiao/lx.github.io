@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数学分析 · 复习指南</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          eps: '\\varepsilon',
+          dd: '\\mathrm{d}',
+          sup: '\\sup',
+          inf: '\\inf'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+  <a href="../index.html" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">数学分析</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<!-- 主内容 -->
+<div class="main-content">
+
+  <!-- 英雄区 -->
+  <div class="hero">
+    <h1>数学分析</h1>
+    <p>基于陈纪修《数学分析》教材 · 三学期课程系统梳理 · 从极限论到多元微积分</p>
+  </div>
+
+  <!-- 六章总览卡片 -->
+  <div class="chapter-cards">
+
+    <div class="chapter-card">
+      <span class="card-number">1</span>
+      <h3>极限论</h3>
+      <p>数学分析的基石：从实数系的完备性出发，建立极限的严格 $\eps$-$N$ / $\eps$-$\delta$ 语言。本章是后续所有章节的逻辑起点。</p>
+      <ul>
+        <li>实数系基本定理与确界原理</li>
+        <li>数列极限的 $\eps$-$N$ 定义与性质</li>
+        <li>收敛准则：单调有界、Cauchy 收敛</li>
+        <li>函数极限与 Heine 定理</li>
+        <li>无穷小量与无穷大量的阶</li>
+      </ul>
+      <a href="ch1.html" class="card-link">进入第一章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">2</span>
+      <h3>连续函数</h3>
+      <p>连接极限与微分的桥梁：连续性的严格定义、间断点分类，以及闭区间上连续函数的四大经典定理。</p>
+      <ul>
+        <li>连续与一致连续的定义</li>
+        <li>间断点的分类（可去、跳跃、无穷、振荡）</li>
+        <li>有界性定理与最值定理</li>
+        <li>介值定理与零点定理</li>
+        <li>Cantor 定理：闭区间上连续必一致连续</li>
+      </ul>
+      <a href="ch2.html" class="card-link">进入第二章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">3</span>
+      <h3>一元微分学</h3>
+      <p>从变化率到 Taylor 展开：导数的几何直觉、微分中值定理体系、L'Hôpital 法则与 Taylor 公式，构成微分学的核心框架。</p>
+      <ul>
+        <li>导数定义、几何意义与求导法则</li>
+        <li>Rolle、Lagrange、Cauchy 中值定理</li>
+        <li>L'Hôpital 法则与不定式极限</li>
+        <li>Taylor 公式与 Maclaurin 展开</li>
+        <li>极值判定与函数凸性</li>
+      </ul>
+      <a href="ch3.html" class="card-link">进入第三章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">4</span>
+      <h3>一元积分学</h3>
+      <p>从求和到反导数：Riemann 积分的严格构造、Newton-Leibniz 公式将微分与积分统一，以及反常积分的审敛方法。</p>
+      <ul>
+        <li>Riemann 积分的定义与可积条件</li>
+        <li>微积分基本定理（Newton-Leibniz 公式）</li>
+        <li>换元积分法与分部积分法</li>
+        <li>积分中值定理</li>
+        <li>反常积分的审敛法与计算</li>
+      </ul>
+      <a href="ch4.html" class="card-link">进入第四章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">5</span>
+      <h3>级数理论</h3>
+      <p>从有限到无限的飞跃：数项级数审敛法、函数项级数的一致收敛性、幂级数与 Fourier 级数，是分析学通向应用的桥梁。</p>
+      <ul>
+        <li>正项级数审敛法（比较、比值、根值、积分）</li>
+        <li>一般项级数（Leibniz 判别法、绝对收敛）</li>
+        <li>函数项级数与一致收敛</li>
+        <li>幂级数的收敛半径与逐项运算</li>
+        <li>Fourier 级数与 Parseval 等式</li>
+      </ul>
+      <a href="ch5.html" class="card-link">进入第五章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">6</span>
+      <h3>多元函数微分学</h3>
+      <p>从一维到高维的推广：多元函数的极限与连续、偏导数与全微分、隐函数定理与 Lagrange 乘数法。</p>
+      <ul>
+        <li>多元函数的极限与连续</li>
+        <li>偏导数与高阶偏导数</li>
+        <li>全微分与可微性判定</li>
+        <li>复合函数求导（链式法则）</li>
+        <li>隐函数定理与 Lagrange 乘数法</li>
+      </ul>
+      <a href="ch6.html" class="card-link">进入第六章 →</a>
+    </div>
+
+  </div>
+
+  <!-- 学习建议 -->
+  <div class="section" style="margin-top: 2rem;">
+    <h2>学习路线建议</h2>
+    <ol>
+      <li><strong>第一章（极限论）</strong>是全书的地基，$\eps$-$N$ 和 $\eps$-$\delta$ 语言贯穿整个数学分析。确界原理、单调有界定理和 Bolzano-Weierstrass 定理是三大基本工具，务必熟练掌握。</li>
+      <li><strong>第二章（连续函数）</strong>建立在极限论之上，重点掌握闭区间上连续函数的四大定理（有界性、最值、介值、零点）。一致连续是难点，Cantor 定理的证明思路要理解。</li>
+      <li><strong>第三章（一元微分学）</strong>是考试重点，三大中值定理（Rolle → Lagrange → Cauchy）的证明链要清晰。Taylor 公式的 Lagrange 余项和 Cauchy 余项要会用。L'Hôpital 法则是求极限的利器。</li>
+      <li><strong>第四章（一元积分学）</strong>重点是 Newton-Leibniz 公式——它将微分与积分统一。不定积分的换元法和分部积分法需要大量练习。反常积分的审敛法（比较判别法、Dirichlet 判别法）要掌握。</li>
+      <li><strong>第五章（级数理论）</strong>是分析学通向应用的桥梁。正项级数审敛法是基础，一致收敛性是难点。幂级数的收敛半径公式和逐项运算要熟练。Fourier 级数重点掌握 Dirichlet 收敛条件。</li>
+      <li><strong>第六章（多元函数微分学）</strong>将一元理论推广到高维，核心是链式法则、隐函数定理和 Lagrange 乘数法。可微性、偏导数存在性、连续性三者之间的关系是常见考点。</li>
+    </ol>
+    <p style="margin-top: 1rem; color: var(--text-light);">每章都包含详细的定义、定理、公式和例题，配有直觉解释与常见题型总结。建议配合教材习题同步练习。</p>
+  </div>
+
+</div>
+
+<!-- 页脚 -->
+<footer class="footer">
+  <p>数学分析复习指南 · 基于陈纪修教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

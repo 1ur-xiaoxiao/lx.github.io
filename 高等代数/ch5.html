@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第五章 · 线性空间</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          FF: '\\mathbb{F}',
+          rank: '\\mathrm{rank}',
+          det: '\\mathrm{det}',
+          tr: '\\mathrm{tr}',
+          diag: '\\mathrm{diag}',
+          dim: '\\mathrm{dim}',
+          ker: '\\mathrm{ker}',
+          Im: '\\mathrm{Im}',
+          dd: '\\mathrm{d}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">高等代数</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第五章 · 线性空间</h1>
+    <p>从具体到抽象的飞跃：线性空间的公理化定义、基与维数、坐标变换，以及子空间的交、和与直和。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">线性空间的定义与性质</a></li>
+      <li><a href="#s2">基、维数与坐标</a></li>
+      <li><a href="#s3">基变换与坐标变换</a></li>
+      <li><a href="#s4">子空间</a></li>
+      <li><a href="#s5">子空间的维数公式</a></li>
+      <li><a href="#s6">直和</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 5.1 线性空间 ==================== -->
+  <div class="section" id="s1">
+    <h2>5.1 线性空间的定义与性质</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 线性空间</div>
+      <p>设 $V$ 是一个非空集合，$\FF$ 是一个数域。在 $V$ 上定义了两种运算：</p>
+      <ul>
+        <li><strong>加法</strong>：$V \times V \to V$，$(\alpha, \beta) \mapsto \alpha + \beta$</li>
+        <li><strong>数乘</strong>：$\FF \times V \to V$，$(k, \alpha) \mapsto k\alpha$</li>
+      </ul>
+      <p>若满足 8 条公理（加法交换律、结合律、零元、负元、数乘结合律、数乘分配律、$1\alpha = \alpha$），则称 $V$ 为 $\FF$ 上的<strong>线性空间</strong>（向量空间）。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">线性空间的典型例子</div>
+      <ol>
+        <li>$\FF^n$：$n$ 维列向量空间（最常见的线性空间）</li>
+        <li>$\FF^{m \times n}$：$m \times n$ 矩阵空间</li>
+        <li>$\FF[x]_n$：次数 $< n$ 的多项式空间</li>
+        <li>$\FF[x]$：所有多项式构成的空间（无穷维）</li>
+        <li>$C[a,b]$：$[a,b]$ 上连续函数空间（无穷维）</li>
+      </ol>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">线性空间的基本性质</div>
+      <ol>
+        <li>零向量唯一</li>
+        <li>每个向量的负向量唯一</li>
+        <li>$0\alpha = 0$，$k0 = 0$，$(-1)\alpha = -\alpha$</li>
+        <li>若 $k\alpha = 0$，则 $k = 0$ 或 $\alpha = 0$</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ==================== 5.2 基与维数 ==================== -->
+  <div class="section" id="s2">
+    <h2>5.2 基、维数与坐标</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 基与维数</div>
+      <p>线性空间 $V$ 的一组向量 $\alpha_1, \ldots, \alpha_n$ 称为 $V$ 的一组<strong>基</strong>，若：</p>
+      <ol>
+        <li>$\alpha_1, \ldots, \alpha_n$ 线性无关</li>
+        <li>$V$ 中任意向量都可由 $\alpha_1, \ldots, \alpha_n$ 线性表出</li>
+      </ol>
+      <p>基中向量的个数 $n$ 称为 $V$ 的<strong>维数</strong>，记为 $\dim V = n$。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 坐标</div>
+      <p>设 $\alpha_1, \ldots, \alpha_n$ 为 $V$ 的一组基，$V$ 中向量 $\alpha$ 可唯一表示为</p>
+      $$\alpha = x_1\alpha_1 + x_2\alpha_2 + \cdots + x_n\alpha_n$$
+      <p>称 $(x_1, x_2, \ldots, x_n)^T$ 为 $\alpha$ 在此基下的<strong>坐标</strong>。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">基扩充定理</div>
+      <p>$V$ 中任意线性无关向量组都可以扩充为 $V$ 的一组基。等价地：$\dim V = n$ 时，$V$ 中任意 $n$ 个线性无关向量都是 $V$ 的基。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 5.3 坐标变换 ==================== -->
+  <div class="section" id="s3">
+    <h2>5.3 基变换与坐标变换</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 过渡矩阵</div>
+      <p>设旧基 $\alpha_1, \ldots, \alpha_n$ 和新基 $\beta_1, \ldots, \beta_n$ 满足</p>
+      $$(\beta_1, \ldots, \beta_n) = (\alpha_1, \ldots, \alpha_n) P$$
+      <p>则 $P$ 称为从旧基到新基的<strong>过渡矩阵</strong>（$P$ 一定可逆）。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">坐标变换公式</div>
+      <p>设向量 $\alpha$ 在旧基下的坐标为 $X$，在新基下的坐标为 $Y$，则</p>
+      <div class="formula-highlight">
+        $$X = PY$$
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 坐标变换</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：在 $\RR^2$ 中，旧基 $e_1=(1,0), e_2=(0,1)$，新基 $\beta_1=(1,1), \beta_2=(1,-1)$。向量 $\alpha = (3,1)$ 在旧基下坐标为 $(3,1)^T$，求在新基下的坐标。</p>
+        <p><strong>解</strong>：$\beta_1 = e_1 + e_2$，$\beta_2 = e_1 - e_2$，过渡矩阵 $P = \begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix}$</p>
+        <p>$Y = P^{-1}X = \dfrac{1}{-2}\begin{pmatrix} -1 & -1 \\ -1 & 1 \end{pmatrix}\begin{pmatrix} 3 \\ 1 \end{pmatrix} = \begin{pmatrix} 2 \\ 1 \end{pmatrix}$</p>
+        <p>即 $\alpha = 2\beta_1 + \beta_2$。验证：$2(1,1) + (1,-1) = (3,1)$ ✓</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 5.4 子空间 ==================== -->
+  <div class="section" id="s4">
+    <h2>5.4 子空间</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 子空间</div>
+      <p>$V$ 的非空子集 $W$ 若对加法和数乘封闭（即 $\alpha, \beta \in W \Rightarrow \alpha+\beta \in W$，$\alpha \in W, k \in \FF \Rightarrow k\alpha \in W$），则 $W$ 也是 $\FF$ 上的线性空间，称为 $V$ 的<strong>子空间</strong>。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">子空间的交与和</div>
+      <p>$W_1 \cap W_2$（交）：仍然是子空间。</p>
+      <p>$W_1 + W_2 = \{\alpha_1 + \alpha_2 : \alpha_1 \in W_1, \alpha_2 \in W_2\}$（和）：仍然是子空间。</p>
+      <p><strong>注意</strong>：$W_1 \cup W_2$（并）一般<strong>不是</strong>子空间（除非一个包含另一个）。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 5.5 维数公式 ==================== -->
+  <div class="section" id="s5">
+    <h2>5.5 子空间的维数公式</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">维数公式</div>
+      <div class="formula-highlight">
+        $$\dim(W_1 + W_2) = \dim W_1 + \dim W_2 - \dim(W_1 \cap W_2)$$
+      </div>
+      <p>类比：$|A \cup B| = |A| + |B| - |A \cap B|$（容斥原理）。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 5.6 直和 ==================== -->
+  <div class="section" id="s6">
+    <h2>5.6 直和</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 直和</div>
+      <p>$W_1 + W_2$ 称为<strong>直和</strong>，记为 $W_1 \oplus W_2$，若 $W_1 \cap W_2 = \{0\}$。</p>
+      <p>等价条件：$W_1 + W_2$ 中每个向量的表示方式<strong>唯一</strong>。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">直和的判定条件</div>
+      <p>以下条件等价：</p>
+      <ol>
+        <li>$W_1 + W_2$ 是直和</li>
+        <li>$W_1 \cap W_2 = \{0\}$</li>
+        <li>$W_1 + W_2$ 中零向量的表示唯一（只有 $0+0$）</li>
+        <li>$\dim(W_1 + W_2) = \dim W_1 + \dim W_2$</li>
+        <li>$W_1$ 的基与 $W_2$ 的基合起来是 $W_1 + W_2$ 的基</li>
+      </ol>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">直和的意义</div>
+      <p>直和分解将一个空间"拆"成互不重叠的子空间。例如 $\RR^3 = \{(x,y,0)\} \oplus \{(0,0,z)\}$，每个向量 $(x,y,z)$ 的分解唯一。</p>
+      <p>直和是后续对角化、Jordan 标准形等理论的基础。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">本章解题技巧总结</div>
+      <ol>
+        <li><strong>验证线性空间</strong>：检查 8 条公理（重点是封闭性）。</li>
+        <li><strong>求基与维数</strong>：找极大线性无关组。</li>
+        <li><strong>坐标变换</strong>：找过渡矩阵 $P$，用 $X = PY$ 转换。</li>
+        <li><strong>维数公式</strong>：$\dim(W_1+W_2) = \dim W_1 + \dim W_2 - \dim(W_1 \cap W_2)$ 是核心工具。</li>
+        <li><strong>直和判定</strong>：验证交为零维（即交只有零向量）。</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="ch4.html" class="prev">第四章</a>
+    <a href="ch6.html" class="next">第六章</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>高等代数复习指南 · 基于丘维声教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

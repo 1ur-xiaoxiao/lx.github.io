@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第一章 · 极限论</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          eps: '\\varepsilon',
+          dd: '\\mathrm{d}',
+          sup: '\\sup',
+          inf: '\\inf'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">数学分析</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第一章 · 极限论</h1>
+    <p>数学分析的基石：从实数系的完备性出发，建立极限的严格 $\eps$-$N$ / $\eps$-$\delta$ 语言。本章是整个数学分析的逻辑起点。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">实数系与确界原理</a></li>
+      <li><a href="#s2">数列极限的定义</a></li>
+      <li><a href="#s3">数列极限的性质与运算法则</a></li>
+      <li><a href="#s4">数列收敛准则</a></li>
+      <li><a href="#s5">函数极限</a></li>
+      <li><a href="#s6">无穷小与无穷大</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 1.1 实数系与确界原理 ==================== -->
+  <div class="section" id="s1">
+    <h2>1.1 实数系与确界原理</h2>
+
+    <p>数学分析建立在实数系 $\RR$ 之上。实数系的关键性质是<strong>完备性</strong>——没有"空隙"，这是区别于有理数系的本质特征。</p>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 上界与下界</div>
+      <p>设 $S$ 是 $\RR$ 的非空子集：</p>
+      <ul>
+        <li>若存在 $M \in \RR$，使得对一切 $x \in S$ 都有 $x \leq M$，则称 $M$ 为 $S$ 的一个<strong>上界</strong>，称 $S$ <strong>有上界</strong>。</li>
+        <li>若存在 $m \in \RR$，使得对一切 $x \in S$ 都有 $x \geq m$，则称 $m$ 为 $S$ 的一个<strong>下界</strong>，称 $S$ <strong>有下界</strong>。</li>
+        <li>若 $S$ 既有上界又有下界，则称 $S$ <strong>有界</strong>。</li>
+      </ul>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 上确界与下确界</div>
+      <p>设 $S$ 是 $\RR$ 的非空子集：</p>
+      <ul>
+        <li>$S$ 的最小上界称为 $S$ 的<strong>上确界</strong>，记为 $\sup S$。</li>
+        <li>$S$ 的最大下界称为 $S$ 的<strong>下确界</strong>，记为 $\inf S$。</li>
+      </ul>
+      <p>等价刻画：$\alpha = \sup S$ 当且仅当 (1) 对一切 $x \in S$，$x \leq \alpha$（$\alpha$ 是上界）；(2) 对任意 $\eps > 0$，存在 $x_0 \in S$ 使得 $x_0 > \alpha - \eps$（$\alpha$ 是最小上界）。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">确界原理（实数系完备性公理）</div>
+      <p><strong>非空有上界的实数集必有上确界。</strong></p>
+      <p>等价地：非空有下界的实数集必有下确界。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">确界原理的意义</div>
+      <p>确界原理是实数系区别于有理数系的关键。例如 $S = \{x \in \QQ : x^2 < 2\}$ 在有理数系中有上界但没有有理数上确界（因为 $\sqrt{2} \notin \QQ$）。在实数系中，$\sup S = \sqrt{2}$。</p>
+      <p>确界原理是后续所有收敛性定理（单调有界定理、Cauchy 收敛准则等）的基础。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 求上确界与下确界</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：求下列集合的上确界和下确界：</p>
+        <p>(a) $S_1 = \left\{\dfrac{1}{n} : n \in \NN^+\right\}$；(b) $S_2 = \{x \in \RR : x^2 < 2\}$。</p>
+        <p><strong>解</strong>：</p>
+        <p>(a) $S_1 = \{1, \frac{1}{2}, \frac{1}{3}, \ldots\}$。上界为 1，且 $1 \in S_1$，故 $\sup S_1 = 1$。下界为 0，对任意 $\eps > 0$，取 $n > 1/\eps$ 则 $1/n < \eps$，故 $\inf S_1 = 0$（注意 $0 \notin S_1$）。</p>
+        <p>(b) $S_2 = (-\sqrt{2}, \sqrt{2})$。$\sup S_2 = \sqrt{2}$，$\inf S_2 = -\sqrt{2}$，二者都不属于 $S_2$。</p>
+        <p><strong>关键</strong>：上确界不一定属于集合本身。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1.2 数列极限的定义 ==================== -->
+  <div class="section" id="s2">
+    <h2>1.2 数列极限的定义</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 数列极限（$\eps$-$N$ 定义）</div>
+      <p>设 $\{a_n\}$ 为数列，$a \in \RR$。若对任意 $\eps > 0$，存在正整数 $N$，使得当 $n > N$ 时，</p>
+      <div class="formula-highlight">
+        $$|a_n - a| < \eps$$
+      </div>
+      <p>则称数列 $\{a_n\}$ <strong>收敛</strong>于 $a$，记为 $\lim_{n \to \infty} a_n = a$ 或 $a_n \to a$（$n \to \infty$）。</p>
+      <p>若数列不收敛于任何实数，则称该数列<strong>发散</strong>。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">$\eps$-$N$ 定义的直觉理解</div>
+      <p>"对任意 $\eps > 0$"：无论你要求多么精确（$\eps$ 可以任意小）。</p>
+      <p>"存在 $N$"：总能找到一个时刻。</p>
+      <p>"当 $n > N$ 时 $|a_n - a| < \eps$"：从这个时刻之后，数列的所有项都落在 $a$ 的 $\eps$-邻域内。</p>
+      <p><strong>几何图景</strong>：在数轴上画出 $(a-\eps, a+\eps)$，无论这个区间多窄，数列最终会"永远待在里面"。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 用定义证明 $\lim_{n\to\infty} \frac{1}{n} = 0$</div>
+      <div class="collapsible-body">
+        <p><strong>证明</strong>：对任意 $\eps > 0$，要使 $\left|\dfrac{1}{n} - 0\right| = \dfrac{1}{n} < \eps$，只需 $n > \dfrac{1}{\eps}$。</p>
+        <p>取 $N = \left\lfloor\dfrac{1}{\eps}\right\rfloor + 1$，则当 $n > N$ 时，$n > \dfrac{1}{\eps}$，从而 $\dfrac{1}{n} < \eps$。</p>
+        <p>由定义，$\lim_{n \to \infty} \dfrac{1}{n} = 0$。$\square$</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 用定义证明 $\lim_{n\to\infty} \frac{n}{n+1} = 1$</div>
+      <div class="collapsible-body">
+        <p><strong>证明</strong>：对任意 $\eps > 0$，要使 $\left|\dfrac{n}{n+1} - 1\right| = \dfrac{1}{n+1} < \eps$。</p>
+        <p>由 $\dfrac{1}{n+1} < \eps$ 得 $n > \dfrac{1}{\eps} - 1$。</p>
+        <p>取 $N = \max\left\{1, \left\lfloor\dfrac{1}{\eps} - 1\right\rfloor + 1\right\}$，则当 $n > N$ 时，$\left|\dfrac{n}{n+1} - 1\right| < \eps$。</p>
+        <p>故 $\lim_{n \to \infty} \dfrac{n}{n+1} = 1$。$\square$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1.3 数列极限的性质 ==================== -->
+  <div class="section" id="s3">
+    <h2>1.3 数列极限的性质与运算法则</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 · 极限的基本性质</div>
+      <ol>
+        <li><strong>唯一性</strong>：若 $\lim_{n \to \infty} a_n = a$ 且 $\lim_{n \to \infty} a_n = b$，则 $a = b$。</li>
+        <li><strong>有界性</strong>：若 $\{a_n\}$ 收敛，则 $\{a_n\}$ 有界。反之不成立（如 $(-1)^n$ 有界但发散）。</li>
+        <li><strong>保序性</strong>：若 $\lim_{n \to \infty} a_n = a$，$\lim_{n \to \infty} b_n = b$，且 $a < b$，则存在 $N$，当 $n > N$ 时 $a_n < b_n$。</li>
+        <li><strong>保号性</strong>：若 $\lim_{n \to \infty} a_n = a > 0$，则存在 $N$，当 $n > N$ 时 $a_n > 0$。</li>
+        <li><strong>夹逼定理</strong>：若 $a_n \leq b_n \leq c_n$（$n$ 充分大），且 $\lim a_n = \lim c_n = L$，则 $\lim b_n = L$。</li>
+      </ol>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">极限的四则运算法则</div>
+      <p>设 $\lim_{n \to \infty} a_n = a$，$\lim_{n \to \infty} b_n = b$，则：</p>
+      <ol>
+        <li>$\lim_{n \to \infty}(a_n \pm b_n) = a \pm b$</li>
+        <li>$\lim_{n \to \infty}(a_n \cdot b_n) = a \cdot b$</li>
+        <li>$\lim_{n \to \infty}\dfrac{a_n}{b_n} = \dfrac{a}{b}$（$b \neq 0$）</li>
+      </ol>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">夹逼定理的使用技巧</div>
+      <p>当直接求极限困难时，可以"夹住"它：找两个容易求极限的数列从上下两侧逼近。</p>
+      <p>常见技巧：$n$ 项和的形式常用"最小项 × 项数 ≤ 和 ≤ 最大项 × 项数"来放缩。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 夹逼定理求极限</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：求 $\lim_{n \to \infty} \left(\dfrac{1}{\sqrt{n^2+1}} + \dfrac{1}{\sqrt{n^2+2}} + \cdots + \dfrac{1}{\sqrt{n^2+n}}\right)$。</p>
+        <p><strong>解</strong>：设 $S_n = \sum_{k=1}^n \dfrac{1}{\sqrt{n^2+k}}$。</p>
+        <p>由于 $\sqrt{n^2+1} \leq \sqrt{n^2+k} \leq \sqrt{n^2+n}$，故</p>
+        <p>$\dfrac{n}{\sqrt{n^2+n}} \leq S_n \leq \dfrac{n}{\sqrt{n^2+1}}$</p>
+        <p>$\lim_{n \to \infty} \dfrac{n}{\sqrt{n^2+n}} = \lim_{n \to \infty} \dfrac{1}{\sqrt{1+\frac{1}{n}}} = 1$</p>
+        <p>$\lim_{n \to \infty} \dfrac{n}{\sqrt{n^2+1}} = \lim_{n \to \infty} \dfrac{1}{\sqrt{1+\frac{1}{n^2}}} = 1$</p>
+        <p>由夹逼定理，$\lim_{n \to \infty} S_n = 1$。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1.4 数列收敛准则 ==================== -->
+  <div class="section" id="s4">
+    <h2>1.4 数列收敛准则</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 · 单调有界定理</div>
+      <p><strong>单调递增且有上界的数列必收敛。单调递减且有下界的数列必收敛。</strong></p>
+      <p>更精确地：若 $\{a_n\}$ 单调递增且有上界，则 $\lim_{n \to \infty} a_n = \sup\{a_n : n \in \NN\}$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 · Bolzano-Weierstrass 定理</div>
+      <p><strong>有界数列必有收敛子列。</strong></p>
+      <p>等价表述：$\RR$ 中的有界无穷点集必有聚点。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 · Cauchy 收敛准则</div>
+      <p>数列 $\{a_n\}$ 收敛 $\iff$ $\{a_n\}$ 是 <strong>Cauchy 列</strong>，即：</p>
+      <div class="formula-highlight">
+        $$\forall\, \eps > 0,\; \exists\, N \in \NN,\; \forall\, m, n > N:\; |a_m - a_n| < \eps$$
+      </div>
+      <p><strong>直觉</strong>：收敛数列的项"越来越挤"——任意两项之间的距离最终可以任意小。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">Cauchy 收敛准则的意义</div>
+      <p>Cauchy 准则的最大优势：<strong>不需要预先知道极限值</strong>，只通过数列本身的项就能判断是否收敛。这在极限值未知时非常有用。</p>
+      <p>Cauchy 收敛准则与确界原理等价，都是实数系完备性的体现。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 单调有界定理证明 $e$ 的存在</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：证明 $a_n = \left(1 + \dfrac{1}{n}\right)^n$ 收敛。</p>
+        <p><strong>证明</strong>：</p>
+        <p><strong>单调递增</strong>：由 Bernoulli 不等式或二项展开可证 $a_{n+1} > a_n$。</p>
+        <p>具体地，$a_n = \sum_{k=0}^n \binom{n}{k} \dfrac{1}{n^k} = \sum_{k=0}^n \dfrac{1}{k!} \cdot \dfrac{n(n-1)\cdots(n-k+1)}{n^k}$</p>
+        <p>每一项 $\dfrac{n(n-1)\cdots(n-k+1)}{n^k}$ 随 $n$ 增大而增大，故 $a_n$ 单调递增。</p>
+        <p><strong>有上界</strong>：$a_n \leq \sum_{k=0}^n \dfrac{1}{k!} < 1 + 1 + \dfrac{1}{2} + \dfrac{1}{6} + \cdots < 3$</p>
+        <p>由单调有界定理，$\{a_n\}$ 收敛。此极限定义为 $e \approx 2.71828$。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1.5 函数极限 ==================== -->
+  <div class="section" id="s5">
+    <h2>1.5 函数极限</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 函数极限（$\eps$-$\delta$ 定义）</div>
+      <p>设 $f(x)$ 在 $x_0$ 的某去心邻域 $\mathring{U}(x_0)$ 内有定义，$A \in \RR$。若对任意 $\eps > 0$，存在 $\delta > 0$，使得当 $0 < |x - x_0| < \delta$ 时，</p>
+      <div class="formula-highlight">
+        $$|f(x) - A| < \eps$$
+      </div>
+      <p>则称 $f(x)$ 在 $x \to x_0$ 时以 $A$ 为极限，记为 $\lim_{x \to x_0} f(x) = A$。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 单侧极限</div>
+      <p><strong>右极限</strong>：$\lim_{x \to x_0^+} f(x) = A$：对任意 $\eps > 0$，存在 $\delta > 0$，当 $x_0 < x < x_0 + \delta$ 时 $|f(x) - A| < \eps$。</p>
+      <p><strong>左极限</strong>：$\lim_{x \to x_0^-} f(x) = A$：对任意 $\eps > 0$，存在 $\delta > 0$，当 $x_0 - \delta < x < x_0$ 时 $|f(x) - A| < \eps$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 · 函数极限与单侧极限的关系</div>
+      <p>$\lim_{x \to x_0} f(x) = A$ $\iff$ $\lim_{x \to x_0^+} f(x) = \lim_{x \to x_0^-} f(x) = A$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 · Heine 定理（归结原则）</div>
+      <p>$\lim_{x \to x_0} f(x) = A$ $\iff$ 对任意满足 $x_n \to x_0$（$x_n \neq x_0$）的数列 $\{x_n\}$，都有 $f(x_n) \to A$。</p>
+      <p><strong>意义</strong>：将函数极限归结为数列极限，是证明函数极限不存在的有力工具——只需找两个趋向 $x_0$ 的数列使函数值趋向不同极限。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">函数极限的运算法则</div>
+      <p>与数列极限类似，四则运算法则成立。此外：</p>
+      <ul>
+        <li><strong>复合函数极限</strong>：若 $\lim_{x \to x_0} g(x) = u_0$，$\lim_{u \to u_0} f(u) = A$，且 $g(x) \neq u_0$（在 $x_0$ 附近），则 $\lim_{x \to x_0} f(g(x)) = A$。</li>
+      </ul>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">两个重要极限</div>
+      <div class="formula-highlight">
+        $$\lim_{x \to 0} \frac{\sin x}{x} = 1 \qquad \lim_{x \to \infty}\left(1+\frac{1}{x}\right)^x = e$$
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 用 Heine 定理证明极限不存在</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：证明 $f(x) = \sin\dfrac{1}{x}$ 在 $x \to 0$ 时极限不存在。</p>
+        <p><strong>证明</strong>：取 $x_n = \dfrac{1}{2n\pi + \frac{\pi}{2}}$，则 $x_n \to 0$ 且 $f(x_n) = \sin\left(2n\pi + \dfrac{\pi}{2}\right) = 1$。</p>
+        <p>取 $y_n = \dfrac{1}{2n\pi}$，则 $y_n \to 0$ 且 $f(y_n) = \sin(2n\pi) = 0$。</p>
+        <p>两个趋向 0 的数列，函数值趋向不同的极限，由 Heine 定理，$\lim_{x \to 0} \sin\dfrac{1}{x}$ 不存在。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1.6 无穷小与无穷大 ==================== -->
+  <div class="section" id="s6">
+    <h2>1.6 无穷小与无穷大</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 无穷小量</div>
+      <p>若 $\lim_{x \to x_0} \alpha(x) = 0$（或 $\lim_{n \to \infty} \alpha_n = 0$），则称 $\alpha$ 为 $x \to x_0$（或 $n \to \infty$）时的<strong>无穷小量</strong>。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 无穷大量</div>
+      <p>若对任意 $M > 0$，存在 $\delta > 0$（或 $N$），当 $0 < |x - x_0| < \delta$（或 $n > N$）时 $|f(x)| > M$（或 $|a_n| > M$），则称 $f$（或 $a_n$）为<strong>无穷大量</strong>，记为 $\lim f(x) = \infty$。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 无穷小的阶</div>
+      <p>设 $\alpha, \beta$ 都是 $x \to x_0$ 时的无穷小量，且 $\beta \neq 0$：</p>
+      <table>
+        <tr><th>记号</th><th>名称</th><th>含义</th></tr>
+        <tr><td>$\alpha = o(\beta)$</td><td>$\alpha$ 是 $\beta$ 的高阶无穷小</td><td>$\lim \dfrac{\alpha}{\beta} = 0$</td></tr>
+        <tr><td>$\alpha = O(\beta)$</td><td>$\alpha$ 不高于 $\beta$ 的阶</td><td>$\left|\dfrac{\alpha}{\beta}\right|$ 有界</td></tr>
+        <tr><td>$\alpha \sim \beta$</td><td>$\alpha$ 与 $\beta$ 等价</td><td>$\lim \dfrac{\alpha}{\beta} = 1$</td></tr>
+        <tr><td>$\alpha = O(\beta^k)$</td><td>$\alpha$ 是 $\beta$ 的 $k$ 阶无穷小</td><td>$\lim \dfrac{\alpha}{\beta^k} = c \neq 0$</td></tr>
+      </table>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">常见的等价无穷小（$x \to 0$）</div>
+      <p>$\sin x \sim x$，$\tan x \sim x$，$\arcsin x \sim x$，$\arctan x \sim x$</p>
+      <p>$1 - \cos x \sim \dfrac{x^2}{2}$，$\ln(1+x) \sim x$，$e^x - 1 \sim x$</p>
+      <p>$(1+x)^a - 1 \sim ax$，$a^x - 1 \sim x \ln a$</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">等价无穷小替换</div>
+      <p>在<strong>乘除</strong>因子中可以用等价无穷小替换：若 $\alpha \sim \alpha'$，$\beta \sim \beta'$，则 $\lim \dfrac{\alpha}{\beta} = \lim \dfrac{\alpha'}{\beta'}$。</p>
+      <p><strong>注意</strong>：在<strong>加减</strong>因子中不能随意替换！例如 $\tan x - \sin x$ 不能替换为 $x - x = 0$，正确做法是 $\tan x - \sin x = \sin x\left(\dfrac{1}{\cos x} - 1\right) \sim x \cdot \dfrac{x^2}{2} = \dfrac{x^3}{2}$。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 等价无穷小求极限</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：求 $\lim_{x \to 0} \dfrac{\tan x - \sin x}{x^3}$。</p>
+        <p><strong>解</strong>：$\tan x - \sin x = \sin x \cdot \dfrac{1 - \cos x}{\cos x}$</p>
+        <p>当 $x \to 0$ 时，$\sin x \sim x$，$1 - \cos x \sim \dfrac{x^2}{2}$，$\cos x \to 1$。</p>
+        <p>原式 $= \lim_{x \to 0} \dfrac{x \cdot \frac{x^2}{2}}{x^3 \cdot 1} = \dfrac{1}{2}$</p>
+      </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">本章解题技巧总结</div>
+      <ol>
+        <li><strong>$\eps$-$N$ / $\eps$-$\delta$ 证明</strong>：先"分析"找到 $N$ 或 $\delta$，再"综合"写出正式证明。</li>
+        <li><strong>夹逼定理</strong>：适用于 $n$ 项和或不易直接计算的数列，关键是找到合适的放缩。</li>
+        <li><strong>单调有界定理</strong>：适用于递推定义的数列，先证单调性再证有界性。</li>
+        <li><strong>Heine 定理</strong>：证明极限不存在的利器，找两个不同趋向的子列。</li>
+        <li><strong>等价无穷小替换</strong>：乘除因子中可替换，加减因子中不可替换。</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="index.html" class="prev">首页</a>
+    <a href="ch2.html" class="next">第二章</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>数学分析复习指南 · 基于陈纪修教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第四章 · 一元积分学</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          eps: '\\varepsilon',
+          dd: '\\mathrm{d}',
+          sup: '\\sup',
+          inf: '\\inf'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">数学分析</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第四章 · 一元积分学</h1>
+    <p>从求和到反导数：Riemann 积分的严格构造、Newton-Leibniz 公式将微分与积分统一，以及反常积分的审敛。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">不定积分</a></li>
+      <li><a href="#s2">Riemann 积分的定义</a></li>
+      <li><a href="#s3">可积条件</a></li>
+      <li><a href="#s4">定积分的性质</a></li>
+      <li><a href="#s5">微积分基本定理</a></li>
+      <li><a href="#s6">反常积分</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 4.1 不定积分 ==================== -->
+  <div class="section" id="s1">
+    <h2>4.1 不定积分</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 原函数与不定积分</div>
+      <p>若 $F'(x) = f(x)$，则称 $F(x)$ 为 $f(x)$ 的一个<strong>原函数</strong>。$f(x)$ 的全体原函数称为 $f(x)$ 的<strong>不定积分</strong>，记为</p>
+      $$\int f(x)\,\dd x = F(x) + C$$
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">基本积分公式</div>
+      <p>$\int x^n \dd x = \dfrac{x^{n+1}}{n+1} + C$（$n \neq -1$），$\int \dfrac{1}{x} \dd x = \ln|x| + C$</p>
+      <p>$\int e^x \dd x = e^x + C$，$\int a^x \dd x = \dfrac{a^x}{\ln a} + C$</p>
+      <p>$\int \sin x \dd x = -\cos x + C$，$\int \cos x \dd x = \sin x + C$</p>
+      <p>$\int \sec^2 x \dd x = \tan x + C$，$\int \dfrac{1}{1+x^2} \dd x = \arctan x + C$</p>
+      <p>$\int \dfrac{1}{\sqrt{1-x^2}} \dd x = \arcsin x + C$</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">换元积分法</div>
+      <p><strong>第一类换元法</strong>（凑微分）：$\int f(g(x)) g'(x) \dd x = \int f(u) \dd u \Big|_{u=g(x)}$</p>
+      <p><strong>第二类换元法</strong>（变量替换）：令 $x = \varphi(t)$，则 $\int f(x) \dd x = \int f(\varphi(t)) \varphi'(t) \dd t$</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">分部积分法</div>
+      <div class="formula-highlight">
+        $$\int u \dd v = uv - \int v \dd u$$
+      </div>
+      <p><strong>口诀</strong>：反对幂指三——优先选 $u$ 的顺序：反三角 > 对数 > 幂函数 > 指数 > 三角。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 分部积分</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：求 $\int x e^x \dd x$。</p>
+        <p><strong>解</strong>：令 $u = x$，$\dd v = e^x \dd x$，则 $\dd u = \dd x$，$v = e^x$。</p>
+        <p>$\int x e^x \dd x = xe^x - \int e^x \dd x = xe^x - e^x + C = (x-1)e^x + C$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 4.2 Riemann 积分 ==================== -->
+  <div class="section" id="s2">
+    <h2>4.2 Riemann 积分的定义</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · Riemann 积分</div>
+      <p>设 $f$ 在 $[a,b]$ 上有界。对 $[a,b]$ 的任意分划 $T: a = x_0 < x_1 < \cdots < x_n = b$，记 $\Delta x_i = x_i - x_{i-1}$，$\|T\| = \max_i \Delta x_i$。</p>
+      <p>在每个小区间 $[x_{i-1}, x_i]$ 上任取 $\xi_i$，作 <strong>Riemann 和</strong></p>
+      $$S(T, f) = \sum_{i=1}^n f(\xi_i) \Delta x_i$$
+      <p>若当 $\|T\| \to 0$ 时，$S(T,f)$ 的极限存在且与分划和 $\xi_i$ 的选取无关，则称 $f$ 在 $[a,b]$ 上 <strong>Riemann 可积</strong>，此极限值为 $f$ 在 $[a,b]$ 上的<strong>定积分</strong>，记为</p>
+      <div class="formula-highlight">
+        $$\int_a^b f(x)\,\dd x = \lim_{\|T\| \to 0} \sum_{i=1}^n f(\xi_i) \Delta x_i$$
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 4.3 可积条件 ==================== -->
+  <div class="section" id="s3">
+    <h2>4.3 可积条件</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">可积的充分条件</div>
+      <ol>
+        <li>$f$ 在 $[a,b]$ 上<strong>连续</strong> $\Rightarrow$ $f$ 在 $[a,b]$ 上可积。</li>
+        <li>$f$ 在 $[a,b]$ 上<strong>单调</strong> $\Rightarrow$ $f$ 在 $[a,b]$ 上可积。</li>
+        <li>$f$ 在 $[a,b]$ 上有界，且只有<strong>有限个间断点</strong> $\Rightarrow$ $f$ 在 $[a,b]$ 上可积。</li>
+      </ol>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">可积 vs 连续</div>
+      <p>可积不要求连续！有界且间断点"足够少"（如有限个或零测集）的函数也可积。但无界函数一定不可积。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 4.4 定积分的性质 ==================== -->
+  <div class="section" id="s4">
+    <h2>4.4 定积分的性质</h2>
+
+    <div class="box box-formula">
+      <div class="box-title">定积分的基本性质</div>
+      <ol>
+        <li><strong>线性</strong>：$\int_a^b [\alpha f + \beta g]\dd x = \alpha \int_a^b f\dd x + \beta \int_a^b g\dd x$</li>
+        <li><strong>区间可加</strong>：$\int_a^b f\dd x = \int_a^c f\dd x + \int_c^b f\dd x$</li>
+        <li><strong>保序</strong>：若 $f \leq g$，则 $\int_a^b f\dd x \leq \int_a^b g\dd x$</li>
+        <li><strong>绝对值不等式</strong>：$\left|\int_a^b f\dd x\right| \leq \int_a^b |f|\dd x$</li>
+      </ol>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">积分中值定理</div>
+      <p><strong>第一中值定理</strong>：若 $f$ 在 $[a,b]$ 上连续，则存在 $\xi \in [a,b]$ 使得</p>
+      $$\int_a^b f(x)\dd x = f(\xi)(b-a)$$
+      <p><strong>推广形式</strong>：若 $f$ 连续，$g$ 在 $[a,b]$ 上不变号，则存在 $\xi \in [a,b]$ 使得</p>
+      $$\int_a^b f(x)g(x)\dd x = f(\xi)\int_a^b g(x)\dd x$$
+    </div>
+  </div>
+
+  <!-- ==================== 4.5 微积分基本定理 ==================== -->
+  <div class="section" id="s5">
+    <h2>4.5 微积分基本定理</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">微积分基本定理 I（变限积分求导）</div>
+      <p>若 $f$ 在 $[a,b]$ 上连续，则变限积分 $\Phi(x) = \int_a^x f(t)\dd t$ 在 $[a,b]$ 上可导，且</p>
+      <div class="formula-highlight">
+        $$\Phi'(x) = \frac{\dd}{\dd x}\int_a^x f(t)\dd t = f(x)$$
+      </div>
+      <p>推广：$\dfrac{\dd}{\dd x}\int_{a(x)}^{b(x)} f(t)\dd t = f(b(x)) \cdot b'(x) - f(a(x)) \cdot a'(x)$</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">微积分基本定理 II（Newton-Leibniz 公式）</div>
+      <p>若 $f$ 在 $[a,b]$ 上连续，$F$ 是 $f$ 的一个原函数，则</p>
+      <div class="formula-highlight">
+        $$\int_a^b f(x)\dd x = F(b) - F(a) = F(x)\Big|_a^b$$
+      </div>
+      <p><strong>意义</strong>：定积分的计算归结为求原函数——微分与积分的完美统一。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 变限积分求导</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：设 $F(x) = \int_0^{x^2} e^{t^2}\dd t$，求 $F'(x)$。</p>
+        <p><strong>解</strong>：令 $u = x^2$，则 $F(x) = \int_0^u e^{t^2}\dd t$。</p>
+        <p>由链式法则：$F'(x) = e^{u^2} \cdot u' = e^{x^4} \cdot 2x = 2xe^{x^4}$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 4.6 反常积分 ==================== -->
+  <div class="section" id="s6">
+    <h2>4.6 反常积分</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 无穷限反常积分</div>
+      <p>$\int_a^{+\infty} f(x)\dd x = \lim_{b \to +\infty} \int_a^b f(x)\dd x$。若此极限存在（有限），则称反常积分<strong>收敛</strong>，否则<strong>发散</strong>。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 瑕积分</div>
+      <p>若 $f$ 在 $x=b$ 附近无界（$b$ 为瑕点），则</p>
+      $$\int_a^b f(x)\dd x = \lim_{\eps \to 0^+} \int_a^{b-\eps} f(x)\dd x$$
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">比较审敛法</div>
+      <p>若 $0 \leq f(x) \leq g(x)$（$x$ 充分大），则：</p>
+      <ul>
+        <li>$\int_a^{+\infty} g(x)\dd x$ 收敛 $\Rightarrow$ $\int_a^{+\infty} f(x)\dd x$ 收敛</li>
+        <li>$\int_a^{+\infty} f(x)\dd x$ 发散 $\Rightarrow$ $\int_a^{+\infty} g(x)\dd x$ 发散</li>
+      </ul>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">$p$-积分的敛散性</div>
+      <p>$\int_1^{+\infty} \dfrac{1}{x^p}\dd x$：$p > 1$ 收敛，$p \leq 1$ 发散。</p>
+      <p>$\int_0^1 \dfrac{1}{x^p}\dd x$（$p > 0$，$x=0$ 为瑕点）：$p < 1$ 收敛，$p \geq 1$ 发散。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">本章解题技巧总结</div>
+      <ol>
+        <li><strong>不定积分</strong>：先判断类型（有理式、三角、根式），选择合适的换元或分部。</li>
+        <li><strong>定积分计算</strong>：Newton-Leibniz 公式是首选，奇偶函数在对称区间上的积分可简化。</li>
+        <li><strong>变限积分求导</strong>：先将被积函数中的 $x$ 提到积分号外或做变量替换。</li>
+        <li><strong>反常积分</strong>：先判断类型（无穷限/瑕积分），用比较审敛法或 $p$-积分判定。</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="ch3.html" class="prev">第三章</a>
+    <a href="ch5.html" class="next">第五章</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>数学分析复习指南 · 基于陈纪修教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

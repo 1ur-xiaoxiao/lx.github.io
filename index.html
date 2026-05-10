@@ -113,6 +113,8 @@ body::before {
 .course-card:nth-child(3) { animation-delay: 0.45s; }
 .course-card:nth-child(4) { animation-delay: 0.6s; }
 .course-card:nth-child(5) { animation-delay: 0.75s; }
+.course-card:nth-child(6) { animation-delay: 0.9s; }
+.course-card:nth-child(7) { animation-delay: 1.05s; }
 
 .course-card::before {
   content: '';
@@ -141,6 +143,14 @@ body::before {
 
 .course-card.stat::before {
   background: linear-gradient(90deg, #00b4d8, #9b59b6);
+}
+
+.course-card.ma::before {
+  background: linear-gradient(90deg, #e53e3e, #d69e2e);
+}
+
+.course-card.la::before {
+  background: linear-gradient(90deg, #6b46c1, #2b6cb0);
 }
 
 .course-card:hover {
@@ -248,7 +258,7 @@ body::before {
 
 <div class="header">
   <h1>数学系课程总览</h1>
-  <p>数据挖掘、概率论、数理统计、复变函数与偏微分方程 · 在线复习指南</p>
+  <p>数学分析、高等代数、概率论、数理统计、复变函数、偏微分方程与数据挖掘 · 在线复习指南</p>
 </div>
 
 <div class="cards">
@@ -311,10 +321,34 @@ body::before {
     </div>
     <div class="card-enter">进入课程 <span class="arrow">→</span></div>
   </a>
+
+  <a href="数学分析/index.html" class="course-card ma">
+    <span class="card-icon">📐</span>
+    <div class="card-title">数学分析</div>
+    <div class="card-subtitle">基于陈纪修教材 · 三学期课程系统梳理<br>从极限论到多元微积分，完整覆盖数学分析核心内容</div>
+    <div class="card-meta">
+      <span class="tag">6 个章节</span>
+      <span class="tag">ε-δ 语言</span>
+      <span class="tag">定理证明</span>
+    </div>
+    <div class="card-enter">进入课程 <span class="arrow">→</span></div>
+  </a>
+
+  <a href="高等代数/index.html" class="course-card la">
+    <span class="card-icon">🔢</span>
+    <div class="card-title">高等代数</div>
+    <div class="card-subtitle">基于丘维声教材 · 两学期课程系统梳理<br>从多项式到线性变换，完整覆盖高等代数核心内容</div>
+    <div class="card-meta">
+      <span class="tag">6 个章节</span>
+      <span class="tag">矩阵理论</span>
+      <span class="tag">线性空间</span>
+    </div>
+    <div class="card-enter">进入课程 <span class="arrow">→</span></div>
+  </a>
 </div>
 
 <div class="footer">
-  数学系 · 五门课程 · 在线复习平台
+  数学系 · 七门课程 · 在线复习平台
 </div>
 
 </body>

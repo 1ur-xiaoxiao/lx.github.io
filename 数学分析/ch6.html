@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第六章 · 多元函数微分学</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          eps: '\\varepsilon',
+          dd: '\\mathrm{d}',
+          sup: '\\sup',
+          inf: '\\inf'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">数学分析</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第六章 · 多元函数微分学</h1>
+    <p>从一维到高维的推广：多元函数的极限与连续、偏导数与全微分、隐函数定理与 Lagrange 乘数法。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">多元函数的极限与连续</a></li>
+      <li><a href="#s2">偏导数</a></li>
+      <li><a href="#s3">全微分</a></li>
+      <li><a href="#s4">复合函数求导（链式法则）</a></li>
+      <li><a href="#s5">隐函数定理</a></li>
+      <li><a href="#s6">极值与条件极值</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 6.1 极限与连续 ==================== -->
+  <div class="section" id="s1">
+    <h2>6.1 多元函数的极限与连续</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 多元函数的极限</div>
+      <p>设 $f$ 在点 $P_0 = (x_0, y_0)$ 的某去心邻域内有定义，$A \in \RR$。若对任意 $\eps > 0$，存在 $\delta > 0$，当 $0 < \|P - P_0\| < \delta$ 时（即 $0 < \sqrt{(x-x_0)^2+(y-y_0)^2} < \delta$），</p>
+      $$|f(x,y) - A| < \eps$$
+      <p>则记 $\lim_{(x,y) \to (x_0,y_0)} f(x,y) = A$。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">多元极限的困难</div>
+      <p>多元极限要求 $(x,y)$ 沿<strong>任何路径</strong>趋向 $(x_0,y_0)$ 时极限都相同。证明极限存在通常用夹逼定理，证明极限不存在只需找两条不同路径使极限不同。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 证明二重极限不存在</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：证明 $\lim_{(x,y) \to (0,0)} \dfrac{xy}{x^2+y^2}$ 不存在。</p>
+        <p><strong>证明</strong>：沿 $y = kx$ 趋向原点：</p>
+        <p>$\lim_{x \to 0} \dfrac{x \cdot kx}{x^2 + k^2 x^2} = \dfrac{k}{1+k^2}$</p>
+        <p>极限值依赖于 $k$（不同路径得到不同极限），故原极限不存在。</p>
+      </div>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 多元函数的连续</div>
+      <p>$f$ 在 $(x_0, y_0)$ 连续：$\lim_{(x,y) \to (x_0,y_0)} f(x,y) = f(x_0, y_0)$。</p>
+      <p>有界闭区域上的连续函数同样具有有界性、最值定理和介值定理。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 6.2 偏导数 ==================== -->
+  <div class="section" id="s2">
+    <h2>6.2 偏导数</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 偏导数</div>
+      <p>$f$ 在 $(x_0, y_0)$ 处对 $x$ 的<strong>偏导数</strong>：</p>
+      $$f_x(x_0, y_0) = \lim_{\Delta x \to 0} \frac{f(x_0 + \Delta x, y_0) - f(x_0, y_0)}{\Delta x}$$
+      <p>即固定 $y = y_0$，对 $x$ 求导。类似定义 $f_y$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">Clairaut 定理（混合偏导数与顺序无关）</div>
+      <p>若 $f_{xy}$ 和 $f_{yx}$ 在某区域内连续，则 $f_{xy} = f_{yx}$。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">偏导数存在 $\not\Rightarrow$ 连续</div>
+      <p>与一元函数不同，多元函数偏导数存在不能保证连续。例如 $f(x,y) = \begin{cases} \dfrac{xy}{x^2+y^2}, & (x,y) \neq (0,0) \\ 0, & (x,y) = (0,0) \end{cases}$</p>
+      <p>在原点 $f_x(0,0) = f_y(0,0) = 0$，但 $f$ 在原点不连续。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 6.3 全微分 ==================== -->
+  <div class="section" id="s3">
+    <h2>6.3 全微分</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 全微分</div>
+      <p>若 $f$ 在 $(x_0, y_0)$ 处的全增量可以写成</p>
+      $$\Delta z = f(x_0+\Delta x, y_0+\Delta y) - f(x_0, y_0) = A\Delta x + B\Delta y + o(\rho)$$
+      <p>其中 $\rho = \sqrt{(\Delta x)^2 + (\Delta y)^2}$，$A, B$ 与 $\Delta x, \Delta y$ 无关，则称 $f$ 在 $(x_0,y_0)$ 处<strong>可微</strong>，$\dd z = A\dd x + B\dd y$ 为<strong>全微分</strong>。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">可微的必要条件与充分条件</div>
+      <p><strong>必要条件</strong>：可微 $\Rightarrow$ 偏导数存在，且 $A = f_x$，$B = f_y$，即 $\dd z = f_x \dd x + f_y \dd y$。</p>
+      <p><strong>充分条件</strong>：偏导数 $f_x, f_y$ 连续 $\Rightarrow$ 可微。</p>
+      <p>关系链：偏导连续 $\Rightarrow$ 可微 $\Rightarrow$ 偏导存在，可微 $\Rightarrow$ 连续。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 6.4 链式法则 ==================== -->
+  <div class="section" id="s4">
+    <h2>6.4 复合函数求导（链式法则）</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">链式法则</div>
+      <p>设 $z = f(u,v)$，$u = \varphi(x,y)$，$v = \psi(x,y)$，则</p>
+      <div class="formula-highlight">
+        $$\frac{\partial z}{\partial x} = \frac{\partial z}{\partial u}\frac{\partial u}{\partial x} + \frac{\partial z}{\partial v}\frac{\partial v}{\partial x}$$
+        $$\frac{\partial z}{\partial y} = \frac{\partial z}{\partial u}\frac{\partial u}{\partial y} + \frac{\partial z}{\partial v}\frac{\partial v}{\partial y}$$
+      </div>
+      <p><strong>记忆</strong>：画出变量之间的依赖树，沿每条路径求偏导后相乘，再将所有路径相加。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 链式法则</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：设 $z = e^{u}\sin v$，$u = xy$，$v = x+y$，求 $\dfrac{\partial z}{\partial x}$。</p>
+        <p><strong>解</strong>：$\dfrac{\partial z}{\partial x} = \dfrac{\partial z}{\partial u}\dfrac{\partial u}{\partial x} + \dfrac{\partial z}{\partial v}\dfrac{\partial v}{\partial x}$</p>
+        <p>$= e^u \sin v \cdot y + e^u \cos v \cdot 1$</p>
+        <p>$= e^{xy}[y\sin(x+y) + \cos(x+y)]$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 6.5 隐函数定理 ==================== -->
+  <div class="section" id="s5">
+    <h2>6.5 隐函数定理</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">隐函数存在定理</div>
+      <p>设 $F(x,y)$ 在 $(x_0,y_0)$ 附近有连续偏导数，$F(x_0,y_0) = 0$，$F_y(x_0,y_0) \neq 0$，</p>
+      <p>则在 $(x_0,y_0)$ 附近存在唯一连续可微函数 $y = y(x)$ 满足 $F(x, y(x)) = 0$，且</p>
+      <div class="formula-highlight">
+        $$\frac{\dd y}{\dd x} = -\frac{F_x}{F_y}$$
+      </div>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">隐函数求导的方法</div>
+      <p><strong>方法一</strong>：公式法，直接用 $\dfrac{\dd y}{\dd x} = -\dfrac{F_x}{F_y}$。</p>
+      <p><strong>方法二</strong>：方程两边对 $x$ 求导（注意 $y$ 是 $x$ 的函数），解出 $y'$。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 隐函数求导</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：设 $x^2 + y^2 + z^2 = 1$ 确定 $z = z(x,y)$，求 $\dfrac{\partial z}{\partial x}$ 和 $\dfrac{\partial z}{\partial y}$。</p>
+        <p><strong>解</strong>：令 $F = x^2 + y^2 + z^2 - 1$。</p>
+        <p>$F_x = 2x$，$F_y = 2y$，$F_z = 2z$</p>
+        <p>$\dfrac{\partial z}{\partial x} = -\dfrac{F_x}{F_z} = -\dfrac{x}{z}$，$\dfrac{\partial z}{\partial y} = -\dfrac{F_y}{F_z} = -\dfrac{y}{z}$（$z \neq 0$）</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 6.6 极值与条件极值 ==================== -->
+  <div class="section" id="s6">
+    <h2>6.6 极值与条件极值</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">无条件极值的必要条件</div>
+      <p>若 $f(x,y)$ 在 $(x_0,y_0)$ 取极值且偏导存在，则 $f_x(x_0,y_0) = f_y(x_0,y_0) = 0$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">无条件极值的充分条件（Hessian 判别法）</div>
+      <p>设 $f_x(x_0,y_0) = f_y(x_0,y_0) = 0$，记 $A = f_{xx}$，$B = f_{xy}$，$C = f_{yy}$（均在 $(x_0,y_0)$ 处取值），$\Delta = AC - B^2$：</p>
+      <ul>
+        <li>$\Delta > 0$ 且 $A > 0$：极小值</li>
+        <li>$\Delta > 0$ 且 $A < 0$：极大值</li>
+        <li>$\Delta < 0$：非极值（鞍点）</li>
+        <li>$\Delta = 0$：无法判定</li>
+      </ul>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">Lagrange 乘数法（条件极值）</div>
+      <p>求 $f(x,y,z)$ 在约束条件 $g(x,y,z) = 0$ 下的极值。</p>
+      <p>构造 <strong>Lagrange 函数</strong>：</p>
+      $$L(x,y,z,\lambda) = f(x,y,z) - \lambda g(x,y,z)$$
+      <p>令所有偏导为零：</p>
+      $$L_x = 0, \quad L_y = 0, \quad L_z = 0, \quad L_\lambda = 0 \text{（即 } g=0\text{）}$$
+      <p>解方程组得到候选极值点。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · Lagrange 乘数法</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：求 $f(x,y) = xy$ 在约束 $x + y = 1$ 下的最大值。</p>
+        <p><strong>解</strong>：$L = xy - \lambda(x+y-1)$</p>
+        <p>$L_x = y - \lambda = 0$，$L_y = x - \lambda = 0$，$L_\lambda = -(x+y-1) = 0$</p>
+        <p>由前两式：$y = \lambda = x$，代入第三式：$2x = 1$，$x = y = \dfrac{1}{2}$。</p>
+        <p>$f\left(\dfrac{1}{2}, \dfrac{1}{2}\right) = \dfrac{1}{4}$ 为最大值。</p>
+      </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">本章解题技巧总结</div>
+      <ol>
+        <li><strong>二重极限</strong>：证明存在用夹逼定理，证明不存在找两条不同路径。</li>
+        <li><strong>偏导数计算</strong>：固定其他变量，对目标变量求导。</li>
+        <li><strong>链式法则</strong>：画变量依赖树，沿路径求导后相加。</li>
+        <li><strong>隐函数求导</strong>：公式法 $y' = -F_x/F_y$ 最简洁。</li>
+        <li><strong>条件极值</strong>：Lagrange 乘数法是标准方法，解方程组得到候选点。</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="ch5.html" class="prev">第五章</a>
+    <a href="index.html" class="next">首页</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>数学分析复习指南 · 基于陈纪修教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

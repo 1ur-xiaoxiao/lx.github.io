@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第二章 · 行列式</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          FF: '\\mathbb{F}',
+          rank: '\\mathrm{rank}',
+          det: '\\mathrm{det}',
+          tr: '\\mathrm{tr}',
+          diag: '\\mathrm{diag}',
+          dim: '\\mathrm{dim}',
+          ker: '\\mathrm{ker}',
+          Im: '\\mathrm{Im}',
+          dd: '\\mathrm{d}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">高等代数</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第二章 · 行列式</h1>
+    <p>线性代数的核心计算工具：从排列的奇偶性出发定义行列式，掌握行列式的性质、展开方法与 Cramer 法则。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">排列与逆序数</a></li>
+      <li><a href="#s2">$n$ 阶行列式的定义</a></li>
+      <li><a href="#s3">行列式的性质</a></li>
+      <li><a href="#s4">行列式按行（列）展开</a></li>
+      <li><a href="#s5">行列式的计算方法</a></li>
+      <li><a href="#s6">Cramer 法则</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 2.1 排列 ==================== -->
+  <div class="section" id="s1">
+    <h2>2.1 排列与逆序数</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 排列与逆序</div>
+      <p>$1, 2, \ldots, n$ 的一个<strong>排列</strong>是这 $n$ 个数的一个有序排列 $j_1 j_2 \cdots j_n$。</p>
+      <p>在一个排列中，若 $i < k$ 但 $j_i > j_k$，则称 $(j_i, j_k)$ 构成一个<strong>逆序</strong>。</p>
+      <p>排列中逆序的总数称为<strong>逆序数</strong>，记为 $\tau(j_1 j_2 \cdots j_n)$。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 奇排列与偶排列</div>
+      <p>逆序数为奇数的排列称为<strong>奇排列</strong>，逆序数为偶数的排列称为<strong>偶排列</strong>。</p>
+      <p>对换一次（交换两个位置的数）改变排列的奇偶性。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">$n$ 级排列的总数</div>
+      <p>$n$ 级排列共 $n!$ 个，其中奇排列和偶排列各 $n!/2$ 个。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 求逆序数</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：求排列 $3\, 1\, 5\, 2\, 4$ 的逆序数。</p>
+        <p><strong>解</strong>：</p>
+        <p>3：后面比 3 小的有 1, 2 → 2 个逆序</p>
+        <p>1：后面比 1 小的无 → 0 个逆序</p>
+        <p>5：后面比 5 小的有 2, 4 → 2 个逆序</p>
+        <p>2：后面比 2 小的无 → 0 个逆序</p>
+        <p>4：后面无 → 0 个逆序</p>
+        <p>$\tau = 2 + 0 + 2 + 0 + 0 = 4$，为偶排列。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2.2 行列式定义 ==================== -->
+  <div class="section" id="s2">
+    <h2>2.2 $n$ 阶行列式的定义</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · $n$ 阶行列式</div>
+      <p>$n$ 阶行列式定义为</p>
+      <div class="formula-highlight">
+        $$\det A = \begin{vmatrix} a_{11} & a_{12} & \cdots & a_{1n} \\ a_{21} & a_{22} & \cdots & a_{2n} \\ \vdots & \vdots & \ddots & \vdots \\ a_{n1} & a_{n2} & \cdots & a_{nn} \end{vmatrix} = \sum_{j_1 j_2 \cdots j_n} (-1)^{\tau(j_1 j_2 \cdots j_n)} a_{1j_1} a_{2j_2} \cdots a_{nj_n}$$
+      </div>
+      <p>其中求和遍历所有 $n$ 级排列。</p>
+      <p><strong>直觉</strong>：从每行每列各取一个元素相乘，再根据列排列的奇偶性赋予正负号。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">二阶与三阶行列式</div>
+      <p><strong>二阶</strong>：$\begin{vmatrix} a & b \\ c & d \end{vmatrix} = ad - bc$</p>
+      <p><strong>三阶</strong>（对角线法则）：$\begin{vmatrix} a_1 & a_2 & a_3 \\ b_1 & b_2 & b_3 \\ c_1 & c_2 & c_3 \end{vmatrix} = a_1b_2c_3 + a_2b_3c_1 + a_3b_1c_2 - a_3b_2c_1 - a_2b_1c_3 - a_1b_3c_2$</p>
+      <p><strong>注意</strong>：对角线法则只适用于二阶和三阶！$n \geq 4$ 时必须用定义或展开。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 2.3 行列式的性质 ==================== -->
+  <div class="section" id="s3">
+    <h2>2.3 行列式的性质</h2>
+
+    <div class="box box-formula">
+      <div class="box-title">行列式的基本性质</div>
+      <ol>
+        <li>$\det A^T = \det A$（转置不变）</li>
+        <li>交换两行（列），行列式变号</li>
+        <li>某行（列）乘常数 $k$，行列式乘 $k$</li>
+        <li>某行（列）加上另一行（列）的倍数，行列式不变</li>
+        <li>若某行（列）全为零，行列式为零</li>
+        <li>若两行（列）相同，行列式为零</li>
+      </ol>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">行列式的乘法公式</div>
+      $$\det(AB) = \det A \cdot \det B$$
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">性质的使用策略</div>
+      <p>计算行列式的核心策略：<strong>利用行（列）变换将行列式化为上三角形</strong>，此时行列式等于对角元素之积。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 2.4 按行展开 ==================== -->
+  <div class="section" id="s4">
+    <h2>2.4 行列式按行（列）展开</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 余子式与代数余子式</div>
+      <p>划去 $a_{ij}$ 所在的第 $i$ 行和第 $j$ 列后得到的 $n-1$ 阶行列式称为 $a_{ij}$ 的<strong>余子式</strong> $M_{ij}$。</p>
+      <p>$a_{ij}$ 的<strong>代数余子式</strong>为 $A_{ij} = (-1)^{i+j} M_{ij}$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">行列式按行（列）展开定理</div>
+      <p>行列式等于任意一行（列）的元素与其代数余子式乘积之和：</p>
+      <div class="formula-highlight">
+        $$\det A = \sum_{k=1}^n a_{ik} A_{ik} \quad (\text{按第 } i \text{ 行展开}) = \sum_{k=1}^n a_{kj} A_{kj} \quad (\text{按第 } j \text{ 列展开})$$
+      </div>
+      <p><strong>重要</strong>：一行（列）的元素与<strong>另一行（列）</strong>的代数余子式乘积之和为零：$\sum_k a_{ik} A_{jk} = 0$（$i \neq j$）。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">Laplace 展开定理</div>
+      <p>行列式等于任意 $k$ 行元素构成的所有 $k$ 阶子式与其对应代数余子式乘积之和。</p>
+      <p>当 $k=1$ 时退化为普通的按行展开。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 2.5 计算方法 ==================== -->
+  <div class="section" id="s5">
+    <h2>2.5 行列式的计算方法</h2>
+
+    <div class="box box-formula">
+      <div class="box-title">Vandermonde 行列式</div>
+      <div class="formula-highlight">
+        $$V_n = \begin{vmatrix} 1 & 1 & \cdots & 1 \\ x_1 & x_2 & \cdots & x_n \\ x_1^2 & x_2^2 & \cdots & x_n^2 \\ \vdots & \vdots & \ddots & \vdots \\ x_1^{n-1} & x_2^{n-1} & \cdots & x_n^{n-1} \end{vmatrix} = \prod_{1 \leq i < j \leq n} (x_j - x_i)$$
+      </div>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">常见特殊行列式</div>
+      <p><strong>上（下）三角行列式</strong>：等于对角元素之积 $a_{11} a_{22} \cdots a_{nn}$</p>
+      <p><strong>对角行列式</strong>：同上</p>
+      <p><strong>副对角行列式</strong>：$(-1)^{n(n-1)/2} a_{1n} a_{2,n-1} \cdots a_{n1}$</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">行列式计算的常用技巧</div>
+      <ol>
+        <li><strong>化为上三角</strong>：用行变换消元，最通用的方法。</li>
+        <li><strong>按行（列）展开</strong>：选零元素最多的行/列展开。</li>
+        <li><strong>递推法</strong>：对具有递推结构的行列式，建立递推关系。</li>
+        <li><strong>加边法</strong>：在行列式边上加一行一列，利用 Vandermonde 等公式。</li>
+        <li><strong>数学归纳法</strong>：对含参数 $n$ 的行列式。</li>
+      </ol>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 三对角行列式</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：计算 $D_n = \begin{vmatrix} 2 & 1 & 0 & \cdots & 0 \\ 1 & 2 & 1 & \cdots & 0 \\ 0 & 1 & 2 & \cdots & 0 \\ \vdots & & \ddots & \ddots & 1 \\ 0 & \cdots & 0 & 1 & 2 \end{vmatrix}$</p>
+        <p><strong>解</strong>：按第一行展开建立递推关系：</p>
+        <p>$D_n = 2D_{n-1} - D_{n-2}$</p>
+        <p>特征方程 $r^2 - 2r + 1 = 0$，$r = 1$（二重根）。</p>
+        <p>$D_n = A + Bn$。由 $D_1 = 2$，$D_2 = 3$ 得 $A = B = 1$。</p>
+        <p>$D_n = n + 1$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2.6 Cramer 法则 ==================== -->
+  <div class="section" id="s6">
+    <h2>2.6 Cramer 法则</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">Cramer 法则</div>
+      <p>设线性方程组 $AX = b$ 中 $A$ 为 $n$ 阶方阵，$\det A \neq 0$，则方程组有唯一解</p>
+      <div class="formula-highlight">
+        $$x_j = \frac{D_j}{D}, \qquad j = 1, 2, \ldots, n$$
+      </div>
+      <p>其中 $D = \det A$，$D_j$ 是将 $A$ 的第 $j$ 列替换为 $b$ 后的行列式。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · Cramer 法则求解</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：用 Cramer 法则解 $\begin{cases} 2x + y = 5 \\ x + 3y = 7 \end{cases}$</p>
+        <p><strong>解</strong>：$D = \begin{vmatrix} 2 & 1 \\ 1 & 3 \end{vmatrix} = 6 - 1 = 5$</p>
+        <p>$D_1 = \begin{vmatrix} 5 & 1 \\ 7 & 3 \end{vmatrix} = 15 - 7 = 8$，$D_2 = \begin{vmatrix} 2 & 5 \\ 1 & 7 \end{vmatrix} = 14 - 5 = 9$</p>
+        <p>$x = \dfrac{8}{5}$，$y = \dfrac{9}{5}$</p>
+      </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">本章解题技巧总结</div>
+      <ol>
+        <li><strong>行列式计算</strong>：首选化上三角，特殊情况用展开或递推。</li>
+        <li><strong>Vandermonde 行列式</strong>：熟记公式，识别出 Vandermonde 结构可直接写出结果。</li>
+        <li><strong>Cramer 法则</strong>：理论意义大于实际计算意义（大矩阵计算量太大），但小规模问题很方便。</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="ch1.html" class="prev">第一章</a>
+    <a href="ch3.html" class="next">第三章</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>高等代数复习指南 · 基于丘维声教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>
