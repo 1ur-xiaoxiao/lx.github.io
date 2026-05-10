@@ -293,8 +293,9 @@
         return s*h;
       }
 
+      var YMIN=-0.2, YMAX=2.8;
       function x2s(x){ return 50+(x-XMIN)/(XMAX-XMIN)*(W-80); }
-      function y2s(y){ return (H-30)-y*(H-70); }
+      function y2s(y){ return (H-30)-(y-YMIN)/(YMAX-YMIN)*(H-60); }
 
       function drawAxes(){
         ctx.save();
@@ -306,7 +307,7 @@
         for(var v=-8;v<=8;v+=2) ctx.fillText(v,x2s(v),H-15);
         ctx.fillText('x',W-18,H-15);
         ctx.textAlign='right';
-        ctx.fillText('1',x0-5,y2s(1)+4); ctx.fillText('u',x0-5,25);
+        ctx.fillText('1',x0-5,y2s(1)+4); ctx.fillText('2',x0-5,y2s(2)+4); ctx.fillText('u',x0-5,25);
         ctx.textAlign='left'; ctx.fillStyle='#555'; ctx.font='13px sans-serif';
         ctx.fillText('t = '+t.toFixed(3),55,38);
         ctx.restore();
