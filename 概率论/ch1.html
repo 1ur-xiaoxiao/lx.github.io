@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第一章 · 随机事件与概率</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          EE: '\\mathbb{E}',
+          PP: '\\mathbb{P}',
+          Var: '\\mathrm{Var}',
+          Cov: '\\mathrm{Cov}',
+          dd: '\\mathrm{d}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">概率论复习</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="appendix.html">附录</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第一章 · 随机事件与概率</h1>
+    <p>概率论的基石：从样本空间出发，建立概率的公理化体系，掌握条件概率与贝叶斯公式。本章是后续所有章节的基础，务必扎实掌握。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">随机试验与样本空间</a></li>
+      <li><a href="#s2">随机事件的关系与运算</a></li>
+      <li><a href="#s3">概率的定义</a></li>
+      <li><a href="#s4">概率的性质与加法公式</a></li>
+      <li><a href="#s5">条件概率与乘法公式</a></li>
+      <li><a href="#s6">事件的独立性</a></li>
+      <li><a href="#s7">全概率公式与贝叶斯公式</a></li>
+      <li><a href="#s8">综合例题与常见题型</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 1.1 随机试验与样本空间 ==================== -->
+  <div class="section" id="s1">
+    <h2>1.1 随机试验与样本空间</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 随机试验</div>
+      <p>满足以下三个条件的试验称为<strong>随机试验</strong>，记为 $E$：</p>
+      <ol>
+        <li><strong>可重复性</strong>：试验可以在相同条件下重复进行；</li>
+        <li><strong>多结果性</strong>：试验的所有可能结果不止一个，且事先已知；</li>
+        <li><strong>随机性</strong>：每次试验前无法确定会出现哪个结果。</li>
+      </ol>
+      <p>简单说：能重复做、知道有啥结果、但不知道具体出哪个。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 样本空间与样本点</div>
+      <p>随机试验 $E$ 的<strong>所有可能结果</strong>组成的集合称为<strong>样本空间</strong>，记为 $\Omega$。</p>
+      <p>样本空间中的每个元素（即每个可能结果）称为<strong>样本点</strong>，记为 $\omega$。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">如何写出样本空间</div>
+      <p>写样本空间的关键：<strong>明确"一次试验"是什么</strong>。同一个物理过程，"一次试验"的定义不同，样本空间就不同。</p>
+      <ul>
+        <li>"抛两枚硬币"——如果区分第一枚和第二枚：$\Omega=\{HH, HT, TH, TT\}$（4个样本点）</li>
+        <li>"抛两枚硬币"——如果不区分顺序：$\Omega=\{两正, 一正一反, 两反\}$（3个样本点）</li>
+      </ul>
+      <p>在概率论中，通常<strong>区分顺序</strong>，因为这样每个样本点是"等可能"的，计算更方便。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例1 · 常见随机试验的样本空间</div>
+      <table>
+        <tr><th>试验</th><th>样本空间 $\Omega$</th><th>类型</th></tr>
+        <tr><td>抛一枚硬币</td><td>$\{正, 反\}$</td><td>有限集</td></tr>
+        <tr><td>掷一颗骰子</td><td>$\{1,2,3,4,5,6\}$</td><td>有限集</td></tr>
+        <tr><td>抛两枚硬币</td><td>$\{HH,HT,TH,TT\}$</td><td>有限集</td></tr>
+        <tr><td>记录灯泡寿命</td><td>$[0,+\infty)$</td><td>无限不可列</td></tr>
+        <tr><td>公交车到站时间</td><td>$[0, 60)$（一小时内）</td><td>无限不可列</td></tr>
+        <tr><td>掷硬币直到出现正面</td><td>$\{1,2,3,\ldots\}$</td><td>无限可列</td></tr>
+      </table>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 如何正确写出样本空间</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：从一副52张扑克牌中随机抽取2张，写出以下两种情况的样本空间：</p>
+        <p>(a) 有放回抽取；(b) 无放回抽取。</p>
+        <p><strong>解</strong>：</p>
+        <p>(a) 有放回：第一次有52种可能，第二次也有52种，$\Omega$ 有 $52 \times 52 = 2704$ 个样本点。</p>
+        <p>(b) 无放回：第一次有52种，第二次只有51种，$\Omega$ 有 $52 \times 51 = 2652$ 个样本点。</p>
+        <p><strong>关键区别</strong>：有放回时两次可能抽到同一张牌，无放回则不可能。这直接影响后续概率计算。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1.2 随机事件的关系与运算 ==================== -->
+  <div class="section" id="s2">
+    <h2>1.2 随机事件的关系与运算</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 随机事件</div>
+      <p>样本空间 $\Omega$ 的<strong>子集</strong>称为<strong>随机事件</strong>，简称事件。每次试验中，当且仅当该子集中的某个样本点出现时，称该事件<strong>发生</strong>。</p>
+      <p>特别地：</p>
+      <ul>
+        <li><strong>基本事件</strong>：只含一个样本点的事件</li>
+        <li><strong>必然事件</strong>：$\Omega$ 本身（每次试验必然发生）</li>
+        <li><strong>不可能事件</strong>：$\emptyset$（每次试验都不发生）</li>
+      </ul>
+    </div>
+
+    <h3>事件的关系</h3>
+    <div class="box box-definition">
+      <div class="box-title">四种基本关系</div>
+      <table>
+        <tr><th>关系</th><th>记号</th><th>含义</th><th>通俗理解</th></tr>
+        <tr><td>包含</td><td>$A \subset B$</td><td>A 发生必然导致 B 发生</td><td>"A 是 B 的子集"</td></tr>
+        <tr><td>相等</td><td>$A = B$</td><td>$A \subset B$ 且 $B \subset A$</td><td>"A 和 B 是同一事件"</td></tr>
+        <tr><td>互斥</td><td>$AB = \emptyset$</td><td>A 与 B 不能同时发生</td><td>"有你没我"</td></tr>
+        <tr><td>对立</td><td>$B = \bar{A}$</td><td>A 与 B 互斥，且必有一个发生</td><td>"非此即彼"</td></tr>
+      </table>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">互斥 vs 对立 —— 易混淆辨析</div>
+      <p><strong>对立一定互斥，互斥不一定对立！</strong></p>
+      <p>例子：掷骰子，$A=\{1,2\}$，$B=\{3,4\}$，$C=\{3,4,5,6\}$</p>
+      <ul>
+        <li>A 与 B 互斥（不能同时发生），但不对立（还可能掷出 5 或 6）</li>
+        <li>A 与 C 互斥且对立（非此即彼）</li>
+      </ul>
+      <p>判断方法：互斥看"能不能同时发生"，对立看"是不是非此即彼"。</p>
+    </div>
+
+    <h3>事件的运算</h3>
+    <div class="box box-definition">
+      <div class="box-title">四种基本运算</div>
+      <table>
+        <tr><th>运算</th><th>记号</th><th>含义</th><th>通俗理解</th></tr>
+        <tr><td>并（和）</td><td>$A \cup B$</td><td>A 与 B 至少有一个发生</td><td>"A 或 B"</td></tr>
+        <tr><td>交（积）</td><td>$A \cap B$</td><td>A 与 B 同时发生</td><td>"A 且 B"</td></tr>
+        <tr><td>差</td><td>$A - B$</td><td>A 发生但 B 不发生</td><td>"A 但非 B"</td></tr>
+        <tr><td>补（余）</td><td>$\bar{A}$</td><td>A 不发生</td><td>"非 A"</td></tr>
+      </table>
+      <p><strong>注意</strong>：$A - B = A\bar{B} = A - AB$，这个等式在解题中经常用到。</p>
+    </div>
+
+    <h3>运算律</h3>
+    <div class="box box-formula">
+      <div class="box-title">德摩根律（De Morgan's Laws）—— 最重要的运算律</div>
+      <p><strong>两个事件：</strong></p>
+      $$\overline{A \cup B} = \bar{A} \cap \bar{B} \qquad \overline{A \cap B} = \bar{A} \cup \bar{B}$$
+      <p><strong>$n$ 个事件：</strong></p>
+      $$\overline{\bigcup_{i=1}^n A_i} = \bigcap_{i=1}^n \bar{A_i} \qquad \overline{\bigcap_{i=1}^n A_i} = \bigcup_{i=1}^n \bar{A_i}$$
+      <p><strong>记忆口诀</strong>："并的补等于补的交，交的补等于补的并"——运算和补号互换。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">其他运算律</div>
+      <ul>
+        <li><strong>交换律</strong>：$A \cup B = B \cup A$，$A \cap B = B \cap A$</li>
+        <li><strong>结合律</strong>：$(A \cup B) \cup C = A \cup (B \cup C)$，$(A \cap B) \cap C = A \cap (B \cap C)$</li>
+        <li><strong>分配律</strong>：$A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$，$A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$</li>
+        <li><strong>吸收律</strong>：$A \cup (A \cap B) = A$，$A \cap (A \cup B) = A$</li>
+      </ul>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 用事件运算表示复杂事件</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：甲、乙、丙三人向同一目标射击。用 $A, B, C$ 分别表示甲、乙、丙命中目标。用 $A, B, C$ 表示以下事件：</p>
+        <p>(a) 三人都命中；(b) 恰好一人命中；(c) 至少一人命中；(d) 最多两人命中。</p>
+        <p><strong>解</strong>：</p>
+        <p>(a) 三人都命中：$ABC$</p>
+        <p>(b) 恰好一人命中：$A\bar{B}\bar{C} \cup \bar{A}B\bar{C} \cup \bar{A}\bar{B}C$</p>
+        <p>(c) 至少一人命中：$A \cup B \cup C$（或用对立：$\overline{\bar{A}\bar{B}\bar{C}}$）</p>
+        <p>(d) 最多两人命中：$\overline{ABC}$（对立事件法最简洁！）</p>
+        <p><strong>技巧</strong>："至少一个"用并集或对立事件，"恰好"需要精确列举。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1.3 概率的定义 ==================== -->
+  <div class="section" id="s3">
+    <h2>1.3 概率的定义</h2>
+
+    <p>概率是对事件发生可能性大小的数值度量。历史上有三种理解方式，最终由 Kolmogorov 给出了严格的公理化定义。</p>
+
+    <h3>频率</h3>
+    <div class="box box-definition">
+      <div class="box-title">定义 · 频率</div>
+      <p>在 $n$ 次重复试验中，事件 A 发生了 $n_A$ 次，则称</p>
+      $$f_n(A) = \frac{n_A}{n}$$
+      <p>为事件 A 发生的<strong>频率</strong>。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">频率的性质与局限</div>
+      <p>频率具有<strong>稳定性</strong>：随着 $n$ 增大，频率会在某个常数附近波动。这个常数就是概率的"真值"。</p>
+      <p>但频率有局限：(1) 依赖具体试验，不同试验结果可能不同；(2) 无法给出精确值。所以我们需要公理化定义。</p>
+    </div>
+
+    <h3>古典概型</h3>
+    <div class="box box-definition">
+      <div class="box-title">定义 · 古典概型（等可能概型）</div>
+      <p>若随机试验满足：</p>
+      <ol>
+        <li>样本空间 $\Omega$ 中只有<strong>有限</strong>个样本点（有限性）；</li>
+        <li>每个基本事件发生的<strong>可能性相等</strong>（等可能性）。</li>
+      </ol>
+      <p>则事件 A 的概率为：</p>
+      $$P(A) = \frac{A \text{ 包含的样本点数}}{\Omega \text{ 中样本点总数}} = \frac{|A|}{|\Omega|}$$
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">古典概型的关键：如何计数</div>
+      <p>古典概型的核心问题是<strong>计数</strong>——数清楚"总的有多少"和"有利的有多少"。</p>
+      <p>常用计数工具：</p>
+      <ul>
+        <li><strong>加法原理</strong>：做一件事有 $m$ 类方法，第 $i$ 类有 $n_i$ 种，总共 $n_1+n_2+\cdots+n_m$ 种</li>
+        <li><strong>乘法原理</strong>：做一件事分 $m$ 步，第 $i$ 步有 $n_i$ 种，总共 $n_1 \times n_2 \times \cdots \times n_m$ 种</li>
+        <li><strong>排列</strong>：从 $n$ 个中取 $k$ 个排列，$P_n^k = \dfrac{n!}{(n-k)!}$</li>
+        <li><strong>组合</strong>：从 $n$ 个中取 $k$ 个组合，$\binom{n}{k} = \dfrac{n!}{k!(n-k)!}$</li>
+      </ul>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 古典概型——抽球问题</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：袋中有 5 个红球、3 个白球，从中任取 2 个，求恰好取到 1 红 1 白的概率。</p>
+        <p><strong>解</strong>：从 8 个球中取 2 个，总的取法：$\binom{8}{2} = 28$</p>
+        <p>恰好 1 红 1 白的取法：$\binom{5}{1} \times \binom{3}{1} = 5 \times 3 = 15$</p>
+        <p>所以 $P = \dfrac{15}{28}$</p>
+        <p><strong>注意</strong>：这里用组合而非排列，因为"取到哪些球"不关心顺序。如果问"先红后白"则要用排列或条件概率。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 古典概型——生日问题</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：一个班有 $n$ 个人，求至少有两人生日相同的概率。</p>
+        <p><strong>解</strong>：考虑对立事件——所有人生日都不同。</p>
+        <p>$n$ 个人的生日总共有 $365^n$ 种可能（假设一年 365 天）。</p>
+        <p>所有人生日都不同的取法：$365 \times 364 \times \cdots \times (365-n+1) = \dfrac{365!}{(365-n)!}$</p>
+        <p>所以 $P(\text{至少两人相同}) = 1 - \dfrac{365!}{(365-n)! \cdot 365^n}$</p>
+        <p>当 $n=23$ 时，概率约为 $50.7\%$；当 $n=50$ 时，概率约为 $97.0\%$。这个结果很反直觉！</p>
+      </div>
+    </div>
+
+    <h3>几何概型</h3>
+    <div class="box box-definition">
+      <div class="box-title">定义 · 几何概型</div>
+      <p>当样本空间 $\Omega$ 是某个几何区域（长度、面积或体积），且等可能性体现在几何度量上时：</p>
+      $$P(A) = \frac{S_A}{S_\Omega}$$
+      <p>其中 $S_A$、$S_\Omega$ 分别是事件 A 和样本空间对应的几何度量（长度/面积/体积）。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 几何概型——约会问题</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：甲乙两人约定在 7:00 到 8:00 之间见面，先到的人等 20 分钟后离去。求两人能见面的概率。</p>
+        <p><strong>解</strong>：设甲到的时间为 $x$，乙到的时间为 $y$（单位：分钟，从 7:00 算起）。</p>
+        <p>样本空间：$0 \leq x \leq 60$，$0 \leq y \leq 60$，面积 $S_\Omega = 60^2 = 3600$</p>
+        <p>两人见面的条件：$|x - y| \leq 20$，即 $-20 \leq x-y \leq 20$</p>
+        <p>这是一个正方形中被两条斜线夹住的区域，面积为 $3600 - 2 \times \dfrac{1}{2} \times 40^2 = 3600 - 1600 = 2000$</p>
+        <p>所以 $P = \dfrac{2000}{3600} = \dfrac{5}{9}$</p>
+      </div>
+    </div>
+
+    <h3>概率的公理化定义</h3>
+    <div class="box box-theorem">
+      <div class="box-title">Kolmogorov 公理（1933）</div>
+      <p>设 $\Omega$ 为样本空间，对每个事件 $A$，若集函数 $P(\cdot)$ 满足：</p>
+      <ol>
+        <li><strong>非负性</strong>：$P(A) \geq 0$</li>
+        <li><strong>规范性</strong>：$P(\Omega) = 1$</li>
+        <li><strong>可列可加性</strong>：若 $A_1, A_2, \ldots$ 两两互斥，则
+          $$P\!\left(\bigcup_{i=1}^{\infty} A_i\right) = \sum_{i=1}^{\infty} P(A_i)$$
+        </li>
+      </ol>
+      <p>则称 $P(A)$ 为事件 A 的<strong>概率</strong>。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">公理化定义的意义</div>
+      <p>公理化定义不回答"概率是多少"，而是规定"概率必须满足什么规则"。古典概型、几何概型、频率定义都是它的<strong>特例</strong>——它们定义的概率函数都满足这三条公理。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 1.4 概率的性质 ==================== -->
+  <div class="section" id="s4">
+    <h2>1.4 概率的性质与加法公式</h2>
+
+    <p>以下性质都从三条公理推导而来，不需要额外假设。</p>
+
+    <div class="box box-theorem">
+      <div class="box-title">概率的基本性质</div>
+      <ol>
+        <li>$P(\emptyset) = 0$（不可能事件的概率为零）</li>
+        <li><strong>有限可加性</strong>：若 $A_1, A_2, \ldots, A_n$ 两两互斥，则 $P\!\left(\bigcup_{i=1}^n A_i\right) = \sum_{i=1}^n P(A_i)$</li>
+        <li><strong>对立事件</strong>：$P(\bar{A}) = 1 - P(A)$</li>
+        <li><strong>单调性</strong>：若 $A \subset B$，则 $P(A) \leq P(B)$，且 $P(B-A) = P(B) - P(A)$</li>
+        <li><strong>有界性</strong>：$0 \leq P(A) \leq 1$</li>
+      </ol>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">性质3是最常用的工具之一</div>
+      <p>"至少"问题通常用对立事件更简单：$P(\text{至少一个}) = 1 - P(\text{一个都没有})$</p>
+      <p>例如：$P(A \cup B \cup C) = 1 - P(\bar{A}\bar{B}\bar{C})$</p>
+    </div>
+
+    <h3>加法公式</h3>
+    <div class="box box-formula">
+      <div class="box-title">两个事件的加法公式</div>
+      $$P(A \cup B) = P(A) + P(B) - P(AB)$$
+      <p><strong>推导</strong>：把 $A \cup B$ 分成三个互斥部分：$A\bar{B}$、$\bar{A}B$、$AB$，分别求概率再相加。</p>
+      <p><strong>直觉</strong>：直接加 $P(A)+P(B)$ 会把公共部分 $P(AB)$ 算两次，所以要减去一次。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">广义加法公式（容斥原理）</div>
+      <p>三个事件：</p>
+      $$P(A \cup B \cup C) = P(A)+P(B)+P(C)-P(AB)-P(AC)-P(BC)+P(ABC)$$
+      <p>$n$ 个事件：</p>
+      $$P\!\left(\bigcup_{i=1}^n A_i\right) = \sum_{i} P(A_i) - \sum_{i<j} P(A_i A_j) + \sum_{i<j<k} P(A_i A_j A_k) - \cdots + (-1)^{n-1} P(A_1 A_2 \cdots A_n)$$
+      <p><strong>记忆</strong>：奇数项加、偶数项减，交替进行。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 加法公式应用</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：某班 40% 的学生学英语，30% 学法语，20% 两门都学。随机选一个学生，求该学生至少学一门语言的概率。</p>
+        <p><strong>解</strong>：设 $A$=学英语，$B$=学法语。</p>
+        <p>$P(A)=0.4$，$P(B)=0.3$，$P(AB)=0.2$</p>
+        <p>$P(A \cup B) = P(A)+P(B)-P(AB) = 0.4+0.3-0.2 = 0.5$</p>
+        <p>所以 50% 的学生至少学一门语言。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1.5 条件概率与乘法公式 ==================== -->
+  <div class="section" id="s5">
+    <h2>1.5 条件概率与乘法公式</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 条件概率</div>
+      <p>设 A, B 为两个事件，且 $P(A) > 0$，则在事件 A 已发生的条件下事件 B 发生的<strong>条件概率</strong>为：</p>
+      $$P(B|A) = \frac{P(AB)}{P(A)}$$
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">条件概率的直觉理解</div>
+      <p>"已知 A 发生"意味着<strong>样本空间从 $\Omega$ 缩小到了 $A$</strong>。在这个缩小的空间里，B 发生的概率就是 $P(AB)/P(A)$。</p>
+      <p>类比：原来有 100 个样本点，A 包含 40 个，AB 包含 20 个。已知 A 发生后，"有效"样本点只剩 40 个，其中 B 发生的有 20 个，所以 $P(B|A)=20/40=1/2$。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">条件概率也是概率</div>
+      <p>$P(\cdot|A)$ 满足概率的三条公理，因此概率的所有性质（加法公式等）对条件概率同样成立。这在解题中经常用到。</p>
+    </div>
+
+    <h3>乘法公式</h3>
+    <div class="box box-formula">
+      <div class="box-title">乘法公式</div>
+      <p>由条件概率定义直接得到：</p>
+      $$P(AB) = P(A) \cdot P(B|A) = P(B) \cdot P(A|B)$$
+      <p><strong>直觉</strong>：A 且 B 发生 = A 发生的概率 × 在 A 发生的前提下 B 发生的概率。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">推广到 $n$ 个事件的乘法公式</div>
+      $$P(A_1 A_2 \cdots A_n) = P(A_1) \cdot P(A_2|A_1) \cdot P(A_3|A_1 A_2) \cdots P(A_n|A_1 A_2 \cdots A_{n-1})$$
+      <p><strong>直觉</strong>：依次发生 = 第一个发生的概率 × 第二个在第一个发生后的概率 × 第三个在前两个都发生后的概率 × ……</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 乘法公式——抽签问题</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：10 张签中有 3 张中奖，5 人依次不放回地各抽 1 张，求第 3 人中奖的概率。</p>
+        <p><strong>解法1（条件概率法）</strong>：</p>
+        <p>设 $A_i$ = 第 $i$ 人中奖。直接用全概率公式计算（见1.7节）。</p>
+        <p><strong>解法2（对称性法）</strong>：</p>
+        <p>不放回抽签的关键性质：<strong>每个人中奖的概率相同！</strong></p>
+        <p>直觉：想象把 10 张签随机排成一排，第 3 人抽第 3 张。第 3 张是中奖签的概率 = 3/10，与位置无关。</p>
+        <p>所以 $P(A_3) = \dfrac{3}{10}$，与第 1 人、第 2 人的概率相同。</p>
+        <p><strong>这个结论非常重要</strong>：不放回抽签中，每个人中奖概率相同，与抽的顺序无关。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1.6 事件的独立性 ==================== -->
+  <div class="section" id="s6">
+    <h2>1.6 事件的独立性</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 两个事件的独立性</div>
+      <p>若事件 A, B 满足</p>
+      $$P(AB) = P(A) \cdot P(B)$$
+      <p>则称 A 与 B <strong>相互独立</strong>。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">独立性的直觉</div>
+      <p>"A 的发生不影响 B 的概率"，即 $P(B|A)=P(B)$（当 $P(A)>0$ 时，独立性与这个条件等价）。</p>
+      <p>例如：掷两颗骰子，第一颗的结果不影响第二颗的结果，所以"第一颗掷出 6"与"第二颗掷出 6"独立。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 多个事件的独立性</div>
+      <p>设 $A_1, A_2, \ldots, A_n$ 是 $n$ 个事件，若对其中<strong>任意</strong> $k$（$2 \leq k \leq n$）个事件 $A_{i_1}, A_{i_2}, \ldots, A_{i_k}$ 都有</p>
+      $$P(A_{i_1} A_{i_2} \cdots A_{i_k}) = P(A_{i_1}) P(A_{i_2}) \cdots P(A_{i_k})$$
+      <p>则称 $A_1, A_2, \ldots, A_n$ <strong>相互独立</strong>。</p>
+      <p><strong>注意</strong>：需要验证 $2^n - n - 1$ 个等式！所以通常题目会直接告诉你"相互独立"，不需要你验证。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">两两独立 vs 相互独立 —— 重要区别</div>
+      <p><strong>相互独立一定两两独立，但两两独立不一定相互独立！</strong></p>
+      <p>例子：掷两颗骰子，设 $A$="第一颗为偶数"，$B$="第二颗为偶数"，$C$="两颗之和为偶数"。</p>
+      <ul>
+        <li>$P(A)=P(B)=P(C)=\frac{1}{2}$</li>
+        <li>$P(AB)=\frac{1}{4}=P(A)P(B)$ ✓（两两独立）</li>
+        <li>$P(AC)=\frac{1}{4}=P(A)P(C)$ ✓（两两独立）</li>
+        <li>$P(BC)=\frac{1}{4}=P(B)P(C)$ ✓（两两独立）</li>
+        <li>$P(ABC)=\frac{1}{4} \neq P(A)P(B)P(C)=\frac{1}{8}$ ✗（不相互独立！）</li>
+      </ul>
+      <p>$C$ 其实完全由 $A$ 和 $B$ 决定（$C$ = "$A$ 与 $B$ 同奇偶"），所以三者不相互独立。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">独立 vs 互斥 —— 最常见的混淆</div>
+      <table>
+        <tr><th></th><th>互斥</th><th>独立</th></tr>
+        <tr><td>定义</td><td>$AB=\emptyset$</td><td>$P(AB)=P(A)P(B)$</td></tr>
+        <tr><td>含义</td><td>不能同时发生</td><td>发生与否互不影响</td></tr>
+        <tr><td>层面</td><td>事件运算</td><td>概率关系</td></tr>
+        <tr><td>$P(AB)$</td><td>$=0$</td><td>$=P(A)P(B)$</td></tr>
+      </table>
+      <p><strong>关键结论</strong>：若 $P(A)>0$ 且 $P(B)>0$，则<strong>不可能既互斥又独立</strong>——互斥时 $P(AB)=0$，而独立时 $P(AB)=P(A)P(B)>0$，矛盾。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 独立性的应用</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：三人独立射击同一目标，命中率分别为 0.5, 0.6, 0.7。求目标被击中的概率。</p>
+        <p><strong>解</strong>：设 $A, B, C$ 分别表示三人命中。</p>
+        <p>"目标被击中" = "至少一人命中" = $A \cup B \cup C$</p>
+        <p>用对立事件：$P(A \cup B \cup C) = 1 - P(\bar{A}\bar{B}\bar{C})$</p>
+        <p>由独立性：$P(\bar{A}\bar{B}\bar{C}) = P(\bar{A})P(\bar{B})P(\bar{C}) = 0.5 \times 0.4 \times 0.3 = 0.06$</p>
+        <p>所以 $P = 1 - 0.06 = 0.94$</p>
+        <p><strong>技巧</strong>：多人独立射击问题，用对立事件 + 独立性最简洁。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1.7 全概率公式与贝叶斯公式 ==================== -->
+  <div class="section" id="s7">
+    <h2>1.7 全概率公式与贝叶斯公式</h2>
+
+    <p>这两个公式是本章的<strong>核心重点</strong>，也是后续章节的重要工具。</p>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 完备事件组（划分）</div>
+      <p>设 $B_1, B_2, \ldots, B_n$ 为一组事件，满足：</p>
+      <ol>
+        <li>$B_i B_j = \emptyset$（$i \neq j$），即两两互斥；</li>
+        <li>$B_1 \cup B_2 \cup \cdots \cup B_n = \Omega$，即并为全集。</li>
+      </ol>
+      <p>则称 $B_1, B_2, \ldots, B_n$ 构成样本空间 $\Omega$ 的一个<strong>完备事件组</strong>（或<strong>划分</strong>）。</p>
+      <p><strong>直觉</strong>：把样本空间"切"成互不重叠的几块，每块对应一个"原因"。</p>
+    </div>
+
+    <h3>全概率公式</h3>
+    <div class="box box-formula">
+      <div class="box-title">全概率公式</div>
+      <p>设 $B_1, B_2, \ldots, B_n$ 为完备事件组，且 $P(B_i) > 0$，则对任意事件 $A$：</p>
+      <div class="formula-highlight">
+        $$P(A) = \sum_{i=1}^n P(B_i) \cdot P(A|B_i)$$
+      </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">全概率公式的直觉理解</div>
+      <p>把事件 A 的概率"拆解"到各个"原因"上：</p>
+      <p>$P(A) = P(\text{原因1}) \times P(A|\text{原因1}) + P(\text{原因2}) \times P(A|\text{原因2}) + \cdots$</p>
+      <p><strong>类比</strong>：一个工厂有三条生产线（$B_1, B_2, B_3$），各占产量的 50%, 30%, 20%，各线的次品率分别为 2%, 3%, 5%。产品的总次品率 = $0.5\times0.02 + 0.3\times0.03 + 0.2\times0.05 = 0.029$。</p>
+    </div>
+
+    <h3>贝叶斯公式</h3>
+    <div class="box box-formula">
+      <div class="box-title">贝叶斯公式（逆概率公式）</div>
+      <p>设 $B_1, B_2, \ldots, B_n$ 为完备事件组，$P(B_i) > 0$，$P(A) > 0$，则：</p>
+      <div class="formula-highlight">
+        $$P(B_j|A) = \frac{P(B_j) \cdot P(A|B_j)}{\displaystyle\sum_{i=1}^n P(B_i) \cdot P(A|B_i)}$$
+      </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">贝叶斯公式的直觉理解</div>
+      <p>全概率公式是"由原因推结果"：已知各原因的概率，求结果的概率。</p>
+      <p>贝叶斯公式是"由结果推原因"：已知结果发生了，反过来求是哪个原因导致的。</p>
+      <p><strong>先验概率</strong> $P(B_j)$：试验前对各原因的判断（"先验"=先于试验）。</p>
+      <p><strong>后验概率</strong> $P(B_j|A)$：观察到结果 A 后，对各原因的更新判断（"后验"=后于试验）。</p>
+      <p><strong>贝叶斯公式的价值</strong>：把"先验"更新为"后验"，实现信念的理性修正。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 全概率公式——产品检验</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：甲、乙、丙三个工厂生产同一种产品，产量分别占总产量的 50%、30%、20%。次品率分别为 2%、3%、5%。现从市场上随机取一件产品：</p>
+        <p>(a) 求取到次品的概率；(b) 若取到的是次品，求它来自甲厂的概率。</p>
+        <p><strong>解</strong>：设 $B_1, B_2, B_3$ 分别表示产品来自甲、乙、丙厂，$A$ 表示取到次品。</p>
+        <p>已知：$P(B_1)=0.5, P(B_2)=0.3, P(B_3)=0.2$</p>
+        <p>$P(A|B_1)=0.02, P(A|B_2)=0.03, P(A|B_3)=0.05$</p>
+        <p>(a) 全概率公式：</p>
+        <p>$P(A) = 0.5\times0.02 + 0.3\times0.03 + 0.2\times0.05 = 0.01+0.009+0.01 = 0.029$</p>
+        <p>(b) 贝叶斯公式：</p>
+        <p>$P(B_1|A) = \dfrac{P(B_1)P(A|B_1)}{P(A)} = \dfrac{0.5\times0.02}{0.029} = \dfrac{0.01}{0.029} \approx 0.345$</p>
+        <p>虽然甲厂产量最大（50%），但由于甲厂次品率最低，所以次品来自甲厂的概率反而只有约 34.5%。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 贝叶斯公式——疾病检测</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：某种疾病的发病率为 0.1%。有一种检测方法，患者检测阳性的概率为 99%（灵敏度），健康人检测阳性的概率为 5%（误诊率）。某人检测阳性，求他真正患病的概率。</p>
+        <p><strong>解</strong>：设 $D$=患病，$T$=检测阳性。</p>
+        <p>已知：$P(D)=0.001$，$P(T|D)=0.99$，$P(T|\bar{D})=0.05$</p>
+        <p>由全概率公式：$P(T) = P(D)P(T|D) + P(\bar{D})P(T|\bar{D}) = 0.001\times0.99 + 0.999\times0.05 = 0.00099 + 0.04995 = 0.05094$</p>
+        <p>由贝叶斯公式：$P(D|T) = \dfrac{P(D)P(T|D)}{P(T)} = \dfrac{0.00099}{0.05094} \approx 0.0194$</p>
+        <p><strong>结果令人惊讶</strong>：检测阳性的人，真正患病的概率只有约 2%！这是因为发病率很低，健康人基数大，即使误诊率只有 5%，绝对数量也远超真正的患者。</p>
+        <p><strong>这就是为什么大规模筛查需要非常高的特异性（低误诊率）。</strong></p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 三门问题（Monty Hall）</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：参赛者从三扇门中选一扇，其中一扇后面有奖品。主持人知道奖品在哪，会打开一扇没有奖品的门。问：换门是否更有利？</p>
+        <p><strong>解</strong>：设 $B_i$ 表示奖品在第 $i$ 扇门后，$A$ 表示主持人打开了第 3 扇门。</p>
+        <p>$P(B_1)=P(B_2)=P(B_3)=\frac{1}{3}$</p>
+        <p>假设参赛者选了第 1 扇门：</p>
+        <ul>
+          <li>若奖品在第 1 扇（$B_1$）：主持人可以打开第 2 或第 3 扇，设各一半概率，$P(A|B_1)=\frac{1}{2}$</li>
+          <li>若奖品在第 2 扇（$B_2$）：主持人只能打开第 3 扇，$P(A|B_2)=1$</li>
+          <li>若奖品在第 3 扇（$B_3$）：主持人不能打开第 3 扇，$P(A|B_3)=0$</li>
+        </ul>
+        <p>$P(A) = \frac{1}{3}\times\frac{1}{2} + \frac{1}{3}\times 1 + \frac{1}{3}\times 0 = \frac{1}{2}$</p>
+        <p>$P(B_2|A) = \frac{\frac{1}{3}\times 1}{\frac{1}{2}} = \frac{2}{3}$</p>
+        <p>换门获奖概率 $\frac{2}{3}$，不换门获奖概率 $\frac{1}{3}$，<strong>换门更有利</strong>。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1.8 综合例题 ==================== -->
+  <div class="section" id="s8">
+    <h2>1.8 综合例题与常见题型</h2>
+
+    <h3>题型一：古典概型计算</h3>
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 分配问题</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：将 $n$ 个不同的球随机放入 $N$ 个盒子中（$N \geq n$），求每个盒子最多一个球的概率。</p>
+        <p><strong>解</strong>：每个球有 $N$ 种放法，总共有 $N^n$ 种放法。</p>
+        <p>每个盒子最多一个球：第一个球有 $N$ 种选择，第二个有 $N-1$ 种，……，共 $N(N-1)\cdots(N-n+1) = \dfrac{N!}{(N-n)!}$ 种。</p>
+        <p>$P = \dfrac{N!}{(N-n)! \cdot N^n}$</p>
+        <p>这个结果和生日问题本质相同！</p>
+      </div>
+    </div>
+
+    <h3>题型二：条件概率与独立性判断</h3>
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 独立性判断</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：袋中有 3 个红球、2 个白球。不放回取 2 次，设 $A$="第一次取到红球"，$B$="第二次取到红球"。判断 $A$ 与 $B$ 是否独立。</p>
+        <p><strong>解</strong>：$P(A) = \frac{3}{5}$</p>
+        <p>$P(B) = P(A)P(B|A) + P(\bar{A})P(B|\bar{A}) = \frac{3}{5}\times\frac{2}{4} + \frac{2}{5}\times\frac{3}{4} = \frac{6}{20}+\frac{6}{20} = \frac{3}{5}$</p>
+        <p>$P(AB) = P(A)P(B|A) = \frac{3}{5}\times\frac{2}{4} = \frac{6}{20} = \frac{3}{10}$</p>
+        <p>$P(A)P(B) = \frac{3}{5}\times\frac{3}{5} = \frac{9}{25}$</p>
+        <p>因为 $\frac{3}{10} \neq \frac{9}{25}$，所以 $A$ 与 $B$ <strong>不独立</strong>。</p>
+        <p><strong>注意</strong>：虽然 $P(A)=P(B)$，但它们不独立！不放回抽样中，第一次的结果会影响第二次的概率。</p>
+      </div>
+    </div>
+
+    <h3>题型三：全概率公式与贝叶斯公式的综合应用</h3>
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 甲盒乙盒问题</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：甲盒有 3 个红球、2 个白球；乙盒有 1 个红球、4 个白球。先从甲盒随机取一球放入乙盒，再从乙盒随机取一球。求从乙盒取到红球的概率。</p>
+        <p><strong>解</strong>：设 $A$="从甲盒取到红球"，$B$="从乙盒取到红球"。</p>
+        <p>$P(A) = \frac{3}{5}$，$P(\bar{A}) = \frac{2}{5}$</p>
+        <p>若从甲盒取到红球放入乙盒，乙盒变为 2 红 4 白：$P(B|A) = \frac{2}{6} = \frac{1}{3}$</p>
+        <p>若从甲盒取到白球放入乙盒，乙盒变为 1 红 5 白：$P(B|\bar{A}) = \frac{1}{6}$</p>
+        <p>全概率公式：$P(B) = \frac{3}{5}\times\frac{1}{3} + \frac{2}{5}\times\frac{1}{6} = \frac{1}{5} + \frac{1}{15} = \frac{4}{15}$</p>
+      </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">本章解题技巧总结</div>
+      <ol>
+        <li><strong>"至少"问题</strong>：优先用对立事件 $P(\text{至少一个}) = 1 - P(\text{一个都没有})$</li>
+        <li><strong>"恰好"问题</strong>：需要精确列举所有互斥情况</li>
+        <li><strong>独立性判断</strong>：验证 $P(AB)=P(A)P(B)$，不要凭直觉</li>
+        <li><strong>全概率公式</strong>：当事件概率需要"分情况讨论"时使用</li>
+        <li><strong>贝叶斯公式</strong>：当需要"由结果反推原因"时使用</li>
+        <li><strong>不放回抽签</strong>：各人中奖概率相同，与顺序无关</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="index.html" class="prev">首页</a>
+    <a href="ch2.html" class="next">第二章</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>概率论与数理统计复习指南 · 基于茆诗松教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

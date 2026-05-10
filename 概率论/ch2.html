@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第二章 · 随机变量及其分布</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          EE: '\\mathbb{E}',
+          PP: '\\mathbb{P}',
+          Var: '\\mathrm{Var}',
+          Cov: '\\mathrm{Cov}',
+          dd: '\\mathrm{d}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">概率论复习</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="appendix.html">附录</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第二章 · 随机变量及其分布</h1>
+    <p>将随机试验的结果数值化，用分布函数完整刻画随机变量的概率规律。本章是概率论从"事件语言"过渡到"函数语言"的关键。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">随机变量的定义</a></li>
+      <li><a href="#s2">离散型随机变量与分布律</a></li>
+      <li><a href="#s3">常见离散分布</a></li>
+      <li><a href="#s4">随机变量的分布函数</a></li>
+      <li><a href="#s5">连续型随机变量与概率密度</a></li>
+      <li><a href="#s6">常见连续分布</a></li>
+      <li><a href="#s7">随机变量函数的分布</a></li>
+      <li><a href="#s8">综合例题与常见题型</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 2.1 随机变量 ==================== -->
+  <div class="section" id="s1">
+    <h2>2.1 随机变量的定义</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 随机变量</div>
+      <p>设随机试验的样本空间为 $\Omega$，若对每个样本点 $\omega \in \Omega$，都有唯一的实数 $X(\omega)$ 与之对应，则称定义在 $\Omega$ 上的实值函数 $X = X(\omega)$ 为<strong>随机变量</strong>。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">为什么要引入随机变量？</div>
+      <p>第一章用"事件"描述随机现象，但事件是集合，处理起来不方便。引入随机变量后：</p>
+      <ul>
+        <li>可以用<strong>数</strong>描述随机现象的结果（如"掷出的点数"、"灯泡寿命"）</li>
+        <li>可以用<strong>函数</strong>（分布函数、密度函数）完整刻画概率规律</li>
+        <li>可以定义<strong>期望、方差</strong>等数字特征，用一个数概括分布的关键信息</li>
+      </ul>
+      <p>简单说：随机变量 = 把"文字描述"变成"数学公式"的桥梁。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">随机变量的分类</div>
+      <p>按照取值特点，随机变量分为：</p>
+      <ul>
+        <li><strong>离散型</strong>：取值为有限个或可列无穷多个（如骰子点数、次品个数）</li>
+        <li><strong>连续型</strong>：取值充满某个区间，可用概率密度函数描述（如寿命、温度）</li>
+      </ul>
+      <p>还有既非离散也非连续的随机变量，但本书主要讨论前两类。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 2.2 离散型随机变量 ==================== -->
+  <div class="section" id="s2">
+    <h2>2.2 离散型随机变量与分布律</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 分布律</div>
+      <p>设离散型随机变量 $X$ 的所有可能取值为 $x_1, x_2, \ldots$，则称</p>
+      $$P(X = x_k) = p_k, \quad k = 1, 2, \ldots$$
+      <p>为 $X$ 的<strong>分布律</strong>（或概率分布）。分布律满足：</p>
+      <ol>
+        <li>$p_k \geq 0$（非负性）</li>
+        <li>$\displaystyle\sum_{k} p_k = 1$（归一性）</li>
+      </ol>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">分布律的表示方法</div>
+      <p><strong>表格法</strong>（最常用）：</p>
+      <table>
+        <tr><th>$X$</th><th>$x_1$</th><th>$x_2$</th><th>$\cdots$</th><th>$x_k$</th><th>$\cdots$</th></tr>
+        <tr><td>$P$</td><td>$p_1$</td><td>$p_2$</td><td>$\cdots$</td><td>$p_k$</td><td>$\cdots$</td></tr>
+      </table>
+      <p><strong>公式法</strong>：$P(X=k) = f(k)$，给出一个关于 $k$ 的表达式。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 求分布律</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：抛两枚硬币，设 $X$ 为正面朝上的次数，求 $X$ 的分布律。</p>
+        <p><strong>解</strong>：样本空间 $\Omega=\{HH,HT,TH,TT\}$，每个样本点概率 $1/4$。</p>
+        <p>$X$ 的可能取值：0, 1, 2</p>
+        <p>$P(X=0)=P(TT)=\frac{1}{4}$</p>
+        <p>$P(X=1)=P(HT)+P(TH)=\frac{1}{4}+\frac{1}{4}=\frac{1}{2}$</p>
+        <p>$P(X=2)=P(HH)=\frac{1}{4}$</p>
+        <p>验证：$\frac{1}{4}+\frac{1}{2}+\frac{1}{4}=1$ ✓</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2.3 常见离散分布 ==================== -->
+  <div class="section" id="s3">
+    <h2>2.3 常见离散分布</h2>
+
+    <h3>0-1 分布（伯努利分布）</h3>
+    <div class="box box-definition">
+      <div class="box-title">0-1 分布</div>
+      <p>一次试验中只有两种结果：成功（$X=1$）概率为 $p$，失败（$X=0$）概率为 $1-p$：</p>
+      $$P(X=k) = p^k (1-p)^{1-k}, \quad k = 0, 1$$
+      <p><strong>应用场景</strong>：抛一次硬币、检查一个产品是否合格、一次射击是否命中。</p>
+    </div>
+
+    <h3>二项分布 $B(n, p)$</h3>
+    <div class="box box-definition">
+      <div class="box-title">二项分布</div>
+      <p>$n$ 次<strong>独立重复</strong>的伯努利试验中，成功次数 $X$ 服从二项分布：</p>
+      $$P(X=k) = \binom{n}{k} p^k (1-p)^{n-k}, \quad k = 0, 1, \ldots, n$$
+      <p>记为 $X \sim B(n, p)$。当 $n=1$ 时即为 0-1 分布。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">二项分布的三个关键词</div>
+      <p>二项分布需要同时满足：</p>
+      <ol>
+        <li><strong>$n$ 次</strong>：试验次数固定</li>
+        <li><strong>独立</strong>：每次试验互不影响</li>
+        <li><strong>重复</strong>：每次成功概率相同，都是 $p$</li>
+      </ol>
+      <p>如果"不放回"抽样，则不独立，不用二项分布。但当总体很大、抽样比例很小时，可以近似用二项分布。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 二项分布计算</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：某射手命中率为 0.8，独立射击 5 次，求恰好命中 3 次的概率。</p>
+        <p><strong>解</strong>：$X \sim B(5, 0.8)$，求 $P(X=3)$。</p>
+        <p>$P(X=3) = \binom{5}{3}(0.8)^3(0.2)^2 = 10 \times 0.512 \times 0.04 = 0.2048$</p>
+      </div>
+    </div>
+
+    <h3>泊松分布 $P(\lambda)$</h3>
+    <div class="box box-definition">
+      <div class="box-title">泊松分布</div>
+      $$P(X=k) = \frac{\lambda^k}{k!} e^{-\lambda}, \quad k = 0, 1, 2, \ldots$$
+      <p>记为 $X \sim P(\lambda)$，其中 $\lambda > 0$ 为参数。</p>
+      <p><strong>应用场景</strong>：单位时间内某事件发生的次数（如电话呼叫数、放射性衰变数、网站访问数）。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">泊松定理（二项分布的泊松近似）</div>
+      <p>设 $X_n \sim B(n, p_n)$，若 $\lim_{n \to \infty} n p_n = \lambda > 0$，则对任意固定的 $k$：</p>
+      $$\lim_{n \to \infty} \binom{n}{k} p_n^k (1-p_n)^{n-k} = \frac{\lambda^k}{k!} e^{-\lambda}$$
+      <p><strong>实际应用</strong>：当 $n \geq 20$ 且 $p \leq 0.05$ 时，$B(n,p) \approx P(np)$。</p>
+    </div>
+
+    <h3>几何分布</h3>
+    <div class="box box-definition">
+      <div class="box-title">几何分布</div>
+      <p>独立重复伯努利试验中，<strong>首次成功</strong>时的试验次数 $X$ 服从几何分布：</p>
+      $$P(X=k) = (1-p)^{k-1} p, \quad k = 1, 2, 3, \ldots$$
+      <p><strong>无记忆性</strong>：$P(X > m+n \mid X > m) = P(X > n)$</p>
+      <p>通俗理解：已经等了 $m$ 次还没成功，还要等多久？答案是"和从头开始等一样"。</p>
+    </div>
+
+    <h3>超几何分布</h3>
+    <div class="box box-definition">
+      <div class="box-title">超几何分布</div>
+      <p>$N$ 件产品中 $M$ 件次品，<strong>不放回</strong>地取 $n$ 件，其中次品数 $X$：</p>
+      $$P(X=k) = \frac{\binom{M}{k}\binom{N-M}{n-k}}{\binom{N}{n}}$$
+      <p>其中 $k$ 的范围：$\max(0, n-N+M) \leq k \leq \min(n, M)$</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">超几何分布 vs 二项分布</div>
+      <p>超几何分布对应<strong>不放回</strong>抽样，二项分布对应<strong>有放回</strong>抽样。</p>
+      <p>当 $N$ 很大、$n$ 相对较小时，超几何分布可用二项分布近似：$H(N,M,n) \approx B(n, M/N)$。</p>
+    </div>
+
+    <h3>常见离散分布汇总</h3>
+    <div class="table-wrapper">
+      <table>
+        <tr><th>分布</th><th>$P(X=k)$</th><th>参数</th><th>$E(X)$</th><th>$\Var(X)$</th><th>应用场景</th></tr>
+        <tr><td>0-1 分布</td><td>$p^k(1-p)^{1-k}$</td><td>$0<p<1$</td><td>$p$</td><td>$p(1-p)$</td><td>单次伯努利试验</td></tr>
+        <tr><td>$B(n,p)$</td><td>$\binom{n}{k}p^k(1-p)^{n-k}$</td><td>$n,p$</td><td>$np$</td><td>$np(1-p)$</td><td>$n$ 次独立重复试验</td></tr>
+        <tr><td>$P(\lambda)$</td><td>$\frac{\lambda^k}{k!}e^{-\lambda}$</td><td>$\lambda>0$</td><td>$\lambda$</td><td>$\lambda$</td><td>单位时间事件次数</td></tr>
+        <tr><td>几何分布</td><td>$(1-p)^{k-1}p$</td><td>$0<p<1$</td><td>$\frac{1}{p}$</td><td>$\frac{1-p}{p^2}$</td><td>首次成功等待时间</td></tr>
+        <tr><td>超几何</td><td>$\frac{\binom{M}{k}\binom{N-M}{n-k}}{\binom{N}{n}}$</td><td>$N,M,n$</td><td>$\frac{nM}{N}$</td><td>$\frac{nM(N-M)(N-n)}{N^2(N-1)}$</td><td>不放回抽样</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ==================== 2.4 分布函数 ==================== -->
+  <div class="section" id="s4">
+    <h2>2.4 随机变量的分布函数</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 分布函数</div>
+      <p>设 $X$ 是一个随机变量，$x$ 为任意实数，称</p>
+      $$F(x) = P(X \leq x), \quad x \in \mathbb{R}$$
+      <p>为 $X$ 的<strong>分布函数</strong>。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">分布函数的意义</div>
+      <p>分布函数 $F(x)$ 回答的问题是："随机变量 $X$ 落在 $(-\infty, x]$ 区间内的概率是多少？"</p>
+      <p>分布函数是<strong>万能工具</strong>——无论离散型还是连续型，都可以用分布函数描述。它把概率问题转化为函数问题。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">分布函数的性质</div>
+      <ol>
+        <li><strong>单调不减</strong>：若 $x_1 < x_2$，则 $F(x_1) \leq F(x_2)$</li>
+        <li><strong>有界性</strong>：$\displaystyle\lim_{x \to -\infty} F(x) = 0$，$\lim_{x \to +\infty} F(x) = 1$</li>
+        <li><strong>右连续</strong>：$F(x+0) = F(x)$（注意是右连续，不是左连续！）</li>
+      </ol>
+      <p>反过来，满足这三条性质的函数一定是某个随机变量的分布函数。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">用分布函数计算概率</div>
+      $$P(a < X \leq b) = F(b) - F(a)$$
+      $$P(X = a) = F(a) - F(a-0)$$
+      $$P(X < a) = F(a-0)$$
+      $$P(X \geq a) = 1 - F(a-0)$$
+      <p>其中 $F(a-0) = \lim_{x \to a^-} F(x)$ 是 $F$ 在 $a$ 处的左极限。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">离散型的分布函数</div>
+      <p>离散型随机变量的分布函数是<strong>阶梯函数</strong>——在每个可能取值处有一个"跳跃"，跳跃高度等于该点的概率。</p>
+      <p>例如 $P(X=x_k)=p_k$，则 $F$ 在 $x_k$ 处的跳跃高度为 $p_k$。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 由分布律求分布函数</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：设 $X$ 的分布律为 $P(X=0)=0.2$，$P(X=1)=0.5$，$P(X=2)=0.3$。求 $F(x)$。</p>
+        <p><strong>解</strong>：</p>
+        <p>当 $x < 0$：$F(x)=P(X \leq x)=0$</p>
+        <p>当 $0 \leq x < 1$：$F(x)=P(X=0)=0.2$</p>
+        <p>当 $1 \leq x < 2$：$F(x)=P(X=0)+P(X=1)=0.7$</p>
+        <p>当 $x \geq 2$：$F(x)=1$</p>
+        <p>即：</p>
+        $$F(x) = \begin{cases} 0, & x < 0 \\ 0.2, & 0 \leq x < 1 \\ 0.7, & 1 \leq x < 2 \\ 1, & x \geq 2 \end{cases}$$
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2.5 连续型随机变量 ==================== -->
+  <div class="section" id="s5">
+    <h2>2.5 连续型随机变量与概率密度</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 概率密度函数</div>
+      <p>若存在非负可积函数 $f(x)$，使得随机变量 $X$ 的分布函数可表示为</p>
+      $$F(x) = \int_{-\infty}^{x} f(t)\, \dd t, \quad x \in \mathbb{R}$$
+      <p>则称 $X$ 为<strong>连续型随机变量</strong>，$f(x)$ 为 $X$ 的<strong>概率密度函数</strong>（PDF）。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">概率密度的性质</div>
+      <ol>
+        <li>$f(x) \geq 0$（非负性）</li>
+        <li>$\displaystyle\int_{-\infty}^{+\infty} f(x)\, \dd x = 1$（归一性）</li>
+        <li>在 $f(x)$ 的连续点处，$F'(x) = f(x)$</li>
+        <li>$P(a < X < b) = \displaystyle\int_a^b f(x)\, \dd x$</li>
+      </ol>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">关于概率密度的重要误解</div>
+      <p><strong>误解1</strong>："$f(x)$ 是 $X$ 取 $x$ 的概率"——<strong>错！</strong>连续型随机变量取任意单点的概率为 0。</p>
+      <p><strong>正确理解</strong>：$f(x)$ 是概率的"密度"，$f(x)\, \dd x$ 近似等于 $X$ 落在 $[x, x+\dd x]$ 区间内的概率。</p>
+      <p><strong>误解2</strong>："$f(x) \leq 1$ 因为概率不超过 1"——<strong>错！</strong>$f(x)$ 可以大于 1，概率是积分 $\int f(x)\, \dd x$，不是 $f(x)$ 本身。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">连续型的特殊性质</div>
+      <p>对于连续型随机变量：</p>
+      <ul>
+        <li>$P(X = a) = 0$ 对任意 $a$ 成立——单点概率为零</li>
+        <li>因此 $P(a \leq X \leq b) = P(a < X \leq b) = P(a < X < b) = P(a \leq X < b)$</li>
+        <li>即 "$<$" 与 "$\leq$" 对连续型没有区别</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ==================== 2.6 常见连续分布 ==================== -->
+  <div class="section" id="s6">
+    <h2>2.6 常见连续分布</h2>
+
+    <h3>均匀分布 $U(a, b)$</h3>
+    <div class="box box-definition">
+      <div class="box-title">均匀分布</div>
+      $$f(x) = \begin{cases} \dfrac{1}{b-a}, & a < x < b \\ 0, & \text{其他} \end{cases}$$
+      <p>记为 $X \sim U(a,b)$。</p>
+      <p><strong>直觉</strong>：在区间 $(a,b)$ 上"均匀地"取值，每个长度相等的子区间概率相同。</p>
+      <p>分布函数：$F(x) = \dfrac{x-a}{b-a}$（$a \leq x \leq b$）</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 均匀分布</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：$X \sim U(0, 10)$，求 $P(3 < X < 7)$。</p>
+        <p><strong>解</strong>：$P(3 < X < 7) = \displaystyle\int_3^7 \frac{1}{10}\, \dd x = \frac{7-3}{10} = 0.4$</p>
+        <p>也可以直接用几何意义：有利区间长度 4，总长度 10，概率 = 4/10 = 0.4。</p>
+      </div>
+    </div>
+
+    <h3>指数分布 $Exp(\lambda)$</h3>
+    <div class="box box-definition">
+      <div class="box-title">指数分布</div>
+      $$f(x) = \begin{cases} \lambda e^{-\lambda x}, & x > 0 \\ 0, & x \leq 0 \end{cases}$$
+      <p>其中 $\lambda > 0$ 为参数。分布函数为：</p>
+      $$F(x) = \begin{cases} 1 - e^{-\lambda x}, & x > 0 \\ 0, & x \leq 0 \end{cases}$$
+      <p><strong>应用场景</strong>：寿命、等待时间（如灯泡寿命、电话通话时长）。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">指数分布的无记忆性</div>
+      <p>对任意 $s, t > 0$：</p>
+      $$P(X > s + t \mid X > s) = P(X > t)$$
+      <p>等价形式：$P(X > s+t) = P(X > s) \cdot P(X > t)$</p>
+      <p><strong>通俗理解</strong>：一个元件已经用了 $s$ 小时还没坏，它还能用多久？答案是"和全新的元件一样"——"不老化"。</p>
+      <p><strong>重要</strong>：指数分布是<strong>唯一</strong>具有无记忆性的连续分布！</p>
+    </div>
+
+    <h3>正态分布 $N(\mu, \sigma^2)$</h3>
+    <div class="box box-definition">
+      <div class="box-title">正态分布</div>
+      $$f(x) = \frac{1}{\sqrt{2\pi}\,\sigma} \exp\!\left(-\frac{(x-\mu)^2}{2\sigma^2}\right), \quad x \in \mathbb{R}$$
+      <p>其中 $\mu \in \mathbb{R}$ 为均值（位置参数），$\sigma^2 > 0$ 为方差（尺度参数）。记为 $X \sim N(\mu, \sigma^2)$。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">正态分布为什么重要？</div>
+      <ol>
+        <li><strong>自然界大量现象服从正态分布</strong>：身高、体重、测量误差等</li>
+        <li><strong>中心极限定理</strong>：大量独立随机变量之和趋近正态分布（第四章详述）</li>
+        <li><strong>数学性质优良</strong>：正态分布的线性变换、和、条件分布等都是正态</li>
+      </ol>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">正态分布的性质</div>
+      <ol>
+        <li>$f(x)$ 关于 $x=\mu$ 对称，$x=\mu$ 是最大值点</li>
+        <li>$f(x)$ 在 $x=\mu \pm \sigma$ 处有拐点</li>
+        <li>$x \to \pm\infty$ 时，$f(x) \to 0$（渐近线为 $x$ 轴）</li>
+        <li>$\sigma$ 越大，曲线越"矮胖"（分散）；$\sigma$ 越小，曲线越"高瘦"（集中）</li>
+      </ol>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">标准正态分布 $N(0,1)$</div>
+      <p>当 $\mu=0, \sigma=1$ 时，$X \sim N(0,1)$ 称为<strong>标准正态分布</strong>，其密度和分布函数分别记为：</p>
+      $$\varphi(x) = \frac{1}{\sqrt{2\pi}} e^{-x^2/2}, \quad \Phi(x) = \int_{-\infty}^{x} \frac{1}{\sqrt{2\pi}} e^{-t^2/2}\, \dd t$$
+      <p><strong>重要性质</strong>：$\Phi(-x) = 1 - \Phi(x)$（利用密度函数的对称性）</p>
+      <p><strong>特殊值</strong>：$\Phi(0) = 0.5$</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">正态分布的标准化</div>
+      <p>若 $X \sim N(\mu, \sigma^2)$，则 $Z = \dfrac{X - \mu}{\sigma} \sim N(0, 1)$。</p>
+      <p>因此：</p>
+      $$P(a < X < b) = \Phi\!\left(\frac{b-\mu}{\sigma}\right) - \Phi\!\left(\frac{a-\mu}{\sigma}\right)$$
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">常用 $\Phi$ 值</div>
+      <table>
+        <tr><th>$x$</th><th>0</th><th>0.674</th><th>1</th><th>1.645</th><th>1.96</th><th>2.576</th><th>3</th></tr>
+        <tr><td>$\Phi(x)$</td><td>0.5</td><td>0.75</td><td>0.8413</td><td>0.95</td><td>0.975</td><td>0.995</td><td>0.9987</td></tr>
+      </table>
+      <p>记住 $\Phi(1.96)=0.975$ 和 $\Phi(2.576)=0.995$ 对解题很有帮助。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 正态分布计算</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：$X \sim N(1, 4)$，求 $P(0 < X < 3)$ 和 $P(|X| > 2)$。</p>
+        <p><strong>解</strong>：$\mu=1, \sigma=2$</p>
+        <p>$P(0 < X < 3) = \Phi\!\left(\frac{3-1}{2}\right) - \Phi\!\left(\frac{0-1}{2}\right) = \Phi(1) - \Phi(-0.5) = \Phi(1) - [1-\Phi(0.5)] = 0.8413 - 1 + 0.6915 = 0.5328$</p>
+        <p>$P(|X|>2) = P(X>2) + P(X<-2) = [1-\Phi(\frac{2-1}{2})] + \Phi(\frac{-2-1}{2}) = [1-\Phi(0.5)] + \Phi(-1.5) = (1-0.6915) + (1-0.9332) = 0.3085 + 0.0668 = 0.3753$</p>
+      </div>
+    </div>
+
+    <h3>常见连续分布汇总</h3>
+    <div class="table-wrapper">
+      <table>
+        <tr><th>分布</th><th>密度 $f(x)$</th><th>参数</th><th>$E(X)$</th><th>$\Var(X)$</th><th>特殊性质</th></tr>
+        <tr><td>$U(a,b)$</td><td>$\frac{1}{b-a}$</td><td>$a<b$</td><td>$\frac{a+b}{2}$</td><td>$\frac{(b-a)^2}{12}$</td><td>等可能</td></tr>
+        <tr><td>$Exp(\lambda)$</td><td>$\lambda e^{-\lambda x}$</td><td>$\lambda>0$</td><td>$\frac{1}{\lambda}$</td><td>$\frac{1}{\lambda^2}$</td><td>无记忆性</td></tr>
+        <tr><td>$N(\mu,\sigma^2)$</td><td>$\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}}$</td><td>$\mu,\sigma$</td><td>$\mu$</td><td>$\sigma^2$</td><td>对称性、可加性</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ==================== 2.7 随机变量函数的分布 ==================== -->
+  <div class="section" id="s7">
+    <h2>2.7 随机变量函数的分布</h2>
+
+    <p>已知 $X$ 的分布，求 $Y=g(X)$ 的分布。这是本章的难点。</p>
+
+    <h3>离散型</h3>
+    <div class="box box-formula">
+      <div class="box-title">离散型：直接代入</div>
+      <p>若 $X$ 的分布律为 $P(X=x_k)=p_k$，则 $Y=g(X)$ 的分布律为 $P(Y=g(x_k))=p_k$。</p>
+      <p><strong>注意</strong>：如果不同的 $x_k$ 对应相同的 $g(x_k)$，需要<strong>合并概率</strong>。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 离散型函数的分布</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：$P(X=-1)=0.2, P(X=0)=0.3, P(X=1)=0.3, P(X=2)=0.2$，求 $Y=X^2$ 的分布律。</p>
+        <p><strong>解</strong>：$Y=X^2$ 的可能取值：0, 1, 4</p>
+        <p>$P(Y=0)=P(X=0)=0.3$</p>
+        <p>$P(Y=1)=P(X=-1)+P(X=1)=0.2+0.3=0.5$（合并！）</p>
+        <p>$P(Y=4)=P(X=2)=0.2$</p>
+        <p>验证：$0.3+0.5+0.2=1$ ✓</p>
+      </div>
+    </div>
+
+    <h3>连续型 — 分布函数法</h3>
+    <div class="box box-formula">
+      <div class="box-title">分布函数法（通用方法）</div>
+      <p>已知 $X$ 的密度 $f_X(x)$，求 $Y=g(X)$ 的分布：</p>
+      <ol>
+        <li>写出 $F_Y(y) = P(Y \leq y) = P(g(X) \leq y)$</li>
+        <li>将 $P(g(X) \leq y)$ 转化为关于 $X$ 的不等式</li>
+        <li>用 $f_X$ 计算这个概率</li>
+        <li>对 $F_Y(y)$ 求导得 $f_Y(y) = F_Y'(y)$</li>
+      </ol>
+    </div>
+
+    <h3>连续型 — 公式法（单调函数）</h3>
+    <div class="box box-formula">
+      <div class="box-title">公式法</div>
+      <p>设 $X$ 的密度为 $f_X(x)$，$Y = g(X)$，其中 $g$ 严格单调可导，反函数为 $x = h(y)$，则：</p>
+      $$f_Y(y) = f_X(h(y)) \cdot |h'(y)|$$
+      <p><strong>适用条件</strong>：$g$ 必须严格单调（严格递增或严格递减）。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 线性变换的分布</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：设 $X \sim N(\mu, \sigma^2)$，求 $Y = aX + b$（$a \neq 0$）的分布。</p>
+        <p><strong>解</strong>：$g(x) = ax+b$ 严格单调，反函数 $x = h(y) = \frac{y-b}{a}$，$h'(y) = \frac{1}{a}$</p>
+        <p>由公式法：</p>
+        $$f_Y(y) = f_X\!\left(\frac{y-b}{a}\right) \cdot \frac{1}{|a|} = \frac{1}{\sqrt{2\pi}\,|a|\sigma} \exp\!\left(-\frac{(y-(a\mu+b))^2}{2(a\sigma)^2}\right)$$
+        <p>这是正态分布的密度！因此 $Y = aX + b \sim N(a\mu+b,\, a^2\sigma^2)$。</p>
+        <p><strong>重要结论</strong>：正态分布的线性变换仍为正态分布。特别地，$\dfrac{X-\mu}{\sigma} \sim N(0,1)$。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 分布函数法——求 $Y=X^2$ 的分布</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：$X \sim U(-1, 1)$，求 $Y=X^2$ 的密度。</p>
+        <p><strong>解</strong>：$Y=X^2$ 不是单调函数，用分布函数法。</p>
+        <p>当 $y \leq 0$：$F_Y(y)=0$</p>
+        <p>当 $0 < y < 1$：$F_Y(y) = P(X^2 \leq y) = P(-\sqrt{y} \leq X \leq \sqrt{y}) = \int_{-\sqrt{y}}^{\sqrt{y}} \frac{1}{2}\, \dd x = \frac{2\sqrt{y}}{2} = \sqrt{y}$</p>
+        <p>当 $y \geq 1$：$F_Y(y)=1$</p>
+        <p>求导：$f_Y(y) = \begin{cases} \frac{1}{2\sqrt{y}}, & 0 < y < 1 \\ 0, & \text{其他} \end{cases}$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2.8 综合例题 ==================== -->
+  <div class="section" id="s8">
+    <h2>2.8 综合例题与常见题型</h2>
+
+    <div class="box box-note">
+      <div class="box-title">本章解题技巧总结</div>
+      <ol>
+        <li><strong>判断分布类型</strong>：先看是离散还是连续，再选对应方法</li>
+        <li><strong>离散型求分布律</strong>：列出所有可能取值，逐个计算概率，最后验证和为 1</li>
+        <li><strong>连续型求密度</strong>：先求分布函数（积分），再求导得密度</li>
+        <li><strong>正态分布标准化</strong>：遇到正态分布，第一步就是标准化 $Z=(X-\mu)/\sigma$</li>
+        <li><strong>函数的分布</strong>：单调用公式法，非单调用分布函数法</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="ch1.html" class="prev">第一章</a>
+    <a href="ch3.html" class="next">第三章</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>概率论与数理统计复习指南 · 基于茆诗松教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

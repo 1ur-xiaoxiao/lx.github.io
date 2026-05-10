@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>概率论与数理统计 · 复习指南</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          EE: '\\mathbb{E}',
+          PP: '\\mathbb{P}',
+          Var: '\\mathrm{Var}',
+          Cov: '\\mathrm{Cov}',
+          dd: '\\mathrm{d}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+  <a href="../index.html" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">概率论复习</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="appendix.html">附录</a></li>
+  </ul>
+</nav>
+
+<!-- 主内容 -->
+<div class="main-content">
+
+  <!-- 英雄区 -->
+  <div class="hero">
+    <h1>概率论与数理统计</h1>
+    <p>基于茆诗松《概率论与数理统计》前四章 · 零基础友好 · 系统梳理核心概念与公式</p>
+  </div>
+
+  <!-- 四章总览卡片 -->
+  <div class="chapter-cards">
+
+    <div class="chapter-card">
+      <span class="card-number">1</span>
+      <h3>随机事件与概率</h3>
+      <p>概率论的基础语言：从样本空间到条件概率，从古典概型到贝叶斯公式。本章是后续所有章节的基石。</p>
+      <ul>
+        <li>样本空间、事件运算、德摩根律</li>
+        <li>古典概型与几何概型</li>
+        <li>条件概率、乘法公式</li>
+        <li>独立性、全概率公式、贝叶斯公式</li>
+      </ul>
+      <a href="ch1.html" class="card-link">进入第一章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">2</span>
+      <h3>随机变量及其分布</h3>
+      <p>用数值描述随机现象：离散与连续两大阵营，分布函数贯穿始终。掌握常见分布是关键。</p>
+      <ul>
+        <li>分布律、分布函数、概率密度</li>
+        <li>常见离散分布：二项、泊松、几何、超几何</li>
+        <li>常见连续分布：均匀、指数、正态</li>
+        <li>随机变量函数的分布</li>
+      </ul>
+      <a href="ch2.html" class="card-link">进入第二章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">3</span>
+      <h3>多维随机变量及其分布</h3>
+      <p>从一维到多维的推广：联合分布、边缘分布、条件分布与独立性。本章是第二章的自然延伸。</p>
+      <ul>
+        <li>联合分布函数与联合密度</li>
+        <li>边缘分布与条件分布</li>
+        <li>随机变量的独立性</li>
+        <li>卷积公式与极值分布</li>
+      </ul>
+      <a href="ch3.html" class="card-link">进入第三章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">4</span>
+      <h3>大数定律与中心极限定理</h3>
+      <p>从理论到实践的桥梁：大量重复试验下频率趋于概率，和的分布趋于正态。</p>
+      <ul>
+        <li>切比雪夫不等式</li>
+        <li>切比雪夫、伯努利、辛钦大数定律</li>
+        <li>林德伯格-列维中心极限定理</li>
+        <li>棣莫弗-拉普拉斯定理</li>
+      </ul>
+      <a href="ch4.html" class="card-link">进入第四章 →</a>
+    </div>
+
+  </div>
+
+  <!-- 学习建议 -->
+  <div class="section" style="margin-top: 2rem;">
+    <h2>学习路线建议</h2>
+    <ol>
+      <li><strong>第一章</strong>是全书地基，务必掌握条件概率、全概率公式和贝叶斯公式——这三个工具贯穿后续所有章节。建议花最多时间打好基础。</li>
+      <li><strong>第二章</strong>引入随机变量和分布函数，是连接"事件"与"数值"的桥梁。重点掌握分布函数的性质以及常见分布（正态分布最重要）。</li>
+      <li><strong>第三章</strong>将一维推广到多维，核心难点是边缘分布与条件分布的计算，以及独立性的判定。二维正态分布是重点。</li>
+      <li><strong>第四章</strong>是概率论的理论高峰，大数定律解释了"频率为何稳定"，中心极限定理解释了"正态分布为何普遍"。重点掌握辛钦大数定律和林德伯格-列维定理。</li>
+    </ol>
+    <p style="margin-top: 1rem; color: var(--text-light);">每章都包含详细的定义、定理、公式和例题，配有直觉解释和常见题型总结。附录页可作为考前速查手册。</p>
+  </div>
+
+</div>
+
+<!-- 页脚 -->
+<footer class="footer">
+  <p>概率论与数理统计复习指南 · 基于茆诗松教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

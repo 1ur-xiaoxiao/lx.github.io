@@ -21,7 +21,7 @@ MathJax = {
 
 <!-- ===================== 导航栏 ===================== -->
 <nav>
-  <div class="logo"><a href="index.html" style="color:inherit;text-decoration:none;">← 返回主页</a></div>
+  <div class="logo"><a href="datamining.html" style="color:inherit;text-decoration:none;">← 返回主页</a></div>
   <button class="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
   <ul>
     <li><a href="#topic-gradient">极值与梯度</a></li>
@@ -111,8 +111,8 @@ MathJax = {
 
   <div class="math-bridge">
     <h3>与数据挖掘的联系</h3>
-    <p><a href="index.html#ch02"><strong>Ch02 线性回归</strong></a>：最小二乘目标 $J(w) = \|Xw - y\|^2$ 的最优解满足正规方程 $\nabla J = 2X^T(Xw - y) = 0$，即 $w^* = (X^TX)^{-1}X^Ty$。这正是梯度为零的一阶必要条件的直接应用。Hessian $H = 2X^TX$ 的正定性保证了目标函数严格凸性，从而 $w^*$ 为全局最小值。</p>
-    <p><a href="index.html#ch05"><strong>Ch05 逻辑回归</strong></a>：对数损失函数 $J(w)$ 无闭式解，需用梯度下降法 $w \leftarrow w - \eta \nabla J(w)$ 迭代求解。梯度方向指示了参数更新的最优方向。</p>
+    <p><a href="datamining.html#ch02"><strong>Ch02 线性回归</strong></a>：最小二乘目标 $J(w) = \|Xw - y\|^2$ 的最优解满足正规方程 $\nabla J = 2X^T(Xw - y) = 0$，即 $w^* = (X^TX)^{-1}X^Ty$。这正是梯度为零的一阶必要条件的直接应用。Hessian $H = 2X^TX$ 的正定性保证了目标函数严格凸性，从而 $w^*$ 为全局最小值。</p>
+    <p><a href="datamining.html#ch05"><strong>Ch05 逻辑回归</strong></a>：对数损失函数 $J(w)$ 无闭式解，需用梯度下降法 $w \leftarrow w - \eta \nabla J(w)$ 迭代求解。梯度方向指示了参数更新的最优方向。</p>
   </div>
 </section>
 
@@ -180,8 +180,8 @@ MathJax = {
 
   <div class="math-bridge">
     <h3>与数据挖掘的联系</h3>
-    <p><a href="index.html#ch05"><strong>Ch05 逻辑回归</strong></a>：对数损失 $J(w) = -\sum [y_i \log \sigma(w^T x_i) + (1-y_i)\log(1-\sigma(w^T x_i))]$ 可证明为凸函数，保证梯度下降收敛到全局最优。</p>
-    <p><a href="index.html#ch09"><strong>Ch09 SVM</strong></a>：原问题 $\min \frac{1}{2}\|w\|^2$ 的目标函数为严格凸二次函数，约束为线性（凸集），故为凸优化问题，KKT 点即全局最优。对偶问题同样为凸二次规划。</p>
+    <p><a href="datamining.html#ch05"><strong>Ch05 逻辑回归</strong></a>：对数损失 $J(w) = -\sum [y_i \log \sigma(w^T x_i) + (1-y_i)\log(1-\sigma(w^T x_i))]$ 可证明为凸函数，保证梯度下降收敛到全局最优。</p>
+    <p><a href="datamining.html#ch09"><strong>Ch09 SVM</strong></a>：原问题 $\min \frac{1}{2}\|w\|^2$ 的目标函数为严格凸二次函数，约束为线性（凸集），故为凸优化问题，KKT 点即全局最优。对偶问题同样为凸二次规划。</p>
   </div>
 </section>
 
@@ -239,9 +239,9 @@ MathJax = {
 
   <div class="math-bridge">
     <h3>与数据挖掘的联系</h3>
-    <p><a href="index.html#ch05"><strong>Ch05 牛顿法</strong></a>：逻辑回归的 IRLS（迭代重加权最小二乘）算法本质是对对数似然做局部二阶 Taylor 近似后迭代求解。</p>
-    <p><a href="index.html#ch09"><strong>Ch09 SMO 算法</strong></a>：SVM 的序贯最小优化每次选取两个变量优化，相当于在二维子空间做精确二次近似。</p>
-    <p><a href="index.html#ch11"><strong>Ch11 XGBoost</strong></a>：二阶 Taylor 展开是 XGBoost 算法的数学基石，使得任意可微损失函数都可纳入统一的梯度提升框架。</p>
+    <p><a href="datamining.html#ch05"><strong>Ch05 牛顿法</strong></a>：逻辑回归的 IRLS（迭代重加权最小二乘）算法本质是对对数似然做局部二阶 Taylor 近似后迭代求解。</p>
+    <p><a href="datamining.html#ch09"><strong>Ch09 SMO 算法</strong></a>：SVM 的序贯最小优化每次选取两个变量优化，相当于在二维子空间做精确二次近似。</p>
+    <p><a href="datamining.html#ch11"><strong>Ch11 XGBoost</strong></a>：二阶 Taylor 展开是 XGBoost 算法的数学基石，使得任意可微损失函数都可纳入统一的梯度提升框架。</p>
   </div>
 </section>
 
@@ -314,8 +314,8 @@ MathJax = {
 
   <div class="math-bridge">
     <h3>与数据挖掘的联系</h3>
-    <p><a href="index.html#ch06"><strong>Ch06 最大熵模型</strong></a>：在概率分布约束 $\sum_y p(y|x) = 1$ 和特征期望约束下最大化熵，是典型的约束凸优化问题，可用 Lagrange 乘子法导出指数族分布形式。</p>
-    <p><a href="index.html#ch09"><strong>Ch09 SVM</strong></a>：原问题引入松弛变量后为凸二次规划。通过对偶变换，KKT 互补松弛条件直接决定了支持向量的选择——只有满足 $\alpha_i > 0$ 的样本点成为支持向量。</p>
+    <p><a href="datamining.html#ch06"><strong>Ch06 最大熵模型</strong></a>：在概率分布约束 $\sum_y p(y|x) = 1$ 和特征期望约束下最大化熵，是典型的约束凸优化问题，可用 Lagrange 乘子法导出指数族分布形式。</p>
+    <p><a href="datamining.html#ch09"><strong>Ch09 SVM</strong></a>：原问题引入松弛变量后为凸二次规划。通过对偶变换，KKT 互补松弛条件直接决定了支持向量的选择——只有满足 $\alpha_i > 0$ 的样本点成为支持向量。</p>
   </div>
 </section>
 
@@ -379,7 +379,7 @@ MathJax = {
 
   <div class="math-bridge">
     <h3>与数据挖掘的联系</h3>
-    <p><a href="index.html#ch10"><strong>Ch10 EM 算法</strong></a>：EM 算法的每一步迭代保证似然函数不下降，其核心证明依赖 Jensen 不等式。
+    <p><a href="datamining.html#ch10"><strong>Ch10 EM 算法</strong></a>：EM 算法的每一步迭代保证似然函数不下降，其核心证明依赖 Jensen 不等式。
       设 $Q_i(z)$ 为隐变量的后验分布，$\theta$ 为模型参数，则</p>
     $$\log p(x|\theta) = \log \sum_z p(x,z|\theta) = \log \sum_z Q_i(z) \frac{p(x,z|\theta)}{Q_i(z)} \geq \sum_z Q_i(z) \log \frac{p(x,z|\theta)}{Q_i(z)}$$
     <p>不等号正是 Jensen 不等式（$\log$ 为凹函数）的直接应用。右端即为 E 步构造的下界 $\mathcal{L}(Q, \theta)$，M 步通过最大化此下界来更新参数。</p>
@@ -463,8 +463,8 @@ MathJax = {
 
   <div class="math-bridge">
     <h3>与数据挖掘的联系</h3>
-    <p><a href="index.html#ch03"><strong>Ch03 K 近邻（KNN）</strong></a>：KNN 分类器的核心是距离度量的选择。$L^2$（欧氏距离）适合各维度量级相近的连续特征；$L^1$（曼哈顿距离）对异常值更鲁棒；$L^\infty$ 强调最大差异维度。实践中常通过学习距离度量（如马氏距离 $d_M(x,y) = \sqrt{(x-y)^T M (x-y)}$）来提升分类性能。</p>
-    <p><a href="index.html#ch03"><strong>Ch03 聚类分析</strong></a>：K-means 使用 $L^2$ 范数（最小化簇内方差），K-medoids 可使用任意度量。度量的选择直接影响聚类结果。</p>
+    <p><a href="datamining.html#ch03"><strong>Ch03 K 近邻（KNN）</strong></a>：KNN 分类器的核心是距离度量的选择。$L^2$（欧氏距离）适合各维度量级相近的连续特征；$L^1$（曼哈顿距离）对异常值更鲁棒；$L^\infty$ 强调最大差异维度。实践中常通过学习距离度量（如马氏距离 $d_M(x,y) = \sqrt{(x-y)^T M (x-y)}$）来提升分类性能。</p>
+    <p><a href="datamining.html#ch03"><strong>Ch03 聚类分析</strong></a>：K-means 使用 $L^2$ 范数（最小化簇内方差），K-medoids 可使用任意度量。度量的选择直接影响聚类结果。</p>
   </div>
 </section>
 
@@ -543,8 +543,8 @@ MathJax = {
 
   <div class="math-bridge">
     <h3>与数据挖掘的联系</h3>
-    <p><a href="index.html#ch08"><strong>Ch08 感知机</strong></a>：Novikoff 定理证明感知机算法在有限步内收敛。设间隔 $\gamma = \min_i y_i(w^{*T} x_i) / \|w^*\|$，则误分类次数不超过 $R^2/\gamma^2$（$R = \max \|x_i\|$）。这是有限步收敛的经典保证。</p>
-    <p><a href="index.html#ch05"><strong>Ch05 梯度下降</strong></a>：实际训练深度学习模型时，常使用学习率衰减策略 $\eta_k = \eta_0 / (1 + \alpha k)$ 以满足 Robbins-Monro 条件，同时借助动量法加速收敛。</p>
+    <p><a href="datamining.html#ch08"><strong>Ch08 感知机</strong></a>：Novikoff 定理证明感知机算法在有限步内收敛。设间隔 $\gamma = \min_i y_i(w^{*T} x_i) / \|w^*\|$，则误分类次数不超过 $R^2/\gamma^2$（$R = \max \|x_i\|$）。这是有限步收敛的经典保证。</p>
+    <p><a href="datamining.html#ch05"><strong>Ch05 梯度下降</strong></a>：实际训练深度学习模型时，常使用学习率衰减策略 $\eta_k = \eta_0 / (1 + \alpha k)$ 以满足 Robbins-Monro 条件，同时借助动量法加速收敛。</p>
   </div>
 </section>
 
