@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第三章 假设检验 · 数理统计</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}', EE: '\\mathbb{E}', PP: '\\mathbb{P}',
+          Var: '\\mathrm{Var}', Cov: '\\mathrm{Cov}', dd: '\\mathrm{d}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+  <a href="../index.html" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">数理统计</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html" class="active">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="appendix.html">附录</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <!-- 章节头部 -->
+  <div class="chapter-header">
+    <h1>第三章 假设检验</h1>
+    <p>基于样本数据对总体参数或分布做出判断，是统计推断的核心内容之一。</p>
+  </div>
+
+  <!-- 目录 -->
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#sec1">假设检验基本概念</a></li>
+      <li><a href="#sec2">正态总体参数的假设检验</a></li>
+      <li><a href="#sec3">p 值</a></li>
+      <li><a href="#sec4">非参数检验</a></li>
+      <li><a href="#sec5">检验的势函数</a></li>
+    </ol>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- 第一节：假设检验基本概念 -->
+  <!-- ============================================================ -->
+  <section class="section" id="sec1">
+    <h2>一、假设检验基本概念</h2>
+
+    <h3>1.1 原假设与备择假设</h3>
+    <p>在假设检验中，我们需要对总体的某个参数或分布形式提出两个对立的假设。</p>
+
+    <div class="box box-definition">
+      <div class="box-title">定义（原假设与备择假设）</div>
+      <p>称需要检验的假设为 <strong>原假设（零假设）</strong>，记为 $H_0$；与 $H_0$ 对立的假设称为 <strong>备择假设</strong>，记为 $H_1$。假设检验的任务就是根据样本信息判断是接受 $H_0$ 还是拒绝 $H_0$（即接受 $H_1$）。</p>
+      <p>常见的假设形式包括：</p>
+      <ul>
+        <li><strong>双侧检验</strong>：$H_0: \theta = \theta_0 \;\leftrightarrow\; H_1: \theta \neq \theta_0$</li>
+        <li><strong>右侧检验</strong>：$H_0: \theta \leqslant \theta_0 \;\leftrightarrow\; H_1: \theta > \theta_0$</li>
+        <li><strong>左侧检验</strong>：$H_0: \theta \geqslant \theta_0 \;\leftrightarrow\; H_1: \theta < \theta_0$</li>
+      </ul>
+    </div>
+
+    <h3>1.2 检验统计量与拒绝域</h3>
+    <div class="box box-definition">
+      <div class="box-title">定义（检验统计量与拒绝域）</div>
+      <p>设 $X_1, X_2, \ldots, X_n$ 为来自总体的样本。<strong>检验统计量</strong> $T = T(X_1, \ldots, X_n)$ 是样本的函数，在 $H_0$ 成立时其分布完全已知。</p>
+      <p>拒绝域 $W$ 是样本空间的一个子集：当观测值 $(x_1, \ldots, x_n) \in W$ 时，拒绝 $H_0$。拒绝域通常由检验统计量的取值确定，形式为 $T \in C$，其中 $C$ 为临界域。</p>
+    </div>
+
+    <h3>1.3 两类错误</h3>
+    <div class="box box-definition">
+      <div class="box-title">定义（第 I 类错误与第 II 类错误）</div>
+      <p>假设检验可能犯两类错误：</p>
+      <ul>
+        <li><strong>第 I 类错误（弃真错误）</strong>：$H_0$ 实际为真，但检验结果拒绝了 $H_0$。犯此错误的概率记为 $\alpha$，即
+          $$\alpha = \PP(\text{拒绝} H_0 \mid H_0 \text{为真}).$$</li>
+        <li><strong>第 II 类错误（取伪错误）</strong>：$H_0$ 实际为假（$H_1$ 为真），但检验结果接受了 $H_0$。犯此错误的概率记为 $\beta$，即
+          $$\beta = \PP(\text{接受} H_0 \mid H_1 \text{为真}).$$</li>
+      </ul>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注</div>
+      <p>在样本量 $n$ 固定时，$\alpha$ 与 $\beta$ 此消彼长。通常的做法是先控制第 I 类错误概率不超过 $\alpha$（即 <strong>检验水平</strong>），然后在可能的条件下使 $\beta$ 尽量小。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义（检验水平）</div>
+      <p>给定 $\alpha \in (0,1)$，若检验的拒绝域 $W$ 满足
+        $$\sup_{\theta \in \Theta_0} P_\theta(\text{拒绝} H_0) \leqslant \alpha,$$
+        则称该检验的 <strong>显著性水平</strong>（检验水平）为 $\alpha$，其中 $\Theta_0$ 是 $H_0$ 对应的参数空间。</p>
+    </div>
+
+    <h3>1.4 假设检验的基本步骤</h3>
+    <ol>
+      <li>根据问题提出原假设 $H_0$ 和备择假设 $H_1$；</li>
+      <li>选择适当的检验统计量 $T$，并确定其在 $H_0$ 下的分布；</li>
+      <li>给定显著性水平 $\alpha$，由 $T$ 的分布求出拒绝域 $W$（或临界值）；</li>
+      <li>由样本观测值计算 $T$ 的观测值；</li>
+      <li>做出判断：若观测值落入 $W$，则拒绝 $H_0$；否则接受 $H_0$。</li>
+    </ol>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- 第二节：正态总体参数的假设检验 -->
+  <!-- ============================================================ -->
+  <section class="section" id="sec2">
+    <h2>二、正态总体参数的假设检验</h2>
+    <p>设总体 $X \sim N(\mu, \sigma^2)$，$X_1, X_2, \ldots, X_n$ 为样本，$\bar{X}$ 为样本均值，$S^2$ 为样本方差。</p>
+
+    <h3>2.1 Z 检验（$\sigma$ 已知）</h3>
+    <div class="box box-formula">
+      <div class="box-title">Z 检验统计量</div>
+      <p>当 $\sigma$ 已知，检验 $H_0: \mu = \mu_0$ 时，使用统计量
+        $$Z = \frac{\bar{X} - \mu_0}{\sigma / \sqrt{n}}.$$
+        当 $H_0$ 成立时，$Z \sim N(0, 1)$。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">Z 检验的拒绝域</div>
+      <ul>
+        <li><strong>双侧检验</strong> $H_0: \mu = \mu_0 \;\leftrightarrow\; H_1: \mu \neq \mu_0$：
+          $$W = \{|Z| \geqslant z_{\alpha/2}\}.$$</li>
+        <li><strong>右侧检验</strong> $H_0: \mu \leqslant \mu_0 \;\leftrightarrow\; H_1: \mu > \mu_0$：
+          $$W = \{Z \geqslant z_{\alpha}\}.$$</li>
+        <li><strong>左侧检验</strong> $H_0: \mu \geqslant \mu_0 \;\leftrightarrow\; H_1: \mu < \mu_0$：
+          $$W = \{Z \leqslant -z_{\alpha}\}.$$</li>
+      </ul>
+      <p>其中 $z_{\alpha}$ 为标准正态分布的上 $\alpha$ 分位数。</p>
+    </div>
+
+    <h3>2.2 t 检验（$\sigma$ 未知）</h3>
+    <div class="box box-formula">
+      <div class="box-title">t 检验统计量</div>
+      <p>当 $\sigma$ 未知，检验 $H_0: \mu = \mu_0$ 时，使用统计量
+        $$T = \frac{\bar{X} - \mu_0}{S / \sqrt{n}}.$$
+        当 $H_0$ 成立时，$T \sim t(n-1)$，其中 $S^2 = \frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2$。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">t 检验的拒绝域</div>
+      <ul>
+        <li><strong>双侧检验</strong>：$W = \{|T| \geqslant t_{\alpha/2}(n-1)\}$</li>
+        <li><strong>右侧检验</strong>：$W = \{T \geqslant t_{\alpha}(n-1)\}$</li>
+        <li><strong>左侧检验</strong>：$W = \{T \leqslant -t_{\alpha}(n-1)\}$</li>
+      </ul>
+      <p>其中 $t_{\alpha}(n-1)$ 为自由度 $n-1$ 的 $t$ 分布的上 $\alpha$ 分位数。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 3.1</div>
+      <p>某工厂生产的零件长度服从正态分布 $N(\mu, 0.04)$。现抽取 $n = 25$ 个零件，测得 $\bar{x} = 10.05$ cm。在 $\alpha = 0.05$ 下检验 $H_0: \mu = 10$ vs $H_1: \mu \neq 10$。</p>
+      <p><strong>解</strong>：$\sigma = 0.2$，计算检验统计量
+        $$z = \frac{10.05 - 10}{0.2 / \sqrt{25}} = \frac{0.05}{0.04} = 1.25.$$
+        双侧检验的临界值 $z_{0.025} = 1.96$。由于 $|z| = 1.25 < 1.96$，故接受 $H_0$，认为零件平均长度为 10 cm。</p>
+    </div>
+
+    <h3>2.3 $\chi^2$ 检验（方差检验）</h3>
+    <div class="box box-formula">
+      <div class="box-title">$\chi^2$ 检验统计量</div>
+      <p>检验 $H_0: \sigma^2 = \sigma_0^2$，使用统计量
+        $$\chi^2 = \frac{(n-1)S^2}{\sigma_0^2}.$$
+        当 $H_0$ 成立时，$\chi^2 \sim \chi^2(n-1)$。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">$\chi^2$ 检验的拒绝域</div>
+      <ul>
+        <li><strong>双侧检验</strong> $H_0: \sigma^2 = \sigma_0^2 \;\leftrightarrow\; H_1: \sigma^2 \neq \sigma_0^2$：
+          $$W = \{\chi^2 \leqslant \chi^2_{1-\alpha/2}(n-1)\} \cup \{\chi^2 \geqslant \chi^2_{\alpha/2}(n-1)\}.$$</li>
+        <li><strong>右侧检验</strong> $H_0: \sigma^2 \leqslant \sigma_0^2 \;\leftrightarrow\; H_1: \sigma^2 > \sigma_0^2$：
+          $$W = \{\chi^2 \geqslant \chi^2_{\alpha}(n-1)\}.$$</li>
+        <li><strong>左侧检验</strong> $H_0: \sigma^2 \geqslant \sigma_0^2 \;\leftrightarrow\; H_1: \sigma^2 < \sigma_0^2$：
+          $$W = \{\chi^2 \leqslant \chi^2_{1-\alpha}(n-1)\}.$$</li>
+      </ul>
+    </div>
+
+    <h3>2.4 F 检验（两总体方差比）</h3>
+    <div class="box box-formula">
+      <div class="box-title">F 检验统计量</div>
+      <p>设 $X_1, \ldots, X_{n_1} \sim N(\mu_1, \sigma_1^2)$，$Y_1, \ldots, Y_{n_2} \sim N(\mu_2, \sigma_2^2)$，两样本独立。检验 $H_0: \sigma_1^2 = \sigma_2^2$，使用统计量
+        $$F = \frac{S_1^2}{S_2^2}.$$
+        当 $H_0$ 成立时，$F \sim F(n_1-1, n_2-1)$。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">F 检验的拒绝域</div>
+      <ul>
+        <li><strong>双侧检验</strong>：
+          $$W = \{F \leqslant F_{1-\alpha/2}(n_1-1,n_2-1)\} \cup \{F \geqslant F_{\alpha/2}(n_1-1,n_2-1)\}.$$</li>
+        <li><strong>右侧检验</strong> $H_0: \sigma_1^2 \leqslant \sigma_2^2 \;\leftrightarrow\; H_1: \sigma_1^2 > \sigma_2^2$：
+          $$W = \{F \geqslant F_{\alpha}(n_1-1,n_2-1)\}.$$</li>
+        <li><strong>左侧检验</strong> $H_0: \sigma_1^2 \geqslant \sigma_2^2 \;\leftrightarrow\; H_1: \sigma_1^2 < \sigma_2^2$：
+          $$W = \{F \leqslant F_{1-\alpha}(n_1-1,n_2-1)\}.$$</li>
+      </ul>
+      <p>其中 $F_{\alpha}(\nu_1,\nu_2)$ 为 $F(\nu_1,\nu_2)$ 分布的上 $\alpha$ 分位数，且 $F_{1-\alpha}(\nu_1,\nu_2) = 1/F_{\alpha}(\nu_2,\nu_1)$。</p>
+    </div>
+
+    <h3>2.5 两样本 t 检验</h3>
+    <div class="box box-definition">
+      <div class="box-title">两样本 t 检验</div>
+      <p>检验 $H_0: \mu_1 = \mu_2$，当 $\sigma_1^2 = \sigma_2^2 = \sigma^2$（未知）时，使用统计量
+        $$T = \frac{\bar{X} - \bar{Y}}{S_w\sqrt{\frac{1}{n_1}+\frac{1}{n_2}}},$$
+        其中 $S_w^2 = \frac{(n_1-1)S_1^2 + (n_2-1)S_2^2}{n_1+n_2-2}$ 为联合方差估计。当 $H_0$ 成立时，$T \sim t(n_1+n_2-2)$。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 3.2</div>
+      <p>两组学生参加同一考试，甲组 $n_1 = 10$ 人，$\bar{x} = 78$，$s_1^2 = 16$；乙组 $n_2 = 12$ 人，$\bar{y} = 82$，$s_2^2 = 20$。设两总体均服从正态分布且方差相等，在 $\alpha = 0.05$ 下检验两组成绩是否有显著差异。</p>
+      <p><strong>解</strong>：$H_0: \mu_1 = \mu_2$ vs $H_1: \mu_1 \neq \mu_2$。
+        $$s_w^2 = \frac{9 \times 16 + 11 \times 20}{20} = \frac{144 + 220}{20} = 18.2,$$
+        $$t = \frac{78 - 82}{\sqrt{18.2}\sqrt{1/10 + 1/12}} = \frac{-4}{4.266 \times 0.4282} = \frac{-4}{1.827} = -2.190.$$
+        查表 $t_{0.025}(20) = 2.086$。由于 $|t| = 2.190 > 2.086$，拒绝 $H_0$，两组成绩有显著差异。</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- 第三节：p 值 -->
+  <!-- ============================================================ -->
+  <section class="section" id="sec3">
+    <h2>三、p 值</h2>
+
+    <h3>3.1 p 值的定义</h3>
+    <div class="box box-definition">
+      <div class="box-title">定义（p 值）</div>
+      <p>在 $H_0$ 成立的条件下，<strong>p 值</strong>（p-value）是指检验统计量取当前观测值或更"极端"值的概率。直观地说，p 值度量了样本数据与 $H_0$ 之间的"不兼容"程度。</p>
+      <p>对于不同的检验类型，p 值的计算方式为：</p>
+      <ul>
+        <li><strong>双侧检验</strong>：$p = 2 \cdot P(T \geqslant |t_{\text{obs}}| \mid H_0)$（对称分布）</li>
+        <li><strong>右侧检验</strong>：$p = P(T \geqslant t_{\text{obs}} \mid H_0)$</li>
+        <li><strong>左侧检验</strong>：$p = P(T \leqslant t_{\text{obs}} \mid H_0)$</li>
+      </ul>
+    </div>
+
+    <h3>3.2 p 值与拒绝域的关系</h3>
+    <div class="box box-theorem">
+      <div class="box-title">p 值判别法</div>
+      <p>给定显著性水平 $\alpha$：</p>
+      <ul>
+        <li>若 $p < \alpha$，则拒绝 $H_0$；</li>
+        <li>若 $p \geqslant \alpha$，则接受 $H_0$。</li>
+      </ul>
+      <p>p 值是使检验刚好拒绝 $H_0$ 的最小显著性水平，因此也称为 <strong>观测显著性水平</strong>。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 3.3</div>
+      <p>在例 3.1 的 Z 检验中，观测值 $z = 1.25$，双侧检验的 p 值为
+        $$p = 2\,P(Z \geqslant 1.25) = 2 \times 0.1056 = 0.2112.$$
+        由于 $p = 0.2112 > \alpha = 0.05$，不拒绝 $H_0$。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 3.4</div>
+      <p>某药物试验中，使用 t 检验得到 $t_{\text{obs}} = 2.85$，自由度 $\nu = 15$。对右侧检验 $H_0: \mu \leqslant \mu_0$ vs $H_1: \mu > \mu_0$，p 值为
+        $$p = P(t(15) \geqslant 2.85).$$
+        查 t 分布表，$t_{0.005}(15) = 2.947$，$t_{0.01}(15) = 2.602$，因此 $0.005 < p < 0.01$。取 $\alpha = 0.01$ 时拒绝 $H_0$。</p>
+    </div>
+
+    <h3>3.3 各检验的 p 值计算</h3>
+    <div class="box box-formula">
+      <div class="box-title">各检验的 p 值公式</div>
+      <ul>
+        <li><strong>Z 检验（双侧）</strong>：$p = 2\,\Phi(-|z_{\text{obs}}|)$，其中 $\Phi$ 为标准正态 CDF。</li>
+        <li><strong>t 检验（右侧）</strong>：$p = 1 - F_{t(n-1)}(t_{\text{obs}})$，其中 $F_{t(n-1)}$ 为 $t(n-1)$ 分布的 CDF。</li>
+        <li><strong>$\chi^2$ 检验（右侧）</strong>：$p = 1 - F_{\chi^2(n-1)}(\chi^2_{\text{obs}})$。</li>
+        <li><strong>F 检验（右侧）</strong>：$p = 1 - F_{F(n_1-1,n_2-1)}(F_{\text{obs}})$。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- 第四节：非参数检验 -->
+  <!-- ============================================================ -->
+  <section class="section" id="sec4">
+    <h2>四、非参数检验</h2>
+
+    <h3>4.1 $\chi^2$ 拟合优度检验</h3>
+    <div class="box box-definition">
+      <div class="box-title">$\chi^2$ 拟合优度检验</div>
+      <p>检验假设 $H_0$: 总体 $X$ 的分布函数为 $F_0(x)$（完全已知或含有限个未知参数）。将样本值的范围分为 $k$ 个互不相交的区间 $A_1, A_2, \ldots, A_k$，记 $f_i$ 为落入 $A_i$ 的观测频数，$p_i = P_{H_0}(X \in A_i)$ 为理论概率，则检验统计量为
+        $$\chi^2 = \sum_{i=1}^{k} \frac{(f_i - n p_i)^2}{n p_i}.$$
+        当 $H_0$ 成立且 $n$ 充分大时，$\chi^2$ 近似服从 $\chi^2(k - 1 - r)$ 分布，其中 $r$ 为 $F_0$ 中待估参数的个数。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注（使用条件）</div>
+      <p>一般要求每个区间的期望频数 $n p_i \geqslant 5$。若某些区间不满足，应合并相邻区间。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 3.5</div>
+      <p>掷一枚骰子 120 次，各面出现次数如下表。检验骰子是否均匀（$\alpha = 0.05$）。</p>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>点数</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr>
+          <tr><td>观测频数 $f_i$</td><td>18</td><td>22</td><td>17</td><td>25</td><td>19</td><td>19</td></tr>
+          <tr><td>理论频数 $np_i$</td><td>20</td><td>20</td><td>20</td><td>20</td><td>20</td><td>20</td></tr>
+        </table>
+      </div>
+      <p><strong>解</strong>：$H_0$: 各面概率均为 $1/6$。计算
+        $$\chi^2 = \frac{(18-20)^2}{20} + \frac{(22-20)^2}{20} + \frac{(17-20)^2}{20} + \frac{(25-20)^2}{20} + \frac{(19-20)^2}{20} + \frac{(19-20)^2}{20} = \frac{4+4+9+25+1+1}{20} = 2.2.$$
+        自由度 $\nu = 6 - 1 = 5$，$\chi^2_{0.05}(5) = 11.07$。由于 $2.2 < 11.07$，接受 $H_0$，认为骰子是均匀的。</p>
+    </div>
+
+    <h3>4.2 独立性检验（列联表）</h3>
+    <div class="box box-definition">
+      <div class="box-title">列联表独立性检验</div>
+      <p>设两个分类变量 $A$（$r$ 个水平）和 $B$（$c$ 个水平），观测到 $n$ 个样本，整理为 $r \times c$ 列联表，$n_{ij}$ 表示 $A = i, B = j$ 的频数。检验 $H_0$: $A$ 与 $B$ 独立。</p>
+      <p>在 $H_0$ 下，$n_{ij}$ 的期望为
+        $$e_{ij} = \frac{n_{i\cdot} \cdot n_{\cdot j}}{n},$$
+        其中 $n_{i\cdot} = \sum_j n_{ij}$，$n_{\cdot j} = \sum_i n_{ij}$。检验统计量
+        $$\chi^2 = \sum_{i=1}^{r} \sum_{j=1}^{c} \frac{(n_{ij} - e_{ij})^2}{e_{ij}} \;\sim\; \chi^2((r-1)(c-1)).$$</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 3.6</div>
+      <p>调查 200 名学生对两门课程的偏好，结果如下：</p>
+      <div class="table-wrapper">
+        <table>
+          <tr><th></th><th>喜欢课程 B</th><th>不喜欢课程 B</th><th>合计</th></tr>
+          <tr><td>喜欢课程 A</td><td>60</td><td>30</td><td>90</td></tr>
+          <tr><td>不喜欢课程 A</td><td>40</td><td>70</td><td>110</td></tr>
+          <tr><td>合计</td><td>100</td><td>100</td><td>200</td></tr>
+        </table>
+      </div>
+      <p><strong>解</strong>：$H_0$: 对课程 A 和课程 B 的偏好独立。期望频数 $e_{11} = 90 \times 100 / 200 = 45$，$e_{12} = 45$，$e_{21} = 55$，$e_{22} = 55$。
+        $$\chi^2 = \frac{(60-45)^2}{45} + \frac{(30-45)^2}{45} + \frac{(40-55)^2}{55} + \frac{(70-55)^2}{55} = 5 + 5 + 4.09 + 4.09 = 18.18.$$
+        自由度 $\nu = (2-1)(2-1) = 1$，$\chi^2_{0.05}(1) = 3.84$。由于 $18.18 \gg 3.84$，拒绝 $H_0$，认为两门课程的偏好不独立。</p>
+    </div>
+
+    <h3>4.3 Kolmogorov-Smirnov 检验简介</h3>
+    <div class="box box-definition">
+      <div class="box-title">K-S 检验</div>
+      <p>Kolmogorov-Smirnov（K-S）检验是一种非参数检验方法，用于检验样本是否来自某个指定的连续分布。其检验统计量为经验分布函数 $F_n(x)$ 与理论分布函数 $F_0(x)$ 之间的最大距离：
+        $$D_n = \sup_{x} |F_n(x) - F_0(x)|.$$
+        当 $H_0$ 成立时，$\sqrt{n}\,D_n$ 的极限分布为 Kolmogorov 分布。</p>
+      <p>与 $\chi^2$ 拟合优度检验相比，K-S 检验不需要对数据分组，适用于小样本情形，但要求理论分布 $F_0$ 完全已知（不含未知参数）。</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- 第五节：检验的势函数 -->
+  <!-- ============================================================ -->
+  <section class="section" id="sec5">
+    <h2>五、检验的势函数</h2>
+
+    <h3>5.1 势函数的定义</h3>
+    <div class="box box-definition">
+      <div class="box-title">定义（势函数）</div>
+      <p>设检验的拒绝域为 $W$，则 <strong>势函数</strong>（Power Function）定义为
+        $$\beta(\theta) = P_\theta(\text{拒绝} H_0) = P_\theta((X_1, \ldots, X_n) \in W).$$
+        势函数 $\beta(\theta)$ 表示当参数真值为 $\theta$ 时，检验拒绝 $H_0$ 的概率。</p>
+      <p>特别地：</p>
+      <ul>
+        <li>$\beta(\theta) = \alpha(\theta)$，$\theta \in \Theta_0$，即第 I 类错误概率；</li>
+        <li>$\beta(\theta) = 1 - \beta_{\text{II}}(\theta)$，$\theta \in \Theta_1$，其中 $\beta_{\text{II}}(\theta)$ 为第 II 类错误概率。</li>
+      </ul>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">势函数的性质</div>
+      <p>对于水平为 $\alpha$ 的检验，理想的势函数满足：</p>
+      <ul>
+        <li>在 $H_0$ 范围内：$\beta(\theta) \leqslant \alpha$；</li>
+        <li>在 $H_1$ 范围内：$\beta(\theta)$ 尽可能接近 1。</li>
+      </ul>
+      <p>若检验 $T_1$ 的势函数处处不小于检验 $T_2$ 的势函数，则称 $T_1$ 比 $T_2$ 更 <strong>有效</strong>。</p>
+    </div>
+
+    <h3>5.2 势函数的计算</h3>
+    <div class="box box-example">
+      <div class="box-title">例 3.7</div>
+      <p>设 $X_1, \ldots, X_n \sim N(\mu, 1)$，检验 $H_0: \mu = 0$ vs $H_1: \mu \neq 0$，拒绝域为 $W = \{|\bar{X}\sqrt{n}| \geqslant z_{\alpha/2}\}$。求势函数。</p>
+      <p><strong>解</strong>：当参数真值为 $\mu$ 时，$\bar{X} \sim N(\mu, 1/n)$，故
+        $$\beta(\mu) = P_\mu\left(\left|\bar{X}\sqrt{n}\right| \geqslant z_{\alpha/2}\right) = P_\mu\left(\sqrt{n}\bar{X} \geqslant z_{\alpha/2}\right) + P_\mu\left(\sqrt{n}\bar{X} \leqslant -z_{\alpha/2}\right).$$
+        由于 $\sqrt{n}\bar{X} \sim N(\sqrt{n}\mu, 1)$，令 $Z = \sqrt{n}(\bar{X} - \mu) \sim N(0,1)$，则
+        $$\beta(\mu) = \Phi(-z_{\alpha/2} - \sqrt{n}\mu) + \Phi(-z_{\alpha/2} + \sqrt{n}\mu).$$
+        当 $\mu = 0$ 时，$\beta(0) = \alpha$；当 $|\mu|$ 增大时，$\beta(\mu) \to 1$。</p>
+    </div>
+
+    <h3>5.3 OC 曲线（操作特性曲线）</h3>
+    <div class="box box-definition">
+      <div class="box-title">定义（OC 曲线）</div>
+      <p><strong>OC 曲线</strong>（Operating Characteristic Curve）是势函数 $\beta(\theta)$ 的图形表示，横轴为参数 $\theta$，纵轴为 $\beta(\theta)$（或接受概率 $1 - \beta(\theta)$，取决于具体定义）。</p>
+      <p>OC 曲线直观展示了检验在不同参数值下的拒绝（或接受）能力，是评价检验优劣的重要工具。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 3.8</div>
+      <p>在例 3.7 中，取 $n = 25$，$\alpha = 0.05$，则 $z_{0.025} = 1.96$。势函数为
+        $$\beta(\mu) = \Phi(-1.96 - 5\mu) + \Phi(-1.96 + 5\mu).$$
+        特别地，$\beta(0) = 0.05$，$\beta(0.2) = \Phi(-2.96) + \Phi(-0.96) = 0.0015 + 0.1685 = 0.170$，
+        $\beta(0.5) = \Phi(-4.46) + \Phi(0.54) = 0 + 0.7054 = 0.705$，
+        $\beta(1.0) = \Phi(-6.96) + \Phi(3.04) \approx 0.9988$。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注</div>
+      <p>增大样本量 $n$ 可以使势函数在 $H_1$ 下更快地趋近 1，即提高检验的功效。在实际应用中，常通过 <strong>功效分析</strong>（Power Analysis）确定所需的样本量。</p>
+    </div>
+  </section>
+
+  <!-- 章节间导航 -->
+  <div class="chapter-nav">
+    <a href="ch2.html" class="prev">上一章</a>
+    <a href="index.html">回目录</a>
+    <a href="ch4.html" class="next">下一章</a>
+  </div>
+
+</div>
+
+<footer class="footer"><p>数理统计复习指南 · 基于茆诗松教材 · 仅供学习参考</p></footer>
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

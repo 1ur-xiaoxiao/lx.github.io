@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数理统计 · 复习指南</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          EE: '\\mathbb{E}',
+          PP: '\\mathbb{P}',
+          Var: '\\mathrm{Var}',
+          Cov: '\\mathrm{Cov}',
+          dd: '\\mathrm{d}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+  <a href="../index.html" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">数理统计</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="appendix.html">附录</a></li>
+  </ul>
+</nav>
+
+<!-- 主内容 -->
+<div class="main-content">
+
+  <!-- 英雄区 -->
+  <div class="hero">
+    <h1>数理统计</h1>
+    <p>基于茆诗松《概率论与数理统计》第五至八章 · 从抽样分布到假设检验 · 系统梳理统计推断核心方法</p>
+  </div>
+
+  <!-- 五章总览卡片 -->
+  <div class="chapter-cards">
+
+    <div class="chapter-card">
+      <span class="card-number">1</span>
+      <h3>数理统计基本概念</h3>
+      <p>统计推断的理论基础：总体、样本与统计量。三大抽样分布是后续所有统计方法的基石。</p>
+      <ul>
+        <li>总体与样本、随机抽样</li>
+        <li>统计量：样本均值、方差、矩</li>
+        <li>$\chi^2$ 分布、$t$ 分布、$F$ 分布</li>
+        <li>正态总体的抽样分布定理</li>
+      </ul>
+      <a href="ch1.html" class="card-link">进入第一章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">2</span>
+      <h3>参数估计</h3>
+      <p>用样本推断总体参数：点估计给出"最佳猜测"，区间估计给出"可信范围"。</p>
+      <ul>
+        <li>矩估计法 (MoM) 与最大似然估计 (MLE)</li>
+        <li>无偏性、有效性、均方误差、一致性</li>
+        <li>充分统计量与完备统计量</li>
+        <li>枢轴量法与正态总体置信区间</li>
+      </ul>
+      <a href="ch2.html" class="card-link">进入第二章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">3</span>
+      <h3>假设检验</h3>
+      <p>用数据做决策：在两种假设之间做出选择，控制犯错概率。统计学最核心的应用方法。</p>
+      <ul>
+        <li>原假设、备择假设、两类错误</li>
+        <li>$Z$ 检验、$t$ 检验、$\chi^2$ 检验、$F$ 检验</li>
+        <li>$p$ 值与检验的势函数</li>
+        <li>$\chi^2$ 拟合优度检验与独立性检验</li>
+      </ul>
+      <a href="ch3.html" class="card-link">进入第三章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">4</span>
+      <h3>回归分析与方差分析</h3>
+      <p>探索变量间的统计关系：回归分析建模因变量与自变量的关系，方差分析比较多个总体的均值。</p>
+      <ul>
+        <li>一元线性回归：最小二乘估计</li>
+        <li>多元线性回归（矩阵形式）</li>
+        <li>回归系数的显著性检验</li>
+        <li>单因素与双因素方差分析</li>
+      </ul>
+      <a href="ch4.html" class="card-link">进入第四章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">5</span>
+      <h3>贝叶斯统计简介</h3>
+      <p>另一种统计哲学：将先验知识与样本数据结合，用后验分布描述对参数的认知更新。</p>
+      <ul>
+        <li>频率学派 vs 贝叶斯学派</li>
+        <li>先验分布、似然函数、后验分布</li>
+        <li>共轭先验族</li>
+        <li>贝叶斯估计与决策</li>
+      </ul>
+      <a href="ch5.html" class="card-link">进入第五章 →</a>
+    </div>
+
+  </div>
+
+  <!-- 学习建议 -->
+  <div class="section" style="margin-top: 2rem;">
+    <h2>学习路线建议</h2>
+    <ol>
+      <li><strong>第一章</strong>是数理统计的地基，务必掌握三大抽样分布（$\chi^2$、$t$、$F$）的定义、性质和正态总体下的四个抽样分布定理。这些结论在后续每章都会反复使用。</li>
+      <li><strong>第二章</strong>是统计推断的核心之一。重点掌握最大似然估计的求解步骤、无偏性的判定，以及正态总体下均值和方差的置信区间构造。</li>
+      <li><strong>第三章</strong>是统计推断的另一核心。理解两类错误的权衡关系，掌握正态总体四种检验的适用条件，会计算 $p$ 值。</li>
+      <li><strong>第四章</strong>将统计方法应用于实际问题。重点掌握最小二乘估计的推导、回归方程的显著性检验（$F$ 检验），以及方差分析的基本思想。</li>
+      <li><strong>第五章</strong>介绍贝叶斯学派的基本框架。理解共轭先验的概念，会计算简单模型的后验分布和贝叶斯估计。</li>
+    </ol>
+    <p style="margin-top: 1rem; color: var(--text-light);">每章都包含严格的定义、定理（含证明）、公式推导和典型例题，配有直觉解释和常见题型总结。附录页可作为考前速查手册。</p>
+  </div>
+
+</div>
+
+<!-- 页脚 -->
+<footer class="footer">
+  <p>数理统计复习指南 · 基于茆诗松教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

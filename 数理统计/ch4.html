@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第四章 回归分析与方差分析 · 数理统计</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}', EE: '\\mathbb{E}', PP: '\\mathbb{P}',
+          Var: '\\mathrm{Var}', Cov: '\\mathrm{Cov}', dd: '\\mathrm{d}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+  <a href="../index.html" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">数理统计</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html" class="active">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="appendix.html">附录</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <!-- 章节头部 -->
+  <div class="chapter-header">
+    <h1>第四章 回归分析与方差分析</h1>
+    <p>研究变量之间的依赖关系，以及不同因素对响应变量的影响。</p>
+  </div>
+
+  <!-- 目录 -->
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#sec1">一元线性回归</a></li>
+      <li><a href="#sec2">多元线性回归（矩阵形式）</a></li>
+      <li><a href="#sec3">方差分析 (ANOVA)</a></li>
+    </ol>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- 第一节：一元线性回归 -->
+  <!-- ============================================================ -->
+  <section class="section" id="sec1">
+    <h2>一、一元线性回归</h2>
+
+    <h3>1.1 模型设定</h3>
+    <div class="box box-definition">
+      <div class="box-title">定义（一元线性回归模型）</div>
+      <p>设自变量 $x$ 为可控变量（非随机），$Y$ 为响应变量（随机），一元线性回归模型为
+        $$Y_i = \beta_0 + \beta_1 x_i + \varepsilon_i, \quad i = 1, 2, \ldots, n,$$
+        其中 $\beta_0$ 为截距，$\beta_1$ 为斜率（回归系数），$\varepsilon_i$ 为随机误差，满足：
+      </p>
+      <ul>
+        <li>$\EE(\varepsilon_i) = 0$；</li>
+        <li>$\Var(\varepsilon_i) = \sigma^2$（等方差性）；</li>
+        <li>$\varepsilon_1, \ldots, \varepsilon_n$ 相互独立；</li>
+        <li>$\varepsilon_i \sim N(0, \sigma^2)$（正态性假设，用于检验和区间估计）。</li>
+      </ul>
+    </div>
+
+    <h3>1.2 最小二乘估计</h3>
+    <div class="box box-definition">
+      <div class="box-title">最小二乘法（OLS）</div>
+      <p>定义残差平方和
+        $$Q(\beta_0, \beta_1) = \sum_{i=1}^{n} (Y_i - \beta_0 - \beta_1 x_i)^2.$$
+        <strong>最小二乘估计</strong> $(\hat{\beta}_0, \hat{\beta}_1)$ 是使 $Q$ 达到最小值的参数值。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理（OLS 估计公式）</div>
+      <p>令 $\bar{x} = \frac{1}{n}\sum x_i$，$\bar{Y} = \frac{1}{n}\sum Y_i$，则
+        $$\hat{\beta}_1 = \frac{\sum_{i=1}^{n}(x_i - \bar{x})(Y_i - \bar{Y})}{\sum_{i=1}^{n}(x_i - \bar{x})^2} = \frac{S_{xy}}{S_{xx}},$$
+        $$\hat{\beta}_0 = \bar{Y} - \hat{\beta}_1 \bar{x},$$
+        其中 $S_{xy} = \sum(x_i - \bar{x})(Y_i - \bar{Y})$，$S_{xx} = \sum(x_i - \bar{x})^2$。</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明</div>
+      <p>对 $Q(\beta_0, \beta_1)$ 分别关于 $\beta_0$ 和 $\beta_1$ 求偏导并令其为零：
+        $$\frac{\partial Q}{\partial \beta_0} = -2\sum_{i=1}^{n}(Y_i - \beta_0 - \beta_1 x_i) = 0,$$
+        $$\frac{\partial Q}{\partial \beta_1} = -2\sum_{i=1}^{n}x_i(Y_i - \beta_0 - \beta_1 x_i) = 0.$$
+        由第一个方程得 $n\beta_0 = \sum Y_i - \beta_1 \sum x_i$，即 $\beta_0 = \bar{Y} - \beta_1 \bar{x}$。
+        代入第二个方程，化简得
+        $$\sum(x_i - \bar{x})(Y_i - \bar{Y}) - \beta_1 \sum(x_i - \bar{x})^2 = 0,$$
+        从而 $\hat{\beta}_1 = S_{xy}/S_{xx}$。易验证 Hessian 矩阵正定，故为极小值点。</p>
+    </div>
+
+    <h3>1.3 估计量的性质</h3>
+    <div class="box box-theorem">
+      <div class="box-title">定理（无偏性与分布）</div>
+      <p>在回归模型假设下：</p>
+      <ol>
+        <li>$\hat{\beta}_0$ 和 $\hat{\beta}_1$ 分别是 $\beta_0$ 和 $\beta_1$ 的无偏估计。</li>
+        <li>$\hat{\beta}_1 \sim N\!\left(\beta_1, \frac{\sigma^2}{S_{xx}}\right)$，$\hat{\beta}_0 \sim N\!\left(\beta_0, \sigma^2\!\left(\frac{1}{n} + \frac{\bar{x}^2}{S_{xx}}\right)\right)$。</li>
+        <li>$\Cov(\hat{\beta}_0, \hat{\beta}_1) = -\frac{\sigma^2 \bar{x}}{S_{xx}}$。</li>
+      </ol>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明（$\hat{\beta}_1$ 的无偏性）</div>
+      <p>将 $Y_i = \beta_0 + \beta_1 x_i + \varepsilon_i$ 代入 $\hat{\beta}_1 = \sum \frac{(x_i - \bar{x})}{S_{xx}} Y_i$，注意到 $\sum(x_i - \bar{x}) = 0$，得
+        $$\hat{\beta}_1 = \beta_1 \frac{\sum(x_i-\bar{x})x_i}{S_{xx}} + \sum \frac{(x_i-\bar{x})}{S_{xx}}\varepsilon_i = \beta_1 + \sum \frac{(x_i-\bar{x})}{S_{xx}}\varepsilon_i.$$
+        因此 $\EE(\hat{\beta}_1) = \beta_1$，即 $\hat{\beta}_1$ 为无偏估计。
+        由于 $\hat{\beta}_1$ 是独立正态变量 $\varepsilon_i$ 的线性组合，故 $\hat{\beta}_1$ 服从正态分布。方差为
+        $$\Var(\hat{\beta}_1) = \sum \frac{(x_i-\bar{x})^2}{S_{xx}^2} \sigma^2 = \frac{\sigma^2}{S_{xx}}.$$</p>
+    </div>
+
+    <h3>1.4 $\sigma^2$ 的无偏估计</h3>
+    <div class="box box-theorem">
+      <div class="box-title">定理</div>
+      <p>令 $\hat{Y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i$ 为拟合值，则 <strong>残差平方和</strong>
+        $$SSE = \sum_{i=1}^{n}(Y_i - \hat{Y}_i)^2,$$
+        且 $\hat{\sigma}^2 = \frac{SSE}{n-2}$ 是 $\sigma^2$ 的无偏估计，即 $\EE(\hat{\sigma}^2) = \sigma^2$。</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明</div>
+      <p>首先，总平方和分解为
+        $$SST = \sum(Y_i - \bar{Y})^2 = SSR + SSE,$$
+        其中 $SSR = \sum(\hat{Y}_i - \bar{Y})^2$ 为回归平方和，$SSE = \sum(Y_i - \hat{Y}_i)^2$ 为残差平方和。</p>
+      <p>可以证明 $SSE/\sigma^2 \sim \chi^2(n-2)$，因此
+        $$\EE\!\left(\frac{SSE}{\sigma^2}\right) = n - 2 \quad \Longrightarrow \quad \EE\!\left(\frac{SSE}{n-2}\right) = \sigma^2.$$</p>
+    </div>
+
+    <h3>1.5 回归方程的显著性检验</h3>
+    <div class="box box-definition">
+      <div class="box-title">回归方程的 F 检验</div>
+      <p>检验 $H_0: \beta_1 = 0$（回归方程不显著）vs $H_1: \beta_1 \neq 0$（回归方程显著）。使用统计量
+        $$F = \frac{SSR / 1}{SSE / (n-2)} = \frac{MSR}{MSE}.$$
+        当 $H_0$ 成立时，$F \sim F(1, n-2)$。拒绝域为 $W = \{F \geqslant F_\alpha(1, n-2)\}$。</p>
+    </div>
+
+    <h3>1.6 回归系数 $\beta_1$ 的 t 检验</h3>
+    <div class="box box-formula">
+      <div class="box-title">$\beta_1$ 的 t 检验</div>
+      <p>检验 $H_0: \beta_1 = 0$ 的等价形式。由于
+        $$\frac{\hat{\beta}_1 - \beta_1}{\sigma / \sqrt{S_{xx}}} \sim N(0,1), \quad \frac{(n-2)\hat{\sigma}^2}{\sigma^2} \sim \chi^2(n-2),$$
+        且两者独立，故
+        $$T = \frac{\hat{\beta}_1}{\hat{\sigma}/\sqrt{S_{xx}}} = \frac{\hat{\beta}_1}{\sqrt{MSE/S_{xx}}} \sim t(n-2).$$
+        双侧拒绝域：$W = \{|T| \geqslant t_{\alpha/2}(n-2)\}$。</p>
+    </div>
+
+    <h3>1.7 预测与预测区间</h3>
+    <div class="box box-definition">
+      <div class="box-title">点预测与预测区间</div>
+      <p>给定 $x = x_0$，$Y_0 = \beta_0 + \beta_1 x_0 + \varepsilon_0$ 的点预测为
+        $$\hat{Y}_0 = \hat{\beta}_0 + \hat{\beta}_1 x_0.$$
+        $Y_0$ 的 $1-\alpha$ 预测区间为
+        $$\hat{Y}_0 \pm t_{\alpha/2}(n-2)\,\hat{\sigma}\sqrt{1 + \frac{1}{n} + \frac{(x_0 - \bar{x})^2}{S_{xx}}}.$$</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注</div>
+      <p>预测区间与置信区间不同：置信区间估计的是条件均值 $\EE(Y_0) = \beta_0 + \beta_1 x_0$，其宽度因子为 $\sqrt{\frac{1}{n} + \frac{(x_0-\bar{x})^2}{S_{xx}}}$；而预测区间针对个体观测值 $Y_0$，多出一个 $1$（来自 $\Var(\varepsilon_0) = \sigma^2$），因此预测区间总是比置信区间更宽。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 4.1</div>
+      <p>由 5 组数据 $(x_i, y_i)$：$(1,2.1),\;(2,3.8),\;(3,6.2),\;(4,7.9),\;(5,10.1)$ 建立一元线性回归。</p>
+      <p><strong>解</strong>：$\bar{x} = 3$，$\bar{y} = 6.02$。
+        $$S_{xx} = (1-3)^2 + (2-3)^2 + (3-3)^2 + (4-3)^2 + (5-3)^2 = 10,$$
+        $$S_{xy} = (-2)(-3.92)+(-1)(-2.22)+(0)(0.18)+(1)(1.88)+(2)(4.08) = 7.84+2.22+0+1.88+8.16 = 20.1.$$
+        $$\hat{\beta}_1 = 20.1/10 = 2.01, \quad \hat{\beta}_0 = 6.02 - 2.01 \times 3 = -0.01.$$
+        回归方程：$\hat{Y} = -0.01 + 2.01x$。</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- 第二节：多元线性回归 -->
+  <!-- ============================================================ -->
+  <section class="section" id="sec2">
+    <h2>二、多元线性回归（矩阵形式）</h2>
+
+    <h3>2.1 模型</h3>
+    <div class="box box-definition">
+      <div class="box-title">定义（多元线性回归模型）</div>
+      <p>多元线性回归模型的矩阵形式为
+        $$\boldsymbol{Y} = \boldsymbol{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon},$$
+        其中</p>
+      <ul>
+        <li>$\boldsymbol{Y} = (Y_1, \ldots, Y_n)^\top$ 为 $n \times 1$ 响应向量；</li>
+        <li>$\boldsymbol{X}$ 为 $n \times (p+1)$ 设计矩阵（第一列全为 1）；</li>
+        <li>$\boldsymbol{\beta} = (\beta_0, \beta_1, \ldots, \beta_p)^\top$ 为 $(p+1) \times 1$ 回归系数向量；</li>
+        <li>$\boldsymbol{\varepsilon} = (\varepsilon_1, \ldots, \varepsilon_n)^\top$ 为误差向量，$\EE(\boldsymbol{\varepsilon}) = \boldsymbol{0}$，$\Var(\boldsymbol{\varepsilon}) = \sigma^2 \boldsymbol{I}_n$。</li>
+      </ul>
+    </div>
+
+    <h3>2.2 OLS 估计</h3>
+    <div class="box box-theorem">
+      <div class="box-title">定理（OLS 估计的矩阵表达式）</div>
+      <p>最小化 $Q(\boldsymbol{\beta}) = (\boldsymbol{Y} - \boldsymbol{X}\boldsymbol{\beta})^\top(\boldsymbol{Y} - \boldsymbol{X}\boldsymbol{\beta})$，正规方程为
+        $$\boldsymbol{X}^\top \boldsymbol{X} \hat{\boldsymbol{\beta}} = \boldsymbol{X}^\top \boldsymbol{Y}.$$
+        当 $\boldsymbol{X}$ 列满秩（即 $\mathrm{rank}(\boldsymbol{X}) = p+1$）时，
+        $$\hat{\boldsymbol{\beta}} = (\boldsymbol{X}^\top\boldsymbol{X})^{-1}\boldsymbol{X}^\top\boldsymbol{Y}.$$</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明</div>
+      <p>展开残差平方和：
+        $$Q = \boldsymbol{Y}^\top\boldsymbol{Y} - 2\boldsymbol{\beta}^\top\boldsymbol{X}^\top\boldsymbol{Y} + \boldsymbol{\beta}^\top\boldsymbol{X}^\top\boldsymbol{X}\boldsymbol{\beta}.$$
+        对 $\boldsymbol{\beta}$ 求梯度并令其为零：
+        $$\frac{\partial Q}{\partial \boldsymbol{\beta}} = -2\boldsymbol{X}^\top\boldsymbol{Y} + 2\boldsymbol{X}^\top\boldsymbol{X}\boldsymbol{\beta} = \boldsymbol{0},$$
+        即得正规方程。当 $\boldsymbol{X}$ 列满秩时，$\boldsymbol{X}^\top\boldsymbol{X}$ 可逆，解唯一。Hessian 矩阵 $2\boldsymbol{X}^\top\boldsymbol{X}$ 正定，故为极小值。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理（$\hat{\boldsymbol{\beta}}$ 的性质）</div>
+      <ol>
+        <li><strong>无偏性</strong>：$\EE(\hat{\boldsymbol{\beta}}) = \boldsymbol{\beta}$。</li>
+        <li><strong>方差</strong>：$\Var(\hat{\boldsymbol{\beta}}) = \sigma^2 (\boldsymbol{X}^\top\boldsymbol{X})^{-1}$。</li>
+        <li><strong>Gauss-Markov 定理</strong>：在所有 $\boldsymbol{\beta}$ 的线性无偏估计中，$\hat{\boldsymbol{\beta}}$ 具有最小方差（BLUE）。</li>
+      </ol>
+    </div>
+
+    <h3>2.3 平方和分解</h3>
+    <div class="box box-formula">
+      <div class="box-title">总平方和分解</div>
+      <p>记拟合值 $\hat{\boldsymbol{Y}} = \boldsymbol{X}\hat{\boldsymbol{\beta}}$，残差 $\hat{\boldsymbol{\varepsilon}} = \boldsymbol{Y} - \hat{\boldsymbol{Y}}$，则</p>
+      <ul>
+        <li><strong>总平方和</strong>（SST）：$S_T = \sum_{i=1}^{n}(Y_i - \bar{Y})^2 = \boldsymbol{Y}^\top(\boldsymbol{I} - \frac{1}{n}\boldsymbol{J})\boldsymbol{Y}$，自由度 $n-1$。</li>
+        <li><strong>回归平方和</strong>（SSR）：$S_R = \sum_{i=1}^{n}(\hat{Y}_i - \bar{Y})^2$，自由度 $p$。</li>
+        <li><strong>残差平方和</strong>（SSE）：$S_E = \sum_{i=1}^{n}(Y_i - \hat{Y}_i)^2$，自由度 $n-p-1$。</li>
+      </ul>
+      <p>分解公式：$S_T = S_R + S_E$。</p>
+    </div>
+
+    <h3>2.4 F 检验与 $R^2$</h3>
+    <div class="box box-definition">
+      <div class="box-title">回归方程的显著性检验</div>
+      <p>检验 $H_0: \beta_1 = \beta_2 = \cdots = \beta_p = 0$ vs $H_1$: 至少有一个 $\beta_j \neq 0$。检验统计量
+        $$F = \frac{S_R / p}{S_E / (n - p - 1)} \sim F(p, n-p-1) \quad (\text{在 } H_0 \text{ 下}).$$</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">决定系数 $R^2$</div>
+      <p><strong>决定系数</strong>（Coefficient of Determination）定义为
+        $$R^2 = \frac{S_R}{S_T} = 1 - \frac{S_E}{S_T}.$$
+        $R^2 \in [0,1]$，越接近 1 表示回归方程对数据的拟合越好。</p>
+      <p><strong>调整的 $R^2$</strong>：
+        $$\bar{R}^2 = 1 - \frac{S_E/(n-p-1)}{S_T/(n-1)} = 1 - (1-R^2)\frac{n-1}{n-p-1}.$$
+        $\bar{R}^2$ 对变量个数施加了惩罚，避免因增加无意义的自变量而使 $R^2$ 虚高。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注</div>
+      <p>$F$ 检验与 $R^2$ 之间有关系：
+        $$F = \frac{R^2/p}{(1-R^2)/(n-p-1)}.$$
+        当 $p=1$ 时，$F = T^2$，其中 $T$ 是 $\beta_1$ 的 $t$ 检验统计量，两种检验等价。</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- 第三节：方差分析 -->
+  <!-- ============================================================ -->
+  <section class="section" id="sec3">
+    <h2>三、方差分析 (ANOVA)</h2>
+
+    <h3>3.1 单因素方差分析模型</h3>
+    <div class="box box-definition">
+      <div class="box-title">定义（单因素方差分析模型）</div>
+      <p>设因素 $A$ 有 $k$ 个水平，在第 $i$ 个水平下进行 $n_i$ 次重复试验，观测值为 $Y_{ij}$（$i = 1,\ldots,k$；$j = 1,\ldots,n_i$）。模型为
+        $$Y_{ij} = \mu + \alpha_i + \varepsilon_{ij},$$
+        其中 $\mu$ 为总均值，$\alpha_i$ 为第 $i$ 个水平的效应（满足 $\sum_{i=1}^k n_i \alpha_i = 0$ 或约束 $\sum \alpha_i = 0$），$\varepsilon_{ij} \sim N(0, \sigma^2)$ i.i.d.</p>
+      <p>记 $n = \sum_{i=1}^k n_i$。检验假设
+        $$H_0: \alpha_1 = \alpha_2 = \cdots = \alpha_k = 0 \quad \text{vs} \quad H_1: \text{至少有一个 } \alpha_i \neq 0.$$</p>
+    </div>
+
+    <h3>3.2 记号与平方和分解</h3>
+    <div class="box box-formula">
+      <div class="box-title">方差分析的记号</div>
+      <ul>
+        <li>第 $i$ 组样本均值：$\bar{Y}_{i\cdot} = \frac{1}{n_i}\sum_{j=1}^{n_i} Y_{ij}$</li>
+        <li>总样本均值：$\bar{Y}_{\cdot\cdot} = \frac{1}{n}\sum_{i=1}^k \sum_{j=1}^{n_i} Y_{ij}$</li>
+      </ul>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理（平方和分解）</div>
+      <p>总平方和分解为
+        $$S_T = S_A + S_E,$$
+        其中</p>
+      <ul>
+        <li><strong>总平方和</strong>：$S_T = \sum_{i=1}^k \sum_{j=1}^{n_i}(Y_{ij} - \bar{Y}_{\cdot\cdot})^2$，自由度 $n-1$。</li>
+        <li><strong>组间平方和（因素 A）</strong>：$S_A = \sum_{i=1}^k n_i(\bar{Y}_{i\cdot} - \bar{Y}_{\cdot\cdot})^2$，自由度 $k-1$。</li>
+        <li><strong>组内平方和（误差）</strong>：$S_E = \sum_{i=1}^k \sum_{j=1}^{n_i}(Y_{ij} - \bar{Y}_{i\cdot})^2$，自由度 $n-k$。</li>
+      </ul>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明</div>
+      <p>对每个 $(Y_{ij} - \bar{Y}_{\cdot\cdot})$ 加减 $\bar{Y}_{i\cdot}$：
+        $$Y_{ij} - \bar{Y}_{\cdot\cdot} = (\bar{Y}_{i\cdot} - \bar{Y}_{\cdot\cdot}) + (Y_{ij} - \bar{Y}_{i\cdot}).$$
+        两边平方并对 $i,j$ 求和。交叉项
+        $$2\sum_{i=1}^k \sum_{j=1}^{n_i}(\bar{Y}_{i\cdot} - \bar{Y}_{\cdot\cdot})(Y_{ij} - \bar{Y}_{i\cdot}) = 2\sum_{i=1}^k (\bar{Y}_{i\cdot} - \bar{Y}_{\cdot\cdot})\underbrace{\sum_{j=1}^{n_i}(Y_{ij} - \bar{Y}_{i\cdot})}_{=0} = 0.$$
+        因此 $S_T = S_A + S_E$。</p>
+    </div>
+
+    <h3>3.3 ANOVA 的 F 检验</h3>
+    <div class="box box-formula">
+      <div class="box-title">方差分析表</div>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>变异来源</th><th>平方和</th><th>自由度</th><th>均方</th><th>F 值</th></tr>
+          <tr><td>组间（因素 A）</td><td>$S_A$</td><td>$k-1$</td><td>$MS_A = S_A/(k-1)$</td><td rowspan="2">$F = MS_A/MS_E$</td></tr>
+          <tr><td>组内（误差）</td><td>$S_E$</td><td>$n-k$</td><td>$MS_E = S_E/(n-k)$</td></tr>
+          <tr><td>总计</td><td>$S_T$</td><td>$n-1$</td><td></td><td></td></tr>
+        </table>
+      </div>
+      <p>在 $H_0$ 成立时，
+        $$F = \frac{MS_A}{MS_E} = \frac{S_A/(k-1)}{S_E/(n-k)} \sim F(k-1, n-k).$$
+        拒绝域：$W = \{F \geqslant F_\alpha(k-1, n-k)\}$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理（均方的期望）</div>
+      <p>可以证明：</p>
+      <ul>
+        <li>$\EE(MS_E) = \sigma^2$；</li>
+        <li>$\EE(MS_A) = \sigma^2 + \frac{\sum_{i=1}^k n_i \alpha_i^2}{k-1}$。</li>
+      </ul>
+      <p>因此，当 $H_0$（所有 $\alpha_i = 0$）成立时，$\EE(MS_A) = \EE(MS_E) = \sigma^2$，$F$ 比值在 1 附近；当 $H_0$ 不成立时，$\EE(MS_A) > \sigma^2$，$F$ 值偏大。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 4.2</div>
+      <p>三种不同肥料对作物产量的影响，每种肥料试验 4 次，数据如下：</p>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>肥料</th><th>试验 1</th><th>试验 2</th><th>试验 3</th><th>试验 4</th><th>均值</th></tr>
+          <tr><td>A</td><td>65</td><td>70</td><td>68</td><td>67</td><td>67.5</td></tr>
+          <tr><td>B</td><td>75</td><td>78</td><td>72</td><td>75</td><td>75.0</td></tr>
+          <tr><td>C</td><td>80</td><td>82</td><td>78</td><td>80</td><td>80.0</td></tr>
+        </table>
+      </div>
+      <p><strong>解</strong>：$k = 3$，$n_i = 4$，$n = 12$。$\bar{Y}_{\cdot\cdot} = (67.5 \times 4 + 75 \times 4 + 80 \times 4)/12 = 74.17$。
+        $$S_A = 4[(67.5-74.17)^2 + (75-74.17)^2 + (80-74.17)^2] = 4[44.49 + 0.69 + 34.03] = 316.67.$$
+        $$S_E = \sum_{i,j}(Y_{ij} - \bar{Y}_{i\cdot})^2 = (65-67.5)^2 + (70-67.5)^2 + \cdots = 6.25+6.25+0.25+0.25 + 0+9+9+0 + 0+4+4+0 = 39.00.$$
+        $$F = \frac{316.67/2}{39.00/9} = \frac{158.33}{4.33} = 36.57.$$
+        查表 $F_{0.05}(2,9) = 4.26$，$F_{0.01}(2,9) = 8.02$。由于 $F = 36.57 \gg 8.02$，高度显著，三种肥料对产量有极显著差异。</p>
+    </div>
+
+    <h3>3.4 双因素方差分析（无交互作用）</h3>
+    <div class="box box-definition">
+      <div class="box-title">双因素方差分析模型（无交互作用）</div>
+      <p>设因素 $A$ 有 $a$ 个水平，因素 $B$ 有 $b$ 个水平，每种组合做一次试验，观测值 $Y_{ij}$（$i=1,\ldots,a$；$j=1,\ldots,b$）。无交互作用模型为
+        $$Y_{ij} = \mu + \alpha_i + \beta_j + \varepsilon_{ij},$$
+        其中 $\mu$ 为总均值，$\alpha_i$ 为因素 $A$ 的第 $i$ 个水平效应（$\sum \alpha_i = 0$），$\beta_j$ 为因素 $B$ 的第 $j$ 个水平效应（$\sum \beta_j = 0$），$\varepsilon_{ij} \sim N(0,\sigma^2)$ i.i.d.</p>
+      <p>检验假设：
+        $$H_{0A}: \alpha_1 = \cdots = \alpha_a = 0, \qquad H_{0B}: \beta_1 = \cdots = \beta_b = 0.$$</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">双因素方差分析表</div>
+      <p>总平方和分解为
+        $$S_T = S_A + S_B + S_E,$$
+        其中</p>
+      <ul>
+        <li>$S_T = \sum_{i=1}^a \sum_{j=1}^b (Y_{ij} - \bar{Y}_{\cdot\cdot})^2$，自由度 $ab-1$。</li>
+        <li>$S_A = b\sum_{i=1}^a (\bar{Y}_{i\cdot} - \bar{Y}_{\cdot\cdot})^2$，自由度 $a-1$。</li>
+        <li>$S_B = a\sum_{j=1}^b (\bar{Y}_{\cdot j} - \bar{Y}_{\cdot\cdot})^2$，自由度 $b-1$。</li>
+        <li>$S_E = \sum_{i=1}^a \sum_{j=1}^b (Y_{ij} - \bar{Y}_{i\cdot} - \bar{Y}_{\cdot j} + \bar{Y}_{\cdot\cdot})^2$，自由度 $(a-1)(b-1)$。</li>
+      </ul>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>变异来源</th><th>平方和</th><th>自由度</th><th>均方</th><th>F 值</th></tr>
+          <tr><td>因素 A</td><td>$S_A$</td><td>$a-1$</td><td>$MS_A$</td><td>$F_A = MS_A/MS_E$</td></tr>
+          <tr><td>因素 B</td><td>$S_B$</td><td>$b-1$</td><td>$MS_B$</td><td>$F_B = MS_B/MS_E$</td></tr>
+          <tr><td>误差</td><td>$S_E$</td><td>$(a-1)(b-1)$</td><td>$MS_E$</td><td></td></tr>
+          <tr><td>总计</td><td>$S_T$</td><td>$ab-1$</td><td></td><td></td></tr>
+        </table>
+      </div>
+      <p>在 $H_{0A}$ 成立时，$F_A \sim F(a-1, (a-1)(b-1))$；在 $H_{0B}$ 成立时，$F_B \sim F(b-1, (a-1)(b-1))$。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注（带交互作用的双因素方差分析）</div>
+      <p>当每种因素组合有 $r \geqslant 2$ 次重复试验时，可引入交互作用项 $\gamma_{ij}$，模型变为
+        $$Y_{ijk} = \mu + \alpha_i + \beta_j + \gamma_{ij} + \varepsilon_{ijk}.$$
+        总平方和分解为 $S_T = S_A + S_B + S_{A \times B} + S_E$，其中 $S_{A \times B}$ 度量交互作用的大小，自由度为 $(a-1)(b-1)$，$S_E$ 的自由度为 $ab(r-1)$。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 4.3</div>
+      <p>研究温度（3 个水平）和催化剂（2 个水平）对反应收率的影响，每种组合做 2 次试验。采用无交互作用模型进行方差分析。此处仅给出分析框架：计算各组均值、总均值，分别求 $S_A$、$S_B$、$S_E$，构造 $F_A$ 和 $F_B$ 的检验统计量，与 $F$ 分布临界值比较，判断温度和催化剂对收率的影响是否显著。</p>
+    </div>
+  </section>
+
+  <!-- 章节间导航 -->
+  <div class="chapter-nav">
+    <a href="ch3.html" class="prev">上一章</a>
+    <a href="index.html">回目录</a>
+    <a href="ch5.html" class="next">下一章</a>
+  </div>
+
+</div>
+
+<footer class="footer"><p>数理统计复习指南 · 基于茆诗松教材 · 仅供学习参考</p></footer>
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

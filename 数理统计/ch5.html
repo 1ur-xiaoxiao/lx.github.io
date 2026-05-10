@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第五章 贝叶斯统计简介 · 数理统计</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}', EE: '\\mathbb{E}', PP: '\\mathbb{P}',
+          Var: '\\mathrm{Var}', Cov: '\\mathrm{Cov}', dd: '\\mathrm{d}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+  <a href="../index.html" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">数理统计</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="appendix.html">附录</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <!-- 章节标题 -->
+  <div class="chapter-header">
+    <h1>第五章 · 贝叶斯统计简介</h1>
+    <p>将先验知识与样本数据结合，用后验分布描述对参数的认知更新</p>
+  </div>
+
+  <!-- 目录 -->
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#sec1">频率学派 vs 贝叶斯学派</a></li>
+      <li><a href="#sec2">贝叶斯公式（连续形式）</a></li>
+      <li><a href="#sec3">共轭先验族</a></li>
+      <li><a href="#sec4">贝叶斯估计</a></li>
+      <li><a href="#sec5">贝叶斯决策简介</a></li>
+    </ol>
+  </div>
+
+  <!-- §5.1 频率学派 vs 贝叶斯学派 -->
+  <section class="section" id="sec1">
+    <h2>5.1 频率学派 vs 贝叶斯学派</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 两种统计学派</div>
+      <p><strong>频率学派（Frequentist）</strong>：参数 $\theta$ 是<strong>固定的未知常数</strong>，不存在概率分布。样本 $X_1, \dots, X_n$ 是随机的，统计推断基于重复抽样的频率性质（如无偏性、置信水平）。</p>
+      <p><strong>贝叶斯学派（Bayesian）</strong>：参数 $\theta$ 是<strong>随机变量</strong>，具有先验分布 $\pi(\theta)$，反映在观测数据之前对 $\theta$ 的认知。通过贝叶斯公式将先验信息与样本信息结合，得到后验分布。</p>
+    </div>
+
+    <h3>核心区别对比</h3>
+    <div class="table-wrapper">
+      <table>
+        <tr>
+          <th>比较维度</th>
+          <th>频率学派</th>
+          <th>贝叶斯学派</th>
+        </tr>
+        <tr>
+          <td>参数 $\theta$</td>
+          <td>固定未知常数</td>
+          <td>随机变量，有分布</td>
+        </tr>
+        <tr>
+          <td>先验信息</td>
+          <td>不使用</td>
+          <td>用先验分布 $\pi(\theta)$ 表达</td>
+        </tr>
+        <tr>
+          <td>推断依据</td>
+          <td>似然函数 $L(\theta \mid x)$</td>
+          <td>后验分布 $\pi(\theta \mid x)$</td>
+        </tr>
+        <tr>
+          <td>区间估计</td>
+          <td>置信区间（频率覆盖概率）</td>
+          <td>可信区间（后验概率）</td>
+        </tr>
+        <tr>
+          <td>评价标准</td>
+          <td>无偏性、均方误差等</td>
+          <td>后验风险最小化</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">直觉理解</div>
+      <p>频率学派问："如果重复实验无数次，这个方法的表现如何？"</p>
+      <p>贝叶斯学派问："在看到这些数据之后，我对参数的认知更新了多少？"</p>
+      <p>当样本量 $n \to \infty$ 时，先验的影响逐渐消失，两种方法的结果趋于一致（Bernstein-von Mises 定理）。</p>
+    </div>
+  </section>
+
+  <!-- §5.2 贝叶斯公式 -->
+  <section class="section" id="sec2">
+    <h2>5.2 贝叶斯公式（连续形式）</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">贝叶斯公式的三大要素</div>
+      <ul>
+        <li><strong>先验分布</strong> $\pi(\theta)$：观测数据之前对 $\theta$ 的认知</li>
+        <li><strong>似然函数</strong> $L(\theta \mid x) = f(x \mid \theta)$：给定 $\theta$ 时观测到数据 $x$ 的概率密度</li>
+        <li><strong>后验分布</strong> $\pi(\theta \mid x)$：结合先验与数据之后对 $\theta$ 的更新认知</li>
+      </ul>
+    </div>
+
+    <div class="formula-highlight">
+      $$\pi(\theta \mid x) = \frac{L(\theta \mid x)\,\pi(\theta)}{\displaystyle\int_\Theta L(\theta \mid x)\,\pi(\theta)\,\dd\theta} \propto L(\theta \mid x)\,\pi(\theta)$$
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">直觉解释</div>
+      <p><strong>后验 $\propto$ 先验 $\times$ 似然</strong></p>
+      <p>先验分布编码了"参数最可能是什么"的信念；似然函数编码了"数据支持哪些参数值"。二者相乘得到后验分布——综合了先验知识与数据证据的最优推断。</p>
+      <p>分母 $\int L(\theta \mid x)\pi(\theta)\,\dd\theta$ 只是归一化常数，确保后验是一个合法的概率密度函数。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 5.1 · 正态均值的贝叶斯推断</div>
+      <p>设 $X_1, \dots, X_n \overset{\text{iid}}{\sim} N(\theta, \sigma^2)$，$\sigma^2$ 已知，先验 $\theta \sim N(\mu_0, \tau^2)$。</p>
+      <p>似然函数：</p>
+      $$L(\theta \mid x) \propto \exp\!\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n (x_i - \theta)^2\right\} \propto \exp\!\left\{-\frac{n}{2\sigma^2}(\bar{x} - \theta)^2\right\}$$
+      <p>后验：</p>
+      $$\theta \mid x \;\sim\; N\!\left(\frac{\frac{n}{\sigma^2}\bar{x} + \frac{1}{\tau^2}\mu_0}{\frac{n}{\sigma^2} + \frac{1}{\tau^2}},\; \frac{1}{\frac{n}{\sigma^2} + \frac{1}{\tau^2}}\right)$$
+      <p>后验均值是样本均值 $\bar{x}$ 与先验均值 $\mu_0$ 的<strong>加权平均</strong>，权重与各自的精度（方差的倒数）成正比。</p>
+    </div>
+  </section>
+
+  <!-- §5.3 共轭先验族 -->
+  <section class="section" id="sec3">
+    <h2>5.3 共轭先验族</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 共轭先验</div>
+      <p>如果先验分布 $\pi(\theta)$ 属于某个分布族 $\mathcal{F}$，且后验分布 $\pi(\theta \mid x)$ 也属于同一分布族 $\mathcal{F}$，则称 $\mathcal{F}$ 为该似然函数的<strong>共轭先验族</strong>。</p>
+      <p>共轭先验的计算优势：后验参数可以通过简单公式从先验参数和数据统计量中更新得到。</p>
+    </div>
+
+    <h3>5.3.1 正态均值的共轭先验</h3>
+    <div class="box box-theorem">
+      <div class="box-title">定理 5.1 · 正态-正态共轭</div>
+      <p>设 $X_1, \dots, X_n \overset{\text{iid}}{\sim} N(\theta, \sigma^2)$，$\sigma^2$ 已知。先验 $\theta \sim N(\mu_0, \tau^2)$，则后验为：</p>
+      $$\theta \mid x \;\sim\; N(\mu_n, \sigma_n^2)$$
+      <p>其中：</p>
+      $$\frac{1}{\sigma_n^2} = \frac{n}{\sigma^2} + \frac{1}{\tau^2}, \qquad \mu_n = \sigma_n^2\!\left(\frac{n\bar{x}}{\sigma^2} + \frac{\mu_0}{\tau^2}\right)$$
+      <p><strong>解读</strong>：后验精度 = 数据精度 + 先验精度；后验均值按精度加权平均。</p>
+    </div>
+
+    <h3>5.3.2 Bernoulli / Binomial 的共轭先验：Beta 分布</h3>
+    <div class="box box-theorem">
+      <div class="box-title">定理 5.2 · Beta-Binomial 共轭</div>
+      <p>设 $X \mid \theta \sim \text{Bin}(n, \theta)$，先验 $\theta \sim \text{Beta}(\alpha, \beta)$，则后验：</p>
+      $$\theta \mid x \;\sim\; \text{Beta}(\alpha + x,\; \beta + n - x)$$
+      <p>后验参数 = 先验参数 + 观测数据：$\alpha$ 增加成功次数 $x$，$\beta$ 增加失败次数 $n-x$。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 5.2 · Beta-Binomial 后验计算</div>
+      <p>某硬币先验为 $\theta \sim \text{Beta}(2, 2)$（对称，集中在 0.5 附近）。投掷 10 次出现 7 次正面，求后验。</p>
+      <p><strong>解</strong>：后验为 $\theta \mid x \sim \text{Beta}(2+7,\; 2+3) = \text{Beta}(9, 5)$。</p>
+      <p>后验均值：$\EE[\theta \mid x] = \frac{9}{9+5} = \frac{9}{14} \approx 0.643$。</p>
+      <p>注意：先验均值为 0.5，MLE 为 0.7，后验均值 0.643 介于二者之间。</p>
+    </div>
+
+    <h3>5.3.3 Poisson 的共轭先验：Gamma 分布</h3>
+    <div class="box box-theorem">
+      <div class="box-title">定理 5.3 · Gamma-Poisson 共轭</div>
+      <p>设 $X_1, \dots, X_n \overset{\text{iid}}{\sim} \text{Poisson}(\lambda)$，先验 $\lambda \sim \text{Gamma}(\alpha, \beta)$（密度 $f(\lambda) \propto \lambda^{\alpha-1}e^{-\beta\lambda}$），则后验：</p>
+      $$\lambda \mid x \;\sim\; \text{Gamma}\!\left(\alpha + \sum_{i=1}^n x_i,\; \beta + n\right)$$
+      <p>后验参数更新：$\alpha \to \alpha + \sum x_i$（加上总事件数），$\beta \to \beta + n$（加上总观测时间）。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 5.3 · Gamma-Poisson 后验计算</div>
+      <p>某网站每小时点击数服从 Poisson$(\lambda)$，先验 $\lambda \sim \text{Gamma}(3, 1)$。观测 5 小时，总点击数为 20，求后验。</p>
+      <p><strong>解</strong>：$\lambda \mid x \sim \text{Gamma}(3+20,\; 1+5) = \text{Gamma}(23, 6)$。</p>
+      <p>后验均值：$\EE[\lambda \mid x] = \frac{23}{6} \approx 3.83$。先验均值为 3，MLE 为 $\bar{x} = 4$。</p>
+    </div>
+
+    <h3>共轭先验汇总</h3>
+    <div class="table-wrapper">
+      <table>
+        <tr>
+          <th>似然</th>
+          <th>共轭先验</th>
+          <th>后验</th>
+        </tr>
+        <tr>
+          <td>$N(\theta, \sigma^2)$（$\sigma^2$ 已知）</td>
+          <td>$N(\mu_0, \tau^2)$</td>
+          <td>$N(\mu_n, \sigma_n^2)$</td>
+        </tr>
+        <tr>
+          <td>$\text{Bin}(n, \theta)$</td>
+          <td>$\text{Beta}(\alpha, \beta)$</td>
+          <td>$\text{Beta}(\alpha+x, \beta+n-x)$</td>
+        </tr>
+        <tr>
+          <td>$\text{Poisson}(\lambda)$</td>
+          <td>$\text{Gamma}(\alpha, \beta)$</td>
+          <td>$\text{Gamma}(\alpha+\sum x_i, \beta+n)$</td>
+        </tr>
+        <tr>
+          <td>$\text{Exp}(\lambda)$</td>
+          <td>$\text{Gamma}(\alpha, \beta)$</td>
+          <td>$\text{Gamma}(\alpha+n, \beta+\sum x_i)$</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- §5.4 贝叶斯估计 -->
+  <section class="section" id="sec4">
+    <h2>5.4 贝叶斯估计</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">三种贝叶斯点估计</div>
+      <p>给定后验分布 $\pi(\theta \mid x)$，根据不同损失函数得到不同的最优估计：</p>
+      <ul>
+        <li><strong>后验均值</strong>（平方损失 $L(\theta, a) = (\theta - a)^2$ 下的最优估计）：
+          $$\hat{\theta}_{\text{Bayes}} = \EE[\theta \mid x] = \int_\Theta \theta\,\pi(\theta \mid x)\,\dd\theta$$</li>
+        <li><strong>后验中位数</strong>（绝对损失 $L(\theta, a) = |\theta - a|$ 下的最优估计）</li>
+        <li><strong>后验众数</strong>（0-1 损失下的最优估计），也称为 <strong>MAP（Maximum A Posteriori）</strong>估计：
+          $$\hat{\theta}_{\text{MAP}} = \arg\max_\theta \pi(\theta \mid x) = \arg\max_\theta [L(\theta \mid x)\,\pi(\theta)]$$</li>
+      </ul>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">MAP 与 MLE 的关系</div>
+      <p>当先验分布 $\pi(\theta)$ 为<strong>均匀分布</strong>（即 $\pi(\theta) \propto$ 常数）时：</p>
+      $$\hat{\theta}_{\text{MAP}} = \arg\max_\theta L(\theta \mid x) = \hat{\theta}_{\text{MLE}}$$
+      <p>即 <strong>MLE 是先验为均匀分布时的 MAP 估计</strong>。这说明频率学派的 MLE 可视为"无信息先验"下的贝叶斯估计。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 5.4 · 正态模型的贝叶斯估计</div>
+      <p>$X_1, \dots, X_n \overset{\text{iid}}{\sim} N(\theta, \sigma^2)$，$\sigma^2$ 已知，先验 $\theta \sim N(\mu_0, \tau^2)$。</p>
+      <p>后验 $\theta \mid x \sim N(\mu_n, \sigma_n^2)$，故：</p>
+      <ul>
+        <li>贝叶斯估计（后验均值）：$\hat{\theta} = \mu_n = \frac{\frac{n}{\sigma^2}\bar{x} + \frac{1}{\tau^2}\mu_0}{\frac{n}{\sigma^2} + \frac{1}{\tau^2}}$</li>
+        <li>MAP 估计：后验众数 = 后验均值（正态分布的对称性）= $\mu_n$</li>
+        <li>后验中位数 = 后验均值 = $\mu_n$（正态分布三者重合）</li>
+      </ul>
+      <p>当 $n \to \infty$ 时，$\mu_n \to \bar{x} = \hat{\theta}_{\text{MLE}}$，先验的影响消失。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 5.5 · Beta-Binomial 的贝叶斯估计</div>
+      <p>$X \mid \theta \sim \text{Bin}(n, \theta)$，先验 $\theta \sim \text{Beta}(\alpha, \beta)$，后验 $\theta \mid x \sim \text{Beta}(\alpha+x, \beta+n-x)$。</p>
+      <ul>
+        <li>后验均值：$\hat{\theta} = \frac{\alpha + x}{\alpha + \beta + n}$</li>
+        <li>MAP 估计：$\hat{\theta}_{\text{MAP}} = \frac{\alpha + x - 1}{\alpha + \beta + n - 2}$（当 $\alpha, \beta > 1$ 时）</li>
+        <li>MLE：$\hat{\theta}_{\text{MLE}} = \frac{x}{n}$</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- §5.5 贝叶斯决策简介 -->
+  <section class="section" id="sec5">
+    <h2>5.5 贝叶斯决策简介</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">贝叶斯决策框架</div>
+      <p><strong>损失函数</strong> $L(\theta, a)$：当参数真值为 $\theta$、采取行动 $a$ 时的损失。</p>
+      <p><strong>后验风险</strong>：给定后验分布 $\pi(\theta \mid x)$，行动 $a$ 的后验风险为：</p>
+      $$R(a \mid x) = \EE_{\theta \mid x}[L(\theta, a)] = \int_\Theta L(\theta, a)\,\pi(\theta \mid x)\,\dd\theta$$
+      <p><strong>贝叶斯决策规则</strong>：选择使后验风险最小的行动：</p>
+      $$a^* = \arg\min_a R(a \mid x)$$
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">常见损失函数下的贝叶斯估计</div>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>损失函数</th>
+            <th>$L(\theta, a)$</th>
+            <th>贝叶斯估计 $a^*$</th>
+          </tr>
+          <tr>
+            <td>平方损失</td>
+            <td>$(\theta - a)^2$</td>
+            <td>后验均值 $\EE[\theta \mid x]$</td>
+          </tr>
+          <tr>
+            <td>绝对损失</td>
+            <td>$|\theta - a|$</td>
+            <td>后验中位数</td>
+          </tr>
+          <tr>
+            <td>0-1 损失（离散）</td>
+            <td>$\mathbb{1}(\theta \neq a)$</td>
+            <td>后验众数（MAP）</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 5.6 · 正态模型下的贝叶斯决策</div>
+      <p>设 $X_1, \dots, X_n \overset{\text{iid}}{\sim} N(\theta, \sigma^2)$，$\sigma^2$ 已知，先验 $\theta \sim N(\mu_0, \tau^2)$。</p>
+      <p>若采用平方损失函数 $L(\theta, a) = (\theta - a)^2$，则贝叶斯估计为后验均值：</p>
+      $$a^* = \EE[\theta \mid x] = \frac{\frac{n}{\sigma^2}\bar{x} + \frac{1}{\tau^2}\mu_0}{\frac{n}{\sigma^2} + \frac{1}{\tau^2}}$$
+      <p>后验风险（即后验方差）：</p>
+      $$R(a^* \mid x) = \Var(\theta \mid x) = \frac{1}{\frac{n}{\sigma^2} + \frac{1}{\tau^2}}$$
+      <p>随着 $n$ 增大，后验方差趋于 0，估计越来越精确。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">贝叶斯方法的优势与局限</div>
+      <p><strong>优势</strong>：</p>
+      <ul>
+        <li>自然地融合先验知识与数据信息</li>
+        <li>提供完整的后验分布，而非单个点估计</li>
+        <li>小样本时先验可提供有效正则化</li>
+        <li>贝叶斯可信区间有更直观的概率解释</li>
+      </ul>
+      <p><strong>局限</strong>：</p>
+      <ul>
+        <li>先验的选择具有主观性，不同先验可能导致不同结论</li>
+        <li>复杂模型的后验计算通常需要 MCMC 等数值方法</li>
+        <li>共轭先验仅适用于简单的标准模型</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="ch4.html" class="prev">上一章：回归分析与方差分析</a>
+    <a href="index.html">回目录</a>
+  </div>
+
+</div>
+
+<!-- 页脚 -->
+<footer class="footer">
+  <p>数理统计复习指南 · 基于茆诗松教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

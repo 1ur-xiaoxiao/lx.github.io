@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>附录 · 公式速查 · 数理统计</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}', EE: '\\mathbb{E}', PP: '\\mathbb{P}',
+          Var: '\\mathrm{Var}', Cov: '\\mathrm{Cov}', dd: '\\mathrm{d}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+  <a href="../index.html" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">数理统计</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="appendix.html">附录</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <!-- 章节标题 -->
+  <div class="chapter-header">
+    <h1>附录 · 公式速查</h1>
+    <p>数理统计核心公式汇总，适用于考前快速复习</p>
+  </div>
+
+  <!-- 目录 -->
+  <div class="toc">
+    <h3>附录目录</h3>
+    <ol>
+      <li><a href="#sec1">三大抽样分布速查</a></li>
+      <li><a href="#sec2">正态总体抽样分布定理</a></li>
+      <li><a href="#sec3">参数估计公式</a></li>
+      <li><a href="#sec4">假设检验速查表</a></li>
+      <li><a href="#sec5">回归分析公式</a></li>
+      <li><a href="#sec6">方差分析</a></li>
+      <li><a href="#sec7">贝叶斯公式</a></li>
+    </ol>
+  </div>
+
+  <!-- §1 三大抽样分布 -->
+  <section class="section" id="sec1">
+    <h2>A.1 三大抽样分布速查</h2>
+
+    <div class="table-wrapper">
+      <table>
+        <tr>
+          <th>分布</th>
+          <th>定义</th>
+          <th>期望</th>
+          <th>方差</th>
+          <th>关键性质</th>
+        </tr>
+        <tr>
+          <td>$\chi^2(n)$</td>
+          <td>$\sum_{i=1}^n Z_i^2$，$Z_i \overset{\text{iid}}{\sim} N(0,1)$</td>
+          <td>$n$</td>
+          <td>$2n$</td>
+          <td>可加性：$X+Y \sim \chi^2(m+n)$</td>
+        </tr>
+        <tr>
+          <td>$t(n)$</td>
+          <td>$\frac{Z}{\sqrt{V/n}}$，$Z \sim N(0,1)$，$V \sim \chi^2(n)$，独立</td>
+          <td>$0\;(n>1)$</td>
+          <td>$\frac{n}{n-2}\;(n>2)$</td>
+          <td>对称，$n\to\infty$ 趋于 $N(0,1)$</td>
+        </tr>
+        <tr>
+          <td>$F(m,n)$</td>
+          <td>$\frac{U/m}{V/n}$，$U \sim \chi^2(m)$，$V \sim \chi^2(n)$，独立</td>
+          <td>$\frac{n}{n-2}\;(n>2)$</td>
+          <td>（略）</td>
+          <td>$1/F(m,n) \sim F(n,m)$</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">分位数关系</div>
+      <p>$t_{1-\alpha}(n) = -t_\alpha(n)$（对称性）</p>
+      <p>$F_{1-\alpha}(m,n) = \dfrac{1}{F_\alpha(n,m)}$（倒数性质）</p>
+      <p>$t_\alpha^2(n) = F_\alpha(1, n)$</p>
+    </div>
+  </section>
+
+  <!-- §2 正态总体抽样分布定理 -->
+  <section class="section" id="sec2">
+    <h2>A.2 正态总体抽样分布定理</h2>
+    <p>设 $X_1, \dots, X_n \overset{\text{iid}}{\sim} N(\mu, \sigma^2)$，$\bar{X} = \frac{1}{n}\sum X_i$，$S^2 = \frac{1}{n-1}\sum(X_i - \bar{X})^2$。</p>
+
+    <div class="table-wrapper">
+      <table>
+        <tr>
+          <th>编号</th>
+          <th>结论</th>
+          <th>条件</th>
+        </tr>
+        <tr>
+          <td>定理一</td>
+          <td>$\bar{X} \sim N\!\left(\mu, \dfrac{\sigma^2}{n}\right)$</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>定理二</td>
+          <td>$\dfrac{(n-1)S^2}{\sigma^2} \sim \chi^2(n-1)$</td>
+          <td>$\bar{X}$ 与 $S^2$ 独立</td>
+        </tr>
+        <tr>
+          <td>定理三</td>
+          <td>$\dfrac{\bar{X} - \mu}{S / \sqrt{n}} \sim t(n-1)$</td>
+          <td>结合定理一、二</td>
+        </tr>
+        <tr>
+          <td>定理四（两总体）</td>
+          <td>$\dfrac{(\bar{X}-\bar{Y})-(\mu_1-\mu_2)}{S_w\sqrt{\frac{1}{n_1}+\frac{1}{n_2}}} \sim t(n_1+n_2-2)$</td>
+          <td>$\sigma_1^2=\sigma_2^2$，$S_w^2 = \frac{(n_1-1)S_1^2+(n_2-1)S_2^2}{n_1+n_2-2}$</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- §3 参数估计公式 -->
+  <section class="section" id="sec3">
+    <h2>A.3 参数估计公式</h2>
+
+    <h3>MLE 求解步骤</h3>
+    <ol>
+      <li>写出似然函数：$L(\theta) = \prod_{i=1}^n f(x_i; \theta)$</li>
+      <li>取对数：$\ell(\theta) = \ln L(\theta) = \sum_{i=1}^n \ln f(x_i; \theta)$</li>
+      <li>求导令零：$\frac{\dd\ell}{\dd\theta} = 0$，解出 $\hat{\theta}$</li>
+      <li>验证二阶导 $\frac{\dd^2\ell}{\dd\theta^2} < 0$（确保是最大值）</li>
+    </ol>
+
+    <h3>常见分布的 MLE 结果</h3>
+    <div class="table-wrapper">
+      <table>
+        <tr>
+          <th>分布</th>
+          <th>参数</th>
+          <th>MLE</th>
+        </tr>
+        <tr>
+          <td>$N(\mu, \sigma^2)$</td>
+          <td>$\mu$</td>
+          <td>$\hat{\mu} = \bar{X}$</td>
+        </tr>
+        <tr>
+          <td>$N(\mu, \sigma^2)$</td>
+          <td>$\sigma^2$</td>
+          <td>$\hat{\sigma}^2 = \frac{1}{n}\sum(X_i - \bar{X})^2 = \frac{n-1}{n}S^2$</td>
+        </tr>
+        <tr>
+          <td>$\text{Exp}(\lambda)$</td>
+          <td>$\lambda$</td>
+          <td>$\hat{\lambda} = \frac{1}{\bar{X}}$</td>
+        </tr>
+        <tr>
+          <td>$\text{Poisson}(\lambda)$</td>
+          <td>$\lambda$</td>
+          <td>$\hat{\lambda} = \bar{X}$</td>
+        </tr>
+        <tr>
+          <td>$U(0, \theta)$</td>
+          <td>$\theta$</td>
+          <td>$\hat{\theta} = X_{(n)} = \max(X_1, \dots, X_n)$</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3>正态总体置信区间速查</h3>
+    <div class="table-wrapper">
+      <table>
+        <tr>
+          <th>参数</th>
+          <th>枢轴量</th>
+          <th>置信区间</th>
+          <th>条件</th>
+        </tr>
+        <tr>
+          <td>$\mu$（$\sigma^2$ 已知）</td>
+          <td>$Z = \frac{\bar{X}-\mu}{\sigma/\sqrt{n}}$</td>
+          <td>$\bar{X} \pm z_{\alpha/2}\frac{\sigma}{\sqrt{n}}$</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>$\mu$（$\sigma^2$ 未知）</td>
+          <td>$t = \frac{\bar{X}-\mu}{S/\sqrt{n}}$</td>
+          <td>$\bar{X} \pm t_{\alpha/2}(n-1)\frac{S}{\sqrt{n}}$</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>$\sigma^2$</td>
+          <td>$\chi^2 = \frac{(n-1)S^2}{\sigma^2}$</td>
+          <td>$\left[\frac{(n-1)S^2}{\chi^2_{\alpha/2}(n-1)},\; \frac{(n-1)S^2}{\chi^2_{1-\alpha/2}(n-1)}\right]$</td>
+          <td>$\mu$ 未知</td>
+        </tr>
+        <tr>
+          <td>$\mu_1-\mu_2$</td>
+          <td>$t$（定理四）</td>
+          <td>$(\bar{X}-\bar{Y}) \pm t_{\alpha/2}(n_1+n_2-2)\,S_w\sqrt{\tfrac{1}{n_1}+\tfrac{1}{n_2}}$</td>
+          <td>$\sigma_1^2=\sigma_2^2$</td>
+        </tr>
+        <tr>
+          <td>$\sigma_1^2/\sigma_2^2$</td>
+          <td>$F = S_1^2/S_2^2$</td>
+          <td>$\left[\frac{S_1^2/S_2^2}{F_{\alpha/2}(n_1-1,n_2-1)},\; \frac{S_1^2/S_2^2}{F_{1-\alpha/2}(n_1-1,n_2-1)}\right]$</td>
+          <td>$\mu_1, \mu_2$ 未知</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- §4 假设检验速查 -->
+  <section class="section" id="sec4">
+    <h2>A.4 假设检验速查表</h2>
+
+    <h3>正态总体四种检验</h3>
+    <div class="table-wrapper">
+      <table>
+        <tr>
+          <th>检验</th>
+          <th>$H_0$</th>
+          <th>统计量</th>
+          <th>分布</th>
+          <th>拒绝域（双侧）</th>
+        </tr>
+        <tr>
+          <td>$Z$ 检验</td>
+          <td>$\mu = \mu_0$（$\sigma^2$ 已知）</td>
+          <td>$Z = \frac{\bar{X}-\mu_0}{\sigma/\sqrt{n}}$</td>
+          <td>$N(0,1)$</td>
+          <td>$|Z| \geq z_{\alpha/2}$</td>
+        </tr>
+        <tr>
+          <td>$t$ 检验</td>
+          <td>$\mu = \mu_0$（$\sigma^2$ 未知）</td>
+          <td>$t = \frac{\bar{X}-\mu_0}{S/\sqrt{n}}$</td>
+          <td>$t(n-1)$</td>
+          <td>$|t| \geq t_{\alpha/2}(n-1)$</td>
+        </tr>
+        <tr>
+          <td>$\chi^2$ 检验</td>
+          <td>$\sigma^2 = \sigma_0^2$</td>
+          <td>$\chi^2 = \frac{(n-1)S^2}{\sigma_0^2}$</td>
+          <td>$\chi^2(n-1)$</td>
+          <td>$\chi^2 \leq \chi^2_{1-\alpha/2}$ 或 $\chi^2 \geq \chi^2_{\alpha/2}$</td>
+        </tr>
+        <tr>
+          <td>$F$ 检验</td>
+          <td>$\sigma_1^2 = \sigma_2^2$</td>
+          <td>$F = \frac{S_1^2}{S_2^2}$</td>
+          <td>$F(n_1-1, n_2-1)$</td>
+          <td>$F \leq F_{1-\alpha/2}$ 或 $F \geq F_{\alpha/2}$</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">$p$ 值公式</div>
+      <p>以右侧检验为例（$H_1: \theta > \theta_0$），检验统计量观测值为 $T_{\text{obs}}$：</p>
+      $$p = \PP(T \geq T_{\text{obs}} \mid H_0)$$
+      <p>双侧检验：$p = 2 \cdot \PP(T \geq |T_{\text{obs}}| \mid H_0)$</p>
+      <p>拒绝 $H_0$ 当且仅当 $p \leq \alpha$。</p>
+    </div>
+  </section>
+
+  <!-- §5 回归分析公式 -->
+  <section class="section" id="sec5">
+    <h2>A.5 回归分析公式</h2>
+
+    <h3>一元线性回归 $Y = \beta_0 + \beta_1 x + \varepsilon$</h3>
+    <div class="formula-highlight">
+      $$\hat{\beta}_1 = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^n (x_i - \bar{x})^2} = \frac{S_{xy}}{S_{xx}}, \qquad \hat{\beta}_0 = \bar{y} - \hat{\beta}_1 \bar{x}$$
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">回归方程的显著性检验（$F$ 检验）</div>
+      <p>$H_0: \beta_1 = 0$（线性关系不显著）</p>
+      $$F = \frac{S_{\text{回}}}{S_{\text{残}}/(n-2)} = \frac{\hat{\beta}_1^2 S_{xx}}{S_{\text{残}}/(n-2)} \sim F(1, n-2)$$
+      <p>其中 $S_{\text{回}} = \hat{\beta}_1^2 S_{xx} = \hat{\beta}_1 S_{xy}$，$S_{\text{残}} = S_{yy} - \hat{\beta}_1 S_{xy}$。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">决定系数</div>
+      $$R^2 = \frac{S_{\text{回}}}{S_{\text{总}}} = 1 - \frac{S_{\text{残}}}{S_{\text{总}}} = \frac{\hat{\beta}_1 S_{xy}}{S_{yy}}$$
+      <p>$R^2 \in [0, 1]$，越接近 1 表示回归方程的拟合效果越好。</p>
+    </div>
+  </section>
+
+  <!-- §6 方差分析 -->
+  <section class="section" id="sec6">
+    <h2>A.6 方差分析</h2>
+
+    <h3>单因素方差分析</h3>
+    <p>$a$ 个水平，第 $i$ 个水平 $n_i$ 次重复，$n = \sum n_i$，$y_{ij}$ 为第 $i$ 组第 $j$ 个观测。</p>
+
+    <div class="formula-highlight">
+      $$S_T = S_A + S_E$$
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <tr>
+          <th>平方和</th>
+          <th>公式</th>
+          <th>自由度</th>
+        </tr>
+        <tr>
+          <td>总平方和 $S_T$</td>
+          <td>$\sum_{i=1}^a \sum_{j=1}^{n_i} (y_{ij} - \bar{y})^2$</td>
+          <td>$n - 1$</td>
+        </tr>
+        <tr>
+          <td>组间平方和 $S_A$</td>
+          <td>$\sum_{i=1}^a n_i (\bar{y}_{i\cdot} - \bar{y})^2$</td>
+          <td>$a - 1$</td>
+        </tr>
+        <tr>
+          <td>组内平方和 $S_E$</td>
+          <td>$\sum_{i=1}^a \sum_{j=1}^{n_i} (y_{ij} - \bar{y}_{i\cdot})^2$</td>
+          <td>$n - a$</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">$F$ 统计量</div>
+      <p>$H_0: \mu_1 = \mu_2 = \cdots = \mu_a$（各组均值相等）</p>
+      $$F = \frac{S_A/(a-1)}{S_E/(n-a)} = \frac{MS_A}{MS_E} \sim F(a-1,\; n-a)$$
+      <p>拒绝域：$F \geq F_\alpha(a-1, n-a)$</p>
+    </div>
+  </section>
+
+  <!-- §7 贝叶斯公式 -->
+  <section class="section" id="sec7">
+    <h2>A.7 贝叶斯公式</h2>
+
+    <div class="formula-highlight">
+      $$\pi(\theta \mid x) = \frac{L(\theta \mid x)\,\pi(\theta)}{\displaystyle\int_\Theta L(\theta \mid x)\,\pi(\theta)\,\dd\theta} \propto L(\theta \mid x)\,\pi(\theta)$$
+    </div>
+
+    <h3>常见共轭先验表</h3>
+    <div class="table-wrapper">
+      <table>
+        <tr>
+          <th>似然</th>
+          <th>共轭先验</th>
+          <th>后验参数更新</th>
+        </tr>
+        <tr>
+          <td>$N(\theta, \sigma^2)$</td>
+          <td>$N(\mu_0, \tau^2)$</td>
+          <td>$\frac{1}{\sigma_n^2} = \frac{n}{\sigma^2} + \frac{1}{\tau^2}$，$\mu_n = \sigma_n^2\!\left(\frac{n\bar{x}}{\sigma^2}+\frac{\mu_0}{\tau^2}\right)$</td>
+        </tr>
+        <tr>
+          <td>$\text{Bin}(n, \theta)$</td>
+          <td>$\text{Beta}(\alpha, \beta)$</td>
+          <td>$\alpha' = \alpha + x$，$\beta' = \beta + n - x$</td>
+        </tr>
+        <tr>
+          <td>$\text{Poisson}(\lambda)$</td>
+          <td>$\text{Gamma}(\alpha, \beta)$</td>
+          <td>$\alpha' = \alpha + \sum x_i$，$\beta' = \beta + n$</td>
+        </tr>
+        <tr>
+          <td>$\text{Exp}(\lambda)$</td>
+          <td>$\text{Gamma}(\alpha, \beta)$</td>
+          <td>$\alpha' = \alpha + n$，$\beta' = \beta + \sum x_i$</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">贝叶斯估计（平方损失）</div>
+      $$\hat{\theta}_{\text{Bayes}} = \EE[\theta \mid x] = \int_\Theta \theta\,\pi(\theta \mid x)\,\dd\theta$$
+      <p>MAP 估计：$\hat{\theta}_{\text{MAP}} = \arg\max_\theta\,\pi(\theta \mid x)$</p>
+    </div>
+  </section>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="ch5.html" class="prev">上一章：贝叶斯统计简介</a>
+    <a href="index.html">回目录</a>
+  </div>
+
+</div>
+
+<!-- 页脚 -->
+<footer class="footer">
+  <p>数理统计复习指南 · 基于茆诗松教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>
