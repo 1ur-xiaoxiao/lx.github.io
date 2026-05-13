@@ -1,5 +1,6 @@
 // ===== DOM Ready =====
 document.addEventListener('DOMContentLoaded', () => {
+  initWatermark();
   initNavToggle();
   initCollapsibles();
   initBackToTop();
@@ -48,6 +49,21 @@ function initCollapsibles() {
       }
     });
   });
+}
+
+// ===== 水印 =====
+function initWatermark() {
+  var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="200">'
+    + '<text x="160" y="105" text-anchor="middle" dominant-baseline="middle"'
+    + ' font-family="sans-serif" font-size="22" fill="#000"'
+    + ' transform="rotate(-25, 160, 100)">\u8463\u514b\u52e4</text>'
+    + '</svg>';
+  var url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  var style = document.createElement('style');
+  style.textContent = 'body::after{content:"";position:fixed;top:0;left:0;right:0;bottom:0;'
+    + 'background:url(' + url + ') repeat;'
+    + 'pointer-events:none;z-index:9999;opacity:0.05;}';
+  document.head.appendChild(style);
 }
 
 // ===== 回到顶部按钮 =====
