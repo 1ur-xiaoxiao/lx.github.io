@@ -33,6 +33,19 @@ function initCollapsibles() {
       const body = header.nextElementSibling;
       const isOpen = header.classList.toggle('open');
       body.classList.toggle('open', isOpen);
+
+      // Re-typeset math when collapsible is opened
+      // MathJax can't properly measure elements inside display:none,
+      // so we must re-render after the content becomes visible.
+      if (isOpen && window.MathJax) {
+        if (MathJax.typesetPromise) {
+          MathJax.typesetPromise([body]);
+        } else {
+          MathJax.startup.promise.then(function () {
+            MathJax.typesetPromise([body]);
+          });
+        }
+      }
     });
   });
 }
