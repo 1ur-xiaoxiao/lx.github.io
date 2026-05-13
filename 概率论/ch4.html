@@ -63,6 +63,13 @@
 
     <p>本章的定理都依赖于期望和方差的概念。这里做一个简要回顾，详细内容见第二章和附录。</p>
 
+    <div class="box box-note">
+      <div class="box-title">期望和方差的意义</div>
+      <p><strong>期望</strong>是随机变量的"重心"——它代表了随机变量取值的"平均水平"。</p>
+      <p><strong>方差</strong>是随机变量的"离散程度"——它衡量了随机变量偏离期望的程度。</p>
+      <p><strong>类比</strong>：射击时，期望是弹着点的平均位置，方差是弹着点的分散程度。期望越接近靶心、方差越小，说明射手水平越高。</p>
+    </div>
+
     <div class="box box-formula">
       <div class="box-title">期望与方差公式</div>
       <ul>
@@ -77,13 +84,15 @@
       <div class="box-title">样本均值的期望和方差</div>
       <p>设 $X_1, X_2, \ldots, X_n$ 独立同分布（i.i.d.），$E(X_i)=\mu$，$\Var(X_i)=\sigma^2$，则样本均值 $\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i$ 满足：</p>
       $$E(\bar{X}_n) = \mu, \quad \Var(\bar{X}_n) = \frac{\sigma^2}{n}$$
-      <p><strong>关键</strong>：样本均值的方差随 $n$ 增大而减小——样本越多，均值越稳定。</p>
+      <p><strong>关键</strong>：样本均值的方差随 $n$ 增大而减小——样本越多，均值越稳定。这是大数定律的直观基础。</p>
     </div>
   </div>
 
   <!-- ==================== 4.2 切比雪夫不等式 ==================== -->
   <div class="section" id="s2">
     <h2>4.2 切比雪夫不等式</h2>
+
+    <p>切比雪夫不等式是大数定律的理论基础。它回答了一个基本问题：<strong>只知道期望和方差，能对概率做出什么估计？</strong></p>
 
     <div class="box box-theorem">
       <div class="box-title">切比雪夫不等式（Chebyshev's Inequality）</div>
@@ -104,6 +113,7 @@
         <li>$k=3$：偏离超过 $3\sigma$ 的概率 $\leq 11.1\%$</li>
         <li>$k=10$：偏离超过 $10\sigma$ 的概率 $\leq 1\%$</li>
       </ul>
+      <p><strong>与正态分布的对比</strong>：对于正态分布，$P(|X-\mu| \geq 3\sigma) \approx 0.27\%$，远小于切比雪夫给出的上界 $11.1\%$。这说明切比雪夫不等式是"粗糙但安全"的估计。</p>
     </div>
 
     <div class="box box-note">
@@ -130,6 +140,15 @@
   <!-- ==================== 4.3 大数定律 ==================== -->
   <div class="section" id="s3">
     <h2>4.3 大数定律</h2>
+
+    <p>大数定律是概率论中最重要的定理之一，它回答了一个根本问题：<strong>为什么频率可以用来估计概率？</strong></p>
+
+    <div class="box box-note">
+      <div class="box-title">大数定律的历史</div>
+      <p>大数定律最早由雅各布·伯努利（Jacob Bernoulli）在 1713 年证明，他在去世后出版的著作《猜度术》中写道：</p>
+      <p><em>"即使是最愚蠢的人，也会本能地知道，通过观察更多的案例，总能更好地做出判断。"</em></p>
+      <p>伯努利用严格的数学证明了这个直觉：当试验次数足够大时，频率会稳定在概率附近。这就是"大数"定律名称的由来——它说的是"大量重复试验"的规律。</p>
+    </div>
 
     <p>大数定律的核心思想：<strong>当试验次数 $n$ 足够大时，样本均值 $\bar{X}_n$ 会稳定在总体期望 $\mu$ 附近。</strong></p>
 
@@ -231,6 +250,17 @@
     <p>中心极限定理是概率论中最深刻、最实用的定理之一。它解释了<strong>为什么正态分布无处不在</strong>。</p>
 
     <div class="box box-note">
+      <div class="box-title">中心极限定理的历史与意义</div>
+      <p>中心极限定理的发展跨越了两个世纪：</p>
+      <ul>
+        <li><strong>1733 年</strong>：棣莫弗（De Moivre）证明了二项分布的正态近似（当 $p=0.5$ 时）</li>
+        <li><strong>1812 年</strong>：拉普拉斯（Laplace）推广到一般的 $p$</li>
+        <li><strong>1920 年代</strong>：林德伯格（Lindeberg）和列维（Lévy）给出了最一般的形式</li>
+      </ul>
+      <p>这个定理解释了一个深刻的现象：为什么自然界中到处都是正态分布？因为很多自然量都是大量微小随机因素的叠加，而中心极限定理告诉我们，这种叠加的结果必然趋近正态分布。</p>
+    </div>
+
+    <div class="box box-note">
       <div class="box-title">中心极限定理的核心思想</div>
       <p>大量独立随机变量之和（或均值），不管每个变量本身服从什么分布，其和的分布都趋近于<strong>正态分布</strong>。</p>
       <p><strong>类比</strong>：一个人的身高受很多因素影响（基因、营养、运动等），每个因素的贡献是随机的，但总和（身高）近似正态分布。</p>
@@ -239,6 +269,7 @@
     <h3>林德伯格-列维定理</h3>
     <div class="box box-theorem">
       <div class="box-title">林德伯格-列维定理（Lindeberg-Lévy CLT）</div>
+      <p>这是中心极限定理最常用的形式，由林德伯格和列维在 1920 年代独立证明。它适用于最常见的场景：独立同分布的随机变量。</p>
       <p>设 $X_1, X_2, \ldots$ 为<strong>独立同分布</strong>的随机变量序列，$E(X_i) = \mu$，$\Var(X_i) = \sigma^2 > 0$，令 $S_n = \sum_{i=1}^n X_i$，则：</p>
       <div class="formula-highlight">
         $$\frac{S_n - n\mu}{\sqrt{n}\,\sigma} = \frac{\bar{X}_n - \mu}{\sigma / \sqrt{n}} \xrightarrow{d} N(0, 1)$$
@@ -255,6 +286,7 @@
       <p><strong>结论</strong>：标准化后的和 $\xrightarrow{d}$ 标准正态</p>
       <p><strong>"$\xrightarrow{d}$" 的含义</strong>：依分布收敛，即分布函数逐点收敛到标准正态的分布函数。</p>
       <p><strong>实际应用</strong>：当 $n \geq 30$ 时，近似效果通常已经很好。</p>
+      <p><strong>为什么要求方差存在？</strong>方差衡量了随机变量的离散程度。如果方差不存在（如柯西分布），随机变量的取值可能极端地分散，中心极限定理就不成立。</p>
     </div>
 
     <div class="box box-formula">
@@ -267,12 +299,14 @@
     <h3>棣莫弗-拉普拉斯定理</h3>
     <div class="box box-theorem">
       <div class="box-title">棣莫弗-拉普拉斯定理（De Moivre-Laplace）</div>
+      <p>这是中心极限定理最早的形式，由棣莫弗在 1733 年（当 $p=0.5$ 时）和拉普拉斯在 1812 年（一般 $p$）证明。</p>
       <p>设 $X_n \sim B(n, p)$，$0 < p < 1$，则对任意 $x \in \mathbb{R}$：</p>
       <div class="formula-highlight">
         $$\lim_{n \to \infty} P\!\left(\frac{X_n - np}{\sqrt{np(1-p)}} \leq x\right) = \Phi(x)$$
       </div>
       <p>即当 $n$ 较大时，$X_n \;\dot{\sim}\; N(np,\, np(1-p))$。</p>
       <p><strong>意义</strong>：二项分布可用正态分布近似。这是林德伯格-列维定理在伯努利试验中的特例。</p>
+      <p><strong>为什么重要？</strong>二项分布的精确计算涉及组合数，当 $n$ 很大时计算量巨大。正态近似大大简化了计算，而且精度很高。</p>
     </div>
 
     <div class="box box-formula">
@@ -289,10 +323,12 @@
     <h3>李雅普诺夫定理（了解）</h3>
     <div class="box box-theorem">
       <div class="box-title">李雅普诺夫定理（Lyapunov CLT）</div>
+      <p>这是中心极限定理最一般的形式，由俄国数学家李雅普诺夫在 1901 年证明。它放宽了林德伯格-列维定理的"同分布"要求。</p>
       <p>设 $X_1, X_2, \ldots$ 为<strong>独立</strong>（不必同分布）的随机变量，$E(X_i)=\mu_i$，$\Var(X_i)=\sigma_i^2$，令 $B_n^2 = \sum_{i=1}^n \sigma_i^2$。若存在 $\delta > 0$ 使得</p>
       $$\lim_{n \to \infty} \frac{1}{B_n^{2+\delta}} \sum_{i=1}^n E\!\left[|X_i - \mu_i|^{2+\delta}\right] = 0$$
       <p>则 $\dfrac{\sum_{i=1}^n X_i - \sum_{i=1}^n \mu_i}{B_n} \xrightarrow{d} N(0,1)$。</p>
-      <p><strong>意义</strong>：即使分布不同，只要每个分量的贡献相对于总和而言"不太大"，其和仍然趋近正态分布。</p>
+      <p><strong>意义</strong>：即使分布不同，只要每个分量的贡献相对于总和而言"不太大"（即没有哪个分量能主导总和），其和仍然趋近正态分布。</p>
+      <p><strong>实际应用</strong>：李雅普诺夫定理解释了为什么很多自然现象（如考试总分、产品总重量）都近似服从正态分布——因为它们是众多独立但不同分布的随机因素的叠加。</p>
     </div>
   </div>
 
@@ -516,6 +552,17 @@
         <p>$S_{100} = \sum_{i=1}^{100} X_i$，$E(S_{100})=350$，$\Var(S_{100})=\frac{3500}{12}=\frac{875}{3}$，$\sigma=\sqrt{\frac{875}{3}} \approx 17.08$</p>
         <p>$P(300 < S_{100} < 400) \approx \Phi\!\left(\frac{400-350}{17.08}\right) - \Phi\!\left(\frac{300-350}{17.08}\right) = \Phi(2.93) - \Phi(-2.93) = 2\Phi(2.93)-1 \approx 2\times0.9983-1 = 0.9966$</p>
       </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">本章定理之间的关系</div>
+      <p>本章的定理形成了一个完整的逻辑链条：</p>
+      <ol>
+        <li><strong>切比雪夫不等式</strong>是最基础的工具——它不依赖分布形式，只需期望和方差</li>
+        <li><strong>大数定律</strong>用切比雪夫不等式证明——它告诉我们"频率稳定于概率"</li>
+        <li><strong>中心极限定理</strong>比大数定律更强——它不仅说明均值稳定，还说明均值的分布趋近正态</li>
+      </ol>
+      <p><strong>一句话总结</strong>：大数定律说"均值会稳定"，中心极限定理说"均值按正态分布稳定"。</p>
     </div>
 
     <div class="box box-note">

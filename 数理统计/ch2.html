@@ -252,7 +252,7 @@
       <p>有时有偏估计的均方误差反而更小。例如正态分布 $N(\mu, \sigma^2)$ 下 $\sigma^2$ 的估计：</p>
       <ul>
         <li>$S^2$（无偏）：$\mathrm{MSE}(S^2) = \frac{2\sigma^4}{n-1}$</li>
-        <li>$\hat{\sigma}^2_{\text{MLE}} = \frac{n-1}{n}S^2$（有偏）：$\mathrm{MSE} = \frac{2(n-1)}{n^2}\sigma^4$，当 $n \geq 2$ 时比 $S^2$ 的 MSE 更小</li>
+        <li>$\hat{\sigma}^2_{\text{MLE}} = \frac{n-1}{n}S^2$（有偏）：$\mathrm{MSE} = \frac{2n-1}{n^2}\sigma^4$，当 $n \geq 2$ 时比 $S^2$ 的 MSE 更小</li>
       </ul>
       <p>这就是"偏差-方差权衡"——有偏估计用一点偏差换取方差的大幅降低。</p>
     </div>

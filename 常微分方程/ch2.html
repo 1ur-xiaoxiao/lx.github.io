@@ -267,12 +267,12 @@
     <div class="collapsible">
       <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · Riccati 方程（化归思想）</div>
       <div class="collapsible-body">
-        <p><strong>题目</strong>：已知 $y_1 = x$ 是方程 $y' = y^2 - \dfrac{y}{x} + \dfrac{1}{x^2}$ 的一个特解，求通解。</p>
+        <p><strong>题目</strong>：已知 $y_1 = x$ 是方程 $y' = 1 + \dfrac{y}{x} - \dfrac{y^2}{x^2}$ 的一个特解，求通解。</p>
         <p><strong>解</strong>：令 $y = y_1 + z = x + z$，代入方程。</p>
         <p>$y' = 1 + z'$，$y^2 = x^2 + 2xz + z^2$</p>
-        <p>$1 + z' = x^2 + 2xz + z^2 - \dfrac{x+z}{x} + \dfrac{1}{x^2}$</p>
-        <p>$= x^2 + 2xz + z^2 - 1 - \dfrac{z}{x} + \dfrac{1}{x^2}$</p>
-        <p>利用 $y_1 = x$ 是特解，化简得 $z' = \left(2x - \dfrac{1}{x}\right)z + z^2$。</p>
+        <p>$1 + z' = 1 + \dfrac{x+z}{x} - \dfrac{x^2 + 2xz + z^2}{x^2}$</p>
+        <p>$= 1 + 1 + \dfrac{z}{x} - 1 - \dfrac{2z}{x} - \dfrac{z^2}{x^2}$</p>
+        <p>利用 $y_1 = x$ 是特解（$1 = 1 + 1 - 1$），化简得 $z' = -\dfrac{z}{x} - \dfrac{z^2}{x^2}$。</p>
         <p>这是关于 $z$ 的 Bernoulli 方程（$n = 2$），令 $w = z^{-1}$ 可化为线性方程求解。</p>
       </div>
     </div>

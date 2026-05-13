@@ -348,11 +348,11 @@
       <div class="collapsible">
         <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
         <div class="collapsible-body">
-          <p>将 $\psi(x)=1$（$x\ge0$）奇延拓为 $\tilde\psi(x)=\operatorname{sgn}(x)$。由 d'Alembert 公式（$a=1$，$\varphi=0$）：</p>
-          $$u(x,t) = \frac{1}{2}\int_{x-t}^{x+t}\tilde{\psi}(s)\,\dd s.$$
-          <p>当 $x \ge t$（即 $x-t \ge 0$）：$u(x,t) = \frac{1}{2}\int_{x-t}^{x+t} 1\,\dd s = t$。</p>
+          <p>将 $\psi(x)=1$（$x\ge0$）奇延拓为 $\tilde\psi(x)=\operatorname{sgn}(x)$。对半无界 Dirichlet 问题，d'Alembert 公式修正为（减去反射波）：</p>
+          $$u(x,t) = \frac{1}{2}\left[\int_0^{x+t}\tilde{\psi}(s)\,\dd s - \int_0^{x-t}\tilde{\psi}(s)\,\dd s\right].$$
+          <p>当 $x \ge t$（即 $x-t \ge 0$）：$u(x,t) = \frac{1}{2}[(x+t) - (x-t)] = t$。</p>
           <p>当 $0 < x < t$（即 $x-t < 0$）：</p>
-          $$u(x,t) = \frac{1}{2}\left[\int_{x-t}^0(-1)\,\dd s + \int_0^{x+t} 1\,\dd s\right] = \frac{1}{2}[(t-x) + (x+t)] \cdot \frac{1}{2} = \frac{1}{2}(2x) = x.$$
+          $$u(x,t) = \frac{1}{2}\left[\int_0^{x+t} 1\,\dd s - \int_0^{x-t}(-1)\,\dd s\right] = \frac{1}{2}[(x+t) + (t-x)] = \frac{1}{2}(2x) = x.$$
           <p>综合：$u(x,t) = \min(x, t)$。物理意义：以速度 $1$ 从端点向右传播的波前，在波前到达之前位移为 $x$，之后位移为 $t$。</p>
         </div>
       </div>

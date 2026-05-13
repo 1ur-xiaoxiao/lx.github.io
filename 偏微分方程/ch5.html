@@ -86,8 +86,8 @@
       <p><strong>三维情况</strong> ($n=3$)：</p>
       $$\Phi(x) = \frac{1}{4\pi|x|} = \frac{1}{4\pi\sqrt{x_1^2 + x_2^2 + x_3^2}}$$
       <p><strong>一般 $n \geq 3$</strong>：</p>
-      $$\Phi(x) = \frac{1}{n(n-2)\omega_n} \cdot \frac{1}{|x|^{n-2}}$$
-      <p>其中 $\omega_n$ 为 $\RR^n$ 中单位球的体积。</p>
+      $$\Phi(x) = \frac{1}{(n-2)\sigma_n} \cdot \frac{1}{|x|^{n-2}}$$
+      <p>其中 $\sigma_n = n\omega_n$ 为 $\RR^n$ 中单位球面的面积（$\omega_n$ 为单位球的体积）。</p>
     </div>
 
     <div class="box-proof">
@@ -279,11 +279,11 @@
       <div class="collapsible">
         <button class="collapsible-toggle">查看解答</button>
         <div class="collapsible-content">
-          <p>将边界条件用球谐函数展开：$\cos^2\theta = P_2(\cos\theta) + \frac{1}{3}P_0(\cos\theta)$，其中 $P_0, P_2$ 为Legendre多项式。</p>
+          <p>将边界条件用球谐函数展开：$\cos^2\theta = \frac{2}{3}P_2(\cos\theta) + \frac{1}{3}P_0(\cos\theta)$，其中 $P_0, P_2$ 为Legendre多项式。</p>
           <p>由球上调和函数的一般理论，解为</p>
-          $$u(r, \theta) = r^2 P_2(\cos\theta) + \frac{1}{3} P_0(\cos\theta) = r^2 \cdot \frac{3\cos^2\theta - 1}{2} + \frac{1}{3}$$
+          $$u(r, \theta) = \frac{2}{3}r^2 P_2(\cos\theta) + \frac{1}{3} P_0(\cos\theta) = \frac{2}{3}r^2 \cdot \frac{3\cos^2\theta - 1}{2} + \frac{1}{3}$$
           <p>化简得</p>
-          $$u(r, \theta) = \frac{3r^2 \cos^2\theta - r^2}{2} + \frac{1}{3} = \frac{r^2(3\cos^2\theta - 1)}{2} + \frac{1}{3}$$
+          $$u(r, \theta) = \frac{r^2(3\cos^2\theta - 1)}{3} + \frac{1}{3} = r^2\cos^2\theta + \frac{1 - r^2}{3}$$
           <p>在球心处 $u(0) = \frac{1}{3}$，验证了球心平均值公式：$\frac{1}{4\pi}\int_{S^2} \cos^2\theta \, \dd S = \frac{1}{3}$。</p>
         </div>
       </div>

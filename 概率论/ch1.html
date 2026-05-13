@@ -79,6 +79,7 @@
       <div class="box-title">定义 · 样本空间与样本点</div>
       <p>随机试验 $E$ 的<strong>所有可能结果</strong>组成的集合称为<strong>样本空间</strong>，记为 $\Omega$。</p>
       <p>样本空间中的每个元素（即每个可能结果）称为<strong>样本点</strong>，记为 $\omega$。</p>
+      <p><strong>直觉</strong>：样本空间就是"所有可能的剧本"，样本点就是"某一个具体的剧本"。</p>
     </div>
 
     <div class="box box-note">
@@ -124,11 +125,12 @@
     <div class="box box-definition">
       <div class="box-title">定义 · 随机事件</div>
       <p>样本空间 $\Omega$ 的<strong>子集</strong>称为<strong>随机事件</strong>，简称事件。每次试验中，当且仅当该子集中的某个样本点出现时，称该事件<strong>发生</strong>。</p>
+      <p><strong>直觉</strong>：事件就是我们"关心的结果"的集合。例如掷骰子，"掷出偶数"这个事件对应集合 $\{2, 4, 6\}$。</p>
       <p>特别地：</p>
       <ul>
-        <li><strong>基本事件</strong>：只含一个样本点的事件</li>
-        <li><strong>必然事件</strong>：$\Omega$ 本身（每次试验必然发生）</li>
-        <li><strong>不可能事件</strong>：$\emptyset$（每次试验都不发生）</li>
+        <li><strong>基本事件</strong>：只含一个样本点的事件——最简单的事件</li>
+        <li><strong>必然事件</strong>：$\Omega$ 本身（每次试验必然发生）——"一定会发生的事"</li>
+        <li><strong>不可能事件</strong>：$\emptyset$（每次试验都不发生）——"不可能发生的事"</li>
       </ul>
     </div>
 
@@ -153,6 +155,7 @@
         <li>A 与 C 互斥且对立（非此即彼）</li>
       </ul>
       <p>判断方法：互斥看"能不能同时发生"，对立看"是不是非此即彼"。</p>
+      <p><strong>记忆技巧</strong>：对立事件是"互补"的——一个发生，另一个必不发生，而且必有一个发生。互斥只是"不能同时发生"，但可能都不发生。</p>
     </div>
 
     <h3>事件的运算</h3>
@@ -171,11 +174,13 @@
     <h3>运算律</h3>
     <div class="box box-formula">
       <div class="box-title">德摩根律（De Morgan's Laws）—— 最重要的运算律</div>
+      <p>德摩根律由英国数学家奥古斯塔斯·德·摩根（Augustus De Morgan）在 19 世纪提出，是集合论和逻辑学中的基本定律。</p>
       <p><strong>两个事件：</strong></p>
       $$\overline{A \cup B} = \bar{A} \cap \bar{B} \qquad \overline{A \cap B} = \bar{A} \cup \bar{B}$$
       <p><strong>$n$ 个事件：</strong></p>
       $$\overline{\bigcup_{i=1}^n A_i} = \bigcap_{i=1}^n \bar{A_i} \qquad \overline{\bigcap_{i=1}^n A_i} = \bigcup_{i=1}^n \bar{A_i}$$
       <p><strong>记忆口诀</strong>："并的补等于补的交，交的补等于补的并"——运算和补号互换。</p>
+      <p><strong>直觉理解</strong>："所有人都没做"等于"没人做"，"至少一人没做"等于"不是所有人都做了"。</p>
     </div>
 
     <div class="box box-formula">
@@ -207,7 +212,13 @@
   <div class="section" id="s3">
     <h2>1.3 概率的定义</h2>
 
-    <p>概率是对事件发生可能性大小的数值度量。历史上有三种理解方式，最终由 Kolmogorov 给出了严格的公理化定义。</p>
+    <p>概率是对事件发生可能性大小的数值度量。这个看似简单的概念，经历了漫长的发展历程。</p>
+
+    <div class="box box-note">
+      <div class="box-title">概率论的起源</div>
+      <p>概率论起源于 17 世纪的<strong>赌博问题</strong>。1654 年，赌徒梅雷向数学家帕斯卡提出了一个问题："为什么掷 4 颗骰子至少出一个 6 的概率，比掷 24 颗骰子至少出一对 6 的概率大？"</p>
+      <p>帕斯卡与费马通过书信讨论这个问题，奠定了概率论的基础。此后，雅各布·伯努利、拉普拉斯、高斯等数学家不断完善理论。直到 1933 年，苏联数学家柯尔莫哥洛夫（Kolmogorov）用测度论给出了严格的公理化定义，使概率论成为现代数学的一个分支。</p>
+    </div>
 
     <h3>频率</h3>
     <div class="box box-definition">
@@ -226,13 +237,14 @@
     <h3>古典概型</h3>
     <div class="box box-definition">
       <div class="box-title">定义 · 古典概型（等可能概型）</div>
-      <p>若随机试验满足：</p>
+      <p>这是概率论最早的形式，由拉普拉斯在 1814 年系统化。它适用于满足两个条件的试验：</p>
       <ol>
         <li>样本空间 $\Omega$ 中只有<strong>有限</strong>个样本点（有限性）；</li>
         <li>每个基本事件发生的<strong>可能性相等</strong>（等可能性）。</li>
       </ol>
       <p>则事件 A 的概率为：</p>
       $$P(A) = \frac{A \text{ 包含的样本点数}}{\Omega \text{ 中样本点总数}} = \frac{|A|}{|\Omega|}$$
+      <p><strong>为什么叫"古典"？</strong>因为这是最直观的概率定义——"有利情况数 ÷ 总情况数"。它的局限在于：必须假设"等可能性"，而且样本空间必须有限。</p>
     </div>
 
     <div class="box box-note">
@@ -307,6 +319,8 @@
     <div class="box box-note">
       <div class="box-title">公理化定义的意义</div>
       <p>公理化定义不回答"概率是多少"，而是规定"概率必须满足什么规则"。古典概型、几何概型、频率定义都是它的<strong>特例</strong>——它们定义的概率函数都满足这三条公理。</p>
+      <p><strong>为什么需要公理化？</strong>在柯尔莫哥洛夫之前，概率论缺乏统一的基础，不同学派对"概率是什么"争论不休。公理化方法绕过了这个哲学问题，只规定概率"应该怎么算"，使概率论成为严格的数学分支。</p>
+      <p><strong>类比</strong>：就像欧几里得几何从五条公理出发推出所有定理一样，概率论从三条公理出发推出所有结论。</p>
     </div>
   </div>
 
@@ -339,15 +353,18 @@
       $$P(A \cup B) = P(A) + P(B) - P(AB)$$
       <p><strong>推导</strong>：把 $A \cup B$ 分成三个互斥部分：$A\bar{B}$、$\bar{A}B$、$AB$，分别求概率再相加。</p>
       <p><strong>直觉</strong>：直接加 $P(A)+P(B)$ 会把公共部分 $P(AB)$ 算两次，所以要减去一次。</p>
+      <p><strong>类比</strong>：计算两个圆的总面积时，如果直接加两个圆的面积，重叠部分会被算两次，所以要减去重叠部分的面积。</p>
     </div>
 
     <div class="box box-formula">
       <div class="box-title">广义加法公式（容斥原理）</div>
+      <p>容斥原理（Inclusion-Exclusion Principle）是组合数学中的基本原理，由法国数学家西尔维斯特（Sylvester）在 19 世纪系统化。</p>
       <p>三个事件：</p>
       $$P(A \cup B \cup C) = P(A)+P(B)+P(C)-P(AB)-P(AC)-P(BC)+P(ABC)$$
       <p>$n$ 个事件：</p>
       $$P\!\left(\bigcup_{i=1}^n A_i\right) = \sum_{i} P(A_i) - \sum_{i<j} P(A_i A_j) + \sum_{i<j<k} P(A_i A_j A_k) - \cdots + (-1)^{n-1} P(A_1 A_2 \cdots A_n)$$
       <p><strong>记忆</strong>：奇数项加、偶数项减，交替进行。</p>
+      <p><strong>直觉</strong>：先加所有单个的面积，再减去所有重叠的面积（因为被加了两次），再加上三重重叠的面积（因为被减多了），如此交替。</p>
     </div>
 
     <div class="collapsible">
@@ -365,6 +382,8 @@
   <!-- ==================== 1.5 条件概率与乘法公式 ==================== -->
   <div class="section" id="s5">
     <h2>1.5 条件概率与乘法公式</h2>
+
+    <p>条件概率是概率论中最重要的概念之一。它的核心思想是：<strong>当我们获得新信息时，应该更新我们的判断</strong>。这个想法后来发展为著名的贝叶斯公式。</p>
 
     <div class="box box-definition">
       <div class="box-title">定义 · 条件概率</div>
@@ -389,12 +408,14 @@
       <p>由条件概率定义直接得到：</p>
       $$P(AB) = P(A) \cdot P(B|A) = P(B) \cdot P(A|B)$$
       <p><strong>直觉</strong>：A 且 B 发生 = A 发生的概率 × 在 A 发生的前提下 B 发生的概率。</p>
+      <p><strong>类比</strong>：从一副牌中连续抽两张，第一张是红心且第二张是黑桃的概率 = 第一张是红心的概率 × 在第一张是红心的条件下第二张是黑桃的概率。</p>
     </div>
 
     <div class="box box-formula">
       <div class="box-title">推广到 $n$ 个事件的乘法公式</div>
       $$P(A_1 A_2 \cdots A_n) = P(A_1) \cdot P(A_2|A_1) \cdot P(A_3|A_1 A_2) \cdots P(A_n|A_1 A_2 \cdots A_{n-1})$$
       <p><strong>直觉</strong>：依次发生 = 第一个发生的概率 × 第二个在第一个发生后的概率 × 第三个在前两个都发生后的概率 × ……</p>
+      <p><strong>应用</strong>：这个公式常用于计算"依次发生"的事件的概率，如抽签、摸球等问题。</p>
     </div>
 
     <div class="collapsible">
@@ -416,6 +437,8 @@
   <div class="section" id="s6">
     <h2>1.6 事件的独立性</h2>
 
+    <p>独立性是概率论中最核心的概念之一。它描述的是：<strong>一个事件的发生不会影响另一个事件的概率</strong>。很多概率计算都依赖于独立性假设。</p>
+
     <div class="box box-definition">
       <div class="box-title">定义 · 两个事件的独立性</div>
       <p>若事件 A, B 满足</p>
@@ -427,6 +450,7 @@
       <div class="box-title">独立性的直觉</div>
       <p>"A 的发生不影响 B 的概率"，即 $P(B|A)=P(B)$（当 $P(A)>0$ 时，独立性与这个条件等价）。</p>
       <p>例如：掷两颗骰子，第一颗的结果不影响第二颗的结果，所以"第一颗掷出 6"与"第二颗掷出 6"独立。</p>
+      <p><strong>重要提醒</strong>：独立性通常由<strong>物理背景</strong>判断（如不同设备的寿命、不同人的考试成绩），而不是通过数学验证。数学验证只是确认手段。</p>
     </div>
 
     <div class="box box-definition">
@@ -481,7 +505,13 @@
   <div class="section" id="s7">
     <h2>1.7 全概率公式与贝叶斯公式</h2>
 
-    <p>这两个公式是本章的<strong>核心重点</strong>，也是后续章节的重要工具。</p>
+    <p>这两个公式是本章的<strong>核心重点</strong>，也是后续章节的重要工具。它们体现了概率论的核心思想：<strong>如何从"原因"推导"结果"，以及如何从"结果"反推"原因"</strong>。</p>
+
+    <div class="box box-note">
+      <div class="box-title">贝叶斯公式的深远影响</div>
+      <p>贝叶斯公式由英国牧师托马斯·贝叶斯在 1763 年（去世后）发表。它的意义远超概率论本身——它提出了一种<strong>理性更新信念</strong>的方法：当我们观察到新证据时，应该如何修正之前的判断。</p>
+      <p>今天，贝叶斯思想已广泛应用于机器学习、医学诊断、垃圾邮件过滤、自然语言处理等领域。</p>
+    </div>
 
     <div class="box box-definition">
       <div class="box-title">定义 · 完备事件组（划分）</div>
@@ -508,6 +538,7 @@
       <p>把事件 A 的概率"拆解"到各个"原因"上：</p>
       <p>$P(A) = P(\text{原因1}) \times P(A|\text{原因1}) + P(\text{原因2}) \times P(A|\text{原因2}) + \cdots$</p>
       <p><strong>类比</strong>：一个工厂有三条生产线（$B_1, B_2, B_3$），各占产量的 50%, 30%, 20%，各线的次品率分别为 2%, 3%, 5%。产品的总次品率 = $0.5\times0.02 + 0.3\times0.03 + 0.2\times0.05 = 0.029$。</p>
+      <p><strong>公式的意义</strong>：全概率公式是"由原因推结果"——当我们知道各种原因发生的概率，以及在每种原因下结果发生的概率，就可以计算结果发生的总概率。</p>
     </div>
 
     <h3>贝叶斯公式</h3>
@@ -526,6 +557,7 @@
       <p><strong>先验概率</strong> $P(B_j)$：试验前对各原因的判断（"先验"=先于试验）。</p>
       <p><strong>后验概率</strong> $P(B_j|A)$：观察到结果 A 后，对各原因的更新判断（"后验"=后于试验）。</p>
       <p><strong>贝叶斯公式的价值</strong>：把"先验"更新为"后验"，实现信念的理性修正。</p>
+      <p><strong>现代应用</strong>：贝叶斯公式是机器学习、人工智能、医学诊断等领域的核心工具。垃圾邮件过滤器就是用贝叶斯公式判断一封邮件是垃圾邮件的概率。</p>
     </div>
 
     <div class="collapsible">

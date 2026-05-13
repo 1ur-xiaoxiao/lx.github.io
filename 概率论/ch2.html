@@ -64,6 +64,8 @@
   <div class="section" id="s1">
     <h2>2.1 随机变量的定义</h2>
 
+    <p>第一章用"事件"描述随机现象，但事件是集合，处理起来不方便。本章引入<strong>随机变量</strong>，将概率论从"集合语言"升级为"函数语言"。</p>
+
     <div class="box box-definition">
       <div class="box-title">定义 · 随机变量</div>
       <p>设随机试验的样本空间为 $\Omega$，若对每个样本点 $\omega \in \Omega$，都有唯一的实数 $X(\omega)$ 与之对应，则称定义在 $\Omega$ 上的实值函数 $X = X(\omega)$ 为<strong>随机变量</strong>。</p>
@@ -71,13 +73,13 @@
 
     <div class="box box-note">
       <div class="box-title">为什么要引入随机变量？</div>
-      <p>第一章用"事件"描述随机现象，但事件是集合，处理起来不方便。引入随机变量后：</p>
+      <p>引入随机变量后，概率论获得了强大的工具：</p>
       <ul>
         <li>可以用<strong>数</strong>描述随机现象的结果（如"掷出的点数"、"灯泡寿命"）</li>
         <li>可以用<strong>函数</strong>（分布函数、密度函数）完整刻画概率规律</li>
         <li>可以定义<strong>期望、方差</strong>等数字特征，用一个数概括分布的关键信息</li>
       </ul>
-      <p>简单说：随机变量 = 把"文字描述"变成"数学公式"的桥梁。</p>
+      <p><strong>类比</strong>：就像用坐标系描述几何图形一样，随机变量为概率论提供了"坐标系"。</p>
     </div>
 
     <div class="box box-definition">
@@ -134,6 +136,18 @@
   <div class="section" id="s3">
     <h2>2.3 常见离散分布</h2>
 
+    <p>本节介绍几种重要的离散分布。它们之间有内在的联系，形成一个"分布家族"：</p>
+    <div class="box box-note">
+      <div class="box-title">离散分布的逻辑关系</div>
+      <ul>
+        <li><strong>0-1 分布</strong>是最简单的——一次试验，两种结果</li>
+        <li><strong>二项分布</strong>是 0-1 分布的"n 次重复"——n 次独立试验的成功次数</li>
+        <li><strong>泊松分布</strong>是二项分布的"极限"——当 $n$ 很大、$p$ 很小时</li>
+        <li><strong>几何分布</strong>关注"等待时间"——首次成功需要多少次试验</li>
+        <li><strong>超几何分布</strong>是二项分布的"不放回版本"</li>
+      </ul>
+    </div>
+
     <h3>0-1 分布（伯努利分布）</h3>
     <div class="box box-definition">
       <div class="box-title">0-1 分布</div>
@@ -176,6 +190,7 @@
       $$P(X=k) = \frac{\lambda^k}{k!} e^{-\lambda}, \quad k = 0, 1, 2, \ldots$$
       <p>记为 $X \sim P(\lambda)$，其中 $\lambda > 0$ 为参数。</p>
       <p><strong>应用场景</strong>：单位时间内某事件发生的次数（如电话呼叫数、放射性衰变数、网站访问数）。</p>
+      <p><strong>为什么叫泊松？</strong>法国数学家泊松（Poisson）在 1837 年研究二项分布的极限形式时发现了这个分布。它描述的是"稀有事件"——在大量试验中，每个试验成功的概率很小，但试验次数很多。</p>
     </div>
 
     <div class="box box-theorem">
@@ -225,6 +240,8 @@
   <div class="section" id="s4">
     <h2>2.4 随机变量的分布函数</h2>
 
+    <p>分布律（离散型）和概率密度（连续型）虽然直观，但它们只适用于各自的类型。我们需要一个<strong>统一的工具</strong>来描述所有随机变量的分布。</p>
+
     <div class="box box-definition">
       <div class="box-title">定义 · 分布函数</div>
       <p>设 $X$ 是一个随机变量，$x$ 为任意实数，称</p>
@@ -235,17 +252,18 @@
     <div class="box box-note">
       <div class="box-title">分布函数的意义</div>
       <p>分布函数 $F(x)$ 回答的问题是："随机变量 $X$ 落在 $(-\infty, x]$ 区间内的概率是多少？"</p>
-      <p>分布函数是<strong>万能工具</strong>——无论离散型还是连续型，都可以用分布函数描述。它把概率问题转化为函数问题。</p>
+      <p><strong>为什么叫"分布函数"？</strong>因为它完整地描述了概率是如何"分布"在整个实数轴上的——给定 $F(x)$，我们可以算出 $X$ 落在任何区间的概率。</p>
+      <p>分布函数是<strong>万能工具</strong>——无论离散型还是连续型，都可以用分布函数描述。它把概率问题转化为函数问题，使得我们可以用微积分等工具来研究概率。</p>
     </div>
 
     <div class="box box-theorem">
       <div class="box-title">分布函数的性质</div>
       <ol>
-        <li><strong>单调不减</strong>：若 $x_1 < x_2$，则 $F(x_1) \leq F(x_2)$</li>
-        <li><strong>有界性</strong>：$\displaystyle\lim_{x \to -\infty} F(x) = 0$，$\lim_{x \to +\infty} F(x) = 1$</li>
-        <li><strong>右连续</strong>：$F(x+0) = F(x)$（注意是右连续，不是左连续！）</li>
+        <li><strong>单调不减</strong>：若 $x_1 < x_2$，则 $F(x_1) \leq F(x_2)$——因为 $P(X \leq x_1) \leq P(X \leq x_2)$</li>
+        <li><strong>有界性</strong>：$\displaystyle\lim_{x \to -\infty} F(x) = 0$，$\lim_{x \to +\infty} F(x) = 1$——因为 $X$ 不可能取 $-\infty$，必然取有限值</li>
+        <li><strong>右连续</strong>：$F(x+0) = F(x)$（注意是右连续，不是左连续！）——这是数学上的约定，使得分布函数与概率的对应关系更简洁</li>
       </ol>
-      <p>反过来，满足这三条性质的函数一定是某个随机变量的分布函数。</p>
+      <p>反过来，满足这三条性质的函数一定是某个随机变量的分布函数。这给出了分布函数的<strong>完整刻画</strong>。</p>
     </div>
 
     <div class="box box-formula">
@@ -282,11 +300,14 @@
   <div class="section" id="s5">
     <h2>2.5 连续型随机变量与概率密度</h2>
 
+    <p>离散型随机变量的分布律用表格或公式描述，但对于连续型随机变量（如寿命、温度、测量误差），取值充满整个区间，无法用表格列出。我们需要一种新的描述方式。</p>
+
     <div class="box box-definition">
       <div class="box-title">定义 · 概率密度函数</div>
       <p>若存在非负可积函数 $f(x)$，使得随机变量 $X$ 的分布函数可表示为</p>
       $$F(x) = \int_{-\infty}^{x} f(t)\, \dd t, \quad x \in \mathbb{R}$$
       <p>则称 $X$ 为<strong>连续型随机变量</strong>，$f(x)$ 为 $X$ 的<strong>概率密度函数</strong>（PDF）。</p>
+      <p><strong>"密度"的类比</strong>：就像物质的密度描述了质量在空间中的分布一样，概率密度描述了概率在数轴上的分布。密度大的地方，随机变量取值的可能性更大。</p>
     </div>
 
     <div class="box box-theorem">
@@ -320,6 +341,16 @@
   <!-- ==================== 2.6 常见连续分布 ==================== -->
   <div class="section" id="s6">
     <h2>2.6 常见连续分布</h2>
+
+    <p>本节介绍三种最重要的连续分布。它们各有特点，适用于不同的场景：</p>
+    <div class="box box-note">
+      <div class="box-title">连续分布的特点</div>
+      <ul>
+        <li><strong>均匀分布</strong>：最简单、最"公平"的分布——每个点等可能</li>
+        <li><strong>指数分布</strong>：描述"等待时间"——具有无记忆性</li>
+        <li><strong>正态分布</strong>：最重要的分布——自然界无处不在</li>
+      </ul>
+    </div>
 
     <h3>均匀分布 $U(a, b)$</h3>
     <div class="box box-definition">
@@ -357,6 +388,17 @@
       <p><strong>重要</strong>：指数分布是<strong>唯一</strong>具有无记忆性的连续分布！</p>
     </div>
 
+    <div class="box box-note">
+      <div class="box-title">指数分布与泊松分布的关系</div>
+      <p>指数分布和泊松分布有深刻的联系：</p>
+      <ul>
+        <li><strong>泊松分布</strong>描述"单位时间内事件发生的次数"</li>
+        <li><strong>指数分布</strong>描述"两次事件之间的等待时间"</li>
+      </ul>
+      <p>如果单位时间内事件发生的次数服从泊松分布 $P(\lambda)$，那么两次事件之间的等待时间服从指数分布 $Exp(\lambda)$。</p>
+      <p><strong>例子</strong>：如果每小时平均来 5 个顾客（泊松分布），那么相邻两个顾客到达的时间间隔服从指数分布，平均等待时间为 $1/5$ 小时 = 12 分钟。</p>
+    </div>
+
     <h3>正态分布 $N(\mu, \sigma^2)$</h3>
     <div class="box box-definition">
       <div class="box-title">正态分布</div>
@@ -365,11 +407,13 @@
     </div>
 
     <div class="box box-note">
-      <div class="box-title">正态分布为什么重要？</div>
+      <div class="box-title">正态分布的历史与重要性</div>
+      <p>正态分布由高斯（Gauss）在 1809 年研究天文测量误差时系统发展，因此也叫"高斯分布"。它的密度函数呈钟形，所以俗称"钟形曲线"。</p>
+      <p><strong>为什么正态分布无处不在？</strong></p>
       <ol>
-        <li><strong>自然界大量现象服从正态分布</strong>：身高、体重、测量误差等</li>
-        <li><strong>中心极限定理</strong>：大量独立随机变量之和趋近正态分布（第四章详述）</li>
-        <li><strong>数学性质优良</strong>：正态分布的线性变换、和、条件分布等都是正态</li>
+        <li><strong>自然界大量现象服从正态分布</strong>：身高、体重、测量误差等——因为它们受众多微小随机因素的叠加影响</li>
+        <li><strong>中心极限定理</strong>：大量独立随机变量之和趋近正态分布（第四章详述）——这是正态分布普遍存在的深层原因</li>
+        <li><strong>数学性质优良</strong>：正态分布的线性变换、和、条件分布等都是正态——这使得理论分析和实际计算都很方便</li>
       </ol>
     </div>
 
@@ -396,6 +440,7 @@
       <p>若 $X \sim N(\mu, \sigma^2)$，则 $Z = \dfrac{X - \mu}{\sigma} \sim N(0, 1)$。</p>
       <p>因此：</p>
       $$P(a < X < b) = \Phi\!\left(\frac{b-\mu}{\sigma}\right) - \Phi\!\left(\frac{a-\mu}{\sigma}\right)$$
+      <p><strong>标准化的意义</strong>：无论正态分布的参数 $\mu, \sigma$ 如何，都可以通过标准化转化为标准正态分布。这样我们只需要一张 $\Phi(x)$ 的表，就能计算所有正态分布的概率。</p>
     </div>
 
     <div class="box box-formula">
@@ -569,7 +614,17 @@
   <div class="section" id="s7">
     <h2>2.7 随机变量函数的分布</h2>
 
-    <p>已知 $X$ 的分布，求 $Y=g(X)$ 的分布。这是本章的难点。</p>
+    <p>已知 $X$ 的分布，求 $Y=g(X)$ 的分布。这是本章的难点，也是实际应用中的常见问题。</p>
+
+    <div class="box box-note">
+      <div class="box-title">为什么要研究随机变量函数的分布？</div>
+      <p>在实际问题中，我们经常需要处理随机变量的函数。例如：</p>
+      <ul>
+        <li>已知圆的半径 $R$ 的分布，求面积 $A = \pi R^2$ 的分布</li>
+        <li>已知温度 $T$ 的分布，求能量 $E = kT^2$ 的分布</li>
+        <li>已知 $X \sim N(\mu, \sigma^2)$，求 $Z = (X-\mu)/\sigma$ 的分布（标准化）</li>
+      </ul>
+    </div>
 
     <h3>离散型</h3>
     <div class="box box-formula">

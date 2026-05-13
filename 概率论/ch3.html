@@ -64,11 +64,14 @@
   <div class="section" id="s1">
     <h2>3.1 二维随机变量的联合分布函数</h2>
 
+    <p>现实中，我们经常需要同时考虑多个随机变量。例如：一个人的身高和体重、股票的价格和成交量、学生的数学成绩和语文成绩。这些变量之间可能存在关联，单独研究每个变量会丢失重要信息。</p>
+
     <div class="box box-definition">
       <div class="box-title">定义 · 联合分布函数</div>
       <p>设 $X, Y$ 是定义在同一概率空间上的两个随机变量，则称</p>
       $$F(x, y) = P(X \leq x,\, Y \leq y), \quad (x, y) \in \mathbb{R}^2$$
       <p>为 $(X, Y)$ 的<strong>联合分布函数</strong>。</p>
+      <p><strong>联合分布的意义</strong>：它完整描述了 $X$ 和 $Y$ 的概率规律，包括各自的分布以及它们之间的关联。</p>
     </div>
 
     <div class="box box-note">
@@ -87,6 +90,7 @@
         </li>
       </ol>
       <p><strong>性质4的几何意义</strong>：矩形区域的概率 = 右上角 - 左上角 - 右下角 + 左下角（容斥原理）。</p>
+      <p><strong>为什么需要这个性质？</strong>它保证了我们定义的联合分布函数确实对应一个合法的概率分布——即任何矩形区域的概率都是非负的。</p>
     </div>
   </div>
 
@@ -103,7 +107,7 @@
 
     <div class="box box-note">
       <div class="box-title">联合分布律的表格表示</div>
-      <p>二维离散型的分布律通常用<strong>二维表格</strong>表示，行对应 $X$ 的取值，列对应 $Y$ 的取值：</p>
+      <p>二维离散型的分布律通常用<strong>二维表格</strong>表示，行对应 $X$ 的取值，列对应 $Y$ 的取值。这种表示方式直观且便于计算：</p>
       <div class="table-wrapper">
         <table>
           <tr>
@@ -193,6 +197,7 @@
       <p>若 $(X,Y)$ 在平面区域 $D$ 上服从均匀分布，则</p>
       $$f(x,y) = \begin{cases} \dfrac{1}{S_D}, & (x,y) \in D \\ 0, & \text{其他} \end{cases}$$
       <p>其中 $S_D$ 为区域 $D$ 的面积。</p>
+      <p><strong>直觉</strong>：随机点 $(X,Y)$ 落在区域 $D$ 内任何位置的可能性相同。例如：在一个圆形区域内随机撒豆子，豆子的位置服从二维均匀分布。</p>
     </div>
 
     <h3>二维正态分布 $N(\mu_1, \mu_2, \sigma_1^2, \sigma_2^2, \rho)$</h3>
@@ -213,6 +218,8 @@
         <li>$\rho=0$ 等价于独立（一般分布不成立！）</li>
         <li>线性变换后仍为正态</li>
       </ul>
+      <p><strong>相关系数 $\rho$ 的意义</strong>：$\rho$ 衡量了 $X$ 和 $Y$ 之间的线性关系强度。$\rho > 0$ 表示正相关（一个增大，另一个也倾向于增大），$\rho < 0$ 表示负相关，$\rho = 0$ 表示不相关（对于正态分布，也意味着独立）。</p>
+      <p><strong>应用</strong>：二维正态分布常用于描述两个相关指标的联合分布，如身高和体重、数学成绩和物理成绩等。</p>
     </div>
   </div>
 
@@ -220,12 +227,20 @@
   <div class="section" id="s4">
     <h2>3.4 边缘分布</h2>
 
+    <p>联合分布包含了 $X$ 和 $Y$ 的全部信息。如果我们只关心其中一个变量，可以从联合分布中"提取"出它的单独分布。</p>
+
     <div class="box box-definition">
       <div class="box-title">定义 · 边缘分布函数</div>
       <p>由联合分布函数 $F(x,y)$ 可以得到各自的分布函数：</p>
       $$F_X(x) = F(x, +\infty), \quad F_Y(y) = F(+\infty, y)$$
       <p>分别称为 $X$ 和 $Y$ 的<strong>边缘分布函数</strong>。</p>
-      <p>"边缘"这个词来自表格——行和与列和写在表格的"边缘"位置。</p>
+      <p><strong>"边缘"这个词的来源</strong>：在联合分布律的表格中，行和与列和写在表格的"边缘"位置，因此得名。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">边缘分布的局限性</div>
+      <p>联合分布可以<strong>唯一确定</strong>边缘分布，但<strong>边缘分布不能唯一确定联合分布</strong>——不同的联合分布可能有相同的边缘分布。</p>
+      <p><strong>类比</strong>：知道"班级男生平均身高"和"班级女生平均身高"，不能确定"全班同学的身高分布"——因为不知道男生女生的身高是否有相关性。</p>
     </div>
 
     <h3>离散型的边缘分布律</h3>
@@ -265,6 +280,14 @@
   <div class="section" id="s5">
     <h2>3.5 条件分布</h2>
 
+    <p>条件分布回答的问题是：<strong>当我们知道一个变量的信息后，另一个变量的分布会如何变化？</strong>这是第一章条件概率思想在多维情形下的推广。</p>
+
+    <div class="box box-note">
+      <div class="box-title">条件分布的直觉</div>
+      <p>想象 $(X,Y)$ 是平面上的一个随机点。如果我们知道了 $Y=y$，就相当于在水平线 $Y=y$ 上观察 $X$ 的分布。条件分布就是这条"切片"上 $X$ 的概率规律。</p>
+      <p><strong>为什么条件分布很重要？</strong>在统计学中，我们经常需要根据已知信息做预测。例如：已知一个人的身高，预测他的体重——这就是条件分布的应用。</p>
+    </div>
+
     <h3>离散型的条件分布律</h3>
     <div class="box box-definition">
       <div class="box-title">定义 · 条件分布律</div>
@@ -300,6 +323,8 @@
   <div class="section" id="s6">
     <h2>3.6 随机变量的独立性</h2>
 
+    <p>独立性是概率论中最重要的概念之一。两个随机变量独立意味着：<strong>知道一个变量的值，不会对另一个变量的分布产生任何影响</strong>。</p>
+
     <div class="box box-definition">
       <div class="box-title">定义 · 随机变量的独立性</div>
       <p>若对任意实数 $x, y$，都有</p>
@@ -322,6 +347,7 @@
         <li>验证乘积关系是否成立</li>
         <li>对于连续型，通常只需在 $f(x,y)>0$ 的区域验证</li>
       </ol>
+      <p><strong>实际应用</strong>：在实际问题中，独立性通常由<strong>物理背景</strong>判断（如不同设备的寿命、不同人的考试成绩），而不是通过数学验证。数学验证只是确认手段。</p>
     </div>
 
     <div class="box box-formula">
@@ -342,7 +368,7 @@
   <div class="section" id="s7">
     <h2>3.7 两个随机变量函数的分布</h2>
 
-    <p>已知 $(X,Y)$ 的联合分布，求 $Z=g(X,Y)$ 的分布。常用方法：分布函数法。</p>
+    <p>已知 $(X,Y)$ 的联合分布，求 $Z=g(X,Y)$ 的分布。这是概率论中的常见问题，例如：两个独立元件串联后的寿命、两次测量的平均值等。</p>
 
     <h3>$Z = X + Y$ 的分布</h3>
     <div class="box box-formula">
@@ -354,6 +380,7 @@
       <p>当 $X, Y$ <strong>独立</strong>时：</p>
       $$f_Z(z) = \int_{-\infty}^{+\infty} f_X(x) \cdot f_Y(z-x)\, \dd x$$
       <p>这个积分称为 $f_X$ 和 $f_Y$ 的<strong>卷积</strong>，记为 $f_Z = f_X * f_Y$。</p>
+      <p><strong>卷积的直觉</strong>：要得到 $Z=z$ 的概率，我们需要考虑所有可能的"分配方式"——$X$ 取 $x$，$Y$ 取 $z-x$，然后把所有这些情况的概率加起来。</p>
     </div>
 
     <div class="box box-note">

@@ -129,7 +129,7 @@
       <ul>
         <li>$n\ZZ = \{nk : k \in \ZZ\}$ 是 $\ZZ$ 的理想</li>
         <li>环 $R$ 本身和 $\{0\}$ 是平凡理想</li>
-        <li>$\{A \in M_n(\RR) : A_{11} = 0\}$ 是 $M_n(\RR)$ 的理想（实际上只有 $\{0\}$ 和 $M_n(\RR)$ 本身）</li>
+        <li>$M_n(\RR)$ 是<strong>单环</strong>：只有平凡理想 $\{0\}$ 和 $M_n(\RR)$ 本身（没有非平凡理想）</li>
       </ul>
     </div>
 
@@ -215,8 +215,14 @@
 
     <div class="box box-formula">
       <div class="box-title">环的层级关系</div>
-      $$\text{域} \subset \text{除环} \subset \text{整环} \subset \text{含幺交换环} \subset \text{环}$$
-      <p>例：$\ZZ \subset \QQ \subset \RR \subset \mathbb{C}$，依次是整环、域、域、域。</p>
+      <p>域同时是除环和整环，但除环与整环之间没有包含关系：</p>
+      $$\text{域} = \text{交换除环} = \text{每个非零元可逆的整环}$$
+      <p>两条独立的包含链：</p>
+      <ul>
+        <li>$\text{域} \subset \text{除环} \subset \text{含幺环} \subset \text{环}$</li>
+        <li>$\text{域} \subset \text{整环} \subset \text{含幺交换环} \subset \text{含幺环}$</li>
+      </ul>
+      <p>例：$\ZZ$ 是整环但不是除环；四元数 $\mathbb{H}$ 是除环但不是整环（非交换）。</p>
     </div>
 
     <div class="box box-note">

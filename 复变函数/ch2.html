@@ -359,7 +359,7 @@
       $$w = f(z) = \varphi(x,y) + i\psi(x,y)$$
       <p>则 $f(z)$ 在 $D$ 内解析。复势函数完全刻画了平面流动的信息：</p>
       <ul>
-        <li>$f'(z) = v_x - iv_y$，即 $f'(z)$ 的共轭给出流速向量。</li>
+        <li>$f'(z) = v_x - iv_y$，即 $f'(z)$ 给出流速向量（实部为 $v_x$，虚部为 $-v_y$）。</li>
         <li>$\varphi(x,y) = c_1$ 为<strong>等势线</strong>。</li>
         <li>$\psi(x,y) = c_2$ 为<strong>流线</strong>。等势线与流线正交。</li>
       </ul>
@@ -381,8 +381,8 @@
           $$\varphi = x^2 - y^2, \quad \psi = 2xy$$
           <p><strong>验证调和性</strong>：$\Delta\varphi = 2 + (-2) = 0$，$\Delta\psi = 0 + 0 = 0$。$\checkmark$</p>
           <p><strong>流速</strong>：</p>
-          $$f'(z) = 2z = 2(x+iy) \implies \overline{f'(z)} = 2(x-iy)$$
-          <p>即 $v_x = 2x$，$v_y = 2y$（取 $\overline{f'(z)} = v_x - iv_y$ 的实虚部）。</p>
+          $$f'(z) = 2z = 2x + 2iy$$
+          <p>由 $f'(z) = v_x - iv_y$，比较实虚部得 $v_x = 2x$，$v_y = -2y$。</p>
           <p><strong>等势线</strong>：$x^2 - y^2 = c$——双曲线族（以 $y = \pm x$ 为渐近线）。</p>
           <p><strong>流线</strong>：$2xy = c$——双曲线族（以坐标轴为渐近线）。</p>
           <p>两族曲线在非零交点处正交，这反映了解析函数的一个普遍性质。</p>
@@ -403,7 +403,7 @@
           <p>取 $C = 0$：$\psi = 3x + 2y$。</p>
           <p><strong>复势</strong>：</p>
           $$f(z) = (2x - 3y) + i(3x + 2y) = 2(x+iy) + 3i(x+iy) = (2 + 3i)z$$
-          <p><strong>流速</strong>：$f'(z) = 2 + 3i$，故 $\overline{f'(z)} = 2 - 3i$，即 $v_x = 2$，$v_y = 3$。这是一个均匀流场。</p>
+          <p><strong>流速</strong>：$f'(z) = 2 + 3i$，由 $f'(z) = v_x - iv_y$ 得 $v_x = 2$，$v_y = -3$。这是一个均匀流场。</p>
         </div>
       </div>
     </div>
