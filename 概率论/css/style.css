@@ -494,6 +494,17 @@ tr:nth-child(even) {
   background: var(--primary);
 }
 
+/* ===== MathJax 公式溢出处理 ===== */
+mjx-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+}
+
+mjx-container[display="true"] {
+  padding: 0.5rem 0;
+}
+
 /* ===== 响应式 ===== */
 @media (max-width: 768px) {
   .navbar {

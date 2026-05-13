@@ -1359,6 +1359,17 @@ footer .footer-links {
   border: 0;
 }
 
+/* ===== MathJax 公式溢出处理 ===== */
+mjx-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+}
+
+mjx-container[display="true"] {
+  padding: 0.5rem 0;
+}
+
 /* ============================================================
    RESPONSIVE – Tablet (max-width: 1024px)
    ============================================================ */

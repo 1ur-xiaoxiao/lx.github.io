@@ -127,6 +127,9 @@ tr:nth-child(even) { background: var(--border-light); }
 .back-to-top.visible { opacity: 1; visibility: visible; }
 .back-to-top:hover { background: var(--primary); }
 
+mjx-container { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+mjx-container[display="true"] { padding: 0.5rem 0; }
+
 @media (max-width: 768px) {
   .navbar { padding: 0 1rem; }
   .nav-toggle { display: block; }

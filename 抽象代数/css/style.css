@@ -91,6 +91,8 @@ tr:nth-child(even) { background: var(--border-light); }
 .back-to-top { position: fixed; bottom: 2rem; right: 2rem; width: 44px; height: 44px; background: var(--accent); color: #fff; border: none; border-radius: 50%; font-size: 1.25rem; cursor: pointer; box-shadow: var(--shadow-md); opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; z-index: 999; }
 .back-to-top.visible { opacity: 1; visibility: visible; }
 .back-to-top:hover { background: var(--primary); }
+mjx-container { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+mjx-container[display="true"] { padding: 0.5rem 0; }
 @media (max-width: 768px) {
   .navbar { padding: 0 1rem; } .nav-toggle { display: block; }
   .navbar .nav-links { display: none; position: absolute; top: var(--nav-height); left: 0; right: 0; background: var(--primary); flex-direction: column; padding: 0.5rem 1rem 1rem; box-shadow: var(--shadow-md); }
