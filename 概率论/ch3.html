@@ -35,6 +35,7 @@
     <li><a href="ch2.html">第二章</a></li>
     <li><a href="ch3.html">第三章</a></li>
     <li><a href="ch4.html">第四章</a></li>
+    <li><a href="mock.html">模拟题</a></li>
     <li><a href="appendix.html">附录</a></li>
   </ul>
 </nav>
@@ -449,6 +450,59 @@
         <p>同理 $f_Y(y) = 2y$（$0<y<1$）</p>
         <p>(c) $f(x,y) = 4xy = 2x \cdot 2y = f_X(x) \cdot f_Y(y)$，所以 $X, Y$ <strong>独立</strong>。</p>
         <p>(d) $P(X+Y<1) = \iint_{x+y<1} 4xy\, \dd x\, \dd y = \int_0^1 \int_0^{1-x} 4xy\, \dd y\, \dd x = \int_0^1 4x \cdot \frac{(1-x)^2}{2}\, \dd x = \int_0^1 2x(1-x)^2\, \dd x = 2\int_0^1 (x-2x^2+x^3)\, \dd x = 2(\frac{1}{2}-\frac{2}{3}+\frac{1}{4}) = 2 \cdot \frac{1}{12} = \frac{1}{6}$</p>
+      </div>
+    </div>
+
+    <h3>帮助理解的核心例题</h3>
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 理解题 · 边缘分布相同，联合分布可以不同</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：构造两个不同的联合分布，使得它们的边缘分布完全相同。</p>
+        <p><strong>解</strong>：</p>
+        <p><strong>分布 1</strong>（$X,Y$ 独立）：</p>
+        <div class="table-wrapper"><table>
+          <tr><th>$X\backslash Y$</th><th>$0$</th><th>$1$</th><th>$\PP(X=i)$</th></tr>
+          <tr><td>$0$</td><td>$0.25$</td><td>$0.25$</td><td>$0.5$</td></tr>
+          <tr><td>$1$</td><td>$0.25$</td><td>$0.25$</td><td>$0.5$</td></tr>
+          <tr><th>$\PP(Y=j)$</th><th>$0.5$</th><th>$0.5$</th><th></th></tr>
+        </table></div>
+        <p><strong>分布 2</strong>（$X,Y$ 不独立）：</p>
+        <div class="table-wrapper"><table>
+          <tr><th>$X\backslash Y$</th><th>$0$</th><th>$1$</th><th>$\PP(X=i)$</th></tr>
+          <tr><td>$0$</td><td>$0.4$</td><td>$0.1$</td><td>$0.5$</td></tr>
+          <tr><td>$1$</td><td>$0.1$</td><td>$0.4$</td><td>$0.5$</td></tr>
+          <tr><th>$\PP(Y=j)$</th><th>$0.5$</th><th>$0.5$</th><th></th></tr>
+        </table></div>
+        <p><strong>两个分布的边缘分布完全相同</strong>（都是 $X\sim B(1,0.5)$，$Y\sim B(1,0.5)$），但联合分布不同！</p>
+        <p><strong>核心教训</strong>：边缘分布不能唯一确定联合分布。要确定联合分布，还需要变量之间的关系（独立性或条件分布）。这就是为什么需要学习联合分布——仅靠边缘分布不够。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 理解题 · 卷积公式的直觉——"分配"思想</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：$X\sim U(0,1)$，$Y\sim U(0,1)$，$X$ 与 $Y$ 独立，求 $Z=X+Y$ 的密度函数。</p>
+        <p><strong>解</strong>：$Z=X+Y$ 的值在 $[0,2]$ 之间。卷积公式：</p>
+        $$f_Z(z)=\int_{-\infty}^{+\infty}f_X(x)f_Y(z-x)\,\dd x$$
+        <p>$f_X(x)=1$（$0<x<1$），$f_Y(z-x)=1$（$0<z-x<1$ 即 $z-1<x<z$）。</p>
+        <p>两个条件同时满足：$\max(0,z-1)<x<\min(1,z)$。</p>
+        <p>当 $0<z\leq 1$：$0<x<z$，$f_Z(z)=\int_0^z 1\,\dd x=z$。</p>
+        <p>当 $1<z<2$：$z-1<x<1$，$f_Z(z)=\int_{z-1}^1 1\,\dd x=2-z$。</p>
+        <p>即 $f_Z(z)=\begin{cases}z,&0<z\leq 1\\2-z,&1<z<2\\0,&\text{其他}\end{cases}$。这是三角分布！</p>
+        <p><strong>直觉</strong>：$Z=X+Y$ 的密度在 $z=1$ 处最高，因为"两个 $[0,1]$ 上的均匀变量加起来最可能等于 1"——这就像掷两个骰子，点数之和最可能是 7（中间值）。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 理解题 · 条件分布的"切片"直觉</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：$(X,Y)$ 服从区域 $D=\{(x,y):0<x<1, 0<y<x\}$ 上的均匀分布。求 $f_{Y|X}(y|x)$ 和 $f_{X|Y}(x|y)$。</p>
+        <p><strong>解</strong>：区域 $D$ 是一个三角形。联合密度 $f(x,y)=\dfrac{1}{\text{Area}(D)}=\dfrac{1}{1/2}=2$（在 $D$ 内）。</p>
+        <p>边缘密度：$f_X(x)=\int_0^x 2\,\dd y=2x$（$0<x<1$）；$f_Y(y)=\int_y^1 2\,\dd x=2(1-y)$（$0<y<1$）。</p>
+        <p>条件密度：</p>
+        <p>$f_{Y|X}(y|x)=\dfrac{f(x,y)}{f_X(x)}=\dfrac{2}{2x}=\dfrac{1}{x}$（$0<y<x$）。即 $Y|X=x\sim U(0,x)$。</p>
+        <p>$f_{X|Y}(x|y)=\dfrac{f(x,y)}{f_Y(y)}=\dfrac{2}{2(1-y)}=\dfrac{1}{1-y}$（$y<x<1$）。即 $X|Y=y\sim U(y,1)$。</p>
+        <p><strong>几何直觉</strong>：固定 $X=x$，就是在 $x$ 处做一个竖直切片，$Y$ 在 $[0,x]$ 上均匀分布。固定 $Y=y$，就是在 $y$ 处做一个水平切片，$X$ 在 $[y,1]$ 上均匀分布。条件分布就是"切片上的分布"。</p>
       </div>
     </div>
 

@@ -35,6 +35,7 @@
     <li><a href="ch2.html">第二章</a></li>
     <li><a href="ch3.html">第三章</a></li>
     <li><a href="ch4.html">第四章</a></li>
+    <li><a href="mock.html">模拟题</a></li>
     <li><a href="appendix.html">附录</a></li>
   </ul>
 </nav>
@@ -554,6 +555,51 @@
       </div>
     </div>
 
+    <h3>帮助理解的核心例题</h3>
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 理解题 · 切比雪夫不等式——"保守但可靠"的估计</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：某电池寿命 $X$（小时），$\EE(X)=500$，$\Var(X)=100$。用切比雪夫不等式估计电池寿命在 $400$ 到 $600$ 小时之间的概率下界。如果 $X\sim N(500,100)$，实际概率是多少？</p>
+        <p><strong>解</strong>：$\PP(400\leq X\leq 600)=\PP(|X-500|\leq 100)$。</p>
+        <p><strong>切比雪夫估计</strong>：$\PP(|X-500|\geq 100)\leq\dfrac{100}{100^2}=0.01$，所以 $\PP(|X-500|<100)\geq 0.99$。</p>
+        <p><strong>正态分布实际值</strong>：$\PP(|X-500|<100)=\PP(|Z|<10)\approx 1$（几乎确定）。</p>
+        <p><strong>对比</strong>：切比雪夫给出 $\geq 99\%$，正态实际 $\approx 100\%$。切比雪夫是"保底估计"——不管什么分布都成立，但通常比实际值保守得多。</p>
+        <p><strong>考试应用</strong>：题目说"用切比雪夫不等式估计"时，直接套公式 $\PP(|X-\mu|\geq\varepsilon)\leq\dfrac{\sigma^2}{\varepsilon^2}$。不需要知道具体分布！</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 理解题 · 连续性修正——为什么 $\pm 0.5$？</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：$X\sim B(100, 0.3)$，求 $\PP(X\leq 35)$。用正态近似并做连续性修正。</p>
+        <p><strong>精确解</strong>：$\PP(X\leq 35)=\sum_{k=0}^{35}\binom{100}{k}(0.3)^k(0.7)^{100-k}$。计算量巨大！</p>
+        <p><strong>正态近似</strong>：$\mu=np=30$，$\sigma^2=np(1-p)=21$，$\sigma\approx 4.583$。</p>
+        <p><strong>不做修正</strong>：$\PP(X\leq 35)\approx\Phi\!\left(\dfrac{35-30}{4.583}\right)=\Phi(1.09)\approx 0.8621$。</p>
+        <p><strong>做连续性修正</strong>：$\PP(X\leq 35)\approx\Phi\!\left(\dfrac{35.5-30}{4.583}\right)=\Phi(1.20)\approx 0.8849$。</p>
+        <p><strong>为什么加 0.5？</strong>离散变量 $X=35$ 在数轴上是一个点，但连续近似时它对应的"面积"是 $[34.5, 35.5]$ 这个小区间。$\PP(X\leq 35)$ 包含 $X=35$，所以要延伸到 $35.5$。</p>
+        <p><strong>口诀</strong>：$\leq$ 变 $+0.5$，$\geq$ 变 $-0.5$，$<$ 不变，$>$ 不变。本质是把离散的"点"扩展为连续的"区间"。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 理解题 · 大数定律 vs 中心极限定理——何时用哪个？</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：一枚硬币抛 $10000$ 次，正面朝上的频率记为 $\hat{p}$。</p>
+        <p>（1）用大数定律说明 $\hat{p}\approx 0.5$；</p>
+        <p>（2）用中心极限定理求 $\PP(0.49<\hat{p}<0.51)$。</p>
+        <p><strong>解</strong>：设 $X_i$ 为第 $i$ 次的结果（正面 $=1$，反面 $=0$），$\hat{p}=\bar{X}_n$。</p>
+        <p><strong>（1）大数定律</strong>：$\EE(X_i)=0.5$，由辛钦大数定律，$\bar{X}_n\xrightarrow{P}0.5$。即当 $n\to\infty$ 时，频率稳定于概率。但大数定律只说"趋近"，不给出具体的概率值。</p>
+        <p><strong>（2）中心极限定理</strong>：$\Var(X_i)=0.25$，$\hat{p}\;\dot{\sim}\;N\!\left(0.5,\dfrac{0.25}{10000}\right)=N(0.5, 0.000025)$。</p>
+        $$\PP(0.49<\hat{p}<0.51)=\PP\left(\frac{0.49-0.5}{0.005}<Z<\frac{0.51-0.5}{0.005}\right)=\PP(-2<Z<2)\approx 0.9544$$
+        <p><strong>核心区别</strong>：</p>
+        <ul>
+          <li>大数定律：定性——"频率趋近概率"，不能算具体概率</li>
+          <li>中心极限定理：定量——"频率的分布近似正态"，可以算具体概率</li>
+          <li>CLT 比 LLN 更强，但 LLN 适用范围更广（不需要方差存在）</li>
+        </ul>
+      </div>
+    </div>
+
     <div class="box box-note">
       <div class="box-title">本章定理之间的关系</div>
       <p>本章的定理形成了一个完整的逻辑链条：</p>
@@ -580,7 +626,7 @@
   <!-- 底部导航 -->
   <div class="chapter-nav">
     <a href="ch3.html" class="prev">第三章</a>
-    <a href="appendix.html" class="next">附录</a>
+    <a href="mock.html" class="next">模拟题</a>
   </div>
 
 </div>

@@ -35,6 +35,7 @@
     <li><a href="ch2.html">第二章</a></li>
     <li><a href="ch3.html">第三章</a></li>
     <li><a href="ch4.html">第四章</a></li>
+    <li><a href="mock.html">模拟题</a></li>
     <li><a href="appendix.html">附录</a></li>
   </ul>
 </nav>
@@ -693,6 +694,46 @@
   <!-- ==================== 2.8 综合例题 ==================== -->
   <div class="section" id="s8">
     <h2>2.8 综合例题与常见题型</h2>
+
+    <h3>帮助理解的核心例题</h3>
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 理解题 · 分布函数的本质——从"面积"到"累积"</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：设 $X$ 的密度函数为 $f(x)=\begin{cases}x,&0\leq x\leq 1\\2-x,&1<x\leq 2\\0,&\text{其他}\end{cases}$，求分布函数 $F(x)$ 并画出图像。</p>
+        <p><strong>解</strong>：$F(x)=\PP(X\leq x)=\int_{-\infty}^x f(t)\,\dd t$，本质是密度函数从 $-\infty$ 到 $x$ 的"累积面积"。</p>
+        <p>当 $x<0$：$F(x)=0$。</p>
+        <p>当 $0\leq x\leq 1$：$F(x)=\int_0^x t\,\dd t=\dfrac{x^2}{2}$。</p>
+        <p>当 $1<x\leq 2$：$F(x)=\int_0^1 t\,\dd t+\int_1^x(2-t)\,\dd t=\dfrac{1}{2}+\left[2t-\dfrac{t^2}{2}\right]_1^x=\dfrac{1}{2}+2x-\dfrac{x^2}{2}-2+\dfrac{1}{2}=2x-\dfrac{x^2}{2}-1$。</p>
+        <p>当 $x>2$：$F(x)=1$。</p>
+        <p><strong>关键观察</strong>：密度函数是"速率"，分布函数是"总量"。密度为 0 的地方，分布函数保持不变（平坦）；密度大的地方，分布函数增长快。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 理解题 · 泊松近似二项——何时可用？</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：某工厂生产的螺丝次品率为 $0.02$。现随机取 $200$ 个螺丝，求恰好有 $3$ 个次品的概率。</p>
+        <p><strong>精确解</strong>：$X\sim B(200, 0.02)$，$\PP(X=3)=\binom{200}{3}(0.02)^3(0.98)^{197}$。计算量大！</p>
+        <p><strong>泊松近似</strong>：当 $n$ 大、$p$ 小、$\lambda=np$ 适中时，$B(n,p)\approx P(\lambda)$。</p>
+        <p>这里 $n=200$ 较大，$p=0.02$ 较小，$\lambda=np=4$。</p>
+        $$\PP(X=3)\approx\frac{4^3 e^{-4}}{3!}=\frac{64e^{-4}}{6}\approx 0.1954$$
+        <p><strong>经验法则</strong>：$n\geq 20$ 且 $p\leq 0.05$，或 $n\geq 100$ 且 $np\leq 10$ 时，泊松近似效果好。</p>
+        <p><strong>与中心极限定理的关系</strong>：当 $n$ 很大时，也可以用正态近似 $B(n,p)\approx N(np, np(1-p))$。泊松近似适合"稀有事件"，正态近似适合"大样本"。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 理解题 · 指数分布的无记忆性——实际含义</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：某电子元件的寿命 $X\sim E(0.01)$（单位：小时）。已知该元件已经使用了 $100$ 小时，求它还能再使用至少 $50$ 小时的概率。</p>
+        <p><strong>解</strong>：求 $\PP(X>150|X>100)$。</p>
+        <p><strong>方法一（直接计算）</strong>：</p>
+        $$\PP(X>150|X>100)=\frac{\PP(X>150)}{\PP(X>100)}=\frac{e^{-0.01\times 150}}{e^{-0.01\times 100}}=e^{-0.5}\approx 0.6065$$
+        <p><strong>方法二（无记忆性）</strong>：$\PP(X>150|X>100)=\PP(X>50)=e^{-0.5}\approx 0.6065$。</p>
+        <p><strong>直觉</strong>：指数分布的无记忆性意味着"元件不会老化"——已经使用了多久不影响剩余寿命的分布。这适用于"随机失效"的场景（如突发故障），不适用于"磨损老化"的场景。</p>
+        <p><strong>考试易错点</strong>：无记忆性是指数分布独有的！正态分布、均匀分布都没有这个性质。</p>
+      </div>
+    </div>
 
     <div class="box box-note">
       <div class="box-title">本章解题技巧总结</div>

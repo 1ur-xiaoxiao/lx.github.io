@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>概率论 · 模拟试卷</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          EE: '\\mathbb{E}',
+          PP: '\\mathbb{P}',
+          Var: '\\mathrm{Var}',
+          Cov: '\\mathrm{Cov}',
+          dd: '\\mathrm{d}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">概率论复习</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="mock.html" class="active">模拟题</a></li>
+    <li><a href="appendix.html">附录</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>概率论模拟试卷</h1>
+    <p>三套完整模拟卷，题型与分值对标期末考试。判断题聚焦易混淆知识点，计算题覆盖核心题型。点击折叠区域查看参考答案。</p>
+  </div>
+
+  <div class="toc">
+    <h3>试卷目录</h3>
+    <ol>
+      <li><a href="#exam1">模拟试卷一</a></li>
+      <li><a href="#exam2">模拟试卷二</a></li>
+      <li><a href="#exam3">模拟试卷三</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 模拟试卷一 ==================== -->
+  <div class="section" id="exam1">
+    <div class="exam-paper">
+      <h2>模拟试卷一</h2>
+      <p>概率论与数理统计 · 满分 100 分 · 考试时间 120 分钟</p>
+    </div>
+
+    <!-- 一、判断题 -->
+    <div class="question-group">
+      <h3>一、判断题（每题 2 分，共 10 分。正确画 ✓，错误画 ✗）</h3>
+
+      <div class="question-item">
+        <p><span class="q-number">1.</span> 若 $A$ 与 $B$ 互斥，则 $A$ 与 $B$ 一定不独立。（　）</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">2.</span> 连续型随机变量的密度函数 $f(x)$ 一定连续。（　）</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">3.</span> 若 $X$ 与 $Y$ 相互独立，则 $\Var(XY) = \Var(X)\Var(Y)$。（　）</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">4.</span> 大数定律说明：当 $n$ 很大时，$\bar{X}_n$ 几乎等于 $\mu$。（　）</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">5.</span> 若 $\PP(A|B) = \PP(A)$，则 $\PP(B|A) = \PP(B)$。（　）</p>
+      </div>
+    </div>
+
+    <!-- 二、填空题 -->
+    <div class="question-group">
+      <h3>二、填空题（每题 3 分，共 30 分）</h3>
+
+      <div class="question-item">
+        <p><span class="q-number">1.</span> 设 $A, B$ 为两个事件，$\PP(A)=0.4$，$\PP(B)=0.5$，$\PP(A\cup B)=0.7$，则 $\PP(A-B)=$ <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">2.</span> 设随机变量 $X\sim B(5, 0.3)$，则 $\PP(X\geq 1)=$ <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">3.</span> 设 $X\sim N(2, 9)$，则 $\dfrac{X-2}{3}\sim$ <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">4.</span> 设随机变量 $X$ 的密度函数为 $f(x)=\begin{cases}2x,&0<x<1\\0,&\text{其他}\end{cases}$，则 $\PP\!\left(X\leq\dfrac{1}{2}\right)=$ <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">5.</span> 设 $(X,Y)$ 的联合分布律为：$\PP(X=0,Y=0)=0.1$，$\PP(X=0,Y=1)=0.2$，$\PP(X=1,Y=0)=0.3$，$\PP(X=1,Y=1)=0.4$，则 $\PP(X=1)=$ <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">6.</span> 设 $X\sim P(\lambda)$（泊松分布），已知 $\PP(X=1)=\PP(X=2)$，则 $\lambda=$ <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">7.</span> 设 $X\sim U(0,2)$，$Y=3X+1$，则 $\EE(Y)=$ <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">8.</span> 设 $X_1, X_2, \ldots, X_{100}$ 独立同分布，$\EE(X_i)=\mu$，$\Var(X_i)=1$，由切比雪夫不等式，$\PP(|\bar{X}_{100}-\mu|\geq 0.5)\leq$ <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">9.</span> 设 $(X,Y)$ 服从二维正态分布，则 $X$ 与 $Y$ 独立的充要条件是 <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">10.</span> 设 $X$ 的分布函数为 $F(x)=\begin{cases}1-e^{-2x},&x>0\\0,&x\leq 0\end{cases}$，则 $\PP(X>1)=$ <span class="blank"></span>。</p>
+      </div>
+    </div>
+
+    <!-- 三~九、解答题 -->
+    <div class="question-group">
+      <h3>三、（8 分）</h3>
+      <div class="question-item">
+        <p>袋中有 3 个红球、2 个白球。从中不放回地依次取 2 个球。求：</p>
+        <p>（1）第二次取到红球的概率；</p>
+        <p>（2）已知第二次取到红球，求第一次也取到红球的概率。</p>
+      </div>
+    </div>
+
+    <div class="question-group">
+      <h3>四、（6 分）</h3>
+      <div class="question-item">
+        <p>设随机变量 $X$ 的密度函数为 $f(x)=\begin{cases}kx^2,&0<x<1\\0,&\text{其他}\end{cases}$</p>
+        <p>（1）求常数 $k$；（2）求 $\EE(X)$ 和 $\Var(X)$。</p>
+      </div>
+    </div>
+
+    <div class="question-group">
+      <h3>五、（6 分）</h3>
+      <div class="question-item">
+        <p>设 $(X,Y)$ 的联合密度函数为 $f(x,y)=\begin{cases}cxy,&0<x<1,\;0<y<1\\0,&\text{其他}\end{cases}$</p>
+        <p>（1）求常数 $c$；（2）判断 $X$ 与 $Y$ 是否独立。</p>
+      </div>
+    </div>
+
+    <div class="question-group">
+      <h3>六、（10 分）</h3>
+      <div class="question-item">
+        <p>某工厂有甲、乙、丙三个车间生产同一种产品，产量比为 $3:2:1$，次品率分别为 $2\%,\;3\%,\;5\%$。</p>
+        <p>（1）求该厂产品的总次品率；</p>
+        <p>（2）现从产品中任取一件发现是次品，求该次品由乙车间生产的概率。</p>
+      </div>
+    </div>
+
+    <div class="question-group">
+      <h3>七、（6 分）</h3>
+      <div class="question-item">
+        <p>设 $X\sim N(0,1)$，$Y=X^2$，求 $Y$ 的密度函数。</p>
+      </div>
+    </div>
+
+    <div class="question-group">
+      <h3>八、（6 分）</h3>
+      <div class="question-item">
+        <p>设随机变量 $X$ 的分布律为 $\PP(X=k)=\dfrac{C}{2^k}$，$k=1,2,3,\ldots$</p>
+        <p>（1）求常数 $C$；（2）求 $\EE(X)$。</p>
+      </div>
+    </div>
+
+    <div class="question-group">
+      <h3>九、（18 分）</h3>
+      <div class="question-item">
+        <p>设 $(X,Y)$ 的联合密度函数为 $f(x,y)=\begin{cases}6(1-y),&0<x<y<1\\0,&\text{其他}\end{cases}$</p>
+        <p>（1）求边缘密度 $f_X(x)$ 和 $f_Y(y)$；</p>
+        <p>（2）求条件密度 $f_{X|Y}(x|y)$；</p>
+        <p>（3）求 $\PP(X+Y>1)$；</p>
+        <p>（4）求 $\Cov(X,Y)$ 并判断 $X$ 与 $Y$ 是否独立。</p>
+      </div>
+    </div>
+
+    <!-- 试卷一答案 -->
+    <div class="answer-section">
+      <h2>模拟试卷一 · 参考答案</h2>
+
+      <h3>一、判断题</h3>
+      <div class="answer-item"><span class="a-number">1.</span> ✗。反例：$A=\emptyset$ 与任意事件 $B$ 互斥，但 $A$ 与 $B$ 独立（因为 $\PP(AB)=0=\PP(A)\PP(B)$）。只有当 $\PP(A)>0$ 且 $\PP(B)>0$ 时，互斥才蕴含不独立。</div>
+      <div class="answer-item"><span class="a-number">2.</span> ✗。密度函数可以在有限个点不连续。例如均匀分布 $U(0,1)$ 的密度在 $x=0$ 和 $x=1$ 处不连续。</div>
+      <div class="answer-item"><span class="a-number">3.</span> ✗。应为 $\Var(XY)=\EE(X^2Y^2)-[\EE(XY)]^2$。独立时 $\EE(X^2Y^2)=\EE(X^2)\EE(Y^2)$，但 $\Var(XY)\neq\Var(X)\Var(Y)$ 一般不成立。</div>
+      <div class="answer-item"><span class="a-number">4.</span> ✗。大数定律说明 $\bar{X}_n$ 依概率收敛于 $\mu$，不是"几乎等于"。对于任意 $\varepsilon>0$，$\PP(|\bar{X}_n-\mu|>\varepsilon)\to 0$，但不能说 $\bar{X}_n=\mu$。</div>
+      <div class="answer-item"><span class="a-number">5.</span> ✓。由条件概率定义，$\PP(A|B)=\PP(AB)/\PP(B)=\PP(A)$ 得 $\PP(AB)=\PP(A)\PP(B)$，从而 $\PP(B|A)=\PP(AB)/\PP(A)=\PP(B)$。这正是独立性的等价定义。</div>
+
+      <h3>二、填空题</h3>
+      <div class="answer-item"><span class="a-number">1.</span> $0.2$。$\PP(AB)=\PP(A)+\PP(B)-\PP(A\cup B)=0.4+0.5-0.7=0.2$，$\PP(A-B)=\PP(A)-\PP(AB)=0.2$。</div>
+      <div class="answer-item"><span class="a-number">2.</span> $1-(0.7)^5\approx 0.8319$。$\PP(X\geq 1)=1-\PP(X=0)=1-\binom{5}{0}(0.3)^0(0.7)^5=1-0.7^5$。</div>
+      <div class="answer-item"><span class="a-number">3.</span> $N(0,1)$。标准化：$\dfrac{X-\mu}{\sigma}=\dfrac{X-2}{3}\sim N(0,1)$。</div>
+      <div class="answer-item"><span class="a-number">4.</span> $\dfrac{1}{4}$。$\PP(X\leq 1/2)=\int_0^{1/2}2x\,\dd x=x^2\Big|_0^{1/2}=\dfrac{1}{4}$。</div>
+      <div class="answer-item"><span class="a-number">5.</span> $0.7$。$\PP(X=1)=\PP(X=1,Y=0)+\PP(X=1,Y=1)=0.3+0.4=0.7$。</div>
+      <div class="answer-item"><span class="a-number">6.</span> $2$。$\dfrac{\lambda^1 e^{-\lambda}}{1!}=\dfrac{\lambda^2 e^{-\lambda}}{2!}$，化简得 $\lambda=2$。</div>
+      <div class="answer-item"><span class="a-number">7.</span> $4$。$\EE(X)=1$，$\EE(Y)=3\EE(X)+1=4$。</div>
+      <div class="answer-item"><span class="a-number">8.</span> $0.04$。$\Var(\bar{X}_{100})=\dfrac{1}{100}$，由切比雪夫不等式 $\PP(|\bar{X}-\mu|\geq 0.5)\leq\dfrac{1/100}{0.25}=0.04$。</div>
+      <div class="answer-item"><span class="a-number">9.</span> $\rho=0$（即相关系数为零）。二维正态分布中，不相关与独立等价。</div>
+      <div class="answer-item"><span class="a-number">10.</span> $e^{-2}$。$\PP(X>1)=1-F(1)=1-(1-e^{-2})=e^{-2}$。这是参数 $\lambda=2$ 的指数分布。</div>
+
+      <h3>三、解答题</h3>
+      <div class="answer-item">
+        <p><span class="a-number">（1）</span>设 $A_i$＝"第 $i$ 次取到红球"。由全概率公式：</p>
+        $$\PP(A_2)=\PP(A_1)\PP(A_2|A_1)+\PP(\bar{A}_1)\PP(A_2|\bar{A}_1)=\frac{3}{5}\cdot\frac{2}{4}+\frac{2}{5}\cdot\frac{3}{4}=\frac{3}{5}$$
+        <p>直觉：不放回抽样中，每次取到红球的概率都是 $\dfrac{3}{5}$（抽签公平性）。</p>
+        <p><span class="a-number">（2）</span>由贝叶斯公式：</p>
+        $$\PP(A_1|A_2)=\frac{\PP(A_1)\PP(A_2|A_1)}{\PP(A_2)}=\frac{\frac{3}{5}\cdot\frac{2}{4}}{\frac{3}{5}}=\frac{1}{2}$$
+      </div>
+
+      <h3>四、解答题</h3>
+      <div class="answer-item">
+        <p><span class="a-number">（1）</span>由 $\int_{-\infty}^{+\infty}f(x)\,\dd x=1$，得 $\int_0^1 kx^2\,\dd x=\dfrac{k}{3}=1$，故 $k=3$。</p>
+        <p><span class="a-number">（2）</span>$\EE(X)=\int_0^1 3x^3\,\dd x=\dfrac{3}{4}$，$\EE(X^2)=\int_0^1 3x^4\,\dd x=\dfrac{3}{5}$，$\Var(X)=\dfrac{3}{5}-\left(\dfrac{3}{4}\right)^2=\dfrac{3}{80}$。</p>
+      </div>
+
+      <h3>五、解答题</h3>
+      <div class="answer-item">
+        <p><span class="a-number">（1）</span>$\int_0^1\int_0^1 cxy\,\dd x\,\dd y=c\cdot\dfrac{1}{2}\cdot\dfrac{1}{2}=\dfrac{c}{4}=1$，故 $c=4$。</p>
+        <p><span class="a-number">（2）</span>$f_X(x)=\int_0^1 4xy\,\dd y=2x$（$0<x<1$），$f_Y(y)=\int_0^1 4xy\,\dd x=2y$（$0<y<1$）。由于 $f(x,y)=4xy=2x\cdot 2y=f_X(x)f_Y(y)$，故 $X$ 与 $Y$ 独立。</p>
+      </div>
+
+      <h3>六、解答题</h3>
+      <div class="answer-item">
+        <p>设 $B_1, B_2, B_3$ 分别表示产品由甲、乙、丙车间生产，$A$ 表示取到次品。</p>
+        <p>$\PP(B_1)=\dfrac{1}{2}$，$\PP(B_2)=\dfrac{1}{3}$，$\PP(B_3)=\dfrac{1}{6}$。</p>
+        <p><span class="a-number">（1）</span>全概率公式：</p>
+        $$\PP(A)=\frac{1}{2}\times 0.02+\frac{1}{3}\times 0.03+\frac{1}{6}\times 0.05=\frac{0.01+0.01+0.00833\ldots}{1}\approx 0.0283$$
+        <p>精确值：$\PP(A)=\dfrac{1}{60}+\dfrac{1}{100}+\dfrac{1}{120}=\dfrac{10+6+5}{600}=\dfrac{21}{600}=\dfrac{7}{200}=0.035$。</p>
+        <p><span class="a-number">（2）</span>贝叶斯公式：</p>
+        $$\PP(B_2|A)=\frac{\PP(B_2)\PP(A|B_2)}{\PP(A)}=\frac{\frac{1}{3}\times 0.03}{\frac{7}{200}}=\frac{0.01}{0.035}=\frac{2}{7}$$
+      </div>
+
+      <h3>七、解答题</h3>
+      <div class="answer-item">
+        <p>$Y=X^2$，当 $y>0$ 时，$F_Y(y)=\PP(X^2\leq y)=\PP(-\sqrt{y}\leq X\leq\sqrt{y})=2\Phi(\sqrt{y})-1$。</p>
+        <p>求导：$f_Y(y)=2\phi(\sqrt{y})\cdot\dfrac{1}{2\sqrt{y}}=\dfrac{1}{\sqrt{2\pi y}}e^{-y/2}$，$y>0$。</p>
+        <p>这是自由度为 1 的 $\chi^2$ 分布，即 $Y\sim\chi^2(1)$。</p>
+      </div>
+
+      <h3>八、解答题</h3>
+      <div class="answer-item">
+        <p><span class="a-number">（1）</span>$\sum_{k=1}^{\infty}\dfrac{C}{2^k}=C\cdot\dfrac{1/2}{1-1/2}=C=1$，故 $C=1$。</p>
+        <p><span class="a-number">（2）</span>$\EE(X)=\sum_{k=1}^{\infty}\dfrac{k}{2^k}$。利用 $\sum_{k=1}^{\infty}kx^k=\dfrac{x}{(1-x)^2}$，取 $x=\dfrac{1}{2}$，得 $\EE(X)=\dfrac{1/2}{(1/2)^2}=2$。</p>
+      </div>
+
+      <h3>九、解答题</h3>
+      <div class="answer-item">
+        <p><span class="a-number">（1）</span>当 $0<x<1$ 时：</p>
+        $$f_X(x)=\int_x^1 6(1-y)\,\dd y=6\left[y-\frac{y^2}{2}\right]_x^1=6\left(\frac{1}{2}-x+\frac{x^2}{2}\right)=3(1-x)^2$$
+        <p>当 $0<y<1$ 时：</p>
+        $$f_Y(y)=\int_0^y 6(1-y)\,\dd x=6y(1-y)$$
+        <p><span class="a-number">（2）</span>当 $0<y<1$ 时：$f_{X|Y}(x|y)=\dfrac{f(x,y)}{f_Y(y)}=\dfrac{6(1-y)}{6y(1-y)}=\dfrac{1}{y}$，$0<x<y$。即 $X|Y=y\sim U(0,y)$。</p>
+        <p><span class="a-number">（3）</span>积分区域为 $0<x<y<1$ 且 $x+y>1$，即 $1-y<x<y$（需要 $y>1/2$）：</p>
+        $$\PP(X+Y>1)=\int_{1/2}^1\int_{1-y}^y 6(1-y)\,\dd x\,\dd y=\int_{1/2}^1 6(1-y)(2y-1)\,\dd y$$
+        $$=\int_{1/2}^1(12y-6-12y^2+6y)\,\dd y=\int_{1/2}^1(-12y^2+18y-6)\,\dd y=\frac{1}{2}$$
+        <p><span class="a-number">（4）</span>$\EE(X)=\int_0^1 3x(1-x)^2\,\dd x=\dfrac{1}{4}$，$\EE(Y)=\int_0^1 6y^2(1-y)\,\dd y=\dfrac{1}{2}$。</p>
+        $$\EE(XY)=\int_0^1\int_0^y 6xy(1-y)\,\dd x\,\dd y=\int_0^1 3y^3(1-y)\,\dd y=3\left(\frac{1}{4}-\frac{1}{5}\right)=\frac{3}{20}$$
+        $$\Cov(X,Y)=\EE(XY)-\EE(X)\EE(Y)=\frac{3}{20}-\frac{1}{4}\times\frac{1}{2}=\frac{3}{20}-\frac{1}{4}=\frac{3-5}{20}=-\frac{1}{10}$$
+        <p>$\Cov(X,Y)\neq 0$，故 $X$ 与 $Y$ 不独立。（也可从 $f(x,y)\neq f_X(x)f_Y(y)$ 直接判断。）</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 模拟试卷二 ==================== -->
+  <div class="section" id="exam2">
+    <div class="exam-paper">
+      <h2>模拟试卷二</h2>
+      <p>概率论与数理统计 · 满分 100 分 · 考试时间 120 分钟</p>
+    </div>
+
+    <!-- 一、判断题 -->
+    <div class="question-group">
+      <h3>一、判断题（每题 2 分，共 10 分。正确画 ✓，错误画 ✗）</h3>
+
+      <div class="question-item">
+        <p><span class="q-number">1.</span> 若 $\PP(A)=0$，则 $A=\emptyset$。（　）</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">2.</span> 若 $X$ 的分布函数 $F(x)$ 连续，则 $X$ 一定是连续型随机变量。（　）</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">3.</span> 设 $X\sim N(\mu,\sigma^2)$，则 $\EE(|X-\mu|)=\sigma\sqrt{2/\pi}$。（　）</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">4.</span> 若 $\Cov(X,Y)=0$，则 $X$ 与 $Y$ 相互独立。（　）</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">5.</span> 中心极限定理要求总体必须服从正态分布。（　）</p>
+      </div>
+    </div>
+
+    <!-- 二、填空题 -->
+    <div class="question-group">
+      <h3>二、填空题（每题 3 分，共 30 分）</h3>
+
+      <div class="question-item">
+        <p><span class="q-number">1.</span> 设 $\PP(A)=0.5$，$\PP(B)=0.4$，$A$ 与 $B$ 独立，则 $\PP(A\cup B)=$ <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">2.</span> 设 $X\sim P(2)$，则 $\PP(X\geq 2)=$ <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">3.</span> 设 $X$ 的密度函数为 $f(x)=Ae^{-|x|}$（$-\infty<x<+\infty$），则 $A=$ <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">4.</span> 设 $X\sim E(1)$（指数分布），则 $\PP(X>2|X>1)=$ <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">5.</span> 设 $X\sim N(1,4)$，$Y=2X-3$，则 $Y\sim$ <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">6.</span> 设 $(X,Y)$ 的联合分布律如下表，则 $\PP(X=Y)=$ <span class="blank"></span>。</p>
+        <div class="table-wrapper">
+          <table>
+            <tr><th>$X\backslash Y$</th><th>$0$</th><th>$1$</th><th>$2$</th></tr>
+            <tr><td>$0$</td><td>$0.1$</td><td>$0.2$</td><td>$0.1$</td></tr>
+            <tr><td>$1$</td><td>$0.15$</td><td>$0.3$</td><td>$0.15$</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">7.</span> 设 $X_1, X_2$ 独立，$X_1\sim N(0,1)$，$X_2\sim N(0,1)$，则 $X_1^2+X_2^2\sim$ <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">8.</span> 设 $X$ 的分布律为 $\PP(X=(-1)^k\cdot k)=\dfrac{1}{2^k}$，$k=1,2,3,\ldots$，则 $\EE(X)=$ <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">9.</span> 设 $X\sim B(n,p)$，$\EE(X)=2.4$，$\Var(X)=1.44$，则 $n=$ <span class="blank"></span>，$p=$ <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">10.</span> 设 $X_1,\ldots,X_n$ 是来自 $N(\mu,\sigma^2)$ 的样本，$\bar{X}$ 为样本均值，则 $\bar{X}\sim$ <span class="blank"></span>。</p>
+      </div>
+    </div>
+
+    <!-- 三~九、解答题 -->
+    <div class="question-group">
+      <h3>三、（8 分）</h3>
+      <div class="question-item">
+        <p>甲、乙两人独立射击同一目标，命中率分别为 $0.6$ 和 $0.7$。目标被击中一次即毁。求：</p>
+        <p>（1）目标被毁的概率；</p>
+        <p>（2）已知目标被毁，求甲击中的概率。</p>
+      </div>
+    </div>
+
+    <div class="question-group">
+      <h3>四、（6 分）</h3>
+      <div class="question-item">
+        <p>设随机变量 $X$ 的分布函数为 $F(x)=\begin{cases}0,&x<0\\Ax^2,&0\leq x<1\\1,&x\geq 1\end{cases}$</p>
+        <p>（1）求常数 $A$；（2）求密度函数 $f(x)$；（3）求 $\PP(0.5<X<0.8)$。</p>
+      </div>
+    </div>
+
+    <div class="question-group">
+      <h3>五、（6 分）</h3>
+      <div class="question-item">
+        <p>设 $X\sim U(0,1)$，在 $X=x$ 条件下 $Y$ 的条件密度为 $f_{Y|X}(y|x)=\begin{cases}\dfrac{1}{x},&0<y<x\\0,&\text{其他}\end{cases}$</p>
+        <p>（1）求 $(X,Y)$ 的联合密度；（2）求 $f_Y(y)$。</p>
+      </div>
+    </div>
+
+    <div class="question-group">
+      <h3>六、（10 分）</h3>
+      <div class="question-item">
+        <p>设随机变量 $X$ 的密度函数为 $f(x)=\begin{cases}2x,&0<x<1\\0,&\text{其他}\end{cases}$</p>
+        <p>（1）求 $Y=X^3$ 的密度函数；</p>
+        <p>（2）求 $Z=\dfrac{1}{X}$ 的密度函数。</p>
+      </div>
+    </div>
+
+    <div class="question-group">
+      <h3>七、（6 分）</h3>
+      <div class="question-item">
+        <p>一批零件的长度 $X\sim N(50, 0.25)$（单位：cm）。现随机抽取 25 个零件，求样本均值 $\bar{X}$ 落在 $(49.8, 50.2)$ 内的概率。（已知 $\Phi(2)=0.9772$）</p>
+      </div>
+    </div>
+
+    <div class="question-group">
+      <h3>八、（6 分）</h3>
+      <div class="question-item">
+        <p>设 $(X,Y)$ 的联合密度为 $f(x,y)=\begin{cases}e^{-y},&0<x<y\\0,&\text{其他}\end{cases}$</p>
+        <p>（1）求 $f_X(x)$；（2）求 $\EE(XY)$。</p>
+      </div>
+    </div>
+
+    <div class="question-group">
+      <h3>九、（18 分）</h3>
+      <div class="question-item">
+        <p>设随机变量 $X$ 的密度函数为 $f(x;\theta)=\begin{cases}\theta x^{\theta-1},&0<x<1\\0,&\text{其他}\end{cases}$，其中 $\theta>0$ 为参数。</p>
+        <p>（1）求 $\EE(X)$ 和 $\Var(X)$；</p>
+        <p>（2）求 $Y=-2\theta\ln X$ 的分布；</p>
+        <p>（3）设 $X_1,\ldots,X_n$ 为来自此分布的样本，求 $\theta$ 的矩估计量。</p>
+      </div>
+    </div>
+
+    <!-- 试卷二答案 -->
+    <div class="answer-section">
+      <h2>模拟试卷二 · 参考答案</h2>
+
+      <h3>一、判断题</h3>
+      <div class="answer-item"><span class="a-number">1.</span> ✗。零概率事件不一定是不可能事件。例如连续型随机变量取任一特定值的概率为 $0$，但该事件并非空集。</div>
+      <div class="answer-item"><span class="a-number">2.</span> ✗。存在"奇异型"随机变量（如康托尔分布），其分布函数连续但不是连续型（没有密度函数）。不过这类反例在课程中不常见。</div>
+      <div class="answer-item"><span class="a-number">3.</span> ✓。令 $Z=\dfrac{X-\mu}{\sigma}\sim N(0,1)$，则 $\EE(|X-\mu|)=\sigma\EE(|Z|)=\sigma\cdot 2\int_0^{\infty}z\cdot\dfrac{1}{\sqrt{2\pi}}e^{-z^2/2}\,\dd z=\sigma\sqrt{\dfrac{2}{\pi}}$。</div>
+      <div class="answer-item"><span class="a-number">4.</span> ✗。不相关（$\Cov=0$）不一定独立。反例：设 $X\sim U(-1,1)$，$Y=X^2$，则 $\Cov(X,Y)=\EE(X^3)-\EE(X)\EE(X^2)=0$，但 $Y$ 完全由 $X$ 决定。二维正态分布是例外：不相关等价于独立。</div>
+      <div class="answer-item"><span class="a-number">5.</span> ✗。中心极限定理恰恰说明了即使总体不服从正态分布，只要样本量足够大，样本均值（或和）的分布也近似正态。这正是 CLT 的核心价值。</div>
+
+      <h3>二、填空题</h3>
+      <div class="answer-item"><span class="a-number">1.</span> $0.7$。独立时 $\PP(AB)=0.5\times 0.4=0.2$，$\PP(A\cup B)=0.5+0.4-0.2=0.7$。</div>
+      <div class="answer-item"><span class="a-number">2.</span> $1-3e^{-2}\approx 0.5940$。$\PP(X\geq 2)=1-\PP(X=0)-\PP(X=1)=1-e^{-2}-2e^{-2}=1-3e^{-2}$。</div>
+      <div class="answer-item"><span class="a-number">3.</span> $\dfrac{1}{2}$。$\int_{-\infty}^{+\infty}Ae^{-|x|}\,\dd x=2A\int_0^{\infty}e^{-x}\,\dd x=2A=1$，故 $A=\dfrac{1}{2}$。这是双指数（拉普拉斯）分布。</div>
+      <div class="answer-item"><span class="a-number">4.</span> $e^{-1}$。指数分布的无记忆性：$\PP(X>2|X>1)=\PP(X>1)=e^{-1}$。</div>
+      <div class="answer-item"><span class="a-number">5.</span> $N(-1, 16)$。$\EE(Y)=2\times 1-3=-1$，$\Var(Y)=4\times 4=16$。</div>
+      <div class="answer-item"><span class="a-number">6.</span> $0.4$。$\PP(X=Y)=\PP(0,0)+\PP(1,1)=0.1+0.3=0.4$。</div>
+      <div class="answer-item"><span class="a-number">7.</span> $\chi^2(2)$（自由度为 2 的卡方分布）。两个独立标准正态变量的平方和服从 $\chi^2(2)$。</div>
+      <div class="answer-item"><span class="a-number">8.</span> $-\dfrac{2}{3}$。$\EE(X)=\sum_{k=1}^{\infty}(-1)^k\cdot k\cdot\dfrac{1}{2^k}$。利用 $\sum_{k=1}^{\infty}kx^k=\dfrac{x}{(1-x)^2}$，取 $x=-\dfrac{1}{2}$，得 $\EE(X)=\dfrac{-1/2}{(3/2)^2}=-\dfrac{2}{9}\cdot 3=-\dfrac{2}{3}$。更直接地：$\EE(X)=-\dfrac{1}{2}+\dfrac{2}{4}-\dfrac{3}{8}+\cdots=\sum_{k=1}^{\infty}\dfrac{(-1)^k k}{2^k}=\dfrac{-1/2}{(1+1/2)^2}=-\dfrac{2}{9}$。用 $S=\sum_{k=1}^{\infty}k(-1/2)^k=\dfrac{-1/2}{(3/2)^2}=\dfrac{-1/2}{9/4}=-\dfrac{2}{9}$。</div>
+      <div class="answer-item"><span class="a-number">9.</span> $n=6$，$p=0.4$。$\EE(X)=np=2.4$，$\Var(X)=np(1-p)=1.44$，两式相除 $1-p=0.6$，$p=0.4$，$n=6$。</div>
+      <div class="answer-item"><span class="a-number">10.</span> $N\!\left(\mu,\dfrac{\sigma^2}{n}\right)$。样本均值的期望为 $\mu$，方差为 $\dfrac{\sigma^2}{n}$。</div>
+
+      <h3>三、解答题</h3>
+      <div class="answer-item">
+        <p>设 $A$＝"甲命中"，$B$＝"乙命中"，$A$ 与 $B$ 独立。</p>
+        <p><span class="a-number">（1）</span>$\PP(A\cup B)=1-\PP(\bar{A}\bar{B})=1-(1-0.6)(1-0.7)=1-0.12=0.88$。</p>
+        <p><span class="a-number">（2）</span>$\PP(A|A\cup B)=\dfrac{\PP(A)}{\PP(A\cup B)}=\dfrac{0.6}{0.88}=\dfrac{15}{22}\approx 0.682$。</p>
+        <p>注意：$\PP(A|A\cup B)\neq\PP(A)$，因为 $A\cup B$ 发生提供了额外信息。</p>
+      </div>
+
+      <h3>四、解答题</h3>
+      <div class="answer-item">
+        <p><span class="a-number">（1）</span>$F(x)$ 在 $x=1$ 处连续：$A\cdot 1^2=1$，故 $A=1$。</p>
+        <p><span class="a-number">（2）</span>$f(x)=F'(x)=\begin{cases}2x,&0<x<1\\0,&\text{其他}\end{cases}$</p>
+        <p><span class="a-number">（3）</span>$\PP(0.5<X<0.8)=F(0.8)-F(0.5)=0.64-0.25=0.39$。</p>
+      </div>
+
+      <h3>五、解答题</h3>
+      <div class="answer-item">
+        <p><span class="a-number">（1）</span>$f(x,y)=f_X(x)\cdot f_{Y|X}(y|x)=1\cdot\dfrac{1}{x}=\dfrac{1}{x}$，$0<y<x<1$。</p>
+        <p><span class="a-number">（2）</span>当 $0<y<1$ 时：$f_Y(y)=\int_y^1\dfrac{1}{x}\,\dd x=\ln 1-\ln y=-\ln y$。</p>
+      </div>
+
+      <h3>六、解答题</h3>
+      <div class="answer-item">
+        <p><span class="a-number">（1）</span>$Y=X^3$，$y=x^3$ 单调增，$x=y^{1/3}$，$\dfrac{\dd x}{\dd y}=\dfrac{1}{3}y^{-2/3}$。</p>
+        <p>$f_Y(y)=f_X(y^{1/3})\cdot\dfrac{1}{3}y^{-2/3}=2y^{1/3}\cdot\dfrac{1}{3}y^{-2/3}=\dfrac{2}{3}y^{-1/3}$，$0<y<1$。</p>
+        <p><span class="a-number">（2）</span>$Z=1/X$，$z=1/x$ 单调减，$x=1/z$，$\left|\dfrac{\dd x}{\dd z}\right|=\dfrac{1}{z^2}$。</p>
+        <p>$f_Z(z)=f_X(1/z)\cdot\dfrac{1}{z^2}=\dfrac{2}{z}\cdot\dfrac{1}{z^2}=\dfrac{2}{z^3}$，$z>1$。</p>
+      </div>
+
+      <h3>七、解答题</h3>
+      <div class="answer-item">
+        <p>$\bar{X}\sim N\!\left(50,\dfrac{0.25}{25}\right)=N(50, 0.01)$，即 $\bar{X}\sim N(50, 0.1^2)$。</p>
+        $$\PP(49.8<\bar{X}<50.2)=\PP\left(\frac{49.8-50}{0.1}<\frac{\bar{X}-50}{0.1}<\frac{50.2-50}{0.1}\right)=\PP(-2<Z<2)$$
+        $$=2\Phi(2)-1=2\times 0.9772-1=0.9544$$
+      </div>
+
+      <h3>八、解答题</h3>
+      <div class="answer-item">
+        <p><span class="a-number">（1）</span>当 $x>0$ 时：$f_X(x)=\int_x^{\infty}e^{-y}\,\dd y=e^{-x}$。即 $X\sim E(1)$。</p>
+        <p><span class="a-number">（2）</span>$\EE(XY)=\int_0^{\infty}\int_x^{\infty}xye^{-y}\,\dd y\,\dd x$。先算内层：</p>
+        $$\int_x^{\infty}ye^{-y}\,\dd y=(x+1)e^{-x}$$
+        $$\EE(XY)=\int_0^{\infty}x(x+1)e^{-x}\,\dd x=\int_0^{\infty}(x^2+x)e^{-x}\,\dd x=2+1=3$$
+        <p>（利用 $\int_0^{\infty}x^n e^{-x}\,\dd x=n!$）</p>
+      </div>
+
+      <h3>九、解答题</h3>
+      <div class="answer-item">
+        <p><span class="a-number">（1）</span>$\EE(X)=\int_0^1\theta x^{\theta}\,\dd x=\dfrac{\theta}{\theta+1}$。</p>
+        <p>$\EE(X^2)=\int_0^1\theta x^{\theta+1}\,\dd x=\dfrac{\theta}{\theta+2}$。</p>
+        <p>$\Var(X)=\dfrac{\theta}{\theta+2}-\left(\dfrac{\theta}{\theta+1}\right)^2=\dfrac{\theta}{(\theta+1)^2(\theta+2)}$。</p>
+        <p><span class="a-number">（2）</span>$Y=-2\theta\ln X$。当 $0<x<1$ 时 $\ln x<0$，故 $y>0$。</p>
+        <p>$x=e^{-y/(2\theta)}$，$\left|\dfrac{\dd x}{\dd y}\right|=\dfrac{1}{2\theta}e^{-y/(2\theta)}$。</p>
+        <p>$f_Y(y)=\theta\left(e^{-y/(2\theta)}\right)^{\theta-1}\cdot\dfrac{1}{2\theta}e^{-y/(2\theta)}=\dfrac{1}{2}e^{-y/2}$，$y>0$。</p>
+        <p>即 $Y\sim E(1/2)$，也就是 $Y\sim\chi^2(2)$。</p>
+        <p><span class="a-number">（3）</span>矩估计：令 $\bar{X}=\dfrac{\hat{\theta}}{\hat{\theta}+1}$，解得 $\hat{\theta}=\dfrac{\bar{X}}{1-\bar{X}}$。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 模拟试卷三 ==================== -->
+  <div class="section" id="exam3">
+    <div class="exam-paper">
+      <h2>模拟试卷三</h2>
+      <p>概率论与数理统计 · 满分 100 分 · 考试时间 120 分钟</p>
+    </div>
+
+    <!-- 一、判断题 -->
+    <div class="question-group">
+      <h3>一、判断题（每题 2 分，共 10 分。正确画 ✓，错误画 ✗）</h3>
+
+      <div class="question-item">
+        <p><span class="q-number">1.</span> 对任意事件 $A, B, C$，有 $\PP(ABC)\leq\PP(A)$。（　）</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">2.</span> 若 $X\sim N(0,1)$，则 $X^2\sim\chi^2(1)$。（　）</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">3.</span> 二维正态分布的边缘分布一定是正态分布。（　）</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">4.</span> 指数分布具有无记忆性，即 $\PP(X>s+t|X>s)=\PP(X>t)$。（　）</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">5.</span> 切比雪夫不等式只适用于离散型随机变量。（　）</p>
+      </div>
+    </div>
+
+    <!-- 二、填空题 -->
+    <div class="question-group">
+      <h3>二、填空题（每题 3 分，共 30 分）</h3>
+
+      <div class="question-item">
+        <p><span class="q-number">1.</span> 设 $A\subset B$，$\PP(A)=0.3$，$\PP(B)=0.6$，则 $\PP(A|B)=$ <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">2.</span> 掷两颗骰子，点数之和为 $7$ 的概率为 <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">3.</span> 设 $X\sim B(4, 0.5)$，则 $\PP(X=2)=$ <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">4.</span> 设 $X$ 的密度函数为 $f(x)=\dfrac{1}{\sqrt{2\pi}}e^{-(x-3)^2/2}$，则 $\EE(X)=$ <span class="blank"></span>，$\Var(X)=$ <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">5.</span> 设 $X\sim N(0,1)$，$\Phi(1.96)=0.975$，则 $\PP(|X|<1.96)=$ <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">6.</span> 设 $X\sim U(0,\pi)$，$Y=\sin X$，则 $\EE(Y)=$ <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">7.</span> 设 $(X,Y)\sim N(0,1;1,4;0.5)$（即 $\mu_X=0,\mu_Y=1,\sigma_X=1,\sigma_Y=2,\rho=0.5$），则 $\Cov(X,Y)=$ <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">8.</span> 设 $X\sim E(\lambda)$，则 $\Var(X)=$ <span class="blank"></span>。</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">9.</span> 设 $X_1,\ldots,X_{16}$ 独立同分布，$\EE(X_i)=0$，$\Var(X_i)=1$，由中心极限定理，$\PP\!\left(\sum_{i=1}^{16}X_i\leq 2\right)\approx$ <span class="blank"></span>。（用 $\Phi$ 表示）</p>
+      </div>
+      <div class="question-item">
+        <p><span class="q-number">10.</span> 设 $X$ 与 $Y$ 独立，$X\sim P(3)$，$Y\sim P(4)$，则 $X+Y\sim$ <span class="blank"></span>。</p>
+      </div>
+    </div>
+
+    <!-- 三~九、解答题 -->
+    <div class="question-group">
+      <h3>三、（8 分）</h3>
+      <div class="question-item">
+        <p>一道选择题有 4 个选项，只有一个正确。某学生有两种策略：</p>
+        <p>（A）随机猜一个；（B）先排除一个错误选项，再从剩余 3 个中随机选。</p>
+        <p>分别求两种策略答对的概率。如果该学生能排除两个错误选项呢？</p>
+      </div>
+    </div>
+
+    <div class="question-group">
+      <h3>四、（6 分）</h3>
+      <div class="question-item">
+        <p>设 $X$ 服从参数为 $\lambda$ 的泊松分布，已知 $\PP(X\geq 1)=1-e^{-2}$。</p>
+        <p>（1）求 $\lambda$；（2）求 $\EE(X^2)$。</p>
+      </div>
+    </div>
+
+    <div class="question-group">
+      <h3>五、（6 分）</h3>
+      <div class="question-item">
+        <p>设 $X\sim N(0,1)$，求 $Y=|X|$ 的密度函数。</p>
+      </div>
+    </div>
+
+    <div class="question-group">
+      <h3>六、（10 分）</h3>
+      <div class="question-item">
+        <p>设 $(X,Y)$ 的联合密度为 $f(x,y)=\begin{cases}8xy,&0<x<y<1\\0,&\text{其他}\end{cases}$</p>
+        <p>（1）求 $f_X(x)$ 和 $f_Y(y)$；</p>
+        <p>（2）求 $\EE(X)$，$\EE(Y)$，$\Cov(X,Y)$。</p>
+      </div>
+    </div>
+
+    <div class="question-group">
+      <h3>七、（6 分）</h3>
+      <div class="question-item">
+        <p>设 $X$ 的分布律为 $\PP(X=k)=\dfrac{1}{2^k}$，$k=1,2,3,\ldots$。令 $Y=\begin{cases}1,&X\text{ 为奇数}\\0,&X\text{ 为偶数}\end{cases}$，求 $Y$ 的分布律和 $\EE(Y)$。</p>
+      </div>
+    </div>
+
+    <div class="question-group">
+      <h3>八、（6 分）</h3>
+      <div class="question-item">
+        <p>某工厂生产的灯泡寿命 $X$（单位：小时）服从 $N(1000, \sigma^2)$。已知 $\PP(X>1100)=0.2$。</p>
+        <p>（1）求 $\sigma$（用 $\Phi^{-1}$ 表示）；</p>
+        <p>（2）若随机取 $25$ 个灯泡，求样本均值超过 $1050$ 的概率。</p>
+      </div>
+    </div>
+
+    <div class="question-group">
+      <h3>九、（18 分）</h3>
+      <div class="question-item">
+        <p>设 $(X,Y)$ 的联合密度为 $f(x,y)=\begin{cases}2,&0<x<1,\;0<y<x\\0,&\text{其他}\end{cases}$</p>
+        <p>（1）求边缘密度 $f_X(x)$ 和 $f_Y(y)$；</p>
+        <p>（2）求条件密度 $f_{Y|X}(y|x)$ 和 $f_{X|Y}(x|y)$；</p>
+        <p>（3）求 $\EE(X)$，$\EE(Y)$，$\EE(XY)$，$\Cov(X,Y)$；</p>
+        <p>（4）求 $Z=X-Y$ 的密度函数。</p>
+      </div>
+    </div>
+
+    <!-- 试卷三答案 -->
+    <div class="answer-section">
+      <h2>模拟试卷三 · 参考答案</h2>
+
+      <h3>一、判断题</h3>
+      <div class="answer-item"><span class="a-number">1.</span> ✓。$ABC\subset A$，由概率的单调性 $\PP(ABC)\leq\PP(A)$。</div>
+      <div class="answer-item"><span class="a-number">2.</span> ✓。这是 $\chi^2$ 分布的定义：独立标准正态变量的平方和服从卡方分布。</div>
+      <div class="answer-item"><span class="a-number">3.</span> ✓。二维正态分布 $(X,Y)\sim N(\mu_1,\mu_2,\sigma_1^2,\sigma_2^2,\rho)$ 的边缘分布为 $X\sim N(\mu_1,\sigma_1^2)$，$Y\sim N(\mu_2,\sigma_2^2)$，与 $\rho$ 无关。</div>
+      <div class="answer-item"><span class="a-number">4.</span> ✓。这正是指数分布无记忆性的定义，其直观含义是"已经等待的时间不影响未来的等待时间"。几何分布是离散版的无记忆性。</div>
+      <div class="answer-item"><span class="a-number">5.</span> ✗。切比雪夫不等式适用于任何存在有限方差的随机变量，无论离散还是连续。条件仅为 $\Var(X)$ 存在。</div>
+
+      <h3>二、填空题</h3>
+      <div class="answer-item"><span class="a-number">1.</span> $\dfrac{1}{2}$。$A\subset B$ 时 $\PP(AB)=\PP(A)=0.3$，$\PP(A|B)=\dfrac{0.3}{0.6}=\dfrac{1}{2}$。</div>
+      <div class="answer-item"><span class="a-number">2.</span> $\dfrac{1}{6}$。点数之和为 $7$ 的组合：$(1,6),(2,5),(3,4),(4,3),(5,2),(6,1)$，共 $6$ 种，总样本点 $36$ 个，$\PP=\dfrac{6}{36}=\dfrac{1}{6}$。</div>
+      <div class="answer-item"><span class="a-number">3.</span> $\dfrac{3}{8}$。$\PP(X=2)=\binom{4}{2}(0.5)^4=6\times\dfrac{1}{16}=\dfrac{3}{8}$。</div>
+      <div class="answer-item"><span class="a-number">4.</span> $\EE(X)=3$，$\Var(X)=1$。这是 $N(3,1)$ 的密度函数。</div>
+      <div class="answer-item"><span class="a-number">5.</span> $0.95$。$\PP(|X|<1.96)=\PP(-1.96<X<1.96)=2\Phi(1.96)-1=2\times 0.975-1=0.95$。</div>
+      <div class="answer-item"><span class="a-number">6.</span> $\dfrac{2}{\pi}$。$\EE(Y)=\int_0^{\pi}\sin x\cdot\dfrac{1}{\pi}\,\dd x=\dfrac{1}{\pi}[-\cos x]_0^{\pi}=\dfrac{1}{\pi}(1+1)=\dfrac{2}{\pi}$。</div>
+      <div class="answer-item"><span class="a-number">7.</span> $1$。$\Cov(X,Y)=\rho\sigma_X\sigma_Y=0.5\times 1\times 2=1$。</div>
+      <div class="answer-item"><span class="a-number">8.</span> $\dfrac{1}{\lambda^2}$。指数分布的方差为 $\dfrac{1}{\lambda^2}$，期望为 $\dfrac{1}{\lambda}$。</div>
+      <div class="answer-item"><span class="a-number">9.</span> $\Phi(0.5)$。$\EE\!\left(\sum X_i\right)=0$，$\Var\!\left(\sum X_i\right)=16$，$\PP\!\left(\sum X_i\leq 2\right)=\PP\!\left(\dfrac{\sum X_i-0}{4}\leq\dfrac{2}{4}\right)\approx\Phi(0.5)$。</div>
+      <div class="answer-item"><span class="a-number">10.</span> $P(7)$。独立泊松分布之和仍为泊松分布，参数相加：$3+4=7$。</div>
+
+      <h3>三、解答题</h3>
+      <div class="answer-item">
+        <p><span class="a-number">策略 A：</span>$\PP(\text{答对})=\dfrac{1}{4}$。</p>
+        <p><span class="a-number">策略 B：</span>排除一个错误选项后从 $3$ 个中选，$\PP(\text{答对})=\dfrac{1}{3}$。</p>
+        <p><span class="a-number">排除两个：</span>从 $2$ 个中选，$\PP(\text{答对})=\dfrac{1}{2}$。</p>
+        <p><strong>直觉</strong>：排除错误选项不改变"随机选"的本质，但缩小了样本空间，从而提高了条件概率。这就是贝叶斯思维的实际应用——获得信息后更新概率。</p>
+      </div>
+
+      <h3>四、解答题</h3>
+      <div class="answer-item">
+        <p><span class="a-number">（1）</span>$\PP(X\geq 1)=1-\PP(X=0)=1-e^{-\lambda}=1-e^{-2}$，故 $\lambda=2$。</p>
+        <p><span class="a-number">（2）</span>$\EE(X^2)=\Var(X)+[\EE(X)]^2=\lambda+\lambda^2=2+4=6$。</p>
+      </div>
+
+      <h3>五、解答题</h3>
+      <div class="answer-item">
+        <p>当 $y>0$ 时：$F_Y(y)=\PP(|X|\leq y)=\PP(-y\leq X\leq y)=2\Phi(y)-1$。</p>
+        <p>$f_Y(y)=2\phi(y)=\sqrt{\dfrac{2}{\pi}}e^{-y^2/2}$，$y>0$。这是半正态分布。</p>
+      </div>
+
+      <h3>六、解答题</h3>
+      <div class="answer-item">
+        <p><span class="a-number">（1）</span>当 $0<x<1$ 时：$f_X(x)=\int_x^1 8xy\,\dd y=8x\cdot\dfrac{1-x^2}{2}=4x(1-x^2)$。</p>
+        <p>当 $0<y<1$ 时：$f_Y(y)=\int_0^y 8xy\,\dd x=8y\cdot\dfrac{y^2}{2}=4y^3$。</p>
+        <p><span class="a-number">（2）</span>$\EE(X)=\int_0^1 4x^2(1-x^2)\,\dd x=4\left(\dfrac{1}{3}-\dfrac{1}{5}\right)=\dfrac{8}{15}$。</p>
+        <p>$\EE(Y)=\int_0^1 4y^4\,\dd y=\dfrac{4}{5}$。</p>
+        <p>$\EE(XY)=\int_0^1\int_x^1 8x^2y^2\,\dd y\,\dd x=\int_0^1 8x^2\cdot\dfrac{1-x^3}{3}\,\dd x=\dfrac{8}{3}\left(\dfrac{1}{3}-\dfrac{1}{6}\right)=\dfrac{4}{9}$。</p>
+        <p>$\Cov(X,Y)=\dfrac{4}{9}-\dfrac{8}{15}\times\dfrac{4}{5}=\dfrac{4}{9}-\dfrac{32}{75}=\dfrac{100-96}{225}=\dfrac{4}{225}$。</p>
+      </div>
+
+      <h3>七、解答题</h3>
+      <div class="answer-item">
+        <p>$\PP(Y=1)=\PP(X=1)+\PP(X=3)+\PP(X=5)+\cdots=\dfrac{1}{2}+\dfrac{1}{8}+\dfrac{1}{32}+\cdots=\dfrac{1/2}{1-1/4}=\dfrac{2}{3}$。</p>
+        <p>$\PP(Y=0)=1-\dfrac{2}{3}=\dfrac{1}{3}$。</p>
+        <p>$\EE(Y)=1\times\dfrac{2}{3}+0\times\dfrac{1}{3}=\dfrac{2}{3}$。</p>
+      </div>
+
+      <h3>八、解答题</h3>
+      <div class="answer-item">
+        <p><span class="a-number">（1）</span>$\PP(X>1100)=1-\Phi\!\left(\dfrac{1100-1000}{\sigma}\right)=1-\Phi\!\left(\dfrac{100}{\sigma}\right)=0.2$。</p>
+        <p>$\Phi\!\left(\dfrac{100}{\sigma}\right)=0.8$，$\dfrac{100}{\sigma}=\Phi^{-1}(0.8)\approx 0.8416$，$\sigma\approx\dfrac{100}{0.8416}\approx 118.8$。</p>
+        <p><span class="a-number">（2）</span>$\bar{X}\sim N\!\left(1000,\dfrac{\sigma^2}{25}\right)$，$\PP(\bar{X}>1050)=1-\Phi\!\left(\dfrac{1050-1000}{\sigma/5}\right)=1-\Phi\!\left(\dfrac{250}{\sigma}\right)$。</p>
+        <p>由 $\dfrac{100}{\sigma}=\Phi^{-1}(0.8)$ 得 $\dfrac{250}{\sigma}=2.5\Phi^{-1}(0.8)\approx 2.104$，$\PP\approx 1-\Phi(2.104)\approx 0.0178$。</p>
+      </div>
+
+      <h3>九、解答题</h3>
+      <div class="answer-item">
+        <p><span class="a-number">（1）</span>当 $0<x<1$ 时：$f_X(x)=\int_0^x 2\,\dd y=2x$。</p>
+        <p>当 $0<y<1$ 时：$f_Y(y)=\int_y^1 2\,\dd x=2(1-y)$。</p>
+        <p><span class="a-number">（2）</span>$f_{Y|X}(y|x)=\dfrac{2}{2x}=\dfrac{1}{x}$，$0<y<x$。即 $Y|X=x\sim U(0,x)$。</p>
+        <p>$f_{X|Y}(x|y)=\dfrac{2}{2(1-y)}=\dfrac{1}{1-y}$，$y<x<1$。即 $X|Y=y\sim U(y,1)$。</p>
+        <p><span class="a-number">（3）</span>$\EE(X)=\int_0^1 2x^2\,\dd x=\dfrac{2}{3}$，$\EE(Y)=\int_0^1 2y(1-y)\,\dd y=2\left(\dfrac{1}{2}-\dfrac{1}{3}\right)=\dfrac{1}{3}$。</p>
+        <p>$\EE(XY)=\int_0^1\int_0^x 2xy\,\dd y\,\dd x=\int_0^1 x^3\,\dd x=\dfrac{1}{4}$。</p>
+        <p>$\Cov(X,Y)=\dfrac{1}{4}-\dfrac{2}{3}\times\dfrac{1}{3}=\dfrac{1}{4}-\dfrac{2}{9}=\dfrac{1}{36}$。</p>
+        <p><span class="a-number">（4）</span>$Z=X-Y$，令 $z=x-y$。联合密度的支撑为 $0<y<x<1$，即 $0<z<1$，$0<y<1-z$。</p>
+        <p>$f_Z(z)=\int_0^{1-z}f(y+z,y)\,\dd y=\int_0^{1-z}2\,\dd y=2(1-z)$，$0<z<1$。</p>
+        <p>即 $Z$ 服从三角分布（也叫辛普森分布），密度为 $f_Z(z)=2(1-z)$，$0<z<1$。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="ch4.html" class="prev">第四章</a>
+    <a href="appendix.html" class="next">附录</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>概率论与数理统计复习指南 · 基于茆诗松教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

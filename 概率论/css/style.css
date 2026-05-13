@@ -494,6 +494,91 @@ tr:nth-child(even) {
   background: var(--primary);
 }
 
+/* ===== 模拟试卷样式 ===== */
+.exam-paper {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: #fff;
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+.exam-paper h2 {
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+  color: #fff;
+  border: none;
+  padding: 0;
+}
+.exam-paper p {
+  opacity: 0.9;
+  margin-bottom: 0.25rem;
+}
+
+.question-group {
+  margin-bottom: 2rem;
+}
+.question-group h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--accent);
+  margin-bottom: 1rem;
+}
+
+.question-item {
+  margin-bottom: 1.25rem;
+  padding-left: 0.5rem;
+}
+.question-item .q-number {
+  font-weight: 700;
+  color: var(--primary);
+  margin-right: 0.5rem;
+}
+.question-item p {
+  margin-bottom: 0.4rem;
+}
+.question-item .blank {
+  display: inline-block;
+  min-width: 80px;
+  border-bottom: 1.5px solid var(--text);
+  margin: 0 0.25rem;
+}
+
+.answer-section {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 3px solid var(--primary);
+}
+.answer-section h2 {
+  color: var(--primary);
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+.answer-item {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--bg);
+  border-radius: var(--radius);
+  border-left: 3px solid var(--accent);
+}
+.answer-item .a-number {
+  font-weight: 700;
+  color: var(--accent);
+  margin-right: 0.5rem;
+}
+
+/* 打印样式 */
+@media print {
+  .navbar, .back-to-top, .chapter-nav, .footer, .toc { display: none !important; }
+  .main-content { margin-top: 0; padding: 0; max-width: 100%; }
+  .section { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+  .exam-paper { background: #333; color: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .collapsible-body { display: block !important; }
+  .collapsible-header .toggle-icon { display: none; }
+  body { font-size: 11pt; line-height: 1.5; }
+}
+
 /* ===== MathJax 公式溢出处理 ===== */
 mjx-container {
   overflow-x: auto;
