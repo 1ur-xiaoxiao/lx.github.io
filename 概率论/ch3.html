@@ -87,8 +87,8 @@
         <li>对 $x$ 或 $y$ 分别<strong>单调不减</strong></li>
         <li>$F(-\infty, y) = F(x, -\infty) = 0$，$F(+\infty, +\infty) = 1$</li>
         <li>对 $x$ 和 $y$ 分别<strong>右连续</strong></li>
-        <li>对任意 $x_1 < x_2$，$y_1 < y_2$，有
-          $$P(x_1 < X \leq x_2,\, y_1 < Y \leq y_2) = F(x_2,y_2) - F(x_1,y_2) - F(x_2,y_1) + F(x_1,y_1) \geq 0$$
+        <li>对任意 $x_1 \lt x_2$，$y_1 \lt y_2$，有
+          $$P(x_1 \lt X \leq x_2,\, y_1 \lt Y \leq y_2) = F(x_2,y_2) - F(x_1,y_2) - F(x_2,y_1) + F(x_1,y_1) \geq 0$$
         </li>
       </ol>
       <p><strong>性质4的几何意义</strong>：矩形区域的概率 = 右上角 - 左上角 - 右下角 + 左下角（容斥原理）。</p>
@@ -207,7 +207,7 @@
       <div class="box-title">二维正态分布</div>
       <p>联合密度为：</p>
       $$f(x,y) = \frac{1}{2\pi\sigma_1\sigma_2\sqrt{1-\rho^2}} \exp\!\left[-\frac{1}{2(1-\rho^2)}\left(\frac{(x-\mu_1)^2}{\sigma_1^2} - \frac{2\rho(x-\mu_1)(y-\mu_2)}{\sigma_1\sigma_2} + \frac{(y-\mu_2)^2}{\sigma_2^2}\right)\right]$$
-      <p>其中 $\mu_1, \mu_2 \in \mathbb{R}$，$\sigma_1, \sigma_2 > 0$，$|\rho| < 1$。</p>
+      <p>其中 $\mu_1, \mu_2 \in \mathbb{R}$，$\sigma_1, \sigma_2 > 0$，$|\rho| \lt 1$。</p>
       <p><strong>五个参数的含义</strong>：$\mu_1, \mu_2$ 是边缘期望，$\sigma_1^2, \sigma_2^2$ 是边缘方差，$\rho$ 是相关系数。</p>
     </div>
 
@@ -220,7 +220,7 @@
         <li>$\rho=0$ 等价于独立（一般分布不成立！）</li>
         <li>线性变换后仍为正态</li>
       </ul>
-      <p><strong>相关系数 $\rho$ 的意义</strong>：$\rho$ 衡量了 $X$ 和 $Y$ 之间的线性关系强度。$\rho > 0$ 表示正相关（一个增大，另一个也倾向于增大），$\rho < 0$ 表示负相关，$\rho = 0$ 表示不相关（对于正态分布，也意味着独立）。</p>
+      <p><strong>相关系数 $\rho$ 的意义</strong>：$\rho$ 衡量了 $X$ 和 $Y$ 之间的线性关系强度。$\rho > 0$ 表示正相关（一个增大，另一个也倾向于增大），$\rho \lt 0$ 表示负相关，$\rho = 0$ 表示不相关（对于正态分布，也意味着独立）。</p>
       <p><strong>应用</strong>：二维正态分布常用于描述两个相关指标的联合分布，如身高和体重、数学成绩和物理成绩等。</p>
     </div>
   </div>
@@ -257,12 +257,6 @@
       <div class="box-title">边缘概率密度</div>
       $$f_X(x) = \int_{-\infty}^{+\infty} f(x, y)\, \dd y, \quad f_Y(y) = \int_{-\infty}^{+\infty} f(x, y)\, \dd x$$
       <p><strong>操作方法</strong>：对联合密度"积掉"另一个变量。</p>
-    </div>
-
-    <div class="box box-note">
-      <div class="box-title">重要注意</div>
-      <p>联合分布可以<strong>唯一确定</strong>边缘分布，但<strong>边缘分布不能唯一确定联合分布</strong>——不同的联合分布可能有相同的边缘分布。</p>
-      <p><strong>类比</strong>：知道"班级男生平均身高"和"班级女生平均身高"，不能确定"全班同学的身高分布"。</p>
     </div>
 
     <div class="collapsible">
@@ -376,7 +370,7 @@
     <div class="box box-formula">
       <div class="box-title">卷积公式</div>
       <p><strong>离散型：</strong></p>
-      $$P(Z = z) = \sum_k P(X = k) \cdot P(Y = z - k)$$
+      $$P(Z = z) = \sum_k P(X = k,\, Y = z - k)$$
       <p><strong>连续型：</strong></p>
       $$f_Z(z) = \int_{-\infty}^{+\infty} f(x, z-x)\, \dd x = \int_{-\infty}^{+\infty} f(z-y, y)\, \dd y$$
       <p>当 $X, Y$ <strong>独立</strong>时：</p>
@@ -443,14 +437,14 @@
     <div class="collapsible">
       <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 完整流程：联合→边缘→条件→独立性</div>
       <div class="collapsible-body">
-        <p><strong>题目</strong>：$(X,Y)$ 的联合密度为 $f(x,y) = \begin{cases} cxy, & 0<x<1,\; 0<y<1 \\ 0, & \text{其他} \end{cases}$</p>
-        <p>(a) 求常数 $c$；(b) 求边缘密度；(c) 判断独立性；(d) 求 $P(X+Y<1)$。</p>
+        <p><strong>题目</strong>：$(X,Y)$ 的联合密度为 $f(x,y) = \begin{cases} cxy, & 0\lt x\lt1,\; 0\lt y\lt1 \\ 0, & \text{其他} \end{cases}$</p>
+        <p>(a) 求常数 $c$；(b) 求边缘密度；(c) 判断独立性；(d) 求 $P(X+Y\lt1)$。</p>
         <p><strong>解</strong>：</p>
         <p>(a) 由归一性：$\int_0^1\int_0^1 cxy\, \dd y\, \dd x = c\int_0^1 x\, \dd x \int_0^1 y\, \dd y = c \cdot \frac{1}{2} \cdot \frac{1}{2} = \frac{c}{4} = 1$，所以 $c=4$。</p>
-        <p>(b) $f_X(x) = \int_0^1 4xy\, \dd y = 4x \cdot \frac{1}{2} = 2x$（$0<x<1$）</p>
-        <p>同理 $f_Y(y) = 2y$（$0<y<1$）</p>
+        <p>(b) $f_X(x) = \int_0^1 4xy\, \dd y = 4x \cdot \frac{1}{2} = 2x$（$0\lt x\lt1$）</p>
+        <p>同理 $f_Y(y) = 2y$（$0\lt y\lt1$）</p>
         <p>(c) $f(x,y) = 4xy = 2x \cdot 2y = f_X(x) \cdot f_Y(y)$，所以 $X, Y$ <strong>独立</strong>。</p>
-        <p>(d) $P(X+Y<1) = \iint_{x+y<1} 4xy\, \dd x\, \dd y = \int_0^1 \int_0^{1-x} 4xy\, \dd y\, \dd x = \int_0^1 4x \cdot \frac{(1-x)^2}{2}\, \dd x = \int_0^1 2x(1-x)^2\, \dd x = 2\int_0^1 (x-2x^2+x^3)\, \dd x = 2(\frac{1}{2}-\frac{2}{3}+\frac{1}{4}) = 2 \cdot \frac{1}{12} = \frac{1}{6}$</p>
+        <p>(d) $P(X+Y\lt1) = \iint_{x+y\lt1} 4xy\, \dd x\, \dd y = \int_0^1 \int_0^{1-x} 4xy\, \dd y\, \dd x = \int_0^1 4x \cdot \frac{(1-x)^2}{2}\, \dd x = \int_0^1 2x(1-x)^2\, \dd x = 2\int_0^1 (x-2x^2+x^3)\, \dd x = 2(\frac{1}{2}-\frac{2}{3}+\frac{1}{4}) = 2 \cdot \frac{1}{12} = \frac{1}{6}$</p>
       </div>
     </div>
 
@@ -485,11 +479,11 @@
         <p><strong>题目</strong>：$X\sim U(0,1)$，$Y\sim U(0,1)$，$X$ 与 $Y$ 独立，求 $Z=X+Y$ 的密度函数。</p>
         <p><strong>解</strong>：$Z=X+Y$ 的值在 $[0,2]$ 之间。卷积公式：</p>
         $$f_Z(z)=\int_{-\infty}^{+\infty}f_X(x)f_Y(z-x)\,\dd x$$
-        <p>$f_X(x)=1$（$0<x<1$），$f_Y(z-x)=1$（$0<z-x<1$ 即 $z-1<x<z$）。</p>
-        <p>两个条件同时满足：$\max(0,z-1)<x<\min(1,z)$。</p>
-        <p>当 $0<z\leq 1$：$0<x<z$，$f_Z(z)=\int_0^z 1\,\dd x=z$。</p>
-        <p>当 $1<z<2$：$z-1<x<1$，$f_Z(z)=\int_{z-1}^1 1\,\dd x=2-z$。</p>
-        <p>即 $f_Z(z)=\begin{cases}z,&0<z\leq 1\\2-z,&1<z<2\\0,&\text{其他}\end{cases}$。这是三角分布！</p>
+        <p>$f_X(x)=1$（$0\lt x\lt1$），$f_Y(z-x)=1$（$0\lt z-x\lt1$ 即 $z-1\lt x\lt z$）。</p>
+        <p>两个条件同时满足：$\max(0,z-1)\lt x\lt\min(1,z)$。</p>
+        <p>当 $0\lt z\leq 1$：$0\lt x\lt z$，$f_Z(z)=\int_0^z 1\,\dd x=z$。</p>
+        <p>当 $1\lt z\lt2$：$z-1\lt x\lt1$，$f_Z(z)=\int_{z-1}^1 1\,\dd x=2-z$。</p>
+        <p>即 $f_Z(z)=\begin{cases}z,&0\lt z\leq 1\\2-z,&1\lt z\lt2\\0,&\text{其他}\end{cases}$。这是三角分布！</p>
         <p><strong>直觉</strong>：$Z=X+Y$ 的密度在 $z=1$ 处最高，因为"两个 $[0,1]$ 上的均匀变量加起来最可能等于 1"——这就像掷两个骰子，点数之和最可能是 7（中间值）。</p>
       </div>
     </div>
@@ -497,12 +491,12 @@
     <div class="collapsible">
       <div class="collapsible-header"><span class="toggle-icon">▶</span> 理解题 · 条件分布的"切片"直觉</div>
       <div class="collapsible-body">
-        <p><strong>题目</strong>：$(X,Y)$ 服从区域 $D=\{(x,y):0<x<1, 0<y<x\}$ 上的均匀分布。求 $f_{Y|X}(y|x)$ 和 $f_{X|Y}(x|y)$。</p>
+        <p><strong>题目</strong>：$(X,Y)$ 服从区域 $D=\{(x,y):0\lt x\lt1, 0\lt y\lt x\}$ 上的均匀分布。求 $f_{Y|X}(y|x)$ 和 $f_{X|Y}(x|y)$。</p>
         <p><strong>解</strong>：区域 $D$ 是一个三角形。联合密度 $f(x,y)=\dfrac{1}{\text{Area}(D)}=\dfrac{1}{1/2}=2$（在 $D$ 内）。</p>
-        <p>边缘密度：$f_X(x)=\int_0^x 2\,\dd y=2x$（$0<x<1$）；$f_Y(y)=\int_y^1 2\,\dd x=2(1-y)$（$0<y<1$）。</p>
+        <p>边缘密度：$f_X(x)=\int_0^x 2\,\dd y=2x$（$0\lt x\lt1$）；$f_Y(y)=\int_y^1 2\,\dd x=2(1-y)$（$0\lt y\lt1$）。</p>
         <p>条件密度：</p>
-        <p>$f_{Y|X}(y|x)=\dfrac{f(x,y)}{f_X(x)}=\dfrac{2}{2x}=\dfrac{1}{x}$（$0<y<x$）。即 $Y|X=x\sim U(0,x)$。</p>
-        <p>$f_{X|Y}(x|y)=\dfrac{f(x,y)}{f_Y(y)}=\dfrac{2}{2(1-y)}=\dfrac{1}{1-y}$（$y<x<1$）。即 $X|Y=y\sim U(y,1)$。</p>
+        <p>$f_{Y|X}(y|x)=\dfrac{f(x,y)}{f_X(x)}=\dfrac{2}{2x}=\dfrac{1}{x}$（$0\lt y\lt x$）。即 $Y|X=x\sim U(0,x)$。</p>
+        <p>$f_{X|Y}(x|y)=\dfrac{f(x,y)}{f_Y(y)}=\dfrac{2}{2(1-y)}=\dfrac{1}{1-y}$（$y\lt x\lt1$）。即 $X|Y=y\sim U(y,1)$。</p>
         <p><strong>几何直觉</strong>：固定 $X=x$，就是在 $x$ 处做一个竖直切片，$Y$ 在 $[0,x]$ 上均匀分布。固定 $Y=y$，就是在 $y$ 处做一个水平切片，$X$ 在 $[y,1]$ 上均匀分布。条件分布就是"切片上的分布"。</p>
       </div>
     </div>

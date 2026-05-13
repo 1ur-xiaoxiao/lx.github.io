@@ -229,10 +229,10 @@
     <div class="table-wrapper">
       <table>
         <tr><th>分布</th><th>$P(X=k)$</th><th>参数</th><th>$E(X)$</th><th>$\Var(X)$</th><th>应用场景</th></tr>
-        <tr><td>0-1 分布</td><td>$p^k(1-p)^{1-k}$</td><td>$0<p<1$</td><td>$p$</td><td>$p(1-p)$</td><td>单次伯努利试验</td></tr>
+        <tr><td>0-1 分布</td><td>$p^k(1-p)^{1-k}$</td><td>$0\lt p\lt1$</td><td>$p$</td><td>$p(1-p)$</td><td>单次伯努利试验</td></tr>
         <tr><td>$B(n,p)$</td><td>$\binom{n}{k}p^k(1-p)^{n-k}$</td><td>$n,p$</td><td>$np$</td><td>$np(1-p)$</td><td>$n$ 次独立重复试验</td></tr>
         <tr><td>$P(\lambda)$</td><td>$\frac{\lambda^k}{k!}e^{-\lambda}$</td><td>$\lambda>0$</td><td>$\lambda$</td><td>$\lambda$</td><td>单位时间事件次数</td></tr>
-        <tr><td>几何分布</td><td>$(1-p)^{k-1}p$</td><td>$0<p<1$</td><td>$\frac{1}{p}$</td><td>$\frac{1-p}{p^2}$</td><td>首次成功等待时间</td></tr>
+        <tr><td>几何分布</td><td>$(1-p)^{k-1}p$</td><td>$0\lt p\lt1$</td><td>$\frac{1}{p}$</td><td>$\frac{1-p}{p^2}$</td><td>首次成功等待时间</td></tr>
         <tr><td>超几何</td><td>$\frac{\binom{M}{k}\binom{N-M}{n-k}}{\binom{N}{n}}$</td><td>$N,M,n$</td><td>$\frac{nM}{N}$</td><td>$\frac{nM(N-M)(N-n)}{N^2(N-1)}$</td><td>不放回抽样</td></tr>
       </table>
     </div>
@@ -261,7 +261,7 @@
     <div class="box box-theorem">
       <div class="box-title">分布函数的性质</div>
       <ol>
-        <li><strong>单调不减</strong>：若 $x_1 < x_2$，则 $F(x_1) \leq F(x_2)$——因为 $P(X \leq x_1) \leq P(X \leq x_2)$</li>
+        <li><strong>单调不减</strong>：若 $x_1 \lt x_2$，则 $F(x_1) \leq F(x_2)$——因为 $P(X \leq x_1) \leq P(X \leq x_2)$</li>
         <li><strong>有界性</strong>：$\displaystyle\lim_{x \to -\infty} F(x) = 0$，$\lim_{x \to +\infty} F(x) = 1$——因为 $X$ 不可能取 $-\infty$，必然取有限值</li>
         <li><strong>右连续</strong>：$F(x+0) = F(x)$（注意是右连续，不是左连续！）——这是数学上的约定，使得分布函数与概率的对应关系更简洁</li>
       </ol>
@@ -270,9 +270,9 @@
 
     <div class="box box-formula">
       <div class="box-title">用分布函数计算概率</div>
-      $$P(a < X \leq b) = F(b) - F(a)$$
+      $$P(a \lt X \leq b) = F(b) - F(a)$$
       $$P(X = a) = F(a) - F(a-0)$$
-      $$P(X < a) = F(a-0)$$
+      $$P(X \lt a) = F(a-0)$$
       $$P(X \geq a) = 1 - F(a-0)$$
       <p>其中 $F(a-0) = \lim_{x \to a^-} F(x)$ 是 $F$ 在 $a$ 处的左极限。</p>
     </div>
@@ -288,12 +288,12 @@
       <div class="collapsible-body">
         <p><strong>题目</strong>：设 $X$ 的分布律为 $P(X=0)=0.2$，$P(X=1)=0.5$，$P(X=2)=0.3$。求 $F(x)$。</p>
         <p><strong>解</strong>：</p>
-        <p>当 $x < 0$：$F(x)=P(X \leq x)=0$</p>
-        <p>当 $0 \leq x < 1$：$F(x)=P(X=0)=0.2$</p>
-        <p>当 $1 \leq x < 2$：$F(x)=P(X=0)+P(X=1)=0.7$</p>
+        <p>当 $x \lt 0$：$F(x)=P(X \leq x)=0$</p>
+        <p>当 $0 \leq x \lt 1$：$F(x)=P(X=0)=0.2$</p>
+        <p>当 $1 \leq x \lt 2$：$F(x)=P(X=0)+P(X=1)=0.7$</p>
         <p>当 $x \geq 2$：$F(x)=1$</p>
         <p>即：</p>
-        $$F(x) = \begin{cases} 0, & x < 0 \\ 0.2, & 0 \leq x < 1 \\ 0.7, & 1 \leq x < 2 \\ 1, & x \geq 2 \end{cases}$$
+        $$F(x) = \begin{cases} 0, & x \lt 0 \\ 0.2, & 0 \leq x \lt 1 \\ 0.7, & 1 \leq x \lt 2 \\ 1, & x \geq 2 \end{cases}$$
       </div>
     </div>
   </div>
@@ -318,7 +318,7 @@
         <li>$f(x) \geq 0$（非负性）</li>
         <li>$\displaystyle\int_{-\infty}^{+\infty} f(x)\, \dd x = 1$（归一性）</li>
         <li>在 $f(x)$ 的连续点处，$F'(x) = f(x)$</li>
-        <li>$P(a < X < b) = \displaystyle\int_a^b f(x)\, \dd x$</li>
+        <li>$P(a \lt X \lt b) = \displaystyle\int_a^b f(x)\, \dd x$</li>
       </ol>
     </div>
 
@@ -334,8 +334,8 @@
       <p>对于连续型随机变量：</p>
       <ul>
         <li>$P(X = a) = 0$ 对任意 $a$ 成立——单点概率为零</li>
-        <li>因此 $P(a \leq X \leq b) = P(a < X \leq b) = P(a < X < b) = P(a \leq X < b)$</li>
-        <li>即 "$<$" 与 "$\leq$" 对连续型没有区别</li>
+        <li>因此 $P(a \leq X \leq b) = P(a \lt X \leq b) = P(a \lt X \lt b) = P(a \leq X \lt b)$</li>
+        <li>即 "$\lt$" 与 "$\leq$" 对连续型没有区别</li>
       </ul>
     </div>
   </div>
@@ -357,7 +357,7 @@
     <h3>均匀分布 $U(a, b)$</h3>
     <div class="box box-definition">
       <div class="box-title">均匀分布</div>
-      $$f(x) = \begin{cases} \dfrac{1}{b-a}, & a < x < b \\ 0, & \text{其他} \end{cases}$$
+      $$f(x) = \begin{cases} \dfrac{1}{b-a}, & a \lt x \lt b \\ 0, & \text{其他} \end{cases}$$
       <p>记为 $X \sim U(a,b)$。</p>
       <p><strong>直觉</strong>：在区间 $(a,b)$ 上"均匀地"取值，每个长度相等的子区间概率相同。</p>
       <p>分布函数：$F(x) = \dfrac{x-a}{b-a}$（$a \leq x \leq b$）</p>
@@ -366,8 +366,8 @@
     <div class="collapsible">
       <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 均匀分布</div>
       <div class="collapsible-body">
-        <p><strong>题目</strong>：$X \sim U(0, 10)$，求 $P(3 < X < 7)$。</p>
-        <p><strong>解</strong>：$P(3 < X < 7) = \displaystyle\int_3^7 \frac{1}{10}\, \dd x = \frac{7-3}{10} = 0.4$</p>
+        <p><strong>题目</strong>：$X \sim U(0, 10)$，求 $P(3 \lt X \lt 7)$。</p>
+        <p><strong>解</strong>：$P(3 \lt X \lt 7) = \displaystyle\int_3^7 \frac{1}{10}\, \dd x = \frac{7-3}{10} = 0.4$</p>
         <p>也可以直接用几何意义：有利区间长度 4，总长度 10，概率 = 4/10 = 0.4。</p>
       </div>
     </div>
@@ -441,7 +441,7 @@
       <div class="box-title">正态分布的标准化</div>
       <p>若 $X \sim N(\mu, \sigma^2)$，则 $Z = \dfrac{X - \mu}{\sigma} \sim N(0, 1)$。</p>
       <p>因此：</p>
-      $$P(a < X < b) = \Phi\!\left(\frac{b-\mu}{\sigma}\right) - \Phi\!\left(\frac{a-\mu}{\sigma}\right)$$
+      $$P(a \lt X \lt b) = \Phi\!\left(\frac{b-\mu}{\sigma}\right) - \Phi\!\left(\frac{a-\mu}{\sigma}\right)$$
       <p><strong>标准化的意义</strong>：无论正态分布的参数 $\mu, \sigma$ 如何，都可以通过标准化转化为标准正态分布。这样我们只需要一张 $\Phi(x)$ 的表，就能计算所有正态分布的概率。</p>
     </div>
 
@@ -457,10 +457,10 @@
     <div class="collapsible">
       <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 正态分布计算</div>
       <div class="collapsible-body">
-        <p><strong>题目</strong>：$X \sim N(1, 4)$，求 $P(0 < X < 3)$ 和 $P(|X| > 2)$。</p>
+        <p><strong>题目</strong>：$X \sim N(1, 4)$，求 $P(0 \lt X \lt 3)$ 和 $P(|X| > 2)$。</p>
         <p><strong>解</strong>：$\mu=1, \sigma=2$</p>
-        <p>$P(0 < X < 3) = \Phi\!\left(\frac{3-1}{2}\right) - \Phi\!\left(\frac{0-1}{2}\right) = \Phi(1) - \Phi(-0.5) = \Phi(1) - [1-\Phi(0.5)] = 0.8413 - 1 + 0.6915 = 0.5328$</p>
-        <p>$P(|X|>2) = P(X>2) + P(X<-2) = [1-\Phi(\frac{2-1}{2})] + \Phi(\frac{-2-1}{2}) = [1-\Phi(0.5)] + \Phi(-1.5) = (1-0.6915) + (1-0.9332) = 0.3085 + 0.0668 = 0.3753$</p>
+        <p>$P(0 \lt X \lt 3) = \Phi\!\left(\frac{3-1}{2}\right) - \Phi\!\left(\frac{0-1}{2}\right) = \Phi(1) - \Phi(-0.5) = \Phi(1) - [1-\Phi(0.5)] = 0.8413 - 1 + 0.6915 = 0.5328$</p>
+        <p>$P(|X|>2) = P(X>2) + P(X\lt-2) = [1-\Phi(\frac{2-1}{2})] + \Phi(\frac{-2-1}{2}) = [1-\Phi(0.5)] + \Phi(-1.5) = (1-0.6915) + (1-0.9332) = 0.3085 + 0.0668 = 0.3753$</p>
       </div>
     </div>
 
@@ -605,7 +605,7 @@
     <div class="table-wrapper">
       <table>
         <tr><th>分布</th><th>密度 $f(x)$</th><th>参数</th><th>$E(X)$</th><th>$\Var(X)$</th><th>特殊性质</th></tr>
-        <tr><td>$U(a,b)$</td><td>$\frac{1}{b-a}$</td><td>$a<b$</td><td>$\frac{a+b}{2}$</td><td>$\frac{(b-a)^2}{12}$</td><td>等可能</td></tr>
+        <tr><td>$U(a,b)$</td><td>$\frac{1}{b-a}$</td><td>$a\lt b$</td><td>$\frac{a+b}{2}$</td><td>$\frac{(b-a)^2}{12}$</td><td>等可能</td></tr>
         <tr><td>$Exp(\lambda)$</td><td>$\lambda e^{-\lambda x}$</td><td>$\lambda>0$</td><td>$\frac{1}{\lambda}$</td><td>$\frac{1}{\lambda^2}$</td><td>无记忆性</td></tr>
         <tr><td>$N(\mu,\sigma^2)$</td><td>$\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}}$</td><td>$\mu,\sigma$</td><td>$\mu$</td><td>$\sigma^2$</td><td>对称性、可加性</td></tr>
       </table>
@@ -685,9 +685,9 @@
         <p><strong>题目</strong>：$X \sim U(-1, 1)$，求 $Y=X^2$ 的密度。</p>
         <p><strong>解</strong>：$Y=X^2$ 不是单调函数，用分布函数法。</p>
         <p>当 $y \leq 0$：$F_Y(y)=0$</p>
-        <p>当 $0 < y < 1$：$F_Y(y) = P(X^2 \leq y) = P(-\sqrt{y} \leq X \leq \sqrt{y}) = \int_{-\sqrt{y}}^{\sqrt{y}} \frac{1}{2}\, \dd x = \frac{2\sqrt{y}}{2} = \sqrt{y}$</p>
+        <p>当 $0 \lt y \lt 1$：$F_Y(y) = P(X^2 \leq y) = P(-\sqrt{y} \leq X \leq \sqrt{y}) = \int_{-\sqrt{y}}^{\sqrt{y}} \frac{1}{2}\, \dd x = \frac{2\sqrt{y}}{2} = \sqrt{y}$</p>
         <p>当 $y \geq 1$：$F_Y(y)=1$</p>
-        <p>求导：$f_Y(y) = \begin{cases} \frac{1}{2\sqrt{y}}, & 0 < y < 1 \\ 0, & \text{其他} \end{cases}$</p>
+        <p>求导：$f_Y(y) = \begin{cases} \frac{1}{2\sqrt{y}}, & 0 \lt y \lt 1 \\ 0, & \text{其他} \end{cases}$</p>
       </div>
     </div>
   </div>
@@ -700,11 +700,11 @@
     <div class="collapsible">
       <div class="collapsible-header"><span class="toggle-icon">▶</span> 理解题 · 分布函数的本质——从"面积"到"累积"</div>
       <div class="collapsible-body">
-        <p><strong>题目</strong>：设 $X$ 的密度函数为 $f(x)=\begin{cases}x,&0\leq x\leq 1\\2-x,&1<x\leq 2\\0,&\text{其他}\end{cases}$，求分布函数 $F(x)$ 并画出图像。</p>
+        <p><strong>题目</strong>：设 $X$ 的密度函数为 $f(x)=\begin{cases}x,&0\leq x\leq 1\\2-x,&1\lt x\leq 2\\0,&\text{其他}\end{cases}$，求分布函数 $F(x)$ 并画出图像。</p>
         <p><strong>解</strong>：$F(x)=\PP(X\leq x)=\int_{-\infty}^x f(t)\,\dd t$，本质是密度函数从 $-\infty$ 到 $x$ 的"累积面积"。</p>
-        <p>当 $x<0$：$F(x)=0$。</p>
+        <p>当 $x\lt0$：$F(x)=0$。</p>
         <p>当 $0\leq x\leq 1$：$F(x)=\int_0^x t\,\dd t=\dfrac{x^2}{2}$。</p>
-        <p>当 $1<x\leq 2$：$F(x)=\int_0^1 t\,\dd t+\int_1^x(2-t)\,\dd t=\dfrac{1}{2}+\left[2t-\dfrac{t^2}{2}\right]_1^x=\dfrac{1}{2}+2x-\dfrac{x^2}{2}-2+\dfrac{1}{2}=2x-\dfrac{x^2}{2}-1$。</p>
+        <p>当 $1\lt x\leq 2$：$F(x)=\int_0^1 t\,\dd t+\int_1^x(2-t)\,\dd t=\dfrac{1}{2}+\left[2t-\dfrac{t^2}{2}\right]_1^x=\dfrac{1}{2}+2x-\dfrac{x^2}{2}-2+\dfrac{1}{2}=2x-\dfrac{x^2}{2}-1$。</p>
         <p>当 $x>2$：$F(x)=1$。</p>
         <p><strong>关键观察</strong>：密度函数是"速率"，分布函数是"总量"。密度为 0 的地方，分布函数保持不变（平坦）；密度大的地方，分布函数增长快。</p>
       </div>
@@ -726,7 +726,7 @@
     <div class="collapsible">
       <div class="collapsible-header"><span class="toggle-icon">▶</span> 理解题 · 指数分布的无记忆性——实际含义</div>
       <div class="collapsible-body">
-        <p><strong>题目</strong>：某电子元件的寿命 $X\sim E(0.01)$（单位：小时）。已知该元件已经使用了 $100$ 小时，求它还能再使用至少 $50$ 小时的概率。</p>
+        <p><strong>题目</strong>：某电子元件的寿命 $X\sim Exp(0.01)$（单位：小时）。已知该元件已经使用了 $100$ 小时，求它还能再使用至少 $50$ 小时的概率。</p>
         <p><strong>解</strong>：求 $\PP(X>150|X>100)$。</p>
         <p><strong>方法一（直接计算）</strong>：</p>
         $$\PP(X>150|X>100)=\frac{\PP(X>150)}{\PP(X>100)}=\frac{e^{-0.01\times 150}}{e^{-0.01\times 100}}=e^{-0.5}\approx 0.6065$$

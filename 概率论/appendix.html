@@ -66,7 +66,7 @@
           <td>0-1 分布</td>
           <td>—</td>
           <td>$p^k(1-p)^{1-k}$，$k=0,1$</td>
-          <td>$0<p<1$</td>
+          <td>$0\lt p\lt1$</td>
           <td>$p$</td>
           <td>$p(1-p)$</td>
           <td>单次伯努利试验</td>
@@ -75,7 +75,7 @@
           <td>二项分布</td>
           <td>$B(n,p)$</td>
           <td>$\binom{n}{k}p^k(1-p)^{n-k}$</td>
-          <td>$n\geq 1,\;0<p<1$</td>
+          <td>$n\geq 1,\;0\lt p\lt1$</td>
           <td>$np$</td>
           <td>$np(1-p)$</td>
           <td>$n$ 次独立重复试验</td>
@@ -93,7 +93,7 @@
           <td>几何分布</td>
           <td>—</td>
           <td>$(1-p)^{k-1}p$</td>
-          <td>$0<p<1$</td>
+          <td>$0\lt p\lt1$</td>
           <td>$\dfrac{1}{p}$</td>
           <td>$\dfrac{1-p}{p^2}$</td>
           <td>首次成功等待时间</td>
@@ -128,8 +128,8 @@
         <tr>
           <td>均匀分布</td>
           <td>$U(a,b)$</td>
-          <td>$\dfrac{1}{b-a}$，$a<x<b$</td>
-          <td>$a<b$</td>
+          <td>$\dfrac{1}{b-a}$，$a\lt x\lt b$</td>
+          <td>$a\lt b$</td>
           <td>$\dfrac{a+b}{2}$</td>
           <td>$\dfrac{(b-a)^2}{12}$</td>
           <td>等可能</td>
@@ -191,7 +191,7 @@
     <div class="box box-formula">
       <div class="box-title">正态分布的标准化</div>
       $$X \sim N(\mu,\sigma^2) \implies Z = \frac{X-\mu}{\sigma} \sim N(0,1)$$
-      $$P(a < X < b) = \Phi\!\left(\frac{b-\mu}{\sigma}\right) - \Phi\!\left(\frac{a-\mu}{\sigma}\right)$$
+      $$P(a \lt X \lt b) = \Phi\!\left(\frac{b-\mu}{\sigma}\right) - \Phi\!\left(\frac{a-\mu}{\sigma}\right)$$
     </div>
 
     <div class="box box-formula">
@@ -270,9 +270,9 @@
       <ul>
         <li><strong>对称性</strong>：$\Phi(-x) = 1 - \Phi(x)$</li>
         <li><strong>特殊值</strong>：$\Phi(0) = 0.5$</li>
-        <li><strong>求 $P(a<Z<b)$</strong>：$P(a<Z<b) = \Phi(b) - \Phi(a)$</li>
+        <li><strong>求 $P(a\lt Z\lt b)$</strong>：$P(a\lt Z\lt b) = \Phi(b) - \Phi(a)$</li>
         <li><strong>求 $P(|Z|>c)$</strong>：$P(|Z|>c) = 2[1-\Phi(c)]$</li>
-        <li><strong>求 $P(|Z|<c)$</strong>：$P(|Z|<c) = 2\Phi(c)-1$</li>
+        <li><strong>求 $P(|Z|\lt c)$</strong>：$P(|Z|\lt c) = 2\Phi(c)-1$</li>
       </ul>
     </div>
 
@@ -281,7 +281,7 @@
       <p>若 $X \sim N(\mu, \sigma^2)$，标准化步骤：</p>
       <ol>
         <li>令 $Z = \dfrac{X-\mu}{\sigma}$</li>
-        <li>$P(a < X < b) = P\!\left(\dfrac{a-\mu}{\sigma} < Z < \dfrac{b-\mu}{\sigma}\right) = \Phi\!\left(\dfrac{b-\mu}{\sigma}\right) - \Phi\!\left(\dfrac{a-\mu}{\sigma}\right)$</li>
+        <li>$P(a \lt X \lt b) = P\!\left(\dfrac{a-\mu}{\sigma} \lt Z \lt \dfrac{b-\mu}{\sigma}\right) = \Phi\!\left(\dfrac{b-\mu}{\sigma}\right) - \Phi\!\left(\dfrac{a-\mu}{\sigma}\right)$</li>
       </ol>
     </div>
 

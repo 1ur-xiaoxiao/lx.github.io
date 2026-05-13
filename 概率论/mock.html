@@ -234,9 +234,9 @@
         <p>$\PP(B_1)=\dfrac{1}{2}$，$\PP(B_2)=\dfrac{1}{3}$，$\PP(B_3)=\dfrac{1}{6}$。</p>
         <p><span class="a-number">（1）</span>全概率公式：</p>
         $$\PP(A)=\frac{1}{2}\times 0.02+\frac{1}{3}\times 0.03+\frac{1}{6}\times 0.05=\frac{0.01+0.01+0.00833\ldots}{1}\approx 0.0283$$
-        <p>精确值：$\PP(A)=\dfrac{1}{60}+\dfrac{1}{100}+\dfrac{1}{120}=\dfrac{10+6+5}{600}=\dfrac{21}{600}=\dfrac{7}{200}=0.035$。</p>
+        <p>精确值：$\PP(A)=\dfrac{1}{100}+\dfrac{1}{100}+\dfrac{1}{120}=\dfrac{6+6+5}{600}=\dfrac{17}{600}\approx 0.0283$。</p>
         <p><span class="a-number">（2）</span>贝叶斯公式：</p>
-        $$\PP(B_2|A)=\frac{\PP(B_2)\PP(A|B_2)}{\PP(A)}=\frac{\frac{1}{3}\times 0.03}{\frac{7}{200}}=\frac{0.01}{0.035}=\frac{2}{7}$$
+        $$\PP(B_2|A)=\frac{\PP(B_2)\PP(A|B_2)}{\PP(A)}=\frac{\frac{1}{3}\times 0.03}{\frac{17}{600}}=\frac{1/100}{17/600}=\frac{6}{17}\approx 0.3529$$
       </div>
 
       <h3>七、解答题</h3>
@@ -261,10 +261,10 @@
         <p><span class="a-number">（2）</span>当 $0\lt y\lt 1$ 时：$f_{X|Y}(x|y)=\dfrac{f(x,y)}{f_Y(y)}=\dfrac{6(1-y)}{6y(1-y)}=\dfrac{1}{y}$，$0\lt x\lt y$。即 $X|Y=y\sim U(0,y)$。</p>
         <p><span class="a-number">（3）</span>积分区域为 $0\lt x\lt y\lt 1$ 且 $x+y>1$，即 $1-y\lt x\lt y$（需要 $y>1/2$）：</p>
         $$\PP(X+Y>1)=\int_{1/2}^1\int_{1-y}^y 6(1-y)\,\dd x\,\dd y=\int_{1/2}^1 6(1-y)(2y-1)\,\dd y$$
-        $$=\int_{1/2}^1(12y-6-12y^2+6y)\,\dd y=\int_{1/2}^1(-12y^2+18y-6)\,\dd y=\frac{1}{2}$$
+        $$=\int_{1/2}^1(12y-6-12y^2+6y)\,\dd y=\int_{1/2}^1(-12y^2+18y-6)\,\dd y=\left[-4y^3+9y^2-6y\right]_{1/2}^1=\frac{1}{4}$$
         <p><span class="a-number">（4）</span>$\EE(X)=\int_0^1 3x(1-x)^2\,\dd x=\dfrac{1}{4}$，$\EE(Y)=\int_0^1 6y^2(1-y)\,\dd y=\dfrac{1}{2}$。</p>
         $$\EE(XY)=\int_0^1\int_0^y 6xy(1-y)\,\dd x\,\dd y=\int_0^1 3y^3(1-y)\,\dd y=3\left(\frac{1}{4}-\frac{1}{5}\right)=\frac{3}{20}$$
-        $$\Cov(X,Y)=\EE(XY)-\EE(X)\EE(Y)=\frac{3}{20}-\frac{1}{4}\times\frac{1}{2}=\frac{3}{20}-\frac{1}{4}=\frac{3-5}{20}=-\frac{1}{10}$$
+        $$\Cov(X,Y)=\EE(XY)-\EE(X)\EE(Y)=\frac{3}{20}-\frac{1}{4}\times\frac{1}{2}=\frac{3}{20}-\frac{1}{8}=\frac{1}{40}$$
         <p>$\Cov(X,Y)\neq 0$，故 $X$ 与 $Y$ 不独立。（也可从 $f(x,y)\neq f_X(x)f_Y(y)$ 直接判断。）</p>
       </div>
     </div>
@@ -424,7 +424,7 @@
       <div class="answer-item"><span class="a-number">5.</span> $N(-1, 16)$。$\EE(Y)=2\times 1-3=-1$，$\Var(Y)=4\times 4=16$。</div>
       <div class="answer-item"><span class="a-number">6.</span> $0.4$。$\PP(X=Y)=\PP(0,0)+\PP(1,1)=0.1+0.3=0.4$。</div>
       <div class="answer-item"><span class="a-number">7.</span> $\chi^2(2)$（自由度为 2 的卡方分布）。两个独立标准正态变量的平方和服从 $\chi^2(2)$。</div>
-      <div class="answer-item"><span class="a-number">8.</span> $-\dfrac{2}{3}$。$\EE(X)=\sum_{k=1}^{\infty}(-1)^k\cdot k\cdot\dfrac{1}{2^k}$。利用 $\sum_{k=1}^{\infty}kx^k=\dfrac{x}{(1-x)^2}$，取 $x=-\dfrac{1}{2}$，得 $\EE(X)=\dfrac{-1/2}{(3/2)^2}=-\dfrac{2}{9}\cdot 3=-\dfrac{2}{3}$。更直接地：$\EE(X)=-\dfrac{1}{2}+\dfrac{2}{4}-\dfrac{3}{8}+\cdots=\sum_{k=1}^{\infty}\dfrac{(-1)^k k}{2^k}=\dfrac{-1/2}{(1+1/2)^2}=-\dfrac{2}{9}$。用 $S=\sum_{k=1}^{\infty}k(-1/2)^k=\dfrac{-1/2}{(3/2)^2}=\dfrac{-1/2}{9/4}=-\dfrac{2}{9}$。</div>
+      <div class="answer-item"><span class="a-number">8.</span> $-\dfrac{2}{9}$。$\EE(X)=\sum_{k=1}^{\infty}(-1)^k\cdot k\cdot\dfrac{1}{2^k}=\sum_{k=1}^{\infty} k\left(-\dfrac{1}{2}\right)^k$。利用 $\sum_{k=1}^{\infty}kx^k=\dfrac{x}{(1-x)^2}$（$|x|\lt 1$），取 $x=-\dfrac{1}{2}$，得 $\EE(X)=\dfrac{-1/2}{(1+1/2)^2}=\dfrac{-1/2}{9/4}=-\dfrac{2}{9}$。</div>
       <div class="answer-item"><span class="a-number">9.</span> $n=6$，$p=0.4$。$\EE(X)=np=2.4$，$\Var(X)=np(1-p)=1.44$，两式相除 $1-p=0.6$，$p=0.4$，$n=6$。</div>
       <div class="answer-item"><span class="a-number">10.</span> $N\!\left(\mu,\dfrac{\sigma^2}{n}\right)$。样本均值的期望为 $\mu$，方差为 $\dfrac{\sigma^2}{n}$。</div>
 

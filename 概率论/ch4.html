@@ -52,7 +52,7 @@
     <h3>本章目录</h3>
     <ol>
       <li><a href="#s1">预备知识：期望与方差回顾</a></li>
-      <li><a href="#s2">切比雪夫不等式</a></li>
+      <li><a href="#s2">马尔可夫不等式与切比雪夫不等式</a></li>
       <li><a href="#s3">大数定律</a></li>
       <li><a href="#s4">中心极限定理</a></li>
       <li><a href="#s5">综合例题与应用</a></li>
@@ -92,9 +92,18 @@
 
   <!-- ==================== 4.2 切比雪夫不等式 ==================== -->
   <div class="section" id="s2">
-    <h2>4.2 切比雪夫不等式</h2>
+    <h2>4.2 马尔可夫不等式与切比雪夫不等式</h2>
 
-    <p>切比雪夫不等式是大数定律的理论基础。它回答了一个基本问题：<strong>只知道期望和方差，能对概率做出什么估计？</strong></p>
+    <p>本节介绍两个重要的概率不等式，它们是大数定律的理论基础。核心问题：<strong>只知道期望（和方差），能对概率做出什么估计？</strong></p>
+
+    <div class="box box-theorem">
+      <div class="box-title">马尔可夫不等式（Markov's Inequality）—— 更基本的不等式</div>
+      <p>设 $X$ 是<strong>非负</strong>随机变量（即 $X \geq 0$），且期望 $E(X)$ 存在，则对任意 $a > 0$：</p>
+      <div class="formula-highlight">
+        $$P(X \geq a) \leq \frac{E(X)}{a}$$
+      </div>
+      <p><strong>直觉</strong>：如果一个非负随机变量的均值较小，它取大值的概率也较小。比如全班平均分 70，那考 90 分以上的人不可能超过 $70/90 \approx 78\%$。</p>
+    </div>
 
     <div class="box box-theorem">
       <div class="box-title">切比雪夫不等式（Chebyshev's Inequality）</div>
@@ -103,7 +112,8 @@
         $$P(|X - \mu| \geq \varepsilon) \leq \frac{\sigma^2}{\varepsilon^2}$$
       </div>
       <p>等价形式：</p>
-      $$P(|X - \mu| < \varepsilon) \geq 1 - \frac{\sigma^2}{\varepsilon^2}$$
+      $$P(|X - \mu| \lt \varepsilon) \geq 1 - \frac{\sigma^2}{\varepsilon^2}$$
+      <p><strong>推导</strong>：切比雪夫不等式是马尔可夫不等式的直接推论——令 $Y = (X - \mu)^2 \geq 0$，则 $P(|X-\mu| \geq \varepsilon) = P(Y \geq \varepsilon^2) \leq E(Y)/\varepsilon^2 = \sigma^2/\varepsilon^2$。</p>
     </div>
 
     <div class="box box-note">
@@ -157,7 +167,7 @@
     <div class="box box-definition">
       <div class="box-title">定义 · 依概率收敛</div>
       <p>设 $X_1, X_2, \ldots$ 为随机变量序列，$a$ 为常数。若对任意 $\varepsilon > 0$：</p>
-      $$\lim_{n \to \infty} P(|X_n - a| < \varepsilon) = 1$$
+      $$\lim_{n \to \infty} P(|X_n - a| \lt \varepsilon) = 1$$
       <p>则称 $X_n$ <strong>依概率收敛</strong>于 $a$，记为 $X_n \xrightarrow{P} a$。</p>
       <p><strong>通俗理解</strong>：当 $n$ 很大时，$X_n$ 几乎肯定在 $a$ 附近。</p>
     </div>
@@ -166,7 +176,7 @@
     <div class="box box-theorem">
       <div class="box-title">切比雪夫大数定律</div>
       <p>设 $X_1, X_2, \ldots$ 为<strong>两两不相关</strong>的随机变量序列，且存在常数 $C$ 使得 $\Var(X_i) \leq C$，则对任意 $\varepsilon > 0$：</p>
-      $$\lim_{n \to \infty} P\!\left(\left|\frac{1}{n}\sum_{i=1}^n X_i - \frac{1}{n}\sum_{i=1}^n E(X_i)\right| < \varepsilon\right) = 1$$
+      $$\lim_{n \to \infty} P\!\left(\left|\frac{1}{n}\sum_{i=1}^n X_i - \frac{1}{n}\sum_{i=1}^n E(X_i)\right| \lt \varepsilon\right) = 1$$
       <p><strong>条件</strong>：两两不相关 + 方差有界。不要求同分布。</p>
     </div>
 
@@ -175,7 +185,7 @@
       <div class="box-title">伯努利大数定律</div>
       <p>设 $n_A$ 是 $n$ 次独立重复试验中事件 A 发生的次数，$p$ 是每次试验中 A 发生的概率，则对任意 $\varepsilon > 0$：</p>
       <div class="formula-highlight">
-        $$\lim_{n \to \infty} P\!\left(\left|\frac{n_A}{n} - p\right| < \varepsilon\right) = 1$$
+        $$\lim_{n \to \infty} P\!\left(\left|\frac{n_A}{n} - p\right| \lt \varepsilon\right) = 1$$
       </div>
       <p><strong>含义</strong>：频率 $\dfrac{n_A}{n}$ 依概率收敛于概率 $p$。</p>
       <p><strong>这是"频率稳定于概率"的严格数学表述</strong>——它解释了为什么我们可以用频率来估计概率。</p>
@@ -186,7 +196,7 @@
       <div class="box-title">辛钦大数定律（Khinchin's Law）</div>
       <p>设 $X_1, X_2, \ldots$ 为<strong>独立同分布</strong>（i.i.d.）的随机变量序列，$E(X_i) = \mu$ 存在，则对任意 $\varepsilon > 0$：</p>
       <div class="formula-highlight">
-        $$\lim_{n \to \infty} P\!\left(\left|\frac{1}{n}\sum_{i=1}^n X_i - \mu\right| < \varepsilon\right) = 1$$
+        $$\lim_{n \to \infty} P\!\left(\left|\frac{1}{n}\sum_{i=1}^n X_i - \mu\right| \lt \varepsilon\right) = 1$$
       </div>
       <p>即 $\bar{X}_n \xrightarrow{P} \mu$。</p>
     </div>
@@ -235,10 +245,10 @@
     <div class="collapsible">
       <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 大数定律的应用</div>
       <div class="collapsible-body">
-        <p><strong>题目</strong>：一颗均匀骰子，掷 $n$ 次的平均点数 $\bar{X}_n$。问 $n$ 至少多大时，$P(|\bar{X}_n - 3.5| < 0.1) \geq 0.95$？</p>
+        <p><strong>题目</strong>：一颗均匀骰子，掷 $n$ 次的平均点数 $\bar{X}_n$。问 $n$ 至少多大时，$P(|\bar{X}_n - 3.5| \lt 0.1) \geq 0.95$？</p>
         <p><strong>解</strong>：$E(X_i)=3.5$，$\Var(X_i)=\frac{35}{12}$</p>
         <p>由切比雪夫不等式：$P(|\bar{X}_n - 3.5| \geq 0.1) \leq \frac{\Var(\bar{X}_n)}{0.1^2} = \frac{35/(12n)}{0.01} = \frac{35}{0.12n}$</p>
-        <p>要使 $P(|\bar{X}_n - 3.5| < 0.1) \geq 0.95$，即 $P(|\bar{X}_n - 3.5| \geq 0.1) \leq 0.05$</p>
+        <p>要使 $P(|\bar{X}_n - 3.5| \lt 0.1) \geq 0.95$，即 $P(|\bar{X}_n - 3.5| \geq 0.1) \leq 0.05$</p>
         <p>$\frac{35}{0.12n} \leq 0.05 \Rightarrow n \geq \frac{35}{0.12 \times 0.05} = \frac{35}{0.006} \approx 5834$</p>
         <p><strong>注意</strong>：切比雪夫不等式给出的是保守估计。如果用中心极限定理，需要的 $n$ 会小得多。</p>
       </div>
@@ -294,15 +304,15 @@
     <div class="box box-formula">
       <div class="box-title">实际计算公式</div>
       <p>当 $n$ 较大时，可以用正态分布近似：</p>
-      $$P(a < S_n < b) \approx \Phi\!\left(\frac{b - n\mu}{\sqrt{n}\,\sigma}\right) - \Phi\!\left(\frac{a - n\mu}{\sqrt{n}\,\sigma}\right)$$
-      $$P(a < \bar{X}_n < b) \approx \Phi\!\left(\frac{b - \mu}{\sigma/\sqrt{n}}\right) - \Phi\!\left(\frac{a - \mu}{\sigma/\sqrt{n}}\right)$$
+      $$P(a \lt S_n \lt b) \approx \Phi\!\left(\frac{b - n\mu}{\sqrt{n}\,\sigma}\right) - \Phi\!\left(\frac{a - n\mu}{\sqrt{n}\,\sigma}\right)$$
+      $$P(a \lt \bar{X}_n \lt b) \approx \Phi\!\left(\frac{b - \mu}{\sigma/\sqrt{n}}\right) - \Phi\!\left(\frac{a - \mu}{\sigma/\sqrt{n}}\right)$$
     </div>
 
     <h3>棣莫弗-拉普拉斯定理</h3>
     <div class="box box-theorem">
       <div class="box-title">棣莫弗-拉普拉斯定理（De Moivre-Laplace）</div>
       <p>这是中心极限定理最早的形式，由棣莫弗在 1733 年（当 $p=0.5$ 时）和拉普拉斯在 1812 年（一般 $p$）证明。</p>
-      <p>设 $X_n \sim B(n, p)$，$0 < p < 1$，则对任意 $x \in \mathbb{R}$：</p>
+      <p>设 $X_n \sim B(n, p)$，$0 \lt p \lt 1$，则对任意 $x \in \mathbb{R}$：</p>
       <div class="formula-highlight">
         $$\lim_{n \to \infty} P\!\left(\frac{X_n - np}{\sqrt{np(1-p)}} \leq x\right) = \Phi(x)$$
       </div>
@@ -541,7 +551,7 @@
         <p><strong>题目</strong>：某城市居民的年收入服从均值 5 万元、标准差 2 万元的分布。随机调查 100 人，求样本均值在 4.6 万到 5.4 万元之间的概率。</p>
         <p><strong>解</strong>：设 $X_i$ 为第 $i$ 个人的收入，$E(X_i)=5$，$\sigma=2$，$n=100$。</p>
         <p>由中心极限定理：$\bar{X}_{100} \;\dot{\sim}\; N(5, \frac{4}{100}) = N(5, 0.04)$，标准差 $= 0.2$</p>
-        <p>$P(4.6 < \bar{X}_{100} < 5.4) = P\!\left(\frac{4.6-5}{0.2} < Z < \frac{5.4-5}{0.2}\right) = P(-2 < Z < 2) = 2\Phi(2)-1 = 2\times0.9772-1 = 0.9544$</p>
+        <p>$P(4.6 \lt \bar{X}_{100} \lt 5.4) = P\!\left(\frac{4.6-5}{0.2} \lt Z \lt \frac{5.4-5}{0.2}\right) = P(-2 \lt Z \lt 2) = 2\Phi(2)-1 = 2\times0.9772-1 = 0.9544$</p>
         <p>即样本均值在 4.6 万到 5.4 万元之间的概率约为 95.4%。</p>
       </div>
     </div>
@@ -552,7 +562,7 @@
         <p><strong>题目</strong>：掷一颗均匀骰子 100 次，求总点数在 300 到 400 之间的概率。</p>
         <p><strong>解</strong>：设 $X_i$ 为第 $i$ 次的点数，$E(X_i)=3.5$，$\Var(X_i)=\frac{35}{12}$</p>
         <p>$S_{100} = \sum_{i=1}^{100} X_i$，$E(S_{100})=350$，$\Var(S_{100})=\frac{3500}{12}=\frac{875}{3}$，$\sigma=\sqrt{\frac{875}{3}} \approx 17.08$</p>
-        <p>$P(300 < S_{100} < 400) \approx \Phi\!\left(\frac{400-350}{17.08}\right) - \Phi\!\left(\frac{300-350}{17.08}\right) = \Phi(2.93) - \Phi(-2.93) = 2\Phi(2.93)-1 \approx 2\times0.9983-1 = 0.9966$</p>
+        <p>$P(300 \lt S_{100} \lt 400) \approx \Phi\!\left(\frac{400-350}{17.08}\right) - \Phi\!\left(\frac{300-350}{17.08}\right) = \Phi(2.93) - \Phi(-2.93) = 2\Phi(2.93)-1 \approx 2\times0.9983-1 = 0.9966$</p>
       </div>
     </div>
 
@@ -562,8 +572,8 @@
       <div class="collapsible-body">
         <p><strong>题目</strong>：某电池寿命 $X$（小时），$\EE(X)=500$，$\Var(X)=100$。用切比雪夫不等式估计电池寿命在 $400$ 到 $600$ 小时之间的概率下界。如果 $X\sim N(500,100)$，实际概率是多少？</p>
         <p><strong>解</strong>：$\PP(400\leq X\leq 600)=\PP(|X-500|\leq 100)$。</p>
-        <p><strong>切比雪夫估计</strong>：$\PP(|X-500|\geq 100)\leq\dfrac{100}{100^2}=0.01$，所以 $\PP(|X-500|<100)\geq 0.99$。</p>
-        <p><strong>正态分布实际值</strong>：$\PP(|X-500|<100)=\PP(|Z|<10)\approx 1$（几乎确定）。</p>
+        <p><strong>切比雪夫估计</strong>：$\PP(|X-500|\geq 100)\leq\dfrac{100}{100^2}=0.01$，所以 $\PP(|X-500|\lt100)\geq 0.99$。</p>
+        <p><strong>正态分布实际值</strong>：$\PP(|X-500|\lt100)=\PP(|Z|\lt10)\approx 1$（几乎确定）。</p>
         <p><strong>对比</strong>：切比雪夫给出 $\geq 99\%$，正态实际 $\approx 100\%$。切比雪夫是"保底估计"——不管什么分布都成立，但通常比实际值保守得多。</p>
         <p><strong>考试应用</strong>：题目说"用切比雪夫不等式估计"时，直接套公式 $\PP(|X-\mu|\geq\varepsilon)\leq\dfrac{\sigma^2}{\varepsilon^2}$。不需要知道具体分布！</p>
       </div>
@@ -578,7 +588,7 @@
         <p><strong>不做修正</strong>：$\PP(X\leq 35)\approx\Phi\!\left(\dfrac{35-30}{4.583}\right)=\Phi(1.09)\approx 0.8621$。</p>
         <p><strong>做连续性修正</strong>：$\PP(X\leq 35)\approx\Phi\!\left(\dfrac{35.5-30}{4.583}\right)=\Phi(1.20)\approx 0.8849$。</p>
         <p><strong>为什么加 0.5？</strong>离散变量 $X=35$ 在数轴上是一个点，但连续近似时它对应的"面积"是 $[34.5, 35.5]$ 这个小区间。$\PP(X\leq 35)$ 包含 $X=35$，所以要延伸到 $35.5$。</p>
-        <p><strong>口诀</strong>：$\leq$ 变 $+0.5$，$\geq$ 变 $-0.5$，$<$ 不变，$>$ 不变。本质是把离散的"点"扩展为连续的"区间"。</p>
+        <p><strong>口诀</strong>：含等号向外延（$\leq$ 变 $+0.5$，$\geq$ 变 $-0.5$），不含等号向内缩（$\lt$ 变 $-0.5$，$>$ 变 $+0.5$）。本质是把离散的"点"扩展为连续的"区间"——含等号时包含该点，所以向外多取半格；不含等号时不包含该点，所以向内缩半格。</p>
       </div>
     </div>
 
@@ -587,11 +597,11 @@
       <div class="collapsible-body">
         <p><strong>题目</strong>：一枚硬币抛 $10000$ 次，正面朝上的频率记为 $\hat{p}$。</p>
         <p>（1）用大数定律说明 $\hat{p}\approx 0.5$；</p>
-        <p>（2）用中心极限定理求 $\PP(0.49<\hat{p}<0.51)$。</p>
+        <p>（2）用中心极限定理求 $\PP(0.49\lt\hat{p}\lt0.51)$。</p>
         <p><strong>解</strong>：设 $X_i$ 为第 $i$ 次的结果（正面 $=1$，反面 $=0$），$\hat{p}=\bar{X}_n$。</p>
         <p><strong>（1）大数定律</strong>：$\EE(X_i)=0.5$，由辛钦大数定律，$\bar{X}_n\xrightarrow{P}0.5$。即当 $n\to\infty$ 时，频率稳定于概率。但大数定律只说"趋近"，不给出具体的概率值。</p>
         <p><strong>（2）中心极限定理</strong>：$\Var(X_i)=0.25$，$\hat{p}\;\dot{\sim}\;N\!\left(0.5,\dfrac{0.25}{10000}\right)=N(0.5, 0.000025)$。</p>
-        $$\PP(0.49<\hat{p}<0.51)=\PP\left(\frac{0.49-0.5}{0.005}<Z<\frac{0.51-0.5}{0.005}\right)=\PP(-2<Z<2)\approx 0.9544$$
+        $$\PP(0.49\lt\hat{p}\lt0.51)=\PP\left(\frac{0.49-0.5}{0.005}\lt Z\lt\frac{0.51-0.5}{0.005}\right)=\PP(-2\lt Z\lt2)\approx 0.9544$$
         <p><strong>核心区别</strong>：</p>
         <ul>
           <li>大数定律：定性——"频率趋近概率"，不能算具体概率</li>
@@ -605,7 +615,8 @@
       <div class="box-title">本章定理之间的关系</div>
       <p>本章的定理形成了一个完整的逻辑链条：</p>
       <ol>
-        <li><strong>切比雪夫不等式</strong>是最基础的工具——它不依赖分布形式，只需期望和方差</li>
+        <li><strong>马尔可夫不等式</strong>是最基本的概率不等式——只需期望存在，且随机变量非负</li>
+        <li><strong>切比雪夫不等式</strong>由马尔可夫不等式导出——只需期望和方差，不依赖分布形式</li>
         <li><strong>大数定律</strong>用切比雪夫不等式证明——它告诉我们"频率稳定于概率"</li>
         <li><strong>中心极限定理</strong>比大数定律更强——它不仅说明均值稳定，还说明均值的分布趋近正态</li>
       </ol>

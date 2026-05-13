@@ -58,6 +58,7 @@
       <li><a href="#week5">第五周作业</a>（共 8 题）</li>
       <li><a href="#week6">第六周作业</a>（共 14 题）</li>
       <li><a href="#week7">最后一次作业</a>（截止 5.15）</li>
+      <li><a href="#strategy">备考策略与重要性分级</a></li>
     </ol>
   </div>
 
@@ -170,6 +171,143 @@
       <h4>习题 4.4</h4>
       <p class="hw-problems">17、19</p>
     </div>
+  </div>
+
+  <!-- 备考策略 -->
+  <div class="section" id="strategy">
+    <h2>短期备考策略建议</h2>
+
+    <div class="box box-note">
+      <div class="box-title">备考时间分配（假设 3~5 天冲刺）</div>
+      <ul>
+        <li><strong>第 1 天（40%）</strong>：第一章 + 第二章前半（至常见分布）。概率计算是全部基础，二项/泊松/正态是核心分布。</li>
+        <li><strong>第 2 天（30%）</strong>：第二章后半（随机变量函数的分布）+ 第三章前半（边缘分布与条件分布）。</li>
+        <li><strong>第 3 天（20%）</strong>：第三章后半（卷积、极值、独立性）+ 第四章（大数定律与 CLT）。</li>
+        <li><strong>考前半天（10%）</strong>：附录速查 + 模拟题自测 + 错题回顾。</li>
+      </ul>
+    </div>
+
+    <h3>知识重要性分级</h3>
+    <div class="table-wrapper">
+      <table>
+        <tr>
+          <th>等级</th>
+          <th>知识点</th>
+          <th>对应章节</th>
+          <th>常考题型</th>
+          <th>说 明</th>
+        </tr>
+        <tr>
+          <td><span style="background:var(--danger);color:#fff;padding:2px 8px;border-radius:4px;font-size:0.8rem;">必考</span></td>
+          <td>全概率公式 + 贝叶斯公式</td>
+          <td>§1.3~1.4</td>
+          <td>大题第 1~2 道</td>
+          <td>全概率"由因求果"，贝叶斯"由果推因"。每年必出一道 8~10 分大题。</td>
+        </tr>
+        <tr>
+          <td><span style="background:var(--danger);color:#fff;padding:2px 8px;border-radius:4px;font-size:0.8rem;">必考</span></td>
+          <td>正态分布标准化 + 概率计算</td>
+          <td>§2.4</td>
+          <td>填空 / 大题</td>
+          <td>标准化 $Z=\frac{X-\mu}{\sigma}$ 是核心操作，必须查表熟练。</td>
+        </tr>
+        <tr>
+          <td><span style="background:var(--danger);color:#fff;padding:2px 8px;border-radius:4px;font-size:0.8rem;">必考</span></td>
+          <td>边缘分布 + 条件分布 + 独立性判定</td>
+          <td>§3.1~3.3</td>
+          <td>大题</td>
+          <td>给定联合密度求边缘、条件密度，判断独立性，是第三章最高频考题。</td>
+        </tr>
+        <tr>
+          <td><span style="background:var(--danger);color:#fff;padding:2px 8px;border-radius:4px;font-size:0.8rem;">必考</span></td>
+          <td>中心极限定理应用</td>
+          <td>§4.3</td>
+          <td>填空 / 大题</td>
+          <td>大量独立同分布变量之和近似正态。常考"至少需要多少样本量"类问题。</td>
+        </tr>
+        <tr>
+          <td><span style="background:var(--warning);color:#fff;padding:2px 8px;border-radius:4px;font-size:0.8rem;">高频</span></td>
+          <td>常见分布（二项/泊松/均匀/指数）</td>
+          <td>§2.2~2.3</td>
+          <td>填空 / 选择</td>
+          <td>记住分布律/密度 + 期望 + 方差。指数分布无记忆性是高频考点。</td>
+        </tr>
+        <tr>
+          <td><span style="background:var(--warning);color:#fff;padding:2px 8px;border-radius:4px;font-size:0.8rem;">高频</span></td>
+          <td>随机变量函数的分布</td>
+          <td>§2.5</td>
+          <td>计算题</td>
+          <td>单调函数用公式法，非单调用分布函数法。$Y=X^2$ 是经典套路。</td>
+        </tr>
+        <tr>
+          <td><span style="background:var(--warning);color:#fff;padding:2px 8px;border-radius:4px;font-size:0.8rem;">高频</span></td>
+          <td>二维正态分布</td>
+          <td>§3.4</td>
+          <td>填空</td>
+          <td>不相关 ⇔ 独立（这是二维正态特有的性质）。记住五个参数的含义。</td>
+        </tr>
+        <tr>
+          <td><span style="background:var(--warning);color:#fff;padding:2px 8px;border-radius:4px;font-size:0.8rem;">高频</span></td>
+          <td>协方差 + 相关系数</td>
+          <td>§3.3</td>
+          <td>计算题</td>
+          <td>$\Cov(X,Y)=E(XY)-E(X)E(Y)$，$\rho=0$ ⇔ 不相关。常与独立性联合考查。</td>
+        </tr>
+        <tr>
+          <td><span style="background:var(--info);color:#fff;padding:2px 8px;border-radius:4px;font-size:0.8rem;">常规</span></td>
+          <td>古典概型 + 几何概型</td>
+          <td>§1.2</td>
+          <td>填空 / 判断</td>
+          <td>排列组合基本功。几何概型本质是面积/长度比。</td>
+        </tr>
+        <tr>
+          <td><span style="background:var(--info);color:#fff;padding:2px 8px;border-radius:4px;font-size:0.8rem;">常规</span></td>
+          <td>事件独立性</td>
+          <td>§1.5</td>
+          <td>判断 / 填空</td>
+          <td>$P(AB)=P(A)P(B)$。注意：两两独立 ≠ 相互独立。</td>
+        </tr>
+        <tr>
+          <td><span style="background:var(--info);color:#fff;padding:2px 8px;border-radius:4px;font-size:0.8rem;">常规</span></td>
+          <td>卷积公式 + 极值分布</td>
+          <td>§3.5</td>
+          <td>计算题</td>
+          <td>$Z=X+Y$ 用卷积，$M=\max(X,Y)$、$N=\min(X,Y)$ 用分布函数公式。</td>
+        </tr>
+        <tr>
+          <td><span style="background:var(--info);color:#fff;padding:2px 8px;border-radius:4px;font-size:0.8rem;">常规</span></td>
+          <td>切比雪夫不等式 + 大数定律</td>
+          <td>§4.1~4.2</td>
+          <td>填空 / 判断</td>
+          <td>不等式用于估计概率界。辛钦大数定律是依概率收敛，不是几乎处处收敛。</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3>答题技巧速记</h3>
+    <div class="box box-formula">
+      <div class="box-title">各题型解题要点</div>
+      <ul>
+        <li><strong>判断题</strong>：反例法是王道。遇到"一定""必然"等绝对化表述应高度警惕。</li>
+        <li><strong>填空题</strong>：先写公式再代数。二项分布忘记公式时可用 $n$ 次伯努利手推。</li>
+        <li><strong>全概率/贝叶斯大题</strong>：第一步明确划分 $\{B_i\}$（互斥完备），第二步画概率树。用表格法代替公式不易错。</li>
+        <li><strong>边缘/条件密度</strong>：积分上下限看支撑域！画积分区域图是保分关键。</li>
+        <li><strong>正态概率</strong>：先标准化 $Z=\frac{X-\mu}{\sigma}$，再查表。符号方向审清楚。</li>
+        <li><strong>中心极限定理</strong>：先写 $\frac{\bar{X}-\mu}{\sigma/\sqrt{n}}\xrightarrow{d}N(0,1)$，再代入求解。</li>
+      </ul>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">考前 2 小时最佳行动清单</div>
+      <ol>
+        <li>用附录速查表过一遍所有分布（离散 5 个 + 连续 3 个），确认记住记号、分布律/密度、期望、方差</li>
+        <li>背一遍贝叶斯公式的结构：分子 = 所求那一支的概率，分母 = 全概率</li>
+        <li>做 3 道题找回手感：1 道全概率 + 1 道边缘密度 + 1 道正态概率</li>
+        <li>默写：边缘密度公式、条件密度公式、卷积公式、协方差公式</li>
+        <li>检查计算器电池，确认带正态分布表</li>
+      </ol>
+    </div>
+
   </div>
 
   <!-- 底部导航 -->
