@@ -98,7 +98,7 @@
         <p><span class="q-number">3.</span> 设 $X\sim N(2, 9)$，则 $\dfrac{X-2}{3}\sim$ <span class="blank"></span>。</p>
       </div>
       <div class="question-item">
-        <p><span class="q-number">4.</span> 设随机变量 $X$ 的密度函数为 $f(x)=\begin{cases}2x,&0<x<1\\0,&\text{其他}\end{cases}$，则 $\PP\!\left(X\leq\dfrac{1}{2}\right)=$ <span class="blank"></span>。</p>
+        <p><span class="q-number">4.</span> 设随机变量 $X$ 的密度函数为 $f(x)=\begin{cases}2x,&0\lt x\lt 1\\0,&\text{其他}\end{cases}$，则 $\PP\!\left(X\leq\dfrac{1}{2}\right)=$ <span class="blank"></span>。</p>
       </div>
       <div class="question-item">
         <p><span class="q-number">5.</span> 设 $(X,Y)$ 的联合分布律为：$\PP(X=0,Y=0)=0.1$，$\PP(X=0,Y=1)=0.2$，$\PP(X=1,Y=0)=0.3$，$\PP(X=1,Y=1)=0.4$，则 $\PP(X=1)=$ <span class="blank"></span>。</p>
@@ -133,7 +133,7 @@
     <div class="question-group">
       <h3>四、（6 分）</h3>
       <div class="question-item">
-        <p>设随机变量 $X$ 的密度函数为 $f(x)=\begin{cases}kx^2,&0<x<1\\0,&\text{其他}\end{cases}$</p>
+        <p>设随机变量 $X$ 的密度函数为 $f(x)=\begin{cases}kx^2,&0\lt x\lt 1\\0,&\text{其他}\end{cases}$</p>
         <p>（1）求常数 $k$；（2）求 $\EE(X)$ 和 $\Var(X)$。</p>
       </div>
     </div>
@@ -141,7 +141,7 @@
     <div class="question-group">
       <h3>五、（6 分）</h3>
       <div class="question-item">
-        <p>设 $(X,Y)$ 的联合密度函数为 $f(x,y)=\begin{cases}cxy,&0<x<1,\;0<y<1\\0,&\text{其他}\end{cases}$</p>
+        <p>设 $(X,Y)$ 的联合密度函数为 $f(x,y)=\begin{cases}cxy,&0\lt x\lt 1,\;0\lt y\lt 1\\0,&\text{其他}\end{cases}$</p>
         <p>（1）求常数 $c$；（2）判断 $X$ 与 $Y$ 是否独立。</p>
       </div>
     </div>
@@ -173,7 +173,7 @@
     <div class="question-group">
       <h3>九、（18 分）</h3>
       <div class="question-item">
-        <p>设 $(X,Y)$ 的联合密度函数为 $f(x,y)=\begin{cases}6(1-y),&0<x<y<1\\0,&\text{其他}\end{cases}$</p>
+        <p>设 $(X,Y)$ 的联合密度函数为 $f(x,y)=\begin{cases}6(1-y),&0\lt x\lt y\lt 1\\0,&\text{其他}\end{cases}$</p>
         <p>（1）求边缘密度 $f_X(x)$ 和 $f_Y(y)$；</p>
         <p>（2）求条件密度 $f_{X|Y}(x|y)$；</p>
         <p>（3）求 $\PP(X+Y>1)$；</p>
@@ -224,7 +224,7 @@
       <h3>五、解答题</h3>
       <div class="answer-item">
         <p><span class="a-number">（1）</span>$\int_0^1\int_0^1 cxy\,\dd x\,\dd y=c\cdot\dfrac{1}{2}\cdot\dfrac{1}{2}=\dfrac{c}{4}=1$，故 $c=4$。</p>
-        <p><span class="a-number">（2）</span>$f_X(x)=\int_0^1 4xy\,\dd y=2x$（$0<x<1$），$f_Y(y)=\int_0^1 4xy\,\dd x=2y$（$0<y<1$）。由于 $f(x,y)=4xy=2x\cdot 2y=f_X(x)f_Y(y)$，故 $X$ 与 $Y$ 独立。</p>
+        <p><span class="a-number">（2）</span>$f_X(x)=\int_0^1 4xy\,\dd y=2x$（$0\lt x\lt 1$），$f_Y(y)=\int_0^1 4xy\,\dd x=2y$（$0\lt y\lt 1$）。由于 $f(x,y)=4xy=2x\cdot 2y=f_X(x)f_Y(y)$，故 $X$ 与 $Y$ 独立。</p>
       </div>
 
       <h3>六、解答题</h3>
@@ -253,12 +253,12 @@
 
       <h3>九、解答题</h3>
       <div class="answer-item">
-        <p><span class="a-number">（1）</span>当 $0<x<1$ 时：</p>
+        <p><span class="a-number">（1）</span>当 $0\lt x\lt 1$ 时：</p>
         $$f_X(x)=\int_x^1 6(1-y)\,\dd y=6\left[y-\frac{y^2}{2}\right]_x^1=6\left(\frac{1}{2}-x+\frac{x^2}{2}\right)=3(1-x)^2$$
-        <p>当 $0<y<1$ 时：</p>
+        <p>当 $0\lt y\lt 1$ 时：</p>
         $$f_Y(y)=\int_0^y 6(1-y)\,\dd x=6y(1-y)$$
-        <p><span class="a-number">（2）</span>当 $0<y<1$ 时：$f_{X|Y}(x|y)=\dfrac{f(x,y)}{f_Y(y)}=\dfrac{6(1-y)}{6y(1-y)}=\dfrac{1}{y}$，$0<x<y$。即 $X|Y=y\sim U(0,y)$。</p>
-        <p><span class="a-number">（3）</span>积分区域为 $0<x<y<1$ 且 $x+y>1$，即 $1-y<x<y$（需要 $y>1/2$）：</p>
+        <p><span class="a-number">（2）</span>当 $0\lt y\lt 1$ 时：$f_{X|Y}(x|y)=\dfrac{f(x,y)}{f_Y(y)}=\dfrac{6(1-y)}{6y(1-y)}=\dfrac{1}{y}$，$0\lt x\lt y$。即 $X|Y=y\sim U(0,y)$。</p>
+        <p><span class="a-number">（3）</span>积分区域为 $0\lt x\lt y\lt 1$ 且 $x+y>1$，即 $1-y\lt x\lt y$（需要 $y>1/2$）：</p>
         $$\PP(X+Y>1)=\int_{1/2}^1\int_{1-y}^y 6(1-y)\,\dd x\,\dd y=\int_{1/2}^1 6(1-y)(2y-1)\,\dd y$$
         $$=\int_{1/2}^1(12y-6-12y^2+6y)\,\dd y=\int_{1/2}^1(-12y^2+18y-6)\,\dd y=\frac{1}{2}$$
         <p><span class="a-number">（4）</span>$\EE(X)=\int_0^1 3x(1-x)^2\,\dd x=\dfrac{1}{4}$，$\EE(Y)=\int_0^1 6y^2(1-y)\,\dd y=\dfrac{1}{2}$。</p>
@@ -310,7 +310,7 @@
         <p><span class="q-number">2.</span> 设 $X\sim P(2)$，则 $\PP(X\geq 2)=$ <span class="blank"></span>。</p>
       </div>
       <div class="question-item">
-        <p><span class="q-number">3.</span> 设 $X$ 的密度函数为 $f(x)=Ae^{-|x|}$（$-\infty<x<+\infty$），则 $A=$ <span class="blank"></span>。</p>
+        <p><span class="q-number">3.</span> 设 $X$ 的密度函数为 $f(x)=Ae^{-|x|}$（$-\infty\lt x\lt +\infty$），则 $A=$ <span class="blank"></span>。</p>
       </div>
       <div class="question-item">
         <p><span class="q-number">4.</span> 设 $X\sim E(1)$（指数分布），则 $\PP(X>2|X>1)=$ <span class="blank"></span>。</p>
@@ -355,15 +355,15 @@
     <div class="question-group">
       <h3>四、（6 分）</h3>
       <div class="question-item">
-        <p>设随机变量 $X$ 的分布函数为 $F(x)=\begin{cases}0,&x<0\\Ax^2,&0\leq x<1\\1,&x\geq 1\end{cases}$</p>
-        <p>（1）求常数 $A$；（2）求密度函数 $f(x)$；（3）求 $\PP(0.5<X<0.8)$。</p>
+        <p>设随机变量 $X$ 的分布函数为 $F(x)=\begin{cases}0,&x\lt 0\\Ax^2,&0\leq x\lt 1\\1,&x\geq 1\end{cases}$</p>
+        <p>（1）求常数 $A$；（2）求密度函数 $f(x)$；（3）求 $\PP(0.5\lt X\lt 0.8)$。</p>
       </div>
     </div>
 
     <div class="question-group">
       <h3>五、（6 分）</h3>
       <div class="question-item">
-        <p>设 $X\sim U(0,1)$，在 $X=x$ 条件下 $Y$ 的条件密度为 $f_{Y|X}(y|x)=\begin{cases}\dfrac{1}{x},&0<y<x\\0,&\text{其他}\end{cases}$</p>
+        <p>设 $X\sim U(0,1)$，在 $X=x$ 条件下 $Y$ 的条件密度为 $f_{Y|X}(y|x)=\begin{cases}\dfrac{1}{x},&0\lt y\lt x\\0,&\text{其他}\end{cases}$</p>
         <p>（1）求 $(X,Y)$ 的联合密度；（2）求 $f_Y(y)$。</p>
       </div>
     </div>
@@ -371,7 +371,7 @@
     <div class="question-group">
       <h3>六、（10 分）</h3>
       <div class="question-item">
-        <p>设随机变量 $X$ 的密度函数为 $f(x)=\begin{cases}2x,&0<x<1\\0,&\text{其他}\end{cases}$</p>
+        <p>设随机变量 $X$ 的密度函数为 $f(x)=\begin{cases}2x,&0\lt x\lt 1\\0,&\text{其他}\end{cases}$</p>
         <p>（1）求 $Y=X^3$ 的密度函数；</p>
         <p>（2）求 $Z=\dfrac{1}{X}$ 的密度函数。</p>
       </div>
@@ -387,7 +387,7 @@
     <div class="question-group">
       <h3>八、（6 分）</h3>
       <div class="question-item">
-        <p>设 $(X,Y)$ 的联合密度为 $f(x,y)=\begin{cases}e^{-y},&0<x<y\\0,&\text{其他}\end{cases}$</p>
+        <p>设 $(X,Y)$ 的联合密度为 $f(x,y)=\begin{cases}e^{-y},&0\lt x\lt y\\0,&\text{其他}\end{cases}$</p>
         <p>（1）求 $f_X(x)$；（2）求 $\EE(XY)$。</p>
       </div>
     </div>
@@ -395,7 +395,7 @@
     <div class="question-group">
       <h3>九、（18 分）</h3>
       <div class="question-item">
-        <p>设随机变量 $X$ 的密度函数为 $f(x;\theta)=\begin{cases}\theta x^{\theta-1},&0<x<1\\0,&\text{其他}\end{cases}$，其中 $\theta>0$ 为参数。</p>
+        <p>设随机变量 $X$ 的密度函数为 $f(x;\theta)=\begin{cases}\theta x^{\theta-1},&0\lt x\lt 1\\0,&\text{其他}\end{cases}$，其中 $\theta>0$ 为参数。</p>
         <p>（1）求 $\EE(X)$ 和 $\Var(X)$；</p>
         <p>（2）求 $Y=-2\theta\ln X$ 的分布；</p>
         <p>（3）设 $X_1,\ldots,X_n$ 为来自此分布的样本，求 $\theta$ 的矩估计量。</p>
@@ -438,20 +438,20 @@
       <h3>四、解答题</h3>
       <div class="answer-item">
         <p><span class="a-number">（1）</span>$F(x)$ 在 $x=1$ 处连续：$A\cdot 1^2=1$，故 $A=1$。</p>
-        <p><span class="a-number">（2）</span>$f(x)=F'(x)=\begin{cases}2x,&0<x<1\\0,&\text{其他}\end{cases}$</p>
-        <p><span class="a-number">（3）</span>$\PP(0.5<X<0.8)=F(0.8)-F(0.5)=0.64-0.25=0.39$。</p>
+        <p><span class="a-number">（2）</span>$f(x)=F'(x)=\begin{cases}2x,&0\lt x\lt 1\\0,&\text{其他}\end{cases}$</p>
+        <p><span class="a-number">（3）</span>$\PP(0.5\lt X\lt 0.8)=F(0.8)-F(0.5)=0.64-0.25=0.39$。</p>
       </div>
 
       <h3>五、解答题</h3>
       <div class="answer-item">
-        <p><span class="a-number">（1）</span>$f(x,y)=f_X(x)\cdot f_{Y|X}(y|x)=1\cdot\dfrac{1}{x}=\dfrac{1}{x}$，$0<y<x<1$。</p>
-        <p><span class="a-number">（2）</span>当 $0<y<1$ 时：$f_Y(y)=\int_y^1\dfrac{1}{x}\,\dd x=\ln 1-\ln y=-\ln y$。</p>
+        <p><span class="a-number">（1）</span>$f(x,y)=f_X(x)\cdot f_{Y|X}(y|x)=1\cdot\dfrac{1}{x}=\dfrac{1}{x}$，$0\lt y\lt x\lt 1$。</p>
+        <p><span class="a-number">（2）</span>当 $0\lt y\lt 1$ 时：$f_Y(y)=\int_y^1\dfrac{1}{x}\,\dd x=\ln 1-\ln y=-\ln y$。</p>
       </div>
 
       <h3>六、解答题</h3>
       <div class="answer-item">
         <p><span class="a-number">（1）</span>$Y=X^3$，$y=x^3$ 单调增，$x=y^{1/3}$，$\dfrac{\dd x}{\dd y}=\dfrac{1}{3}y^{-2/3}$。</p>
-        <p>$f_Y(y)=f_X(y^{1/3})\cdot\dfrac{1}{3}y^{-2/3}=2y^{1/3}\cdot\dfrac{1}{3}y^{-2/3}=\dfrac{2}{3}y^{-1/3}$，$0<y<1$。</p>
+        <p>$f_Y(y)=f_X(y^{1/3})\cdot\dfrac{1}{3}y^{-2/3}=2y^{1/3}\cdot\dfrac{1}{3}y^{-2/3}=\dfrac{2}{3}y^{-1/3}$，$0\lt y\lt 1$。</p>
         <p><span class="a-number">（2）</span>$Z=1/X$，$z=1/x$ 单调减，$x=1/z$，$\left|\dfrac{\dd x}{\dd z}\right|=\dfrac{1}{z^2}$。</p>
         <p>$f_Z(z)=f_X(1/z)\cdot\dfrac{1}{z^2}=\dfrac{2}{z}\cdot\dfrac{1}{z^2}=\dfrac{2}{z^3}$，$z>1$。</p>
       </div>
@@ -459,7 +459,7 @@
       <h3>七、解答题</h3>
       <div class="answer-item">
         <p>$\bar{X}\sim N\!\left(50,\dfrac{0.25}{25}\right)=N(50, 0.01)$，即 $\bar{X}\sim N(50, 0.1^2)$。</p>
-        $$\PP(49.8<\bar{X}<50.2)=\PP\left(\frac{49.8-50}{0.1}<\frac{\bar{X}-50}{0.1}<\frac{50.2-50}{0.1}\right)=\PP(-2<Z<2)$$
+        $$\PP(49.8\lt\bar{X}\lt 50.2)=\PP\left(\frac{49.8-50}{0.1}\lt\frac{\bar{X}-50}{0.1}\lt\frac{50.2-50}{0.1}\right)=\PP(-2\lt Z\lt 2)$$
         $$=2\Phi(2)-1=2\times 0.9772-1=0.9544$$
       </div>
 
@@ -477,7 +477,7 @@
         <p><span class="a-number">（1）</span>$\EE(X)=\int_0^1\theta x^{\theta}\,\dd x=\dfrac{\theta}{\theta+1}$。</p>
         <p>$\EE(X^2)=\int_0^1\theta x^{\theta+1}\,\dd x=\dfrac{\theta}{\theta+2}$。</p>
         <p>$\Var(X)=\dfrac{\theta}{\theta+2}-\left(\dfrac{\theta}{\theta+1}\right)^2=\dfrac{\theta}{(\theta+1)^2(\theta+2)}$。</p>
-        <p><span class="a-number">（2）</span>$Y=-2\theta\ln X$。当 $0<x<1$ 时 $\ln x<0$，故 $y>0$。</p>
+        <p><span class="a-number">（2）</span>$Y=-2\theta\ln X$。当 $0\lt x\lt 1$ 时 $\ln x\lt 0$，故 $y>0$。</p>
         <p>$x=e^{-y/(2\theta)}$，$\left|\dfrac{\dd x}{\dd y}\right|=\dfrac{1}{2\theta}e^{-y/(2\theta)}$。</p>
         <p>$f_Y(y)=\theta\left(e^{-y/(2\theta)}\right)^{\theta-1}\cdot\dfrac{1}{2\theta}e^{-y/(2\theta)}=\dfrac{1}{2}e^{-y/2}$，$y>0$。</p>
         <p>即 $Y\sim E(1/2)$，也就是 $Y\sim\chi^2(2)$。</p>
@@ -533,7 +533,7 @@
         <p><span class="q-number">4.</span> 设 $X$ 的密度函数为 $f(x)=\dfrac{1}{\sqrt{2\pi}}e^{-(x-3)^2/2}$，则 $\EE(X)=$ <span class="blank"></span>，$\Var(X)=$ <span class="blank"></span>。</p>
       </div>
       <div class="question-item">
-        <p><span class="q-number">5.</span> 设 $X\sim N(0,1)$，$\Phi(1.96)=0.975$，则 $\PP(|X|<1.96)=$ <span class="blank"></span>。</p>
+        <p><span class="q-number">5.</span> 设 $X\sim N(0,1)$，$\Phi(1.96)=0.975$，则 $\PP(|X|\lt 1.96)=$ <span class="blank"></span>。</p>
       </div>
       <div class="question-item">
         <p><span class="q-number">6.</span> 设 $X\sim U(0,\pi)$，$Y=\sin X$，则 $\EE(Y)=$ <span class="blank"></span>。</p>
@@ -580,7 +580,7 @@
     <div class="question-group">
       <h3>六、（10 分）</h3>
       <div class="question-item">
-        <p>设 $(X,Y)$ 的联合密度为 $f(x,y)=\begin{cases}8xy,&0<x<y<1\\0,&\text{其他}\end{cases}$</p>
+        <p>设 $(X,Y)$ 的联合密度为 $f(x,y)=\begin{cases}8xy,&0\lt x\lt y\lt 1\\0,&\text{其他}\end{cases}$</p>
         <p>（1）求 $f_X(x)$ 和 $f_Y(y)$；</p>
         <p>（2）求 $\EE(X)$，$\EE(Y)$，$\Cov(X,Y)$。</p>
       </div>
@@ -605,7 +605,7 @@
     <div class="question-group">
       <h3>九、（18 分）</h3>
       <div class="question-item">
-        <p>设 $(X,Y)$ 的联合密度为 $f(x,y)=\begin{cases}2,&0<x<1,\;0<y<x\\0,&\text{其他}\end{cases}$</p>
+        <p>设 $(X,Y)$ 的联合密度为 $f(x,y)=\begin{cases}2,&0\lt x\lt 1,\;0\lt y\lt x\\0,&\text{其他}\end{cases}$</p>
         <p>（1）求边缘密度 $f_X(x)$ 和 $f_Y(y)$；</p>
         <p>（2）求条件密度 $f_{Y|X}(y|x)$ 和 $f_{X|Y}(x|y)$；</p>
         <p>（3）求 $\EE(X)$，$\EE(Y)$，$\EE(XY)$，$\Cov(X,Y)$；</p>
@@ -631,7 +631,7 @@
       <div class="answer-item"><span class="a-number">2.</span> $\dfrac{1}{6}$。点数之和为 $7$ 的组合：$(1,6),(2,5),(3,4),(4,3),(5,2),(6,1)$，共 $6$ 种，总样本点 $36$ 个，$\PP=\dfrac{6}{36}=\dfrac{1}{6}$。</div>
       <div class="answer-item"><span class="a-number">3.</span> $\dfrac{3}{8}$。$\PP(X=2)=\binom{4}{2}(0.5)^4=6\times\dfrac{1}{16}=\dfrac{3}{8}$。</div>
       <div class="answer-item"><span class="a-number">4.</span> $\EE(X)=3$，$\Var(X)=1$。这是 $N(3,1)$ 的密度函数。</div>
-      <div class="answer-item"><span class="a-number">5.</span> $0.95$。$\PP(|X|<1.96)=\PP(-1.96<X<1.96)=2\Phi(1.96)-1=2\times 0.975-1=0.95$。</div>
+      <div class="answer-item"><span class="a-number">5.</span> $0.95$。$\PP(|X|\lt 1.96)=\PP(-1.96\lt X\lt 1.96)=2\Phi(1.96)-1=2\times 0.975-1=0.95$。</div>
       <div class="answer-item"><span class="a-number">6.</span> $\dfrac{2}{\pi}$。$\EE(Y)=\int_0^{\pi}\sin x\cdot\dfrac{1}{\pi}\,\dd x=\dfrac{1}{\pi}[-\cos x]_0^{\pi}=\dfrac{1}{\pi}(1+1)=\dfrac{2}{\pi}$。</div>
       <div class="answer-item"><span class="a-number">7.</span> $1$。$\Cov(X,Y)=\rho\sigma_X\sigma_Y=0.5\times 1\times 2=1$。</div>
       <div class="answer-item"><span class="a-number">8.</span> $\dfrac{1}{\lambda^2}$。指数分布的方差为 $\dfrac{1}{\lambda^2}$，期望为 $\dfrac{1}{\lambda}$。</div>
@@ -660,8 +660,8 @@
 
       <h3>六、解答题</h3>
       <div class="answer-item">
-        <p><span class="a-number">（1）</span>当 $0<x<1$ 时：$f_X(x)=\int_x^1 8xy\,\dd y=8x\cdot\dfrac{1-x^2}{2}=4x(1-x^2)$。</p>
-        <p>当 $0<y<1$ 时：$f_Y(y)=\int_0^y 8xy\,\dd x=8y\cdot\dfrac{y^2}{2}=4y^3$。</p>
+        <p><span class="a-number">（1）</span>当 $0\lt x\lt 1$ 时：$f_X(x)=\int_x^1 8xy\,\dd y=8x\cdot\dfrac{1-x^2}{2}=4x(1-x^2)$。</p>
+        <p>当 $0\lt y\lt 1$ 时：$f_Y(y)=\int_0^y 8xy\,\dd x=8y\cdot\dfrac{y^2}{2}=4y^3$。</p>
         <p><span class="a-number">（2）</span>$\EE(X)=\int_0^1 4x^2(1-x^2)\,\dd x=4\left(\dfrac{1}{3}-\dfrac{1}{5}\right)=\dfrac{8}{15}$。</p>
         <p>$\EE(Y)=\int_0^1 4y^4\,\dd y=\dfrac{4}{5}$。</p>
         <p>$\EE(XY)=\int_0^1\int_x^1 8x^2y^2\,\dd y\,\dd x=\int_0^1 8x^2\cdot\dfrac{1-x^3}{3}\,\dd x=\dfrac{8}{3}\left(\dfrac{1}{3}-\dfrac{1}{6}\right)=\dfrac{4}{9}$。</p>
@@ -685,16 +685,16 @@
 
       <h3>九、解答题</h3>
       <div class="answer-item">
-        <p><span class="a-number">（1）</span>当 $0<x<1$ 时：$f_X(x)=\int_0^x 2\,\dd y=2x$。</p>
-        <p>当 $0<y<1$ 时：$f_Y(y)=\int_y^1 2\,\dd x=2(1-y)$。</p>
-        <p><span class="a-number">（2）</span>$f_{Y|X}(y|x)=\dfrac{2}{2x}=\dfrac{1}{x}$，$0<y<x$。即 $Y|X=x\sim U(0,x)$。</p>
-        <p>$f_{X|Y}(x|y)=\dfrac{2}{2(1-y)}=\dfrac{1}{1-y}$，$y<x<1$。即 $X|Y=y\sim U(y,1)$。</p>
+        <p><span class="a-number">（1）</span>当 $0\lt x\lt 1$ 时：$f_X(x)=\int_0^x 2\,\dd y=2x$。</p>
+        <p>当 $0\lt y\lt 1$ 时：$f_Y(y)=\int_y^1 2\,\dd x=2(1-y)$。</p>
+        <p><span class="a-number">（2）</span>$f_{Y|X}(y|x)=\dfrac{2}{2x}=\dfrac{1}{x}$，$0\lt y\lt x$。即 $Y|X=x\sim U(0,x)$。</p>
+        <p>$f_{X|Y}(x|y)=\dfrac{2}{2(1-y)}=\dfrac{1}{1-y}$，$y\lt x\lt 1$。即 $X|Y=y\sim U(y,1)$。</p>
         <p><span class="a-number">（3）</span>$\EE(X)=\int_0^1 2x^2\,\dd x=\dfrac{2}{3}$，$\EE(Y)=\int_0^1 2y(1-y)\,\dd y=2\left(\dfrac{1}{2}-\dfrac{1}{3}\right)=\dfrac{1}{3}$。</p>
         <p>$\EE(XY)=\int_0^1\int_0^x 2xy\,\dd y\,\dd x=\int_0^1 x^3\,\dd x=\dfrac{1}{4}$。</p>
         <p>$\Cov(X,Y)=\dfrac{1}{4}-\dfrac{2}{3}\times\dfrac{1}{3}=\dfrac{1}{4}-\dfrac{2}{9}=\dfrac{1}{36}$。</p>
-        <p><span class="a-number">（4）</span>$Z=X-Y$，令 $z=x-y$。联合密度的支撑为 $0<y<x<1$，即 $0<z<1$，$0<y<1-z$。</p>
-        <p>$f_Z(z)=\int_0^{1-z}f(y+z,y)\,\dd y=\int_0^{1-z}2\,\dd y=2(1-z)$，$0<z<1$。</p>
-        <p>即 $Z$ 服从三角分布（也叫辛普森分布），密度为 $f_Z(z)=2(1-z)$，$0<z<1$。</p>
+        <p><span class="a-number">（4）</span>$Z=X-Y$，令 $z=x-y$。联合密度的支撑为 $0\lt y\lt x\lt 1$，即 $0\lt z\lt 1$，$0\lt y\lt 1-z$。</p>
+        <p>$f_Z(z)=\int_0^{1-z}f(y+z,y)\,\dd y=\int_0^{1-z}2\,\dd y=2(1-z)$，$0\lt z\lt 1$。</p>
+        <p>即 $Z$ 服从三角分布（也叫辛普森分布），密度为 $f_Z(z)=2(1-z)$，$0\lt z\lt 1$。</p>
       </div>
     </div>
       </div><!-- /collapsible-body -->
