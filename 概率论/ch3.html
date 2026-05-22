@@ -59,6 +59,7 @@
       <li><a href="#s6">随机变量的独立性</a></li>
       <li><a href="#s7">两个随机变量函数的分布</a></li>
       <li><a href="#s8">综合例题与常见题型</a></li>
+      <li><a href="#s9">补充：条件期望与卷积进阶</a></li>
     </ol>
   </div>
 
@@ -511,6 +512,72 @@
         <li><strong>求 $Z=X+Y$ 的分布</strong>：用卷积公式或分布函数法</li>
         <li><strong>求极值分布</strong>：用 $F_{\max}=F_X F_Y$，$F_{\min}=1-(1-F_X)(1-F_Y)$</li>
       </ol>
+    </div>
+  </div>
+
+  <!-- ==================== 3.9 补充：条件期望与卷积 ==================== -->
+  <div class="section" id="s9">
+    <h2>3.9 补充：条件期望与卷积进阶</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 条件期望</div>
+      <p>在给定 $Y=y$ 的条件下，$X$ 的条件期望定义为：</p>
+      $$E(X\mid Y=y)=\int_{-\infty}^{+\infty} x\cdot f_{X|Y}(x|y)\,\dd x$$
+      <p>（离散型同理，把积分换成求和。）$E(X\mid Y=y)$ 是 $y$ 的函数。将 $y$ 替换为随机变量 $Y$，得到<strong>条件期望</strong> $E(X\mid Y)$，它是一个随机变量（是 $Y$ 的函数）。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">重期望公式（全期望公式）</div>
+      <p>条件期望的核心工具——<strong>重期望公式</strong>（Tower Property / Law of Total Expectation）：</p>
+      $$E(X)=E\bigl[E(X\mid Y)\bigr]$$
+      <p>类似地，方差也有分解：</p>
+      $$\Var(X)=E[\Var(X\mid Y)]+\Var[E(X\mid Y)]$$
+      <p><strong>直觉</strong>：$X$ 的总方差 = "组内方差"的期望 + "组间方差"。这是方差分析（ANOVA）的概率论基础。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 · 用重期望公式求期望</div>
+      <p>设 $(X,Y)$ 的联合密度为 $f(x,y)=3x$，$0\lt y\lt x\lt 1$。求 $E(Y)$。</p>
+      <p><strong>解（重期望法）</strong>：先求条件分布：$f_X(x)=3x^2$（$0\lt x\lt 1$），$f_{Y|X}(y|x)=\dfrac{3x}{3x^2}=\dfrac{1}{x}$，$0\lt y\lt x$。</p>
+      <p>即 $Y\mid X=x\sim U(0,x)$，故 $E(Y\mid X=x)=\dfrac{x}{2}$。</p>
+      <p>由重期望公式：$E(Y)=E[E(Y\mid X)]=E\!\left(\dfrac{X}{2}\right)=\dfrac{1}{2}E(X)=\dfrac{1}{2}\displaystyle\int_0^1 3x^3\,\dd x=\dfrac{1}{2}\cdot\dfrac{3}{4}=\dfrac{3}{8}$。</p>
+      <p>这比直接积分 $\int_0^1 y\cdot f_Y(y)\,\dd y$ 更快，因为它利用了条件分布的均匀性。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 · 卷积公式求和的分布</div>
+      <p>设 $X\sim U(0,1)$，$Y\sim U(0,1)$，且 $X$ 与 $Y$ 独立。求 $Z=X+Y$ 的密度函数。</p>
+      <p><strong>解</strong>：用卷积公式 $f_Z(z)=\displaystyle\int_{-\infty}^{+\infty}f_X(x)f_Y(z-x)\,\dd x$。</p>
+      <p>被积函数非零的条件是 $0\lt x\lt 1$ 且 $0\lt z-x\lt 1$，即 $\max(0,z-1)\lt x\lt\min(1,z)$。</p>
+      <ul>
+        <li>当 $0\lt z\lt 1$ 时，$0\lt x\lt z$，$f_Z(z)=\displaystyle\int_0^z 1\cdot 1\,\dd x=z$；</li>
+        <li>当 $1\lt z\lt 2$ 时，$z-1\lt x\lt 1$，$f_Z(z)=\displaystyle\int_{z-1}^1 1\cdot 1\,\dd x=2-z$。</li>
+      </ul>
+      <p>即 $f_Z(z)=\begin{cases}z,&0\lt z\lt 1\\2-z,&1\lt z\lt 2\\0,&\text{其他}\end{cases}$，这是<strong>三角分布</strong>（也叫辛普森分布）。</p>
+      <p>当 $n$ 个独立 $U(0,1)$ 之和趋于正态（CLT），$n=2$ 时的三角分布是 CLT 的第一步近似。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 · 极值分布</div>
+      <p>设 $X_1,X_2,\ldots,X_n$ 独立同分布，分布函数为 $F(x)$。令 $M=\max(X_1,\ldots,X_n)$，$N=\min(X_1,\ldots,X_n)$。</p>
+      <p><strong>推导</strong>：</p>
+      $$F_M(m)=\PP(M\leq m)=\PP(X_1\leq m,\ldots,X_n\leq m)=[F(m)]^n$$
+      $$F_N(n)=\PP(N\leq n)=1-\PP(N>n)=1-\PP(X_1>n,\ldots,X_n>n)=1-[1-F(n)]^n$$
+      <p>求导得密度：$f_M(m)=n[F(m)]^{n-1}f(m)$，$f_N(n)=n[1-F(n)]^{n-1}f(n)$。</p>
+      <p><strong>特例</strong>：若 $X_i\sim U(0,\theta)$ 独立，则 $M=\max X_i$ 的密度为 $f_M(m)=\dfrac{n m^{n-1}}{\theta^n}$（$0\lt m\lt\theta$），$E(M)=\dfrac{n}{n+1}\theta$。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">独立随机变量和的性质总结</div>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>分布族</th><th>可加性</th><th>说明</th></tr>
+          <tr><td>二项分布</td><td>$B(n_1,p)+B(n_2,p)=B(n_1+n_2,p)$</td><td>要求 $p$ 相同</td></tr>
+          <tr><td>泊松分布</td><td>$P(\lambda_1)+P(\lambda_2)=P(\lambda_1+\lambda_2)$</td><td>独立即可</td></tr>
+          <tr><td>正态分布</td><td>$N(\mu_1,\sigma_1^2)+N(\mu_2,\sigma_2^2)=N(\mu_1+\mu_2,\sigma_1^2+\sigma_2^2)$</td><td>独立即可</td></tr>
+          <tr><td>指数分布</td><td>$E(\lambda)+E(\lambda)$ 不服从指数分布</td><td>和是 Erlang(2,$\lambda$)，不是指数分布</td></tr>
+        </table>
+      </div>
     </div>
   </div>
 

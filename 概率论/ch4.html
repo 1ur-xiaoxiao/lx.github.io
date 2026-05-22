@@ -45,7 +45,7 @@
 
   <div class="chapter-header">
     <h1>第四章 · 大数定律与中心极限定理</h1>
-    <p>概率论的理论高峰：大数定律解释了"频率为何稳定"，中心极限定理解释了"正态分布为何普遍"。这两个定理是统计学的理论基石。</p>
+    <p>概率论的理论高峰：特征函数提供了分析随机变量之和的强大工具，大数定律解释了"频率为何稳定"，中心极限定理解释了"正态分布为何普遍"。这三个主题构成完整的极限理论体系，是统计学的理论基石。</p>
   </div>
 
   <div class="toc">
@@ -53,9 +53,10 @@
     <ol>
       <li><a href="#s1">预备知识：期望与方差回顾</a></li>
       <li><a href="#s2">马尔可夫不等式与切比雪夫不等式</a></li>
-      <li><a href="#s3">大数定律</a></li>
-      <li><a href="#s4">中心极限定理</a></li>
-      <li><a href="#s5">综合例题与应用</a></li>
+      <li><a href="#s3">特征函数 —— 分析随机变量之和的利器</a></li>
+      <li><a href="#s4">大数定律</a></li>
+      <li><a href="#s5">中心极限定理</a></li>
+      <li><a href="#s6">综合例题与应用</a></li>
     </ol>
   </div>
 
@@ -149,9 +150,247 @@
     </div>
   </div>
 
-  <!-- ==================== 4.3 大数定律 ==================== -->
+  <!-- ==================== 4.3 特征函数 ==================== -->
   <div class="section" id="s3">
-    <h2>4.3 大数定律</h2>
+    <h2>4.3 特征函数 —— 分析随机变量之和的利器</h2>
+
+    <div class="box box-note">
+      <div class="box-title">为什么需要特征函数？</div>
+      <p>前面我们用切比雪夫不等式证明了大数定律，但这种方法<strong>无法证明中心极限定理</strong>。要证明"独立随机变量之和趋近正态分布"，需要一个能<strong>精确刻画分布</strong>的工具。</p>
+      <p><strong>矩母函数</strong> $M_X(t) = E(e^{tX})$ 是一个候选，但它有一个致命缺陷：<strong>不一定存在</strong>（例如柯西分布的矩母函数处处不存在）。</p>
+      <p><strong>特征函数</strong> $\varphi_X(t) = E(e^{itX})$ 通过引入复数 $i$，使得 $|e^{itX}| = 1$ 恒成立，因此<strong>对任何随机变量都存在</strong>。它是分析随机变量之和、证明极限定理的核心工具。</p>
+      <p><strong>一句话总结</strong>：特征函数 = 矩母函数的"复数版"，它总是存在，且能唯一确定分布。</p>
+    </div>
+
+    <h3>定义与基本性质</h3>
+    <div class="box box-definition">
+      <div class="box-title">定义 · 特征函数（Characteristic Function）</div>
+      <p>设随机变量 $X$ 的分布函数为 $F(x)$，则 $X$ 的<strong>特征函数</strong>定义为：</p>
+      <div class="formula-highlight">
+        $$\varphi_X(t) = \EE(e^{itX}) = \int_{-\infty}^{+\infty} e^{itx}\,\dd F(x), \quad t \in \RR$$
+      </div>
+      <p>其中 $i$ 是虚数单位（$i^2 = -1$）。</p>
+      <ul>
+        <li><strong>离散型</strong>：$\varphi_X(t) = \sum_k e^{itx_k}\,p_k$</li>
+        <li><strong>连续型</strong>：$\varphi_X(t) = \int_{-\infty}^{+\infty} e^{itx} f(x)\,\dd x$</li>
+      </ul>
+      <p><strong>本质</strong>：特征函数是分布函数（或密度函数）的<strong>傅里叶变换</strong>（Fourier transform）。$e^{itx} = \cos(tx) + i\sin(tx)$，由欧拉公式给出。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">特征函数的基本性质</div>
+      <ol>
+        <li><strong>有界性</strong>：$|\varphi_X(t)| \leq \varphi_X(0) = 1$，对一切 $t \in \RR$ 成立</li>
+        <li><strong>共轭对称性</strong>：$\varphi_X(-t) = \overline{\varphi_X(t)}$（上划线表示复共轭）</li>
+        <li><strong>一致连续性</strong>：$\varphi_X(t)$ 在 $\RR$ 上一致连续</li>
+        <li><strong>非负定性</strong>：对任意 $n$、任意实数 $t_1,\ldots,t_n$ 和复数 $z_1,\ldots,z_n$，有 $\sum_{j,k} \varphi_X(t_j - t_k)z_j\overline{z_k} \geq 0$（Bochner 定理）</li>
+        <li><strong>线性变换</strong>：若 $Y = aX + b$，则 $\varphi_Y(t) = e^{itb}\,\varphi_X(at)$</li>
+      </ol>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">性质 1 的直觉</div>
+      <p>$|e^{itX}| = 1$（因为 $e^{itX}$ 在复平面单位圆上），所以 $|\EE(e^{itX})| \leq \EE|e^{itX}| = 1$。这就是为什么特征函数"总是存在"——积分永远不会发散。</p>
+      <p>对比矩母函数 $M_X(t) = \EE(e^{tX})$：当 $t>0$ 时 $e^{tX}$ 可以任意大，积分可能发散。</p>
+    </div>
+
+    <h3>核心性质：独立随机变量之和</h3>
+    <div class="box box-theorem">
+      <div class="box-title">独立随机变量之和的特征函数</div>
+      <p>这是特征函数<strong>最重要的性质</strong>——它把"卷积"变成了"乘积"，大大简化了计算。</p>
+      <p>若 $X$ 与 $Y$ <strong>独立</strong>，则：</p>
+      <div class="formula-highlight">
+        $$\varphi_{X+Y}(t) = \varphi_X(t) \cdot \varphi_Y(t)$$
+      </div>
+      <p><strong>推广</strong>：若 $X_1, X_2, \ldots, X_n$ 相互独立，则：</p>
+      $$\varphi_{X_1 + \cdots + X_n}(t) = \prod_{k=1}^n \varphi_{X_k}(t)$$
+      <p><strong>证明</strong>：$\varphi_{X+Y}(t) = \EE[e^{it(X+Y)}] = \EE[e^{itX} e^{itY}] = \EE[e^{itX}]\,\EE[e^{itY}] = \varphi_X(t)\varphi_Y(t)$（其中第三步用到了独立性）。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">为什么乘积性质如此重要？</div>
+      <p>在第三章我们学过，$X+Y$ 的密度是 $f_X$ 和 $f_Y$ 的<strong>卷积</strong>——计算卷积通常很麻烦。但特征函数把卷积变成了<strong>普通乘积</strong>，这极大地简化了独立随机变量之和的分析。</p>
+      <p>这正是证明中心极限定理的关键：$n$ 个独立随机变量之和的特征函数 = 各特征函数的乘积，取对数后变成求和，然后用泰勒展开即可处理。</p>
+    </div>
+
+    <h3>特征函数与矩的关系</h3>
+    <div class="box box-theorem">
+      <div class="box-title">矩与特征函数导数的关系</div>
+      <p>若 $E|X|^k \lt \infty$，则特征函数 $k$ 阶可导，且：</p>
+      <div class="formula-highlight">
+        $$\varphi_X^{(k)}(0) = i^k\,\EE(X^k)$$
+      </div>
+      <p>特别地：</p>
+      <ul>
+        <li>$\EE(X) = \dfrac{\varphi_X'(0)}{i} = -i\,\varphi_X'(0)$</li>
+        <li>$\EE(X^2) = -\varphi_X''(0)$</li>
+        <li>$\Var(X) = -\varphi_X''(0) + [\varphi_X'(0)]^2$</li>
+      </ul>
+      <p><strong>用途</strong>：如果已知特征函数，可以通过求导直接得到各阶矩，而不必计算复杂的积分。</p>
+    </div>
+
+    <h3>常见分布的特征函数</h3>
+    <div class="table-wrapper">
+      <table>
+        <tr>
+          <th>分布</th>
+          <th>记号</th>
+          <th>特征函数 $\varphi_X(t)$</th>
+          <th>推导方法</th>
+        </tr>
+        <tr>
+          <td>退化分布</td>
+          <td>$P(X=c)=1$</td>
+          <td>$e^{itc}$</td>
+          <td>直接代入</td>
+        </tr>
+        <tr>
+          <td>0-1 分布</td>
+          <td>$P(X=1)=p$</td>
+          <td>$1 - p + p e^{it}$</td>
+          <td>$\sum e^{itx_k}p_k$</td>
+        </tr>
+        <tr>
+          <td>二项分布</td>
+          <td>$B(n,p)$</td>
+          <td>$(1 - p + p e^{it})^n$</td>
+          <td>独立和性质 + 0-1 分布</td>
+        </tr>
+        <tr>
+          <td>泊松分布</td>
+          <td>$P(\lambda)$</td>
+          <td>$\exp\{\lambda(e^{it} - 1)\}$</td>
+          <td>$\sum e^{itk} \frac{\lambda^k}{k!}e^{-\lambda}$</td>
+        </tr>
+        <tr>
+          <td>正态分布</td>
+          <td>$N(\mu,\sigma^2)$</td>
+          <td>$\exp\{i\mu t - \frac{1}{2}\sigma^2 t^2\}$</td>
+          <td>配方法 + 围道积分</td>
+        </tr>
+        <tr>
+          <td>标准正态</td>
+          <td>$N(0,1)$</td>
+          <td>$e^{-t^2/2}$</td>
+          <td>正态分布的特例</td>
+        </tr>
+        <tr>
+          <td>指数分布</td>
+          <td>$Exp(\lambda)$</td>
+          <td>$\dfrac{\lambda}{\lambda - it}$</td>
+          <td>$\int_0^\infty e^{itx}\lambda e^{-\lambda x}\dd x$</td>
+        </tr>
+        <tr>
+          <td>均匀分布</td>
+          <td>$U(a,b)$</td>
+          <td>$\dfrac{e^{itb} - e^{ita}}{it(b-a)}$</td>
+          <td>$\int_a^b e^{itx}\frac{1}{b-a}\dd x$</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">记忆技巧</div>
+      <ul>
+        <li><strong>正态分布的特征函数</strong> 形式与密度函数类似，但 $x^2$ 换成了 $t^2$：密度是 $\exp\{-\frac{(x-\mu)^2}{2\sigma^2}\}$，特征函数是 $\exp\{i\mu t - \frac{1}{2}\sigma^2 t^2\}$</li>
+        <li><strong>标准正态 $N(0,1)$</strong> 的特征函数 $e^{-t^2/2}$ 是考试中最常出现的</li>
+        <li><strong>二项分布</strong> 的特征函数是 0-1 分布特征函数的 $n$ 次幂——这正是"独立和"性质的直接体现</li>
+      </ul>
+    </div>
+
+    <h3>唯一性定理与逆转公式</h3>
+    <div class="box box-theorem">
+      <div class="box-title">唯一性定理（Uniqueness Theorem）</div>
+      <p>分布函数由其特征函数<strong>唯一确定</strong>。也就是说：</p>
+      $$\varphi_X(t) = \varphi_Y(t) \;\;(\forall t \in \RR) \;\Longrightarrow\; F_X(x) = F_Y(x) \;\;(\forall x \in \RR)$$
+      <p><strong>意义</strong>：特征函数是分布函数的"指纹"——不同的分布有不同的特征函数。要证明两个随机变量同分布，只需证明它们的特征函数相同。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">逆转公式（Inversion Formula）</div>
+      <p>对于连续型随机变量，若 $|\varphi_X(t)|$ 可积，则可以由特征函数反演出密度函数：</p>
+      $$f(x) = \frac{1}{2\pi} \int_{-\infty}^{+\infty} e^{-itx}\,\varphi_X(t)\,\dd t$$
+      <p>这就是<strong>傅里叶逆变换</strong>——与我们之前说的"特征函数是密度的傅里叶变换"完全对应。</p>
+      <p>对于一般情形，有更一般的逆转公式（涉及分布函数在连续点处的值），这里不展开。</p>
+    </div>
+
+    <h3>列维连续性定理 —— 证明极限定理的钥匙</h3>
+    <div class="box box-theorem">
+      <div class="box-title">列维连续性定理（Lévy's Continuity Theorem）</div>
+      <p>这是证明一切极限定理的<strong>核心工具</strong>。它将"依分布收敛"转化为"特征函数的逐点收敛"。</p>
+      <p>设 $F_1, F_2, \ldots$ 是一列分布函数，其对应的特征函数为 $\varphi_1, \varphi_2, \ldots$。</p>
+      <ol>
+        <li>若 $F_n \xrightarrow{d} F$（依分布收敛），则 $\varphi_n(t) \to \varphi(t)$ 对每个 $t \in \RR$ 成立，其中 $\varphi$ 是 $F$ 的特征函数。</li>
+        <li><strong>逆命题（更重要）</strong>：若 $\varphi_n(t)$ 逐点收敛于某个在 $t=0$ 处连续的函数 $\varphi(t)$，则 $\varphi$ 必是某个分布 $F$ 的特征函数，且 $F_n \xrightarrow{d} F$。</li>
+      </ol>
+      <p><strong>一句话总结</strong>：依分布收敛 $\Longleftrightarrow$ 特征函数逐点收敛。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">列维连续性定理为什么重要？</div>
+      <p>它把证明 <strong>"$X_n$ 趋近某分布"</strong> 这个困难任务，转化为证明 <strong>"$\varphi_{X_n}(t)$ 趋近某个函数"</strong> 这个（相对）简单的分析问题。</p>
+      <p>在中心极限定理的证明中，我们只需要：</p>
+      <ol>
+        <li>写出标准化和的特征函数 $\varphi_n(t)$</li>
+        <li>证明 $\varphi_n(t) \to e^{-t^2/2}$（标准正态的特征函数）</li>
+        <li>由列维定理，立即得到依分布收敛于 $N(0,1)$</li>
+      </ol>
+      <p>这就是整个第四章极限理论的逻辑枢纽。</p>
+    </div>
+
+    <h3>特征函数在极限定理证明中的应用</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">辛钦大数定律的特征函数证明（概要）</div>
+      <p>设 $X_1, \ldots, X_n$ i.i.d.，$E(X_i)=\mu$，特征函数 $\varphi(t)$。</p>
+      <p>样本均值 $\bar{X}_n$ 的特征函数：$\varphi_{\bar{X}_n}(t) = [\varphi(t/n)]^n$</p>
+      <p>利用 $\varphi(t/n) = 1 + i\mu(t/n) + o(t/n)$（泰勒展开），得：</p>
+      $$\varphi_{\bar{X}_n}(t) = \left[1 + \frac{i\mu t}{n} + o\!\left(\frac{1}{n}\right)\right]^n \to e^{i\mu t}$$
+      <p>$e^{i\mu t}$ 正是退化分布 $P(X=\mu)=1$ 的特征函数。由列维定理，$\bar{X}_n \xrightarrow{d} \mu$，而依分布收敛于常数等价于依概率收敛，故 $\bar{X}_n \xrightarrow{P} \mu$。</p>
+      <p><strong>对比</strong>：切比雪夫不等式的证明更初等（只需方差存在），而特征函数证明更强大（只需期望存在，与辛钦大数定律的条件一致）。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">中心极限定理的特征函数证明（概要）</div>
+      <p>设 $X_1, \ldots, X_n$ i.i.d.，$E(X_i)=0$，$\Var(X_i)=1$（不妨设已标准化）。</p>
+      <p>令 $Z_n = \frac{1}{\sqrt{n}}\sum_{k=1}^n X_k$，其特征函数：</p>
+      $$\varphi_{Z_n}(t) = \left[\varphi\!\left(\frac{t}{\sqrt{n}}\right)\right]^n$$
+      <p>泰勒展开 $\varphi(u) = 1 + i\cdot 0 \cdot u + \frac{i^2}{2}u^2 + o(u^2) = 1 - \frac{u^2}{2} + o(u^2)$（用到 $E(X)=0$，$E(X^2)=1$）：</p>
+      $$\varphi_{Z_n}(t) = \left[1 - \frac{t^2}{2n} + o\!\left(\frac{1}{n}\right)\right]^n \to e^{-t^2/2}$$
+      <p>$e^{-t^2/2}$ 是标准正态的特征函数。由列维定理，$Z_n \xrightarrow{d} N(0,1)$。</p>
+      <p><strong>注</strong>：这就是本章的核心证明思路——也是概率论中最优美的证明之一。在考试中可能会要求写出这个证明的关键步骤。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 利用特征函数求分布</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：设 $X \sim N(\mu_1, \sigma_1^2)$，$Y \sim N(\mu_2, \sigma_2^2)$，且 $X$ 与 $Y$ 独立。利用特征函数证明 $X+Y \sim N(\mu_1+\mu_2,\; \sigma_1^2+\sigma_2^2)$。</p>
+        <p><strong>解</strong>：</p>
+        <p>$\varphi_X(t) = \exp\{i\mu_1 t - \frac{1}{2}\sigma_1^2 t^2\}$，$\varphi_Y(t) = \exp\{i\mu_2 t - \frac{1}{2}\sigma_2^2 t^2\}$</p>
+        <p>由独立性：$\varphi_{X+Y}(t) = \varphi_X(t)\varphi_Y(t) = \exp\{i\mu_1 t - \frac{1}{2}\sigma_1^2 t^2\} \cdot \exp\{i\mu_2 t - \frac{1}{2}\sigma_2^2 t^2\}$</p>
+        <p>$= \exp\{i(\mu_1+\mu_2)t - \frac{1}{2}(\sigma_1^2+\sigma_2^2)t^2\}$</p>
+        <p>这正是 $N(\mu_1+\mu_2,\; \sigma_1^2+\sigma_2^2)$ 的特征函数。由唯一性定理，$X+Y$ 服从该分布。</p>
+        <p><strong>对比</strong>：用卷积公式也能得到同样结论，但特征函数的方法几乎不用计算——直接乘积即可。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 二项分布的泊松近似——用特征函数证明</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：设 $X_n \sim B(n, p_n)$，且 $\lim_{n\to\infty} n p_n = \lambda > 0$。证明 $X_n \xrightarrow{d} P(\lambda)$。</p>
+        <p><strong>证明</strong>：</p>
+        <p>$X_n$ 的特征函数：$\varphi_n(t) = (1 - p_n + p_n e^{it})^n = \left[1 + p_n(e^{it} - 1)\right]^n$</p>
+        <p>令 $p_n = \lambda/n + o(1/n)$，则：</p>
+        <p>$\varphi_n(t) = \left[1 + \frac{\lambda(e^{it} - 1)}{n} + o\!\left(\frac{1}{n}\right)\right]^n \to \exp\{\lambda(e^{it} - 1)\}$</p>
+        <p>这正是 $P(\lambda)$ 的特征函数。由列维定理，$X_n \xrightarrow{d} P(\lambda)$。</p>
+        <p><strong>意义</strong>：这个证明比用分布律逐项逼近更简洁，且揭示了泊松定理的本质——它是特征函数层面上的极限。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 4.4 大数定律 ==================== -->
+  <div class="section" id="s4">
+    <h2>4.4 大数定律</h2>
 
     <p>大数定律是概率论中最重要的定理之一，它回答了一个根本问题：<strong>为什么频率可以用来估计概率？</strong></p>
 
@@ -255,9 +494,9 @@
     </div>
   </div>
 
-  <!-- ==================== 4.4 中心极限定理 ==================== -->
-  <div class="section" id="s4">
-    <h2>4.4 中心极限定理</h2>
+  <!-- ==================== 4.5 中心极限定理 ==================== -->
+  <div class="section" id="s5">
+    <h2>4.5 中心极限定理</h2>
 
     <p>中心极限定理是概率论中最深刻、最实用的定理之一。它解释了<strong>为什么正态分布无处不在</strong>。</p>
 
@@ -527,9 +766,9 @@
     })();
     </script>
 
-  <!-- ==================== 4.5 综合例题 ==================== -->
-  <div class="section" id="s5">
-    <h2>4.5 综合例题与应用</h2>
+  <!-- ==================== 4.6 综合例题 ==================== -->
+  <div class="section" id="s6">
+    <h2>4.6 综合例题与应用</h2>
 
     <div class="collapsible">
       <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 二项分布的正态近似</div>
@@ -617,10 +856,12 @@
       <ol>
         <li><strong>马尔可夫不等式</strong>是最基本的概率不等式——只需期望存在，且随机变量非负</li>
         <li><strong>切比雪夫不等式</strong>由马尔可夫不等式导出——只需期望和方差，不依赖分布形式</li>
-        <li><strong>大数定律</strong>用切比雪夫不等式证明——它告诉我们"频率稳定于概率"</li>
-        <li><strong>中心极限定理</strong>比大数定律更强——它不仅说明均值稳定，还说明均值的分布趋近正态</li>
+        <li><strong>特征函数</strong>是分析随机变量之和的核心工具——总是存在，且能把卷积变成普通乘积</li>
+        <li><strong>列维连续性定理</strong>架起了"依分布收敛"与"特征函数逐点收敛"之间的桥梁——这是证明一切极限定理的关键</li>
+        <li><strong>大数定律</strong>可用切比雪夫不等式证明（初等方法），也可用特征函数证明（更一般）——它告诉我们"频率稳定于概率"</li>
+        <li><strong>中心极限定理</strong>通过特征函数+列维定理证明——它不仅说明均值稳定，还说明均值的分布趋近正态</li>
       </ol>
-      <p><strong>一句话总结</strong>：大数定律说"均值会稳定"，中心极限定理说"均值按正态分布稳定"。</p>
+      <p><strong>一句话总结</strong>：大数定律说"均值会稳定"，中心极限定理说"均值按正态分布稳定"，特征函数是证明后者的核心工具。</p>
     </div>
 
     <div class="box box-note">
@@ -631,6 +872,7 @@
         <li><strong>样本均值</strong>：$\bar{X}_n \;\dot{\sim}\; N(\mu, \sigma^2/n)$，标准差随 $n$ 增大而减小</li>
         <li><strong>切比雪夫不等式</strong>：不需要具体分布，只需期望和方差，但估计粗糙</li>
         <li><strong>中心极限定理</strong>：需要具体分布（或至少知道均值和方差），近似更精确</li>
+        <li><strong>特征函数</strong>：证明题中用于处理独立随机变量之和的分布——记住正态分布的特征函数 $e^{-t^2/2}$ 和独立和性质 $\varphi_{X+Y}(t) = \varphi_X(t)\varphi_Y(t)$</li>
       </ol>
     </div>
   </div>

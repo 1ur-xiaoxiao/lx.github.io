@@ -231,6 +231,20 @@
 
     <h3>第四章 · 大数定律与中心极限定理</h3>
     <div class="box box-formula">
+      <div class="box-title">特征函数</div>
+      <ul>
+        <li><strong>定义</strong>：$\varphi_X(t) = \EE(e^{itX})$（总是存在）</li>
+        <li><strong>独立和</strong>：$X,Y$ 独立 $\Rightarrow$ $\varphi_{X+Y}(t) = \varphi_X(t)\varphi_Y(t)$</li>
+        <li><strong>矩公式</strong>：$\varphi_X^{(k)}(0) = i^k\EE(X^k)$</li>
+        <li><strong>唯一性</strong>：特征函数唯一确定分布</li>
+        <li><strong>列维连续性定理</strong>：$X_n \xrightarrow{d} X$ $\Longleftrightarrow$ $\varphi_{X_n}(t) \to \varphi_X(t)$ 逐点收敛</li>
+        <li><strong>正态 $N(\mu,\sigma^2)$</strong>：$\varphi(t) = \exp\{i\mu t - \frac{1}{2}\sigma^2 t^2\}$</li>
+        <li><strong>标准正态 $N(0,1)$</strong>：$\varphi(t) = e^{-t^2/2}$</li>
+        <li><strong>二项 $B(n,p)$</strong>：$\varphi(t) = (1 - p + p e^{it})^n$</li>
+        <li><strong>泊松 $P(\lambda)$</strong>：$\varphi(t) = \exp\{\lambda(e^{it} - 1)\}$</li>
+      </ul>
+    </div>
+    <div class="box box-formula">
       <div class="box-title">大数定律与中心极限定理</div>
       <ul>
         <li><strong>切比雪夫不等式</strong>：$P(|X-\mu|\geq\varepsilon) \leq \dfrac{\sigma^2}{\varepsilon^2}$</li>
@@ -354,6 +368,8 @@
     <div class="box box-formula">
       <div class="box-title">第四章 · 大数定律与中心极限定理</div>
       <ul>
+        <li>求独立和的分布 → 特征函数乘积 + 唯一性定理</li>
+        <li>证明依分布收敛 → 特征函数 + 列维连续性定理</li>
         <li>样本均值估计 → 辛钦大数定律</li>
         <li>频率估计概率 → 伯努利大数定律</li>
         <li>大量独立变量之和 → 中心极限定理</li>

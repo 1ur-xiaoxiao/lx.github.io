@@ -59,6 +59,7 @@
       <li><a href="#s6">常见连续分布</a></li>
       <li><a href="#s7">随机变量函数的分布</a></li>
       <li><a href="#s8">综合例题与常见题型</a></li>
+      <li><a href="#s9">函数分布的补充方法</a></li>
     </ol>
   </div>
 
@@ -745,6 +746,61 @@
         <li><strong>正态分布标准化</strong>：遇到正态分布，第一步就是标准化 $Z=(X-\mu)/\sigma$</li>
         <li><strong>函数的分布</strong>：单调用公式法，非单调用分布函数法</li>
       </ol>
+    </div>
+  </div>
+
+  <!-- ==================== 2.9 函数分布的补充例题 ==================== -->
+  <div class="section" id="s9">
+    <h2>2.9 函数分布的补充方法</h2>
+
+    <div class="box box-note">
+      <div class="box-title">分布函数法 vs 公式法</div>
+      <p>求 $Y=g(X)$ 的分布有两种基本方法：</p>
+      <ol>
+        <li><strong>分布函数法（万能）</strong>：$F_Y(y)=\PP(Y\leq y)=\PP(g(X)\leq y)$，然后求导得 $f_Y(y)=F_Y'(y)$。适用于任何函数，但需要解不等式。</li>
+        <li><strong>公式法（快捷）</strong>：当 $g$ 严格单调时，$f_Y(y)=f_X(g^{-1}(y))\cdot\left|\dfrac{\dd}{\dd y}g^{-1}(y)\right|$。当 $g$ 非单调时，需分段：$f_Y(y)=\displaystyle\sum_{i} f_X(x_i)\cdot\left|\dfrac{\dd x_i}{\dd y}\right|$，其中 $x_i$ 是方程 $g(x)=y$ 的所有根。</li>
+      </ol>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 · 非单调变换 — $Y=X^2$</div>
+      <p>设 $X\sim N(0,1)$，求 $Y=X^2$ 的密度函数。</p>
+      <p><strong>解（分布函数法）</strong>：当 $y>0$ 时，</p>
+      $$F_Y(y)=\PP(X^2\leq y)=\PP(-\sqrt{y}\leq X\leq\sqrt{y})=\Phi(\sqrt{y})-\Phi(-\sqrt{y})=2\Phi(\sqrt{y})-1$$
+      <p>求导：$f_Y(y)=2\phi(\sqrt{y})\cdot\dfrac{1}{2\sqrt{y}}=\dfrac{1}{\sqrt{2\pi y}}e^{-y/2}$，$y>0$。</p>
+      <p>这正是自由度为 $1$ 的 $\chi^2$ 分布。$Y=X^2\sim\chi^2(1)$。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 · 线性变换与正态分布</div>
+      <p>设 $X\sim N(\mu,\sigma^2)$，求证 $Y=aX+b\;(a\neq 0)$ 也服从正态分布，并写出参数。</p>
+      <p><strong>证</strong>：$g(x)=ax+b$ 严格单调。$x=\dfrac{y-b}{a}$，$\left|\dfrac{\dd x}{\dd y}\right|=\dfrac{1}{|a|}$。</p>
+      $$f_Y(y)=\frac{1}{\sqrt{2\pi}\sigma}\exp\!\left(-\frac{((y-b)/a-\mu)^2}{2\sigma^2}\right)\cdot\frac{1}{|a|}=\frac{1}{\sqrt{2\pi}|a|\sigma}\exp\!\left(-\frac{(y-(a\mu+b))^2}{2a^2\sigma^2}\right)$$
+      <p>故 $Y\sim N(a\mu+b,\;a^2\sigma^2)$。特别地，当 $a=1/\sigma,\;b=-\mu/\sigma$ 时，$Z=\dfrac{X-\mu}{\sigma}\sim N(0,1)$——这就是标准化变换。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 · 几何分布的记忆性</div>
+      <p>几何分布 $X\sim Ge(p)$，分布律 $\PP(X=k)=(1-p)^{k-1}p$，$k=1,2,\ldots$。</p>
+      <p>（1）求 $\EE(X)$；（2）验证无记忆性：$\PP(X>m+n\mid X>m)=\PP(X>n)$。</p>
+      <p><strong>解</strong>：（1）$\EE(X)=\displaystyle\sum_{k=1}^{\infty}k(1-p)^{k-1}p=\dfrac{1}{p}$。</p>
+      <p>（2）$\PP(X>m+n\mid X>m)=\dfrac{\PP(X>m+n)}{\PP(X>m)}=\dfrac{(1-p)^{m+n}}{(1-p)^m}=(1-p)^n=\PP(X>n)$。</p>
+      <p>几何分布是离散型中唯一具有无记忆性的分布（连续型中指数分布具有无记忆性）。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">常见分布的期望与方差速查</div>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>分布</th><th>记号</th><th>$\EE(X)$</th><th>$\Var(X)$</th></tr>
+          <tr><td>二项分布</td><td>$B(n,p)$</td><td>$np$</td><td>$np(1-p)$</td></tr>
+          <tr><td>泊松分布</td><td>$P(\lambda)$</td><td>$\lambda$</td><td>$\lambda$</td></tr>
+          <tr><td>几何分布</td><td>$Ge(p)$</td><td>$1/p$</td><td>$(1-p)/p^2$</td></tr>
+          <tr><td>均匀分布</td><td>$U(a,b)$</td><td>$(a+b)/2$</td><td>$(b-a)^2/12$</td></tr>
+          <tr><td>指数分布</td><td>$E(\lambda)$</td><td>$1/\lambda$</td><td>$1/\lambda^2$</td></tr>
+          <tr><td>正态分布</td><td>$N(\mu,\sigma^2)$</td><td>$\mu$</td><td>$\sigma^2$</td></tr>
+        </table>
+      </div>
     </div>
   </div>
 
