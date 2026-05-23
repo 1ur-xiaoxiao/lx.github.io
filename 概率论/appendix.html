@@ -378,6 +378,295 @@
     </div>
   </div>
 
+  <!-- G. 易错点与重要结论汇总 -->
+  <div class="section">
+    <h2>G. 易错点与重要结论汇总</h2>
+    <p>本节精炼总结概率论中<strong>最易混淆的概念</strong>和<strong>考试高频结论</strong>，帮助考前快速梳理薄弱环节。</p>
+
+    <!-- ============ G1. 边际分布与独立性 ============ -->
+    <h3>G1. 边际分布与独立性</h3>
+
+    <div class="box box-note">
+      <div class="box-title">联合 → 边际（单向）</div>
+      <p>由高维联合分布可以唯一确定低维边际分布，但<strong>反之不成立</strong>。不同的联合分布可以有<strong>完全相同的边际分布</strong>。</p>
+      <p><strong>经典反例</strong>：两个不同的二维正态分布（相关系数不同）可以有相同的一维正态边际。这说明<strong>边际分布不能唯一确定联合分布</strong>，除非额外假定独立性。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">特殊分布的边际</div>
+      <ul>
+        <li><strong>多项分布</strong>：边际分布仍为低维的多项分布或二项分布</li>
+        <li><strong>二维正态</strong>：边际分布为一维正态；但两个一维正态<strong>不一定</strong>构成二维正态——还需 $X,Y$ 的任意线性组合服从正态（或 $X,Y$ 相互独立）</li>
+        <li><strong>多维正态的等价刻画</strong>：$(X,Y)$ 服从二维正态 $\iff$ 对任意 $a,b \in \RR$，$aX+bY$ 服从一维正态</li>
+      </ul>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">独立性的等价条件（$X,Y$ 独立 $\Longleftrightarrow$）</div>
+      <ol>
+        <li><strong>联合分布函数拆分</strong>：$F(x,y) = F_X(x) \cdot F_Y(y)$（最基础）</li>
+        <li><strong>联合密度/分布律拆分（必考）</strong>：$f(x,y) = f_X(x) \cdot f_Y(y)$ 或 $P(X=x_i, Y=y_j) = P(X=x_i)P(Y=y_j)$</li>
+        <li><strong>可分离变量判据（秒杀法）</strong>：若 $f(x,y)$ 能写成 $g(x)h(y)$ 的形式（不含交叉项 $xy$、变量彻底分家），且定义域可分离（为矩形区域），则 $X,Y$ 独立</li>
+        <li><strong>概率直接拆分</strong>：$P(X \leq a, Y \leq b) = P(X \leq a)P(Y \leq b)$，以及 $P(X>a, Y>b) = P(X>a)P(Y>b)$ 等——不需要算二重积分</li>
+        <li><strong>期望拆分</strong>：$\EE(XY) = \EE(X)\EE(Y)$</li>
+        <li><strong>方差简化</strong>：$\Var(X \pm Y) = \Var(X) + \Var(Y)$（协方差 $=0$，相关系数 $=0$）</li>
+        <li><strong>事件独立性</strong>：对任意事件 $\{X \in A\}$ 与 $\{Y \in B\}$ 独立</li>
+      </ol>
+    </div>
+
+    <!-- ============ G2. 独立 ⇔ 可分离变量的深入理解 ============ -->
+    <h3>G2. 可分离变量判据的细节（极易出错）</h3>
+
+    <div class="box box-note">
+      <div class="box-title">仅函数可分离不够——定义域也必须可分离！</div>
+      <p><strong>充分条件</strong>：$f(x,y) = g(x)h(y)$ 且定义域为矩形 $D = \{a \lt x \lt b, c \lt y \lt d\}$ $\Rightarrow$ $X,Y$ 独立。</p>
+      <p><strong>反例</strong>：$f(x,y) = 2$，定义域为 $0 \lt x \lt y \lt 1$（三角形区域）。虽然密度函数是常数（可写成 $g(x)h(y)$ 形式），但定义域<strong>不是矩形</strong>（$x$ 和 $y$ 的范围相互约束），因此 $X,Y$ <strong>不独立</strong>。</p>
+      <p><strong>判断口诀</strong>：函数能分家且区域是矩形，则独立；函数分不开或区域非矩形（三角/圆/菱形等），则不独立。</p>
+    </div>
+
+    <!-- ============ G3. 分布的可加性 ============ -->
+    <h3>G3. 分布的可加性（在独立条件下）</h3>
+
+    <div class="table-wrapper">
+      <table>
+        <tr><th>分布族</th><th>可加条件</th><th>和分布</th><th>注意事项</th></tr>
+        <tr>
+          <td>二项分布</td>
+          <td>$X \sim B(n_1,p)$，$Y \sim B(n_2,p)$，独立</td>
+          <td>$X+Y \sim B(n_1+n_2, p)$</td>
+          <td><strong>必须同 $p$</strong>，$p$ 不同不能直接加</td>
+        </tr>
+        <tr>
+          <td>泊松分布</td>
+          <td>$X \sim P(\lambda_1)$，$Y \sim P(\lambda_2)$，独立</td>
+          <td>$X+Y \sim P(\lambda_1+\lambda_2)$</td>
+          <td>无条件，参数直接相加</td>
+        </tr>
+        <tr>
+          <td>正态分布</td>
+          <td>$X \sim N(\mu_1,\sigma_1^2)$，$Y \sim N(\mu_2,\sigma_2^2)$，独立</td>
+          <td>$X+Y \sim N(\mu_1+\mu_2, \sigma_1^2+\sigma_2^2)$</td>
+          <td>即使不独立，线性组合仍正态</td>
+        </tr>
+        <tr>
+          <td>指数分布</td>
+          <td>$X \sim Exp(\lambda)$，$Y \sim Exp(\lambda)$，独立</td>
+          <td>$X+Y \sim Gamma(2,\lambda)$</td>
+          <td><strong>不再是指数分布！</strong>常见陷阱</td>
+        </tr>
+        <tr>
+          <td>$\chi^2$ 分布</td>
+          <td>$X \sim \chi^2(n_1)$，$Y \sim \chi^2(n_2)$，独立</td>
+          <td>$X+Y \sim \chi^2(n_1+n_2)$</td>
+          <td>自由度直接相加</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- ============ G4. 独立与不相关 ============ -->
+    <h3>G4. 独立与不相关（最易混淆的概念对）</h3>
+
+    <div class="box box-note">
+      <div class="box-title">核心结论</div>
+      <table>
+        <tr><th>关系</th><th>结论</th><th>理由</th></tr>
+        <tr><td>独立 ⇒ 不相关</td><td><strong>一定成立</strong></td><td>独立 $\Rightarrow$ $\EE(XY)=\EE(X)\EE(Y)$ $\Rightarrow$ $\Cov=0$</td></tr>
+        <tr><td>不相关 ⇒ 独立</td><td><strong>一般不成立</strong></td><td>不相关只保证无线性关系，可能存在非线性关联</td></tr>
+        <tr><td>相关 ⇒ 不独立</td><td><strong>一定成立</strong></td><td>逆否命题——相关系数不为零必有线性依赖</td></tr>
+      </table>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">什么情况下不相关 ⇔ 独立？</div>
+      <ul>
+        <li><strong>二维正态分布</strong>：不相关与独立<strong>等价</strong>（这是正态分布的特殊性质，其他分布不满足）</li>
+        <li><strong>退化分布</strong>：二者完全等价</li>
+        <li><strong>两点分布</strong>：二者完全等价</li>
+        <li><strong>一般连续分布</strong>：不相关 $\neq$ 独立（经典反例：$X \sim N(0,1)$，$Y = X^2$，则 $\Cov(X,Y)=0$ 但显然不独立）</li>
+      </ul>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">协方差的本质</div>
+      <p>协方差是一种<strong>期望</strong>：$\Cov(X,Y) = \EE[(X-\EE X)(Y-\EE Y)] = \EE(XY) - \EE(X)\EE(Y)$。</p>
+      <p>$\Cov=0$ 只说明没有<strong>线性关联</strong>，不能排除非线性关联（如 $Y=X^2$）。</p>
+      <p>$\Cov>0$ $\iff$ 正线性关联；$\Cov\lt 0$ $\iff$ 负线性关联。</p>
+    </div>
+
+    <!-- ============ G5. 方差与协方差计算易错点 ============ -->
+    <h3>G5. 方差与协方差计算易错点</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">方差公式对比（极易用混）</div>
+      <table>
+        <tr><th>场景</th><th>公式</th><th>备注</th></tr>
+        <tr><td>一般情况</td><td>$\Var(X \pm Y) = \Var(X) + \Var(Y) \pm 2\Cov(X,Y)$</td><td>含协方差项</td></tr>
+        <tr><td>$X,Y$ 独立</td><td>$\Var(X \pm Y) = \Var(X) + \Var(Y)$</td><td>协方差=0，加号不变</td></tr>
+        <tr><td>线性组合</td><td>$\Var(aX+bY) = a^2\Var(X) + b^2\Var(Y) + 2ab\Cov(X,Y)$</td><td>系数平方！</td></tr>
+        <tr><td>$X,Y$ 独立，线性组合</td><td>$\Var(aX+bY) = a^2\Var(X) + b^2\Var(Y)$</td><td>$a^2$ 和 $b^2$ 不是 $a$ 和 $b$！</td></tr>
+      </table>
+    </div>
+
+    <!-- ============ G6. 特征函数 ============ -->
+    <h3>G6. 特征函数核心性质</h3>
+
+    <div class="box box-note">
+      <div class="box-title">特征函数 vs 矩母函数</div>
+      <table>
+        <tr><th>对比</th><th>特征函数 $\varphi(t)$</th><th>矩母函数 $M(t)$</th></tr>
+        <tr><td>定义</td><td>$\EE(e^{itX})$</td><td>$\EE(e^{tX})$</td></tr>
+        <tr><td>存在性</td><td><strong>总是存在</strong>（$|e^{itX}|=1$）</td><td>不一定存在（如柯西分布）</td></tr>
+        <tr><td>独立和</td><td>乘积 $\varphi_X\varphi_Y$</td><td>乘积 $M_X M_Y$</td></tr>
+        <tr><td>求矩</td><td>$\varphi^{(k)}(0) = i^k \EE(X^k)$</td><td>$M^{(k)}(0) = \EE(X^k)$</td></tr>
+        <tr><td>一致连续性</td><td><strong>在 $\RR$ 上一致连续</strong></td><td>不一定</td></tr>
+      </table>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">特征函数的三大核心结论</div>
+      <ol>
+        <li><strong>唯一性定理</strong>：分布函数由其特征函数<strong>唯一确定</strong>——特征函数是分布的"指纹"</li>
+        <li><strong>逆转公式</strong>：由特征函数可反演出密度函数（傅里叶逆变换），保证了一一对应</li>
+        <li><strong>列维连续性定理</strong>：依分布收敛 $\Longleftrightarrow$ 特征函数逐点收敛——证明一切极限定理的枢纽</li>
+      </ol>
+    </div>
+
+    <!-- ============ G7. 概率计算中的易错点 ============ -->
+    <h3>G7. 概率计算中的易错点</h3>
+
+    <div class="box box-note">
+      <div class="box-title">事件关系与概率——不能互相推出</div>
+      <table>
+        <tr><th>关于事件的判断</th><th>能否推出概率关系</th><th>反例/说明</th></tr>
+        <tr><td>$A \subset B$</td><td>$\Rightarrow$ $P(A) \leq P(B)$</td><td>单调性，成立</td></tr>
+        <tr><td>$P(A) \leq P(B)$</td><td>$\nRightarrow$ $A \subset B$</td><td>$A$ 和 $B$ 可能是不同的事件，概率大小不反映包含关系</td></tr>
+        <tr><td>$A \cap B = \varnothing$</td><td>$\Rightarrow$ $P(AB)=0$</td><td>互斥则交概率为零</td></tr>
+        <tr><td>$P(AB)=0$</td><td>$\nRightarrow$ $A \cap B = \varnothing$</td><td>概率为 0 不代表不可能事件（连续型单点概率为 0）</td></tr>
+        <tr><td>$P(A)=1$</td><td>$\nRightarrow$ $A = \Omega$</td><td>概率为 1 不代表必然事件（"几乎必然"≠"必然"）</td></tr>
+        <tr><td>$P(A)=0$</td><td>$\nRightarrow$ $A = \varnothing$</td><td>概率为 0 不代表不可能事件</td></tr>
+      </table>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">条件概率中的常见误区</div>
+      <ul>
+        <li><strong>误区一</strong>：$P(A|B) = P(B|A)$。❌ 除非 $P(A)=P(B)$，一般不成立。正确关系是贝叶斯公式。</li>
+        <li><strong>误区二</strong>：$P(A|B) + P(\bar{A}|B) = 1$。✅ 成立（给定 $B$ 的条件下，$A$ 和 $\bar{A}$ 仍为对立事件）</li>
+        <li><strong>误区三</strong>：$P(A|B) + P(A|\bar{B}) = 1$。❌ 一般不成立！除非 $A$ 与 $B$ 独立且 $P(A)=0.5$。</li>
+        <li><strong>误区四</strong>：条件概率 $P(\cdot|B)$ 本身是一个合法的概率测度，满足概率的三条公理。</li>
+      </ul>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">全概率公式的使用条件——完备事件组</div>
+      <p>全概率公式 $P(A) = \sum_i P(B_i)P(A|B_i)$ 要求 $\{B_i\}$ 构成样本空间的一个<strong>划分</strong>（完备事件组）：</p>
+      <ul>
+        <li>$B_i \cap B_j = \varnothing$（两两互斥）</li>
+        <li>$\bigcup_i B_i = \Omega$（覆盖全部样本空间）</li>
+        <li>$P(B_i) > 0$（条件概率有意义）</li>
+      </ul>
+      <p>常见错误：遗漏某个 $B_i$ 导致 $\sum P(B_i) \neq 1$，或 $B_i$ 之间有重叠。</p>
+    </div>
+
+    <!-- ============ G8. 分布函数与密度函数 ============ -->
+    <h3>G8. 分布函数与密度函数的易混淆点</h3>
+
+    <div class="box box-note">
+      <div class="box-title">分布函数 $F(x)$ 的性质（必考）</div>
+      <ul>
+        <li>$F(x)$ <strong>单调不减</strong></li>
+        <li>$F(-\infty)=0$，$F(+\infty)=1$</li>
+        <li>$F(x)$ <strong>右连续</strong>：$F(x^+) = F(x)$</li>
+        <li>$P(a \lt X \leq b) = F(b) - F(a)$（注意左端是 $\lt$，右端是 $\leq$）</li>
+        <li>$P(X = a) = F(a) - F(a^-)$（分布函数在 $a$ 处的跳跃高度等于该点的概率）</li>
+      </ul>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">密度函数 $f(x)$ 的两个常见误解</div>
+      <ul>
+        <li><strong>误解一</strong>：$f(x) \leq 1$。❌ 密度可以大于 1！（如 $U(0, 0.1)$ 的密度 $f(x)=10$）</li>
+        <li><strong>误解二</strong>：$f(x) = P(X=x)$。❌ 对于连续型，$P(X=x)=0$ 恒成立。密度本身不是概率，密度乘以 $\dd x$ 近似小区间的概率。</li>
+        <li><strong>正确理解</strong>：$f(x)$ 是概率的"浓度"——$P(x \lt X \lt x+\dd x) \approx f(x)\,\dd x$。</li>
+      </ul>
+    </div>
+
+    <!-- ============ G9. 常见分布的特殊性质 ============ -->
+    <h3>G9. 常见分布的特殊性质汇总</h3>
+
+    <div class="table-wrapper">
+      <table>
+        <tr><th>分布</th><th>特殊性质</th><th>考试用途</th></tr>
+        <tr><td>几何分布</td><td><strong>无记忆性</strong>：$P(X>m+n|X>m)=P(X>n)$</td><td>条件概率简化计算</td></tr>
+        <tr><td>指数分布</td><td><strong>无记忆性</strong>（连续型中唯一）</td><td>可靠性理论、排队论</td></tr>
+        <tr><td>正态分布</td><td>线性变换仍为正态；独立+不相关等价</td><td>标准化是最核心的操作</td></tr>
+        <tr><td>泊松分布</td><td>$E(X)=\Var(X)=\lambda$（均=方差）</td><td>快速验证是否为泊松分布</td></tr>
+        <tr><td>均匀分布 $U(0,1)$</td><td>若 $X \sim F$ 连续，则 $F(X) \sim U(0,1)$</td><td>概率积分变换（模拟基础）</td></tr>
+        <tr><td>二项分布</td><td>$n=1$ 退化为 0-1 分布</td><td>和可加性使用时要求 $p$ 相同</td></tr>
+      </table>
+    </div>
+
+    <!-- ============ G10. 收敛性相关易错 ============ -->
+    <h3>G10. 收敛性与极限定理的易混淆点</h3>
+
+    <div class="box box-note">
+      <div class="box-title">四种收敛的关系</div>
+      <ul>
+        <li><strong>几乎处处收敛</strong> $\Rightarrow$ <strong>依概率收敛</strong> $\Rightarrow$ <strong>依分布收敛</strong></li>
+        <li>依概率收敛 + 一致可积 $\Rightarrow$ <strong>$L^p$ 收敛</strong></li>
+        <li>依分布收敛于常数 $\Longleftrightarrow$ 依概率收敛于该常数</li>
+        <li>大数定律给出的是<strong>依概率收敛</strong></li>
+        <li>中心极限定理给出的是<strong>依分布收敛</strong></li>
+      </ul>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">大数定律中 $n$ 的理解</div>
+      <ul>
+        <li>大数定律说的是 $n \to \infty$ 时的极限行为——<strong>不能</strong>用于有限样本的精确概率计算</li>
+        <li>"频率趋近概率"是<strong>定性</strong>结论，不能给出 $n=100$ 时频率与概率的差距</li>
+        <li>要算具体概率或确定样本量 → 用<strong>中心极限定理</strong></li>
+        <li>柯西分布是 LLN <strong>不成立</strong>的经典反例——因为期望不存在</li>
+      </ul>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">CLT 使用注意事项</div>
+      <ul>
+        <li>CLT 要求<strong>方差存在且非零</strong>——方差为 0（退化分布）或方差不存在（柯西分布）时 CLT 不适用</li>
+        <li>$n \geq 30$ 是经验规则，对于严重偏态的分布可能需要更大的 $n$</li>
+        <li>棣莫弗-拉普拉斯定理要求<strong>连续性修正</strong>来提高近似精度，不做修正会扣分</li>
+        <li>仅有独立还不够，CLT 还需要同分布（林德伯格-列维）或验证李雅普诺夫条件（不同分布时）</li>
+      </ul>
+    </div>
+
+    <!-- ============ G11. 计算技巧总结 ============ -->
+    <h3>G11. 计算技巧与秒杀方法</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">期望计算的实用技巧</div>
+      <ul>
+        <li><strong>非负随机变量的期望</strong>：$\EE(X) = \int_0^\infty [1-F(x)]\,\dd x = \int_0^\infty P(X>x)\,\dd x$（连续非负）</li>
+        <li><strong>离散非负</strong>：$\EE(X) = \sum_{k=0}^\infty P(X>k)$</li>
+        <li><strong>利用对称性</strong>：若分布关于 $\mu$ 对称，则 $\EE(X)=\mu$，且所有奇数阶中心矩为 0</li>
+        <li><strong>条件期望递推</strong>：$\EE(X) = \EE[\EE(X|Y)]$（重期望公式 / 塔性质）</li>
+      </ul>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">相关系数的几何意义</div>
+      <ul>
+        <li>$-1 \leq \rho \leq 1$</li>
+        <li>$\rho = 1$ $\iff$ $P(Y=aX+b)=1$（$a>0$，完全正线性相关）</li>
+        <li>$\rho = -1$ $\iff$ $P(Y=aX+b)=1$（$a\lt 0$，完全负线性相关）</li>
+        <li>$\rho = 0$ $\iff$ 不相关（无线性关联）</li>
+        <li>$|\rho|$ 越接近 1，线性关联越强</li>
+        <li><strong>注意</strong>：$\rho=0$ 只排除线性关系，$Y=X^2$ 的 $\rho$ 可以为零但显然存在确定性关系</li>
+      </ul>
+    </div>
+
+  </div>
+
   <!-- 底部导航 -->
   <div class="chapter-nav">
     <a href="mock.html" class="prev">模拟题</a>
