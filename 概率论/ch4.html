@@ -59,7 +59,13 @@
         </ol>
       </li>
       <li><a href="#s3">特征函数 —— 分析随机变量之和的利器</a></li>
-      <li><a href="#s4">大数定律</a></li>
+      <li><a href="#s4">大数定律</a>
+        <ol>
+          <li><a href="#s4-1">马尔可夫大数定律</a></li>
+          <li><a href="#s4-2">大数定律经典例题</a></li>
+          <li><a href="#s4-3">大数定律与中心极限定理：条件对比</a></li>
+        </ol>
+      </li>
       <li><a href="#s5">中心极限定理</a></li>
       <li><a href="#s6">综合例题与应用</a>
         <ol>
@@ -542,48 +548,296 @@
       </ul>
     </div>
 
-    <h3>三个大数定律的比较</h3>
+    <!-- 马尔可夫大数定律 -->
+    <h3 id="s4-1">马尔可夫大数定律</h3>
+
+    <div class="box box-note">
+      <div class="box-title">为什么还需要马尔可夫大数定律？</div>
+      <p>前面三个大数定律各有局限：切比雪夫要求"两两不相关+方差有界"，伯努利只适用伯努利试验，辛钦要求"独立同分布"。但现实中有些序列<strong>既不独立也不同分布</strong>，甚至不完全满足切比雪夫的条件。马尔可夫大数定律给出了<strong>最宽松的充分条件</strong>——它不要求独立，不要求同分布，只要求方差平均增长不太快。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">马尔可夫大数定律（Markov's Law of Large Numbers）</div>
+      <p>设 $X_1, X_2, \ldots$ 为任意随机变量序列（<strong>不要求独立，不要求同分布</strong>），若：</p>
+      <div class="formula-highlight">
+        $$\lim_{n \to \infty} \frac{1}{n^2}\,\Var\!\left(\sum_{i=1}^n X_i\right) = 0$$
+      </div>
+      <p>则对任意 $\varepsilon > 0$：</p>
+      $$\lim_{n \to \infty} \PP\!\left(\left|\frac{1}{n}\sum_{i=1}^n X_i - \frac{1}{n}\sum_{i=1}^n \EE(X_i)\right| \lt \varepsilon\right) = 1$$
+      <p>即 $\displaystyle \frac{1}{n}\sum_{i=1}^n [X_i - \EE(X_i)] \xrightarrow{P} 0$。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">马尔可夫条件的理解</div>
+      <p><strong>马尔可夫条件</strong> $\displaystyle \frac{1}{n^2}\Var(S_n) \to 0$ 的含义是：总和的方差增长速度<strong>慢于 $n^2$</strong>。等价地，$\Var(\bar{X}_n) \to 0$。</p>
+      <p><strong>直觉</strong>：方差衡量了随机变量的波动。条件 $\Var(\bar{X}_n) \to 0$ 意味着当样本量增大时，样本均值的波动趋于零——也就是说样本均值越来越稳定。这正是大数定律的本质。</p>
+      <p><strong>证明概要</strong>：直接对 $\bar{X}_n$ 应用切比雪夫不等式即可。</p>
+      $$\PP(|\bar{X}_n - \EE(\bar{X}_n)| \geq \varepsilon) \leq \frac{\Var(\bar{X}_n)}{\varepsilon^2} = \frac{\Var(S_n)}{n^2 \varepsilon^2} \to 0$$
+      <p>证明虽然简单，但马尔可夫条件的<strong>普适性</strong>才是重点——它涵盖了切比雪夫、伯努利和辛钦大数定律作为特例。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">马尔可夫条件 ⟸ 切比雪夫条件（为什么马尔可夫更一般？）</div>
+      <p>切比雪夫大数定律的条件是：$X_i$ 两两不相关，且 $\Var(X_i) \leq C$（方差一致有界）。</p>
+      <p>在此条件下：</p>
+      $$\Var(S_n) = \sum_{i=1}^n \Var(X_i) \leq nC \quad \Rightarrow \quad \frac{1}{n^2}\Var(S_n) \leq \frac{C}{n} \to 0$$
+      <p>所以切比雪夫条件<strong>蕴含</strong>马尔可夫条件。但反过来不成立——存在满足马尔可夫条件但不满足切比雪夫条件的序列（例如方差随 $n$ 增长但增长速度低于 $n$ 的情况），如 $\Var(X_i) = i^{\alpha}$，其中 $\alpha \lt 1$，此时 $\Var(S_n) \sim n^{\alpha+1}$，$\Var(S_n)/n^2 \sim n^{\alpha-1} \to 0$，但 $\Var(X_i)$ 无界。</p>
+      <p><strong>条件强弱关系</strong>：辛钦（i.i.d.+期望存在）⇒ 切比雪夫（两两不相关+方差有界）⇒ 马尔可夫（$\Var(S_n)/n^2 \to 0$）</p>
+    </div>
+
+    <!-- 四个大数定律的比较 -->
+    <h3>四个大数定律的完整比较</h3>
     <div class="table-wrapper">
       <table>
         <tr>
           <th>定律</th>
-          <th>条件</th>
-          <th>结论</th>
-          <th>适用场景</th>
+          <th>独立性要求</th>
+          <th>同分布要求</th>
+          <th>矩条件</th>
+          <th>适用范围</th>
+        </tr>
+        <tr>
+          <td><strong>马尔可夫</strong></td>
+          <td>无</td>
+          <td>无</td>
+          <td>$\Var(S_n)/n^2 \to 0$</td>
+          <td>最广（含相依序列）</td>
         </tr>
         <tr>
           <td>切比雪夫</td>
-          <td>两两不相关，方差有界</td>
-          <td>$\bar{X}_n \xrightarrow{P} \frac{1}{n}\sum E(X_i)$</td>
-          <td>不同分布的情形</td>
+          <td>两两不相关</td>
+          <td>无</td>
+          <td>方差一致有界</td>
+          <td>不同分布、不独立</td>
         </tr>
         <tr>
           <td>伯努利</td>
-          <td>独立重复伯努利试验</td>
-          <td>频率 $\xrightarrow{P}$ 概率 $p$</td>
+          <td>独立</td>
+          <td>同分布（伯努利）</td>
+          <td>方差自动有界</td>
           <td>频率估计概率</td>
         </tr>
         <tr>
           <td>辛钦</td>
-          <td>独立同分布，期望存在</td>
-          <td>$\bar{X}_n \xrightarrow{P} \mu$</td>
+          <td>独立</td>
+          <td>同分布</td>
+          <td>仅需期望存在</td>
           <td>样本均值估计总体均值</td>
         </tr>
       </table>
     </div>
 
+    <div class="box box-note">
+      <div class="box-title">选择大数定律的决策流程</div>
+      <ol>
+        <li>数据是否<strong>独立同分布</strong>？→ 是：优先用<strong>辛钦</strong>（条件最易验证，只需期望存在）</li>
+        <li>不同分布但<strong>两两不相关+方差有界</strong>？→ 用<strong>切比雪夫</strong></li>
+        <li>是<strong>伯努利试验</strong>的频率问题？→ 用<strong>伯努利</strong>（最直观）</li>
+        <li>以上都不满足，但能验证 $\Var(S_n)/n^2 \to 0$？→ 用<strong>马尔可夫</strong>（最后手段）</li>
+        <li>如果连马尔可夫条件都无法验证，则需更高级的工具（如强大数定律、鞅收敛定理等）</li>
+      </ol>
+    </div>
+
+    <!-- 大数定律经典例题 -->
+    <h3 id="s4-2">大数定律经典例题</h3>
+
     <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 大数定律的应用</div>
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 验证马尔可夫条件 —— 方差增长的序列</div>
       <div class="collapsible-body">
-        <p><strong>题目</strong>：一颗均匀骰子，掷 $n$ 次的平均点数 $\bar{X}_n$。问 $n$ 至少多大时，$P(|\bar{X}_n - 3.5| \lt 0.1) \geq 0.95$？</p>
-        <p><strong>解</strong>：$E(X_i)=3.5$，$\Var(X_i)=\frac{35}{12}$</p>
-        <p>由切比雪夫不等式：$P(|\bar{X}_n - 3.5| \geq 0.1) \leq \frac{\Var(\bar{X}_n)}{0.1^2} = \frac{35/(12n)}{0.01} = \frac{35}{0.12n}$</p>
-        <p>要使 $P(|\bar{X}_n - 3.5| \lt 0.1) \geq 0.95$，即 $P(|\bar{X}_n - 3.5| \geq 0.1) \leq 0.05$</p>
-        <p>$\frac{35}{0.12n} \leq 0.05 \Rightarrow n \geq \frac{35}{0.12 \times 0.05} = \frac{35}{0.006} \approx 5834$</p>
-        <p><strong>注意</strong>：切比雪夫不等式给出的是保守估计。如果用中心极限定理，需要的 $n$ 会小得多。</p>
+        <p><strong>题目</strong>：设 $X_1, X_2, \ldots$ 相互独立，$\Var(X_i) = i^{0.5}$（方差随 $i$ 增大但增速低于线性）。问该序列是否满足大数定律？</p>
+        <p><strong>分析</strong>：方差无界，不满足切比雪夫条件（要求方差一致有界）。但可以验证马尔可夫条件。</p>
+        <p><strong>解</strong>：由独立性，$\Var(S_n) = \sum_{i=1}^n \Var(X_i) = \sum_{i=1}^n i^{0.5}$。</p>
+        <p>利用积分近似：$\sum_{i=1}^n i^{0.5} \approx \int_0^n x^{0.5}\,\dd x = \frac{2}{3}n^{1.5}$。</p>
+        <p>验证马尔可夫条件：</p>
+        $$\frac{1}{n^2}\Var(S_n) \approx \frac{\frac{2}{3}n^{1.5}}{n^2} = \frac{2}{3}n^{-0.5} \to 0 \quad (n \to \infty)$$
+        <p>马尔可夫条件满足！因此由马尔可夫大数定律，$\bar{X}_n \xrightarrow{P} \frac{1}{n}\sum \EE(X_i)$。</p>
+        <p><strong>启示</strong>：即使序列的方差无界（增长到无穷），只要增长速度比 $n$ 慢，大数定律仍然成立。马尔可夫条件的精髓就在于此。</p>
       </div>
     </div>
-  </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 相依序列的马尔可夫大数定律</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：设 $X_1, X_2, \ldots$ 满足 $\Cov(X_i, X_j) \leq c \cdot \rho^{|i-j|}$，其中 $0 \lt \rho \lt 1$，且 $\Var(X_i) \leq M$。证明大数定律成立。</p>
+        <p><strong>分析</strong>：这是一个<strong>相依序列</strong>（协方差指数衰减）。变量之间不独立，因此辛钦和切比雪夫都不能直接使用。需要验证马尔可夫条件。</p>
+        <p><strong>解</strong>：</p>
+        $$\Var(S_n) = \sum_{i=1}^n \Var(X_i) + 2\sum_{1 \leq i \lt j \leq n} \Cov(X_i, X_j)$$
+        $$\leq nM + 2\sum_{i \lt j} c\rho^{j-i}$$
+        <p>第二项求和：对于固定的差 $k = j-i$，有 $(n-k)$ 对。所以：</p>
+        $$2\sum_{i \lt j} c\rho^{j-i} = 2c\sum_{k=1}^{n-1}(n-k)\rho^k \leq 2cn\sum_{k=1}^\infty \rho^k = 2cn \cdot \frac{\rho}{1-\rho}$$
+        <p>因此 $\Var(S_n) \leq nM + 2cn \cdot \frac{\rho}{1-\rho} = n\left(M + \frac{2c\rho}{1-\rho}\right)$。</p>
+        <p>验证马尔可夫条件：$\displaystyle \frac{1}{n^2}\Var(S_n) \leq \frac{1}{n}\left(M + \frac{2c\rho}{1-\rho}\right) \to 0$。</p>
+        <p>马尔可夫条件满足，大数定律成立。</p>
+        <p><strong>启示</strong>：只要相关性随距离衰减足够快（指数衰减），即使变量不是独立的，大数定律仍然成立。这是时间序列分析中"遍历性"概念的基础。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 判别应该使用哪个大数定律</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：判断以下序列是否满足大数定律，应使用哪个定律：</p>
+        <p>(1) $X_i$ i.i.d. $\sim$ 柯西分布（$f(x) = \frac{1}{\pi(1+x^2)}$）。</p>
+        <p>(2) $X_i$ 独立，$X_i \sim N(0, i)$（方差随 $i$ 线性增长）。</p>
+        <p>(3) $X_i$ 独立，$P(X_i = i) = P(X_i = -i) = 1/2$。</p>
+        <p><strong>解</strong>：</p>
+        <p><strong>(1) 柯西分布</strong>：$E(X_i)$ 不存在！辛钦不适用（要求期望存在）。$\Var(X_i)$ 也不存在，切比雪夫和马尔可夫都不适用。<strong>大数定律不成立</strong>。实际上，对于柯西分布，$\bar{X}_n$ 仍然服从柯西分布（不收敛于常数），这是大数定律失效的经典反例。</p>
+        <p><strong>(2) $X_i \sim N(0, i)$</strong>：$\Var(X_i)=i$ 无界，切比雪夫不适用。但可以验证马尔可夫条件：$\Var(S_n) = \sum_{i=1}^n i = \frac{n(n+1)}{2}$，$\frac{1}{n^2}\Var(S_n) = \frac{n+1}{2n} \to \frac{1}{2} \neq 0$。<strong>马尔可夫条件不满足！</strong>大数定律不成立。方差增长太快（$\sim n^2$），样本均值的波动不会消失。</p>
+        <p><strong>(3) $P(X_i = \pm i) = 1/2$</strong>：$E(X_i)=0$，$\Var(X_i) = E(X_i^2) = i^2$。$\Var(S_n) = \sum i^2 \sim n^3/3$，$\frac{1}{n^2}\Var(S_n) \sim n/3 \to \infty$。<strong>马尔可夫条件不满足。</strong>大数定律不成立。</p>
+        <p><strong>总结</strong>：验证大数定律的关键步骤：(i) 先看期望是否存在（不存在则直接排除），(ii) 再检查方差是否一致有界（如有界则用切比雪夫），(iii) 如无界则验证马尔可夫条件 $\Var(S_n)/n^2 \to 0$。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 大数定律的应用 —— 蒙特卡洛积分</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：用随机模拟方法估计积分 $I = \int_0^1 e^{-x^2}\,\dd x$。说明其理论依据。</p>
+        <p><strong>解</strong>：将积分改写为期望：$I = \int_0^1 e^{-x^2} \cdot 1\,\dd x = \EE[e^{-U^2}]$，其中 $U \sim U(0,1)$。</p>
+        <p>抽取 $n$ 个 i.i.d. $U(0,1)$ 样本 $U_1, \ldots, U_n$，令 $Y_i = e^{-U_i^2}$。</p>
+        <p>则 $\EE(Y_i) = I$，$\Var(Y_i) \lt \infty$（因为 $0 \lt e^{-U^2} \leq 1$）。</p>
+        <p>由<strong>辛钦大数定律</strong>（i.i.d. + 期望存在）：</p>
+        $$\hat{I}_n = \frac{1}{n}\sum_{i=1}^n e^{-U_i^2} \xrightarrow{P} I$$
+        <p>即当 $n$ 足够大时，样本均值 $\hat{I}_n$ 可以任意接近真实积分值 $I$。</p>
+        <p><strong>实际表现</strong>：取 $n=10^6$，可以得到约 3 位有效数字的精度。误差 $\approx \sigma/\sqrt{n}$（由 CLT 给出）。</p>
+        <p><strong>这就是蒙特卡洛方法的核心思想</strong>：将确定性的计算问题（积分）转化为随机模拟问题，利用大数定律保证收敛性。</p>
+      </div>
+    </div>
+
+    <!-- 大数定律与中心极限定理条件对比 -->
+    <h3 id="s4-3">大数定律与中心极限定理：使用条件对比</h3>
+
+    <p>大数定律和中心极限定理是第四章的两大核心。下表从<strong>使用条件的角度</strong>进行全面对比，帮助在解题时快速判断应该使用哪个定理。</p>
+
+    <div class="table-wrapper">
+      <table>
+        <tr>
+          <th>定理</th>
+          <th>独立性</th>
+          <th>同分布</th>
+          <th>矩条件</th>
+          <th>额外条件</th>
+          <th>结论</th>
+          <th>收敛类型</th>
+        </tr>
+        <tr>
+          <td>马尔可夫 LLN</td>
+          <td>无要求</td>
+          <td>无要求</td>
+          <td>$\Var(S_n)/n^2 \to 0$</td>
+          <td>—</td>
+          <td>$\bar{X}_n - \EE(\bar{X}_n) \xrightarrow{P} 0$</td>
+          <td>依概率收敛</td>
+        </tr>
+        <tr>
+          <td>切比雪夫 LLN</td>
+          <td>两两不相关</td>
+          <td>无要求</td>
+          <td>$\Var(X_i) \leq C$（一致有界）</td>
+          <td>—</td>
+          <td>$\bar{X}_n - \EE(\bar{X}_n) \xrightarrow{P} 0$</td>
+          <td>依概率收敛</td>
+        </tr>
+        <tr>
+          <td>伯努利 LLN</td>
+          <td>独立</td>
+          <td>同分布（伯努利）</td>
+          <td>自动满足</td>
+          <td>—</td>
+          <td>$\frac{n_A}{n} \xrightarrow{P} p$</td>
+          <td>依概率收敛</td>
+        </tr>
+        <tr>
+          <td>辛钦 LLN</td>
+          <td>独立</td>
+          <td>同分布</td>
+          <td>$\EE(X)$ 存在（不要求方差）</td>
+          <td>—</td>
+          <td>$\bar{X}_n \xrightarrow{P} \mu$</td>
+          <td>依概率收敛</td>
+        </tr>
+        <tr style="border-top: 2px solid #999;">
+          <td>林德伯格-列维 CLT</td>
+          <td>独立</td>
+          <td>同分布</td>
+          <td>$\Var(X) \lt \infty$</td>
+          <td>—</td>
+          <td>$\frac{S_n - n\mu}{\sqrt{n}\sigma} \xrightarrow{d} N(0,1)$</td>
+          <td>依分布收敛</td>
+        </tr>
+        <tr>
+          <td>棣莫弗-拉普拉斯 CLT</td>
+          <td>独立</td>
+          <td>同分布（伯努利）</td>
+          <td>自动满足</td>
+          <td>—</td>
+          <td>$\frac{X_n - np}{\sqrt{np(1-p)}} \xrightarrow{d} N(0,1)$</td>
+          <td>依分布收敛</td>
+        </tr>
+        <tr>
+          <td>李雅普诺夫 CLT</td>
+          <td>独立</td>
+          <td>无要求</td>
+          <td>$\EE|X_i - \mu_i|^{2+\delta} \lt \infty$</td>
+          <td>李雅普诺夫条件</td>
+          <td>$\frac{\sum X_i - \sum \mu_i}{B_n} \xrightarrow{d} N(0,1)$</td>
+          <td>依分布收敛</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">LLN 与 CLT 的核心区别 —— 考试必备</div>
+      <table>
+        <tr><th>对比维度</th><th>大数定律 (LLN)</th><th>中心极限定理 (CLT)</th></tr>
+        <tr>
+          <td><strong>研究的问题</strong></td>
+          <td>样本均值是否"稳定"于期望</td>
+          <td>样本均值的"波动"服从什么分布</td>
+        </tr>
+        <tr>
+          <td><strong>给出的结论</strong></td>
+          <td>定性：$\bar{X}_n \to \mu$</td>
+          <td>定量：$\bar{X}_n$ 的分布 ≈ $N(\mu, \sigma^2/n)$</td>
+        </tr>
+        <tr>
+          <td><strong>矩条件要求</strong></td>
+          <td>较低：辛钦只需期望存在</td>
+          <td>较高：Levy 需要方差存在</td>
+        </tr>
+        <tr>
+          <td><strong>收敛速度信息</strong></td>
+          <td>无（只说"最终会收敛"）</td>
+          <td>有（误差 ≈ $\sigma/\sqrt{n}$）</td>
+        </tr>
+        <tr>
+          <td><strong>能否算具体概率</strong></td>
+          <td>不行（只给出"概率趋近1"）</td>
+          <td>可以（查正态分布表）</td>
+        </tr>
+        <tr>
+          <td><strong>适用范围</strong></td>
+          <td>更广（允许无穷方差）</td>
+          <td>较窄（需要有限方差）</td>
+        </tr>
+        <tr>
+          <td><strong>典型考试问法</strong></td>
+          <td>"证明相合性""频率稳定于概率"</td>
+          <td>"求近似概率""确定样本量"</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">考试中的判断口诀</div>
+      <ul>
+        <li><strong>"证收敛"</strong> → 用大数定律（LLN 说的是"依概率收敛"）</li>
+        <li><strong>"算概率"</strong> → 用中心极限定理（CLT 给出近似分布，可查表）</li>
+        <li><strong>"确定 $n$"</strong> → 用 CLT（通过精度反推样本量）</li>
+        <li><strong>"只知道期望，方差未知/不存在"</strong> → 用辛钦大数定律，不能用 CLT</li>
+        <li><strong>"相依或不相关序列，方差无界"</strong> → 验证马尔可夫条件 $\Var(S_n)/n^2 \to 0$</li>
+        <li><strong>"二项分布 $n$ 较大"</strong> → 棣莫弗-拉普拉斯 CLT，记得连续性修正</li>
+        <li><strong>"不同分布"</strong> → 切比雪夫 LLN（如果方差有界）或李雅普诺夫 CLT（如果验证条件）</li>
+      </ul>
+    </div>
 
   <!-- ==================== 4.5 中心极限定理 ==================== -->
   <div class="section" id="s5">
