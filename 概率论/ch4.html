@@ -52,11 +52,21 @@
     <h3>本章目录</h3>
     <ol>
       <li><a href="#s1">预备知识：期望与方差回顾</a></li>
-      <li><a href="#s2">马尔可夫不等式与切比雪夫不等式</a></li>
+      <li><a href="#s2">马尔可夫不等式与切比雪夫不等式</a>
+        <ol>
+          <li><a href="#s2-1">马尔可夫条件的深入理解</a></li>
+          <li><a href="#s2-2">马尔可夫不等式的应用例题</a></li>
+        </ol>
+      </li>
       <li><a href="#s3">特征函数 —— 分析随机变量之和的利器</a></li>
       <li><a href="#s4">大数定律</a></li>
       <li><a href="#s5">中心极限定理</a></li>
-      <li><a href="#s6">综合例题与应用</a></li>
+      <li><a href="#s6">综合例题与应用</a>
+        <ol>
+          <li><a href="#s6-1">中心极限定理经典考察题型</a></li>
+          <li><a href="#s6-2">帮助理解的核心例题</a></li>
+        </ol>
+      </li>
     </ol>
   </div>
 
@@ -106,6 +116,37 @@
       <p><strong>直觉</strong>：如果一个非负随机变量的均值较小，它取大值的概率也较小。比如全班平均分 70，那考 90 分以上的人不可能超过 $70/90 \approx 78\%$。</p>
     </div>
 
+    <!-- 马尔可夫条件的深入理解 -->
+    <h3 id="s2-1">马尔可夫条件的深入理解</h3>
+
+    <div class="box box-note">
+      <div class="box-title">为什么要求 $X \geq 0$？—— 马尔可夫条件的本质</div>
+      <p>马尔可夫不等式的<strong>核心条件</strong>是随机变量必须<strong>非负</strong>（$X \geq 0$）。这个条件看似简单，但它决定了不等式的适用范围和使用方式。</p>
+      <p><strong>条件的必要性</strong>：考虑一个可取负值的随机变量，比如 $X \sim N(0,1)$，则 $E(X)=0$，不等式给出 $P(X \geq 10) \leq 0/10 = 0$。但实际上 $P(X \geq 10) > 0$（虽然很小）。这说明对于可取负值的变量，马尔可夫不等式<strong>不直接适用</strong>。</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">马尔可夫不等式的严格证明</div>
+      <p>设 $X \geq 0$ 为连续型随机变量，密度为 $f(x)$，则对任意 $a > 0$：</p>
+      $$\EE(X) = \int_0^\infty x f(x)\,\dd x = \int_0^a x f(x)\,\dd x + \int_a^\infty x f(x)\,\dd x$$
+      $$\geq \int_a^\infty x f(x)\,\dd x \quad (\text{因为第一项} \geq 0)$$
+      $$\geq \int_a^\infty a f(x)\,\dd x = a\int_a^\infty f(x)\,\dd x = a\cdot\PP(X \geq a)$$
+      <p>因此 $\PP(X \geq a) \leq \dfrac{\EE(X)}{a}$。离散情形的证明完全类似（将积分换为求和）。</p>
+      <p><strong>证明的关键步骤</strong>：在 $[a, \infty)$ 上，$x \geq a$，所以用 $a$ 替换 $x$ 得到下界估计。这是"截断法"的典型技巧，在概率不等式证明中反复出现。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">马尔可夫条件的推广 —— 如何对任意随机变量使用马尔可夫不等式？</div>
+      <p>如果 $X$ 不满足非负条件，可以通过<strong>构造非负函数</strong>来间接使用马尔可夫不等式。这是考试中常见的灵活运用：</p>
+      <ol>
+        <li><strong>$X$ 转换</strong>：对 $|X|$ 使用马尔可夫不等式，得到 $P(|X| \geq a) \leq E|X| / a$</li>
+        <li><strong>平方转换</strong>：对 $(X-\mu)^2$ 使用马尔可夫不等式 → <strong>导出切比雪夫不等式</strong>（见下文）</li>
+        <li><strong>指数转换</strong>：对 $e^{tX}$（$t>0$）使用马尔可夫不等式 → 导出<strong>切尔诺夫界</strong>（Chernoff bound）：$P(X \geq a) \leq \inf_{t>0} e^{-ta}E(e^{tX})$</li>
+        <li><strong>一般函数转换</strong>：若 $g(x)$ 在 $\RR$ 上非负且单调不减，则 $P(X \geq a) = P(g(X) \geq g(a)) \leq E[g(X)] / g(a)$</li>
+      </ol>
+      <p><strong>核心思想</strong>：马尔可夫不等式是所有尾概率不等式的"母体"——切比雪夫、切尔诺夫等著名不等式本质上都是选取合适的非负函数后应用马尔可夫不等式的结果。</p>
+    </div>
+
     <div class="box box-theorem">
       <div class="box-title">切比雪夫不等式（Chebyshev's Inequality）</div>
       <p>设随机变量 $X$ 的期望 $E(X)=\mu$，方差 $\Var(X)=\sigma^2$ 存在，则对任意 $\varepsilon > 0$：</p>
@@ -146,6 +187,56 @@
         <p>$P(|X-1000| \geq 50) \leq \dfrac{100}{50^2} = \dfrac{100}{2500} = 0.04$</p>
         <p>即灯泡寿命偏离均值超过 50 小时的概率不超过 4%。</p>
         <p><strong>注意</strong>：这只是上界估计，实际概率可能远小于 4%。如果知道 $X$ 的具体分布（如正态），可以算出精确值。</p>
+      </div>
+    </div>
+
+    <!-- 马尔可夫不等式的应用例题 -->
+    <h3 id="s2-2">马尔可夫不等式的应用例题</h3>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 马尔可夫不等式 —— 指数分布的尾概率估计</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：设 $X \sim Exp(2)$（参数 $\lambda=2$，即密度 $f(x)=2e^{-2x}, x \geq 0$）。</p>
+        <p>(1) 用马尔可夫不等式给出 $P(X \geq 2)$ 的上界；</p>
+        <p>(2) 计算 $P(X \geq 2)$ 的精确值，并与 (1) 比较。</p>
+        <p><strong>解</strong>：</p>
+        <p><strong>(1) 马尔可夫不等式</strong>：$X \geq 0$，$E(X) = 1/\lambda = 1/2 = 0.5$。</p>
+        $$P(X \geq 2) \leq \frac{E(X)}{2} = \frac{0.5}{2} = 0.25$$
+        <p><strong>(2) 精确值</strong>：$P(X \geq 2) = \int_2^\infty 2e^{-2x}\,\dd x = e^{-4} \approx 0.0183$。</p>
+        <p><strong>对比</strong>：马尔可夫上界 0.25，精确值约 0.0183。马尔可夫不等式给出的上界比较宽松（约 14 倍），但它<strong>不需要知道分布的具体形式</strong>——只用了期望。</p>
+        <p><strong>启示</strong>：马尔可夫不等式是"万能"的（适用于任何非负随机变量），但代价是估计较粗糙。如果知道具体分布，应该用精确计算或更紧的不等式（如切尔诺夫界）。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 用马尔可夫不等式确定样本量</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：某随机变量 $X \geq 0$，已知 $E(X) = 10$。要使 $P(X \geq 100) \leq 0.05$，需要什么条件？如果通过取 $n$ 个独立同分布样本并取均值 $\bar{X}_n$ 来实现，$n$ 至少需要多大？</p>
+        <p><strong>解</strong>：</p>
+        <p>由马尔可夫不等式：$P(X \geq 100) \leq \dfrac{E(X)}{100} = \dfrac{10}{100} = 0.1$。</p>
+        <p>这已经给出了 0.1 的上界，但题目要求 $\leq 0.05$，直接用马尔可夫不等式对 $X$ 本身无法达到。</p>
+        <p><strong>用样本均值</strong>：取 $n$ 个 i.i.d. 样本 $X_1, \ldots, X_n$，令 $\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i$。</p>
+        <p>则 $E(\bar{X}_n) = 10$，且 $\bar{X}_n \geq 0$。由马尔可夫不等式：</p>
+        $$P(\bar{X}_n \geq 100) \leq \frac{E(\bar{X}_n)}{100} = \frac{10}{100} = 0.1$$
+        <p>仍然是 0.1！马尔可夫不等式<strong>不能通过增加样本量来改进上界</strong>，因为它只用到了期望信息。要想得到更紧的界，需要使用<strong>方差信息</strong>（切比雪夫不等式）或<strong>分布信息</strong>（中心极限定理）。</p>
+        <p><strong>对比 —— 用切比雪夫不等式</strong>：若 $\Var(X) = \sigma^2$，则 $\Var(\bar{X}_n) = \sigma^2/n$。</p>
+        $$P(|\bar{X}_n - 10| \geq 90) \leq \frac{\sigma^2/n}{90^2} = \frac{\sigma^2}{8100n}$$
+        <p>令 $\dfrac{\sigma^2}{8100n} \leq 0.05$，可得 $n \geq \dfrac{\sigma^2}{405}$。当 $\sigma^2$ 已知时可以算出具体值。</p>
+        <p><strong>关键区别</strong>：马尔可夫上界不随 $n$ 减小（只用了期望），切比雪夫上界随 $n$ 增大而减小（用了方差信息）。这体现了"信息越多，估计越紧"的统计原则。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 从马尔可夫到切比雪夫 —— 一个不等式的两种用法</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：设随机变量 $X$ 满足 $E(X)=2$，$\Var(X)=1$。分别用马尔可夫不等式和切比雪夫不等式估计 $P(X \geq 5)$ 的上界。</p>
+        <p><strong>分析</strong>：注意 $X$ 不一定非负，所以不能直接用马尔可夫不等式于 $X$。</p>
+        <p><strong>方法一（马尔可夫 —— 转换为非负变量）</strong>：考虑 $(X-2)^2 \geq 0$，其期望为 $\Var(X)=1$。</p>
+        $$P(X \geq 5) \leq P(|X-2| \geq 3) = P((X-2)^2 \geq 9) \leq \frac{E[(X-2)^2]}{9} = \frac{1}{9} \approx 0.111$$
+        <p>这本质上就是切比雪夫不等式！（取 $\varepsilon = 3$，$\sigma^2 = 1$）</p>
+        <p><strong>方法二（切比雪夫不等式）</strong>：直接应用。</p>
+        $$P(X \geq 5) \leq P(|X-2| \geq 3) \leq \frac{\Var(X)}{3^2} = \frac{1}{9}$$
+        <p><strong>总结</strong>：当 $X$ 不满足非负条件时，不能直接套马尔可夫不等式。但通过构造 $(X-\mu)^2$（总是非负），应用马尔可夫不等式就得到了切比雪夫不等式。这说明<strong>切比雪夫不等式本质上是马尔可夫不等式在 $(X-\mu)^2$ 上的应用</strong>，马尔可夫条件是整个推理链条的起点。</p>
       </div>
     </div>
   </div>
@@ -805,7 +896,122 @@
       </div>
     </div>
 
-    <h3>帮助理解的核心例题</h3>
+    <!-- 中心极限定理经典考察题型 -->
+    <h3 id="s6-1">中心极限定理经典考察题型</h3>
+
+    <p>以下整理了几种考试中反复出现的 CLT 经典题型，掌握这些题型的解题模式可以应对大多数考题。</p>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 题型一 · 样本量确定问题（已知精度反推 $n$）</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：设总体 $X$ 的期望为 $\mu$，方差为 $\sigma^2=4$。现从中抽取 $n$ 个样本，用样本均值 $\bar{X}_n$ 估计 $\mu$。要使 $P(|\bar{X}_n - \mu| \lt 0.1) \geq 0.95$，$n$ 至少需要多大？</p>
+        <p><strong>解</strong>：由中心极限定理，$\bar{X}_n \;\dot{\sim}\; N(\mu, \sigma^2/n)$，标准化：</p>
+        $$P(|\bar{X}_n - \mu| \lt 0.1) = P\!\left(\frac{|\bar{X}_n - \mu|}{\sigma/\sqrt{n}} \lt \frac{0.1}{2/\sqrt{n}}\right) \approx 2\Phi\!\left(\frac{0.1\sqrt{n}}{2}\right) - 1 \geq 0.95$$
+        <p>即 $\Phi(0.05\sqrt{n}) \geq 0.975$，查表得 $0.05\sqrt{n} \geq 1.96$，$\sqrt{n} \geq 39.2$，$n \geq 1537$。</p>
+        <p><strong>考试要点</strong>：</p>
+        <ul>
+          <li>$\Phi(z_{\alpha/2}) = 1 - \alpha/2$，其中 $z_{0.025} = 1.96$ 是最高频的分位数</li>
+          <li>公式 $n \geq \left(\dfrac{z_{\alpha/2} \cdot \sigma}{\varepsilon}\right)^2$ 可以直接记忆</li>
+          <li>即使总体分布未知，只要 $n$ 足够大，CLT 就保证近似有效</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 题型二 · 独立同分布和的概率近似（非正态总体）</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：设 $X_1, X_2, \ldots, X_{100}$ i.i.d. $\sim Exp(1)$（指数分布，$E(X_i)=1$，$\Var(X_i)=1$）。求 $P(S_{100} \gt 110)$，其中 $S_{100} = \sum_{i=1}^{100} X_i$。</p>
+        <p><strong>解</strong>：虽然每个 $X_i$ 服从指数分布（非正态），但由 CLT，$S_{100}$ 近似服从正态分布。</p>
+        <p>$E(S_{100}) = 100 \times 1 = 100$，$\Var(S_{100}) = 100 \times 1 = 100$，$\sigma = 10$。</p>
+        $$P(S_{100} \gt 110) = P\!\left(\frac{S_{100} - 100}{10} \gt \frac{110 - 100}{10}\right) \approx 1 - \Phi(1) = 1 - 0.8413 = 0.1587$$
+        <p><strong>精确值对比</strong>：$S_{100} \sim Gamma(100, 1)$（形状参数 100，尺度参数 1），精确概率约为 0.1578。CLT 近似误差仅约 0.0009，非常精确。</p>
+        <p><strong>考试要点</strong>：</p>
+        <ul>
+          <li>不要求总体是正态分布！CLT 的威力在于<strong>任何分布</strong>（只要方差存在）都适用</li>
+          <li>对于指数分布这种偏态分布，$n=100$ 时近似已非常好</li>
+          <li>解题步骤：(1) 算 $E(S_n)$ 和 $\Var(S_n)$ (2) 标准化 (3) 查表</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 题型三 · 棣莫弗-拉普拉斯 —— 二项分布的正态近似（含连续性修正）</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：某硬币抛掷 400 次，设正面概率 $p=0.5$。求正面出现次数在 185 到 215 次之间的概率的近似值。</p>
+        <p><strong>分析</strong>：这是典型的二项分布问题。设 $X \sim B(400, 0.5)$，则 $np=200$，$np(1-p)=100$，$\sigma=10$。</p>
+        <p><strong>精确计算</strong>：$P(185 \leq X \leq 215) = \sum_{k=185}^{215} \binom{400}{k} (0.5)^{400}$，计算量巨大。</p>
+        <p><strong>正态近似（不做连续性修正）</strong>：</p>
+        $$P(185 \leq X \leq 215) \approx \Phi\!\left(\frac{215 - 200}{10}\right) - \Phi\!\left(\frac{185 - 200}{10}\right) = \Phi(1.5) - \Phi(-1.5) = 2\Phi(1.5) - 1$$
+        $$= 2 \times 0.9332 - 1 = 0.8664$$
+        <p><strong>正态近似（做连续性修正）</strong>：</p>
+        $$P(185 \leq X \leq 215) = P(184.5 \lt X \lt 215.5) \approx \Phi\!\left(\frac{215.5 - 200}{10}\right) - \Phi\!\left(\frac{184.5 - 200}{10}\right)$$
+        $$= \Phi(1.55) - \Phi(-1.55) = 2\Phi(1.55) - 1 = 2 \times 0.9394 - 1 = 0.8788$$
+        <p>精确值约 0.8790。连续性修正后的近似误差仅约 0.0002，而不做修正的误差约 0.0126——修正使精度提高了约两个数量级。</p>
+        <p><strong>考试要点</strong>：</p>
+        <ul>
+          <li>$n$ 较大且 $p$ 不极端时，二项分布可用正态近似</li>
+          <li>经验准则：$np \geq 5$ 且 $n(1-p) \geq 5$ 时近似效果尚可；$np \geq 10$ 且 $n(1-p) \geq 10$ 时效果良好</li>
+          <li>考察"是否做连续性修正"是常见考点——不做修正会扣分</li>
+          <li>含等号 $\leq$ 时向外延半格（$+0.5$），不含等号 $\lt$ 时向内缩半格（$-0.5$）</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 题型四 · 质量控制 / 验收抽样问题</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：某电子元件生产线上，每个元件的寿命 $X_i$（小时）满足 $E(X_i)=800$，$\Var(X_i)=160000$（即 $\sigma=400$）。质检员随机抽取 64 个元件进行寿命测试。若样本平均寿命低于 720 小时，则判定该批次不合格。求该批次被误判为不合格的概率（假设该批次实际合格，即 $\mu=800$）。</p>
+        <p><strong>解</strong>：样本均值 $\bar{X}_{64}$，由 CLT：$\bar{X}_{64} \;\dot{\sim}\; N\!\left(800, \frac{160000}{64}\right) = N(800, 2500)$，即 $\sigma_{\bar{X}} = 50$。</p>
+        $$P(\text{误判}) = P(\bar{X}_{64} \lt 720) \approx \Phi\!\left(\frac{720 - 800}{50}\right) = \Phi(-1.6) = 1 - \Phi(1.6) = 1 - 0.9452 = 0.0548$$
+        <p>即约有 5.48% 的概率将合格批次误判为不合格（第一类错误 / 生产者风险）。</p>
+        <p><strong>考试要点</strong>：</p>
+        <ul>
+          <li>这类问题需要正确识别 $\bar{X}_n$ 的标准差：$\sigma/\sqrt{n}$（不是 $\sigma$！）</li>
+          <li>容易漏掉 $\sqrt{n}$ 导致答案误差巨大——这是高频扣分点</li>
+          <li>实际应用中可以调整判定阈值或增加样本量来控制误判率</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 题型五 · 比例估计问题（民意调查 / 抽样调查）</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：某城市居民对某项政策的支持率为 $p$（未知）。随机调查 600 人，其中 330 人表示支持。求该城市支持率 $p$ 的 95% 近似置信区间。</p>
+        <p><strong>解</strong>：样本支持率 $\hat{p} = 330/600 = 0.55$。</p>
+        <p>由 CLT（棣莫弗-拉普拉斯），$\hat{p} \;\dot{\sim}\; N\!\left(p, \frac{p(1-p)}{n}\right)$。</p>
+        <p>$\hat{p}$ 的近似标准差：$\sqrt{\frac{\hat{p}(1-\hat{p})}{n}} = \sqrt{\frac{0.55 \times 0.45}{600}} = \sqrt{\frac{0.2475}{600}} \approx 0.0203$。</p>
+        <p>95% 置信区间：$\hat{p} \pm 1.96 \times 0.0203 = 0.55 \pm 0.0398$，即 $(0.5102, 0.5898)$。</p>
+        <p><strong>含义</strong>：以 95% 的置信度认为，该城市真实支持率在 51.0% 到 59.0% 之间。</p>
+        <p><strong>考试要点</strong>：</p>
+        <ul>
+          <li>$\hat{p}$ 的方差是 $p(1-p)/n$，来源于伯努利分布的方差 $p(1-p)$</li>
+          <li>实践中用 $\hat{p}(1-\hat{p})/n$ 代替 $p(1-p)/n$（因为 $p$ 未知）</li>
+          <li>区间宽度 $\propto 1/\sqrt{n}$：要把精度提高一倍，样本量需要增至四倍</li>
+          <li>这是统计学中"误差范围"（margin of error）$\approx z_{\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$ 的理论基础</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 题型六 · 独立非同分布和的近似 —— 李雅普诺夫条件的应用</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：某学生在期末考试中，高等数学成绩 $X_1$ 的期望为 78 分（标准差 8），线性代数 $X_2$ 期望 82 分（标准差 6），概率论 $X_3$ 期望 75 分（标准差 9），大学物理 $X_4$ 期望 80 分（标准差 7）。假设各科成绩独立。求该学生四科总分超过 335 分的概率。</p>
+        <p><strong>分析</strong>：各科成绩分布不同（甚至可能不是同一分布族），但由李雅普诺夫定理，总分近似正态。</p>
+        <p><strong>解</strong>：$T = X_1 + X_2 + X_3 + X_4$。</p>
+        <p>$E(T) = 78 + 82 + 75 + 80 = 315$。</p>
+        <p>$\Var(T) = 8^2 + 6^2 + 9^2 + 7^2 = 64 + 36 + 81 + 49 = 230$（独立性保证了方差可加）。</p>
+        <p>$\sigma_T = \sqrt{230} \approx 15.17$。</p>
+        $$P(T \gt 335) = P\!\left(\frac{T - 315}{15.17} \gt \frac{335 - 315}{15.17}\right) \approx 1 - \Phi(1.318) \approx 1 - 0.9062 = 0.0938$$
+        <p><strong>考试要点</strong>：</p>
+        <ul>
+          <li>即使各科分布不同，只要独立且没有哪一科"主导"总分，总分近似正态</li>
+          <li>方差可加性只依赖于<strong>独立性</strong>（不要求同分布）</li>
+          <li>此类问题体现 CLT 的"普适性"——现实中的总分、总重量、总误差等都适用</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 id="s6-2">帮助理解的核心例题</h3>
     <div class="collapsible">
       <div class="collapsible-header"><span class="toggle-icon">▶</span> 理解题 · 切比雪夫不等式——"保守但可靠"的估计</div>
       <div class="collapsible-body">
