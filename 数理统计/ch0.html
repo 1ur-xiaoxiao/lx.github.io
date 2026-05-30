@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第零章 · Gamma分布与Beta分布基础 · 数理统计</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          EE: '\\mathbb{E}',
+          PP: '\\mathbb{P}',
+          Var: '\\mathrm{Var}',
+          Cov: '\\mathrm{Cov}',
+          dd: '\\mathrm{d}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../index.html" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">数理统计</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch0.html">第零章</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="appendix.html">附录</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第零章 · Gamma分布与Beta分布基础</h1>
+    <p>从概率论到数理统计的桥梁：$\Gamma$ 函数与 Gamma 分布、$B$ 函数与 Beta 分布是理解三大抽样分布（$\chi^2$、$t$、$F$）和贝叶斯共轭先验的数学基础。本章在只有概率论基础的前提下，从零推导这些必备知识。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">$\Gamma$ 函数（Gamma Function）</a></li>
+      <li><a href="#s2">Gamma 分布</a></li>
+      <li><a href="#s3">$B$ 函数（Beta Function）</a></li>
+      <li><a href="#s4">Beta 分布</a></li>
+      <li><a href="#s5">在数理统计中的桥梁作用</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 0.1 Γ函数 ==================== -->
+  <div class="section" id="s1">
+    <h2>0.1 $\Gamma$ 函数（Gamma Function）</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · $\Gamma$ 函数</div>
+      <p>对任意 $\alpha > 0$，定义</p>
+      <div class="formula-highlight">
+        $$\Gamma(\alpha) = \int_0^\infty x^{\alpha-1} e^{-x} \,\dd x$$
+      </div>
+      <p>$\Gamma$ 函数可以看作"阶乘函数在正实数上的推广"。当 $\alpha$ 为正整数时，$\Gamma(n) = (n-1)!$。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">$\Gamma$ 函数的直觉理解</div>
+      <p>回忆 $n! = n \cdot (n-1) \cdot \cdots \cdot 2 \cdot 1$，这一定义只在正整数上有意义。$\Gamma$ 函数通过积分形式将阶乘"插值"到所有正实数：</p>
+      <p>$\Gamma(\alpha)$ 的值 = 曲线 $x^{\alpha-1}e^{-x}$ 在 $(0, \infty)$ 下的面积。</p>
+      <p>当 $\alpha$ 较小（如 $\alpha=0.5$）时，$x^{\alpha-1}=x^{-0.5}$ 在 $x \to 0^+$ 时爆破，但 $e^{-x}$ 在 $x\to\infty$ 时使积分收敛。</p>
+    </div>
+
+    <h3>$\Gamma$ 函数的基本性质</h3>
+
+    <div class="box box-theorem">
+      <div class="box-title">性质 1 · 递推关系（$\Gamma$ 函数的"阶乘"性质）</div>
+      <div class="formula-highlight">
+        $$\Gamma(\alpha+1) = \alpha\,\Gamma(\alpha), \quad \forall\,\alpha > 0$$
+      </div>
+      <p><strong>证明</strong>：对定义式做分部积分。令 $u = x^\alpha$，$\dd v = e^{-x}\dd x$，则 $\dd u = \alpha x^{\alpha-1}\dd x$，$v = -e^{-x}$。</p>
+      $$\Gamma(\alpha+1) = \int_0^\infty x^\alpha e^{-x} \,\dd x = \left[-x^\alpha e^{-x}\right]_0^\infty + \alpha\int_0^\infty x^{\alpha-1} e^{-x} \,\dd x$$
+      <p>边界项：$x \to \infty$ 时 $x^\alpha e^{-x} \to 0$（指数衰减压倒多项式增长）；$x \to 0^+$ 时，$\alpha>0$ 保证 $x^\alpha \to 0$。故边界项为 0。</p>
+      <p>剩余的积分正好是 $\alpha\,\Gamma(\alpha)$。证毕。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">推论 · 正整数处的值</div>
+      <p>反复应用递推关系，并注意到 $\Gamma(1) = \int_0^\infty e^{-x}\dd x = 1$：</p>
+      $$\Gamma(2) = 1\cdot\Gamma(1) = 1 = 1!$$
+      $$\Gamma(3) = 2\cdot\Gamma(2) = 2 = 2!$$
+      $$\Gamma(4) = 3\cdot\Gamma(3) = 6 = 3!$$
+      <p>一般地，$\Gamma(n) = (n-1)!$，对所有正整数 $n$ 成立。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">性质 2 · 重要特殊值 $\Gamma(1/2) = \sqrt{\pi}$</div>
+      <p><strong>推导</strong>：令 $\alpha = 1/2$，</p>
+      $$\Gamma\!\left(\frac{1}{2}\right) = \int_0^\infty x^{-1/2} e^{-x} \,\dd x$$
+      <p>做变量代换 $x = t^2$，$\dd x = 2t\,\dd t$：</p>
+      $$\Gamma\!\left(\frac{1}{2}\right) = \int_0^\infty t^{-1} e^{-t^2} \cdot 2t\,\dd t = 2\int_0^\infty e^{-t^2}\,\dd t = \int_{-\infty}^\infty e^{-t^2}\,\dd t$$
+      <p>这正是标准正态密度（未归一化）的积分——即著名的 <strong>Gauss 积分</strong>：</p>
+      <div class="formula-highlight">
+        $$\int_{-\infty}^\infty e^{-t^2}\,\dd t = \sqrt{\pi}$$
+      </div>
+      <p>因此 $\Gamma(1/2) = \sqrt{\pi}$。这个值在统计中至关重要——它是连接标准正态和 $\chi^2(1)$（即 $\text{Gamma}(1/2, 1/2)$）的桥梁。</p>
+      <p><strong>Gauss 积分的证法</strong>（极坐标变换）：令 $I = \int_{-\infty}^\infty e^{-x^2}\dd x$，则</p>
+      $$I^2 = \int_{-\infty}^\infty \int_{-\infty}^\infty e^{-(x^2+y^2)}\dd x\dd y = \int_0^{2\pi} \int_0^\infty e^{-r^2} r\,\dd r\dd\theta = 2\pi \cdot \frac{1}{2} = \pi$$
+      <p>故 $I = \sqrt{\pi}$。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">$\Gamma$ 函数性质总结</div>
+      <table>
+        <tr><th>性质</th><th>公式</th><th>说明</th></tr>
+        <tr><td>递推关系</td><td>$\Gamma(\alpha+1) = \alpha\Gamma(\alpha)$</td><td>$\Gamma$ 函数的"阶乘"性质</td></tr>
+        <tr><td>正整数</td><td>$\Gamma(n) = (n-1)!$</td><td>$n=1,2,3,\ldots$</td></tr>
+        <tr><td>$\alpha=1/2$</td><td>$\Gamma(1/2) = \sqrt{\pi}$</td><td>来自 Gauss 积分</td></tr>
+        <tr><td>$\alpha=3/2$</td><td>$\Gamma(3/2) = \frac{1}{2}\sqrt{\pi}$</td><td>由递推：$\Gamma(3/2) = \frac{1}{2}\Gamma(1/2)$</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ==================== 0.2 Gamma分布 ==================== -->
+  <div class="section" id="s2">
+    <h2>0.2 Gamma 分布</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · Gamma 分布</div>
+      <p>若随机变量 $X$ 具有密度函数</p>
+      <div class="formula-highlight">
+        $$f(x; \alpha, \lambda) = \frac{\lambda^\alpha}{\Gamma(\alpha)} x^{\alpha-1} e^{-\lambda x}, \quad x > 0$$
+      </div>
+      <p>则称 $X$ 服从<strong>Gamma 分布</strong>，记为 $X \sim \text{Gamma}(\alpha, \lambda)$ 或 $X \sim \Gamma(\alpha, \lambda)$。</p>
+      <ul>
+        <li>$\alpha > 0$：<strong>形状参数</strong>（shape parameter），控制密度曲线的形态</li>
+        <li>$\lambda > 0$：<strong>速率参数</strong>（rate parameter），控制密度曲线的尺度</li>
+      </ul>
+      <p>有时也使用<strong>尺度参数</strong> $\beta = 1/\lambda$，密度写为 $f(x; \alpha, \beta) = \frac{1}{\beta^\alpha \Gamma(\alpha)} x^{\alpha-1} e^{-x/\beta}$。</p>
+      <p><strong>本课程统一使用速率参数 $\lambda$ 的形式</strong>，这与茆诗松教材一致。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">密度函数的验证</div>
+      <p>密度非负显然。积分为 1 的验证：</p>
+      $$\int_0^\infty \frac{\lambda^\alpha}{\Gamma(\alpha)} x^{\alpha-1} e^{-\lambda x} \,\dd x = \frac{\lambda^\alpha}{\Gamma(\alpha)} \int_0^\infty x^{\alpha-1} e^{-\lambda x} \,\dd x$$
+      <p>令 $t = \lambda x$，$x = t/\lambda$，$\dd x = \dd t/\lambda$：</p>
+      $$= \frac{\lambda^\alpha}{\Gamma(\alpha)} \int_0^\infty \left(\frac{t}{\lambda}\right)^{\alpha-1} e^{-t} \cdot \frac{\dd t}{\lambda} = \frac{\lambda^\alpha}{\Gamma(\alpha)} \cdot \frac{1}{\lambda^\alpha} \int_0^\infty t^{\alpha-1}e^{-t}\,\dd t = \frac{1}{\Gamma(\alpha)} \cdot \Gamma(\alpha) = 1$$
+      <p>这正是 $\Gamma$ 函数定义的自然结果——Gamma 分布的名称就来源于归一化常数中的 $\Gamma(\alpha)$。</p>
+    </div>
+
+    <h3>Gamma 分布的期望与方差</h3>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 · Gamma 分布的期望与方差</div>
+      <p>设 $X \sim \text{Gamma}(\alpha, \lambda)$，则</p>
+      <div class="formula-highlight">
+        $$E[X] = \frac{\alpha}{\lambda}, \qquad \Var(X) = \frac{\alpha}{\lambda^2}$$
+      </div>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明</div>
+      <p><strong>期望</strong>：</p>
+      $$E[X] = \int_0^\infty x \cdot \frac{\lambda^\alpha}{\Gamma(\alpha)} x^{\alpha-1} e^{-\lambda x} \,\dd x = \frac{\lambda^\alpha}{\Gamma(\alpha)} \int_0^\infty x^{\alpha} e^{-\lambda x} \,\dd x$$
+      <p>令 $t = \lambda x$：</p>
+      $$= \frac{\lambda^\alpha}{\Gamma(\alpha)} \int_0^\infty \left(\frac{t}{\lambda}\right)^\alpha e^{-t} \cdot \frac{\dd t}{\lambda} = \frac{1}{\lambda\,\Gamma(\alpha)} \int_0^\infty t^\alpha e^{-t}\,\dd t = \frac{\Gamma(\alpha+1)}{\lambda\,\Gamma(\alpha)} = \frac{\alpha}{\lambda}$$
+      <p><strong>二阶矩</strong>：类似地，</p>
+      $$E[X^2] = \int_0^\infty x^2 \cdot \frac{\lambda^\alpha}{\Gamma(\alpha)} x^{\alpha-1} e^{-\lambda x} \,\dd x = \frac{\lambda^\alpha}{\Gamma(\alpha)} \int_0^\infty x^{\alpha+1} e^{-\lambda x} \,\dd x$$
+      <p>做同样的变量代换：</p>
+      $$= \frac{\Gamma(\alpha+2)}{\lambda^2\,\Gamma(\alpha)} = \frac{(\alpha+1)\alpha\,\Gamma(\alpha)}{\lambda^2\,\Gamma(\alpha)} = \frac{\alpha(\alpha+1)}{\lambda^2}$$
+      <p><strong>方差</strong>：</p>
+      $$\Var(X) = E[X^2] - (E[X])^2 = \frac{\alpha(\alpha+1)}{\lambda^2} - \frac{\alpha^2}{\lambda^2} = \frac{\alpha}{\lambda^2}$$
+      <p><strong>技巧总结</strong>：Gamma 分布的矩计算不需分部积分——只需利用 $\Gamma$ 函数的递推关系，将积分"吸收"到 $\Gamma$ 函数中。</p>
+    </div>
+
+    <h3>Gamma 分布的特殊情形</h3>
+
+    <div class="box box-theorem">
+      <div class="box-title">特殊情形 1 · 指数分布</div>
+      <p>当 $\alpha = 1$ 时：</p>
+      $$f(x; 1, \lambda) = \frac{\lambda^1}{\Gamma(1)} x^{0} e^{-\lambda x} = \lambda e^{-\lambda x}, \quad x > 0$$
+      <p>这正是参数为 $\lambda$ 的<strong>指数分布</strong> $\text{Exp}(\lambda)$。即</p>
+      <div class="formula-highlight">
+        $$\text{Exp}(\lambda) = \text{Gamma}(1, \lambda)$$
+      </div>
+      <p>$E[X] = 1/\lambda$，$\Var(X) = 1/\lambda^2$，与 Gamma 公式中 $\alpha=1$ 一致。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">特殊情形 2 · $\chi^2$ 分布</div>
+      <p>当 $\alpha = n/2$，$\lambda = 1/2$ 时：</p>
+      $$f\!\left(x; \frac{n}{2}, \frac{1}{2}\right) = \frac{(1/2)^{n/2}}{\Gamma(n/2)} x^{n/2-1} e^{-x/2}, \quad x > 0$$
+      <p>这正是<strong>自由度为 $n$ 的 $\chi^2$ 分布</strong>的密度函数。即</p>
+      <div class="formula-highlight">
+        $$\chi^2(n) = \text{Gamma}\!\left(\frac{n}{2},\; \frac{1}{2}\right)$$
+      </div>
+      <p>由此可以直接得到 $\chi^2(n)$ 的期望和方差：</p>
+      $$E[\chi^2(n)] = \frac{n/2}{1/2} = n, \qquad \Var(\chi^2(n)) = \frac{n/2}{(1/2)^2} = 2n$$
+      <p>这比第一章中逐个计算 $E[X_i^2]$ 和 $E[X_i^4]$ 更加简洁。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">$\chi^2(1)$ 与标准正态的关系</div>
+      <p>若 $Z \sim N(0,1)$，则 $Z^2 \sim \chi^2(1) = \text{Gamma}(1/2, 1/2)$。</p>
+      <p><strong>验证</strong>：令 $Y = Z^2$，$Z$ 的密度为 $\phi(z) = \frac{1}{\sqrt{2\pi}}e^{-z^2/2}$。对 $y > 0$：</p>
+      $$f_Y(y) = f_Z(\sqrt{y}) \cdot \frac{1}{2\sqrt{y}} + f_Z(-\sqrt{y}) \cdot \frac{1}{2\sqrt{y}} = \frac{2}{\sqrt{2\pi}} e^{-y/2} \cdot \frac{1}{2\sqrt{y}} = \frac{1}{\sqrt{2\pi}} y^{-1/2} e^{-y/2}$$
+      <p>而 $\text{Gamma}(1/2, 1/2)$ 的密度为：</p>
+      $$f(x) = \frac{(1/2)^{1/2}}{\Gamma(1/2)} x^{-1/2} e^{-x/2} = \frac{1/\sqrt{2}}{\sqrt{\pi}} x^{-1/2} e^{-x/2} = \frac{1}{\sqrt{2\pi}} x^{-1/2} e^{-x/2}$$
+      <p>两者完全一致。这里 $\Gamma(1/2) = \sqrt{\pi}$ 起了关键作用。</p>
+    </div>
+
+    <h3>Gamma 分布的可加性</h3>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 · Gamma 分布的可加性</div>
+      <p>设 $X_1 \sim \text{Gamma}(\alpha_1, \lambda)$，$X_2 \sim \text{Gamma}(\alpha_2, \lambda)$，且 $X_1$ 与 $X_2$ 独立，则</p>
+      <div class="formula-highlight">
+        $$X_1 + X_2 \sim \text{Gamma}(\alpha_1 + \alpha_2,\; \lambda)$$
+      </div>
+      <p>推广：$n$ 个独立同速率参数 $\lambda$ 的 Gamma 变量之和，形状参数相加，速率参数不变。</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明思路（矩母函数法）</div>
+      <p>Gamma 分布的矩母函数（MGF）为：</p>
+      $$M_X(t) = E[e^{tX}] = \left(1 - \frac{t}{\lambda}\right)^{-\alpha}, \quad t < \lambda$$
+      <p>（推导：将 $e^{tx}$ 与密度中的 $e^{-\lambda x}$ 合并为 $e^{-(\lambda-t)x}$，然后利用 $\Gamma$ 函数归一化。）</p>
+      <p>由于 $X_1$ 与 $X_2$ 独立，</p>
+      $$M_{X_1+X_2}(t) = M_{X_1}(t) \cdot M_{X_2}(t) = \left(1 - \frac{t}{\lambda}\right)^{-\alpha_1} \cdot \left(1 - \frac{t}{\lambda}\right)^{-\alpha_2} = \left(1 - \frac{t}{\lambda}\right)^{-(\alpha_1+\alpha_2)}$$
+      <p>这恰好是 $\text{Gamma}(\alpha_1+\alpha_2, \lambda)$ 的 MGF，由 MGF 的唯一性得证。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注意：速率参数 $\lambda$ 必须相同</div>
+      <p>可加性要求两个 Gamma 变量有相同的速率参数 $\lambda$。如果 $\lambda_1 \neq \lambda_2$，则 $X_1 + X_2$ 不再服从 Gamma 分布。</p>
+    </div>
+
+    <h3>Gamma 分布的密度曲线形态</h3>
+
+    <div class="box box-note">
+      <div class="box-title">形状参数 $\alpha$ 如何影响密度形态</div>
+      <ul>
+        <li>$\alpha = 1$：密度从 $x=0$ 处的 $\lambda$ 开始单调递减——这就是指数分布</li>
+        <li>$0 < \alpha < 1$：当 $x \to 0^+$ 时 $x^{\alpha-1} \to \infty$，密度在 0 处爆破，然后单调递减</li>
+        <li>$\alpha > 1$：密度从 0 开始，先上升到最大值（众数在 $x = (\alpha-1)/\lambda$），然后下降——呈单峰形态</li>
+        <li>$\alpha$ 越大，密度越接近对称的钟形（这是中心极限定理的体现——独立 Gamma 之和趋于正态）</li>
+      </ul>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · Gamma 分布的概率计算</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：设 $X \sim \text{Gamma}(3, 2)$，求 $P(X > 1)$。</p>
+        <p><strong>解</strong>：$X \sim \text{Gamma}(3, 2)$ 意味着 $\alpha = 3$，$\lambda = 2$。</p>
+        <p>由 Gamma 分布与 $\chi^2$ 分布的关系：$\text{Gamma}(3, 2) = \text{Gamma}(6/2, 1/2 \cdot 4)$，不是直接的 $\chi^2$。</p>
+        <p>更直接的方法：利用 Gamma 分布与 Poisson 过程的关系。$\text{Gamma}(3, 2)$ 是三个独立 $\text{Exp}(2)$ 之和。</p>
+        <p>或者直接积分：</p>
+        $$P(X > 1) = \int_1^\infty \frac{2^3}{\Gamma(3)} x^{2} e^{-2x} \,\dd x = \int_1^\infty \frac{8}{2} x^2 e^{-2x} \,\dd x = 4\int_1^\infty x^2 e^{-2x} \,\dd x$$
+        <p>分部积分两次可得具体数值。更重要的是理解：$\text{Gamma}(\alpha, \lambda)$ 的概率可通过与 Poisson 分布的关系来计算：</p>
+        $$P(X > 1) = P(\text{Poisson}(2 \cdot 1) \leq 3-1) = P(\text{Poisson}(2) \leq 2) = e^{-2}\!\left(1 + 2 + \frac{2^2}{2!}\right) = 5e^{-2} \approx 0.677$$
+        <p>这里用到了 Gamma 分布与 Poisson 过程的基本关系：$P(\text{Gamma}(\alpha, \lambda) > x) = P(\text{Poisson}(\lambda x) \leq \alpha - 1)$。这一关系在茆诗松教材中有详细说明。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 0.3 B函数 ==================== -->
+  <div class="section" id="s3">
+    <h2>0.3 $B$ 函数（Beta Function）</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · $B$ 函数</div>
+      <p>对任意 $\alpha > 0$，$\beta > 0$，定义</p>
+      <div class="formula-highlight">
+        $$B(\alpha, \beta) = \int_0^1 x^{\alpha-1} (1-x)^{\beta-1} \,\dd x$$
+      </div>
+      <p>$B$ 函数与 $\Gamma$ 函数有深刻的内在联系。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">$B$ 函数的直觉理解</div>
+      <p>$B$ 函数处理的变量被限制在 $[0, 1]$ 上，这使得它天然适合描述<strong>比例</strong>和<strong>概率</strong>。$x^{\alpha-1}(1-x)^{\beta-1}$ 在区间两端的行为由 $\alpha$ 和 $\beta$ 控制。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">性质 1 · $B$ 函数的对称性</div>
+      <div class="formula-highlight">
+        $$B(\alpha, \beta) = B(\beta, \alpha)$$
+      </div>
+      <p><strong>证明</strong>：在定义中做变量代换 $y = 1 - x$：</p>
+      $$B(\alpha, \beta) = \int_0^1 x^{\alpha-1} (1-x)^{\beta-1} \,\dd x = \int_1^0 (1-y)^{\alpha-1} y^{\beta-1} (-\dd y) = \int_0^1 y^{\beta-1} (1-y)^{\alpha-1} \,\dd y = B(\beta, \alpha)$$
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">性质 2 · $\Gamma$ 函数与 $B$ 函数的核心关系</div>
+      <div class="formula-highlight">
+        $$B(\alpha, \beta) = \frac{\Gamma(\alpha)\,\Gamma(\beta)}{\Gamma(\alpha+\beta)}$$
+      </div>
+      <p>这个公式是连接 Gamma 分布和 Beta 分布的桥梁，在贝叶斯统计中共轭先验的推导中反复使用。</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明（利用二重积分与极坐标变换）</div>
+      <p>考虑 $\Gamma(\alpha)\Gamma(\beta)$：</p>
+      $$\Gamma(\alpha)\Gamma(\beta) = \int_0^\infty x^{\alpha-1} e^{-x} \dd x \cdot \int_0^\infty y^{\beta-1} e^{-y} \dd y = \int_0^\infty \int_0^\infty x^{\alpha-1} y^{\beta-1} e^{-(x+y)} \dd x \dd y$$
+      <p>做变量代换：$x = uv$，$y = u(1-v)$，其中 $u \in (0, \infty)$，$v \in (0, 1)$。</p>
+      <p>Jacobi 行列式：$\left|\frac{\partial(x,y)}{\partial(u,v)}\right| = \begin{vmatrix} v & u \\ 1-v & -u \end{vmatrix} = -uv - u(1-v) = -u$，故 $|\det| = u$。</p>
+      <p>且 $x+y = u$，$x^{\alpha-1}y^{\beta-1} = u^{\alpha+\beta-2} v^{\alpha-1} (1-v)^{\beta-1}$。</p>
+      <p>于是：</p>
+      \begin{align*}
+      \Gamma(\alpha)\Gamma(\beta) &= \int_0^1 \int_0^\infty u^{\alpha+\beta-2} v^{\alpha-1} (1-v)^{\beta-1} e^{-u} \cdot u \,\dd u \dd v \\
+      &= \int_0^\infty u^{\alpha+\beta-1} e^{-u} \dd u \cdot \int_0^1 v^{\alpha-1} (1-v)^{\beta-1} \dd v \\
+      &= \Gamma(\alpha+\beta) \cdot B(\alpha, \beta)
+      \end{align*}
+      <p>移项即得 $B(\alpha, \beta) = \dfrac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)}$。这个巧妙的变量代换是 Euler 的杰作。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">$B$ 函数的特殊值</div>
+      <table>
+        <tr><th>参数</th><th>$B$ 函数值</th><th>推导</th></tr>
+        <tr><td>$B(1,1)$</td><td>$1$</td><td>$B(1,1) = \int_0^1 \dd x = 1$</td></tr>
+        <tr><td>$B(1/2, 1/2)$</td><td>$\pi$</td><td>$B(1/2,1/2) = \Gamma(1/2)^2 / \Gamma(1) = \pi$</td></tr>
+        <tr><td>$B(\alpha, 1)$</td><td>$1/\alpha$</td><td>$B(\alpha,1) = \int_0^1 x^{\alpha-1}\dd x = 1/\alpha$</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ==================== 0.4 Beta分布 ==================== -->
+  <div class="section" id="s4">
+    <h2>0.4 Beta 分布</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · Beta 分布</div>
+      <p>若随机变量 $X$ 具有密度函数</p>
+      <div class="formula-highlight">
+        $$f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha-1} (1-x)^{\beta-1}, \quad 0 < x < 1$$
+      </div>
+      <p>则称 $X$ 服从<strong>Beta 分布</strong>，记为 $X \sim \text{Beta}(\alpha, \beta)$。</p>
+      <ul>
+        <li>$\alpha > 0$，$\beta > 0$：两个形状参数</li>
+        <li>定义域为 $(0, 1)$，使 Beta 分布天然适合建模<strong>概率</strong>和<strong>比例</strong></li>
+      </ul>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">Beta 分布为什么定义在 $[0, 1]$ 上？</div>
+      <p>很多实际问题中，我们关心的参数天然在 $[0,1]$ 之间：硬币正面的概率 $p$、产品合格率、考试通过率等。Beta 分布是 $[0,1]$ 上最灵活的两参数分布族——调整 $\alpha$ 和 $\beta$，密度可以呈现丰富的形态（U 形、单峰、均匀、J 形等）。</p>
+    </div>
+
+    <h3>Beta 分布的期望与方差</h3>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 · Beta 分布的期望与方差</div>
+      <p>设 $X \sim \text{Beta}(\alpha, \beta)$，则</p>
+      <div class="formula-highlight">
+        $$E[X] = \frac{\alpha}{\alpha+\beta}, \qquad \Var(X) = \frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}$$
+      </div>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明</div>
+      <p><strong>期望</strong>：利用 $B$ 函数的定义，将积分吸收到 $B$ 函数中：</p>
+      $$E[X] = \int_0^1 x \cdot \frac{1}{B(\alpha, \beta)} x^{\alpha-1} (1-x)^{\beta-1} \,\dd x = \frac{1}{B(\alpha, \beta)} \int_0^1 x^{\alpha} (1-x)^{\beta-1} \,\dd x$$
+      <p>注意到 $\int_0^1 x^{\alpha} (1-x)^{\beta-1} \dd x = B(\alpha+1, \beta)$，因此：</p>
+      $$E[X] = \frac{B(\alpha+1, \beta)}{B(\alpha, \beta)} = \frac{\Gamma(\alpha+1)\Gamma(\beta)}{\Gamma(\alpha+\beta+1)} \cdot \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)} = \frac{\alpha\,\Gamma(\alpha)}{\Gamma(\alpha)} \cdot \frac{\Gamma(\alpha+\beta)}{(\alpha+\beta)\,\Gamma(\alpha+\beta)} = \frac{\alpha}{\alpha+\beta}$$
+      <p><strong>二阶矩</strong>：类似地，</p>
+      $$E[X^2] = \frac{B(\alpha+2, \beta)}{B(\alpha, \beta)} = \frac{\Gamma(\alpha+2)\Gamma(\beta)}{\Gamma(\alpha+\beta+2)} \cdot \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)} = \frac{(\alpha+1)\alpha}{(\alpha+\beta+1)(\alpha+\beta)}$$
+      <p><strong>方差</strong>：</p>
+      \begin{align*}
+      \Var(X) &= E[X^2] - (E[X])^2 = \frac{(\alpha+1)\alpha}{(\alpha+\beta+1)(\alpha+\beta)} - \frac{\alpha^2}{(\alpha+\beta)^2} \\
+      &= \frac{\alpha}{\alpha+\beta}\left[\frac{\alpha+1}{\alpha+\beta+1} - \frac{\alpha}{\alpha+\beta}\right] \\
+      &= \frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}
+      \end{align*}
+      <p><strong>技巧</strong>：与 Gamma 分布一样，Beta 分布的矩计算利用 $B$ 函数（或 $\Gamma$ 函数）的关系，将积分"吸收"到特殊函数中，避免直接积分。</p>
+    </div>
+
+    <h3>Beta 分布的特殊情形与形态</h3>
+
+    <div class="box box-theorem">
+      <div class="box-title">特殊情形 · $\text{Beta}(1, 1)$ 即为均匀分布</div>
+      <p>当 $\alpha = \beta = 1$ 时：</p>
+      $$f(x; 1, 1) = \frac{1}{B(1,1)} x^{0} (1-x)^{0} = 1, \quad 0 < x < 1$$
+      <p>这正是区间 $[0,1]$ 上的<strong>均匀分布</strong> $U(0,1)$：</p>
+      <div class="formula-highlight">
+        $$U(0,1) = \text{Beta}(1, 1)$$
+      </div>
+      <p>此时 $E[X] = 1/2$，$\Var(X) = 1/12$——与 $U(0,1)$ 一致。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">Beta 密度的各种形态</div>
+      <ul>
+        <li><strong>$\alpha > 1$，$\beta > 1$</strong>：单峰，众数在 $x = \frac{\alpha-1}{\alpha+\beta-2}$，密度两端趋于 0</li>
+        <li><strong>$\alpha < 1$，$\beta < 1$</strong>：U 形，密度在两端爆破，中间最低</li>
+        <li><strong>$\alpha > 1$，$\beta \leq 1$</strong>：密度严格递增或呈 J 形向右</li>
+        <li><strong>$\alpha \leq 1$，$\beta > 1$</strong>：密度严格递减或呈 J 形向左</li>
+        <li><strong>$\alpha = \beta$</strong>：密度关于 $x = 0.5$ 对称</li>
+      </ul>
+      <p>这些丰富的形态使 Beta 分布能灵活地表达各种关于 $[0,1]$ 上参数的先验信念。</p>
+    </div>
+
+    <h3>Beta 分布与次序统计量的关系</h3>
+
+    <div class="box box-theorem">
+      <div class="box-title">Beta 分布在次序统计量中的应用</div>
+      <p>设 $X_1, X_2, \ldots, X_n$ i.i.d. $\sim U(0,1)$，将样本从小到大排列为次序统计量 $X_{(1)} \leq X_{(2)} \leq \cdots \leq X_{(n)}$。</p>
+      <p>则第 $k$ 个次序统计量服从 Beta 分布：</p>
+      <div class="formula-highlight">
+        $$X_{(k)} \sim \text{Beta}(k,\; n-k+1)$$
+      </div>
+      <p>特别地：</p>
+      <ul>
+        <li>最小值 $X_{(1)} \sim \text{Beta}(1, n)$，$E[X_{(1)}] = \frac{1}{n+1}$</li>
+        <li>最大值 $X_{(n)} \sim \text{Beta}(n, 1)$，$E[X_{(n)}] = \frac{n}{n+1}$</li>
+        <li>样本中位数（当 $n$ 为奇数，$k = (n+1)/2$）近似服从对称 Beta 分布</li>
+      </ul>
+      <p>这个关系的推导基于：$P(X_{(k)} \leq x) = P(\text{至少有 } k \text{ 个 } X_i \leq x) = \sum_{j=k}^n \binom{n}{j} x^j (1-x)^{n-j}$，求导即可得到 Beta 密度。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · Beta 分布的概率计算</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：设 $X \sim \text{Beta}(2, 5)$，求 $E[X]$，$\Var(X)$ 和 $P(X > 0.5)$。</p>
+        <p><strong>解</strong>：</p>
+        <p>$E[X] = \frac{2}{2+5} = \frac{2}{7} \approx 0.286$</p>
+        <p>$\Var(X) = \frac{2 \times 5}{(2+5)^2(2+5+1)} = \frac{10}{49 \times 8} = \frac{10}{392} \approx 0.0255$</p>
+        <p>$P(X > 0.5) = \int_{0.5}^1 \frac{1}{B(2,5)} x^{1} (1-x)^{4} \,\dd x$。</p>
+        <p>$B(2,5) = \frac{\Gamma(2)\Gamma(5)}{\Gamma(7)} = \frac{1! \cdot 4!}{6!} = \frac{24}{720} = \frac{1}{30}$</p>
+        <p>故 $f(x) = 30\,x(1-x)^4$。可通过分部积分或利用与二项分布的关系计算：</p>
+        $$P(X > 0.5) = P(\text{Bin}(6, 0.5) \leq 1) = \left(\frac{1}{2}\right)^6\!\left[\binom{6}{0} + \binom{6}{1}\right] = \frac{1+6}{64} = \frac{7}{64} \approx 0.1094$$
+        <p>（这里使用了 Beta 分布与二项分布的关系：若 $X \sim \text{Beta}(\alpha, \beta)$ 且 $\alpha, \beta$ 为整数，则 $P(X \leq x) = P(\text{Bin}(\alpha+\beta-1, x) \geq \alpha)$。）</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 0.5 桥梁作用 ==================== -->
+  <div class="section" id="s5">
+    <h2>0.5 在数理统计中的桥梁作用</h2>
+
+    <p>本节总结 Gamma 分布和 Beta 分布如何在数理统计的各个章节中发挥关键作用。如果读者只有概率论基础（熟悉正态、指数、均匀等常见分布），本节将帮助理解为什么需要学习这两个"新"分布。</p>
+
+    <h3>桥梁一：$\chi^2$ 分布的本质是 Gamma 分布</h3>
+
+    <div class="box box-note">
+      <div class="box-title">第一章的核心连接</div>
+      <p>$\chi^2(n)$ 分布是第一章三大抽样分布之根基。它的密度函数中出现的 $\Gamma(n/2)$ 并非偶然——$\chi^2(n)$ 就是 $\text{Gamma}(n/2, 1/2)$。</p>
+      <p>这意味着：</p>
+      <ul>
+        <li><strong>$\chi^2$ 的可加性</strong> = Gamma 分布的可加性（相同速率参数 $\lambda = 1/2$）</li>
+        <li><strong>$\chi^2$ 的期望 $n$ 和方差 $2n$</strong> = 直接代入 Gamma 公式 $E = \alpha/\lambda$，$\Var = \alpha/\lambda^2$</li>
+        <li><strong>标准正态的平方 $\sim \chi^2(1)$</strong> = 因为 $N(0,1)^2$ 的密度恰好是 $\text{Gamma}(1/2, 1/2)$（关键步骤用到了 $\Gamma(1/2) = \sqrt{\pi}$）</li>
+      </ul>
+    </div>
+
+    <h3>桥梁二：$t$ 分布和 $F$ 分布中的 Gamma</h3>
+
+    <div class="box box-note">
+      <div class="box-title">第一章的另两个分布</div>
+      <p>$t$ 分布和 $F$ 分布的定义都涉及独立 $\chi^2$ 变量的比值。由于 $\chi^2$ 变量本质是 Gamma 变量，$t$ 分布和 $F$ 分布的密度函数推导本质上是对独立 Gamma 变量之比的变换——这个变换中反复出现 $B$ 函数和 $\Gamma$ 函数。</p>
+      <p>例如，$F(m,n)$ 的密度函数为：</p>
+      $$f(x; m,n) = \frac{\Gamma\!\left(\frac{m+n}{2}\right)}{\Gamma\!\left(\frac{m}{2}\right)\Gamma\!\left(\frac{n}{2}\right)} \left(\frac{m}{n}\right)^{m/2} x^{m/2-1} \left(1+\frac{m}{n}x\right)^{-(m+n)/2}$$
+      <p>系数中的 $\frac{\Gamma((m+n)/2)}{\Gamma(m/2)\Gamma(n/2)}$ 正是 $1/B(m/2, n/2)$。理解了 $B$ 函数，这个看似复杂的系数就不过是 Beta 函数的一个化身。</p>
+    </div>
+
+    <h3>桥梁三：贝叶斯统计中的共轭先验</h3>
+
+    <div class="box box-note">
+      <div class="box-title">第五章的核心连接</div>
+      <p>在贝叶斯统计中，Beta 分布和 Gamma 分布作为共轭先验出现并非偶然：</p>
+      <ul>
+        <li><strong>Beta-Binomial 共轭</strong>：二项似然 $\propto \theta^x(1-\theta)^{n-x}$ 乘以 Beta 先验 $\propto \theta^{\alpha-1}(1-\theta)^{\beta-1}$，后验核 $\propto \theta^{\alpha+x-1}(1-\theta)^{\beta+n-x-1}$ 恰好是 $\text{Beta}(\alpha+x, \beta+n-x)$。</li>
+        <li><strong>Gamma-Poisson 共轭</strong>：Poisson 似然 $\propto \lambda^{\sum x_i} e^{-n\lambda}$ 乘以 Gamma 先验 $\propto \lambda^{\alpha-1} e^{-\beta\lambda}$，后验核 $\propto \lambda^{\alpha+\sum x_i-1} e^{-(\beta+n)\lambda}$ 恰好是 $\text{Gamma}(\alpha+\sum x_i, \beta+n)$。</li>
+        <li><strong>正态-正态共轭</strong>也用到类似的思想。</li>
+      </ul>
+      <p>理解了 Beta 和 Gamma 分布的形式，共轭先验的"参数更新规则"就是显然的——不过是把似然函数中的指数加到先验参数上。</p>
+    </div>
+
+    <h3>桥梁四：次序统计量的分布</h3>
+
+    <div class="box box-note">
+      <div class="box-title">第一章和第二章的应用</div>
+      <p>来自 $U(0,1)$ 总体的第 $k$ 个次序统计量 $X_{(k)} \sim \text{Beta}(k, n-k+1)$。这一事实在以下场景中很有用：</p>
+      <ul>
+        <li>求均匀分布总体下极值（$\min$、$\max$）的分布</li>
+        <li>构造均匀分布参数 $\theta$ 的置信区间（利用 $\max X_i / \theta$ 的 Beta 分布性质）</li>
+        <li>理解非参数统计中分位数的分布</li>
+      </ul>
+    </div>
+
+    <h3>桥梁五：指数分布族与充分统计量</h3>
+
+    <div class="box box-note">
+      <div class="box-title">第二章的理论基础</div>
+      <p>Gamma 分布和 Beta 分布（以及正态、二项、Poisson 等常见分布）都属于<strong>指数分布族</strong>。指数分布族的统一理论保证了：</p>
+      <ul>
+        <li>充分统计量存在且容易通过因子分解定理找到</li>
+        <li>MLE 具有良好的大样本性质</li>
+        <li>共轭先验存在且形式简洁</li>
+      </ul>
+      <p>这是茆诗松教材第二至五章反复使用的理论框架。</p>
+    </div>
+
+    <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--border-color);">
+
+    <p style="text-align: center; color: var(--text-light);">从下一章开始，我们将正式进入数理统计的核心内容：三大抽样分布、参数估计、假设检验、回归分析与贝叶斯统计。第零章中建立的 Gamma/Beta 分布基础将在后续各章节中反复发挥作用。</p>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="chapter-nav">
+    <a href="index.html" class="prev">目录</a>
+    <a href="ch1.html" class="next">第一章：数理统计基本概念</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>数理统计复习指南 · 基于茆诗松教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

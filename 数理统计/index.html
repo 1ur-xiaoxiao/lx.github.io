@@ -33,6 +33,7 @@
   <button class="nav-toggle" aria-label="菜单">☰</button>
   <ul class="nav-links">
     <li><a href="index.html">首页</a></li>
+    <li><a href="ch0.html">第零章</a></li>
     <li><a href="ch1.html">第一章</a></li>
     <li><a href="ch2.html">第二章</a></li>
     <li><a href="ch3.html">第三章</a></li>
@@ -51,8 +52,21 @@
     <p>基于茆诗松《概率论与数理统计》第五至八章 · 从抽样分布到假设检验 · 系统梳理统计推断核心方法</p>
   </div>
 
-  <!-- 五章总览卡片 -->
+  <!-- 章节总览卡片 -->
   <div class="chapter-cards">
+
+    <div class="chapter-card">
+      <span class="card-number">0</span>
+      <h3>Gamma分布与Beta分布基础</h3>
+      <p>从概率论到数理统计的桥梁：$\Gamma$ 函数与 $\text{Gamma}$ 分布、$B$ 函数与 $\text{Beta}$ 分布是理解三大抽样分布和贝叶斯共轭先验的数学基石。</p>
+      <ul>
+        <li>$\Gamma$ 函数：阶乘的连续推广，$\Gamma(1/2)=\sqrt{\pi}$ 的推导</li>
+        <li>$\text{Gamma}$ 分布：$\chi^2$ 分布的本质，指数分布的一般化</li>
+        <li>$B$ 函数与 $\Gamma$ 函数的核心关系</li>
+        <li>$\text{Beta}$ 分布：$[0,1]$ 上最灵活的两参数分布族</li>
+      </ul>
+      <a href="ch0.html" class="card-link">进入第零章 →</a>
+    </div>
 
     <div class="chapter-card">
       <span class="card-number">1</span>
@@ -125,6 +139,7 @@
   <div class="section" style="margin-top: 2rem;">
     <h2>学习路线建议</h2>
     <ol>
+      <li><strong>第零章</strong>是概率论到数理统计的桥梁。如果你对 $\Gamma$ 函数、$\text{Gamma}$ 分布、$B$ 函数和 $\text{Beta}$ 分布还不熟悉，建议先过一遍——这些知识是理解 $\chi^2$ 分布本质和贝叶斯共轭先验的前提。已有基础的同学可以快速浏览或跳过。</li>
       <li><strong>第一章</strong>是数理统计的地基，务必掌握三大抽样分布（$\chi^2$、$t$、$F$）的定义、性质和正态总体下的四个抽样分布定理。这些结论在后续每章都会反复使用。</li>
       <li><strong>第二章</strong>是统计推断的核心之一。重点掌握最大似然估计的求解步骤、无偏性的判定，以及正态总体下均值和方差的置信区间构造。</li>
       <li><strong>第三章</strong>是统计推断的另一核心。理解两类错误的权衡关系，掌握正态总体四种检验的适用条件，会计算 $p$ 值。</li>

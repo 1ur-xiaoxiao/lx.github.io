@@ -29,6 +29,7 @@
   <button class="nav-toggle" aria-label="菜单">☰</button>
   <ul class="nav-links">
     <li><a href="index.html">首页</a></li>
+    <li><a href="ch0.html">第零章</a></li>
     <li><a href="ch1.html">第一章</a></li>
     <li><a href="ch2.html">第二章</a></li>
     <li><a href="ch3.html">第三章</a></li>
@@ -59,6 +60,39 @@
       <li><a href="#sec7">贝叶斯公式</a></li>
     </ol>
   </div>
+
+  <!-- §0 Gamma/Beta分布基础 -->
+  <section class="section" id="sec0">
+    <h2>A.0 Gamma 分布与 Beta 分布速查</h2>
+
+    <h3>$\Gamma$ 函数</h3>
+    <div class="formula-highlight">
+      $$\Gamma(\alpha) = \int_0^\infty x^{\alpha-1} e^{-x} \,\dd x, \quad \alpha > 0$$
+    </div>
+    <p>核心性质：$\Gamma(\alpha+1) = \alpha\Gamma(\alpha)$，$\Gamma(n) = (n-1)!$，$\Gamma(1/2) = \sqrt{\pi}$</p>
+
+    <h3>Gamma 分布 $\text{Gamma}(\alpha, \lambda)$</h3>
+    <p>密度：$f(x) = \frac{\lambda^\alpha}{\Gamma(\alpha)} x^{\alpha-1} e^{-\lambda x},\; x > 0$</p>
+    <p>$E[X] = \frac{\alpha}{\lambda}$，$\Var(X) = \frac{\alpha}{\lambda^2}$</p>
+    <ul>
+      <li>$\text{Exp}(\lambda) = \text{Gamma}(1, \lambda)$</li>
+      <li>$\chi^2(n) = \text{Gamma}\!\left(\frac{n}{2}, \frac{1}{2}\right)$</li>
+      <li>可加性：独立 $\text{Gamma}(\alpha_i, \lambda)$ 之和 $\sim \text{Gamma}(\sum\alpha_i, \lambda)$</li>
+    </ul>
+
+    <h3>$B$ 函数</h3>
+    <div class="formula-highlight">
+      $$B(\alpha, \beta) = \int_0^1 x^{\alpha-1}(1-x)^{\beta-1}\dd x = \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)}$$
+    </div>
+
+    <h3>Beta 分布 $\text{Beta}(\alpha, \beta)$</h3>
+    <p>密度：$f(x) = \frac{1}{B(\alpha,\beta)} x^{\alpha-1}(1-x)^{\beta-1},\; 0 < x < 1$</p>
+    <p>$E[X] = \frac{\alpha}{\alpha+\beta}$，$\Var(X) = \frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}$</p>
+    <ul>
+      <li>$U(0,1) = \text{Beta}(1,1)$</li>
+      <li>$U(0,1)$ 样本的第 $k$ 次序统计量 $\sim \text{Beta}(k, n-k+1)$</li>
+    </ul>
+  </section>
 
   <!-- §1 三大抽样分布 -->
   <section class="section" id="sec1">
