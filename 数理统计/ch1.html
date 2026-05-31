@@ -46,7 +46,7 @@
 
   <div class="chapter-header">
     <h1>第一章 · 数理统计基本概念</h1>
-    <p>统计推断的理论基础：总体、样本与统计量。三大抽样分布（$\chi^2$、$t$、$F$）是后续所有统计方法的基石，正态总体的抽样分布定理贯穿整个课程。</p>
+    <p>统计推断的理论基础：总体、样本与统计量。三大抽样分布（$\chi^2$、$t$、$F$）是后续所有统计方法的基石，正态总体的抽样分布定理贯穿整个课程，充分统计量为数据降维提供了理论依据。</p>
   </div>
 
   <div class="toc">
@@ -56,6 +56,7 @@
       <li><a href="#s2">统计量</a></li>
       <li><a href="#s3">三大抽样分布</a></li>
       <li><a href="#s4">正态总体的抽样分布定理</a></li>
+      <li><a href="#s5">充分统计量</a></li>
     </ol>
   </div>
 
@@ -719,6 +720,219 @@
         <p>$P\!\left(\frac{S^2}{\sigma^2} \leq 2.09\right) = P\!\left(\frac{9S^2}{\sigma^2} \leq 9 \times 2.09\right) = P(\chi^2(9) \leq 18.81)$</p>
         <p>查 $\chi^2$ 分布表，$\chi^2_{0.05}(9) = 16.919$，$\chi^2_{0.025}(9) = 19.023$。$18.81$ 介于两者之间，故 $P \approx 0.97$ 左右。</p>
       </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1.5 充分统计量 ==================== -->
+  <div class="section" id="s5">
+    <h2>1.5 充分统计量</h2>
+
+    <p>在 <a href="#s2">§1.2</a> 中我们定义了统计量——样本的函数，用于浓缩样本信息。一个自然的问题是：是否存在某个统计量，它<strong>完整地保留了样本中关于参数 $\theta$ 的全部信息</strong>？一旦知道了这个统计量的值，样本原始数据对 $\theta$ 的推断就不再有任何额外贡献。这就是充分统计量的核心思想。</p>
+
+    <div class="box box-note">
+      <div class="box-title">为什么要研究充分统计量？</div>
+      <p>充分统计量实现了<strong>数据降维而不损失信息</strong>：$n$ 个样本观测值 $\to$ 一个（或少数几个）充分统计量的值。例如，对于正态总体 $N(\mu, \sigma^2)$（$\sigma^2$ 已知），样本均值 $\bar{X}$ 是 $\mu$ 的充分统计量——$n$ 个数据点浓缩为一个数，但对 $\mu$ 的推断能力丝毫未减。充分统计量是寻找最优估计量（MVUE，见第二章）的理论基础。</p>
+    </div>
+
+    <!-- ====== 定义 ====== -->
+    <h3>定义与直观含义</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 充分统计量</div>
+      <p>设 $X_1, X_2, \ldots, X_n$ 是来自总体 $f(x;\theta)$ 的样本（$f$ 为密度函数或分布律），$T = T(X_1, \ldots, X_n)$ 是一个统计量。若在给定 $T = t$ 的条件下，样本 $(X_1, \ldots, X_n)$ 的条件分布<strong>不依赖于参数 $\theta$</strong>，则称 $T$ 为 $\theta$ 的<strong>充分统计量</strong>（Sufficient Statistic）。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">定义的直观拆解</div>
+      <p>条件分布 $f(x_1, \ldots, x_n \mid T=t; \theta)$ 回答的问题是：</p>
+      <p style="text-align: center;"><em>"已知 $T$ 取值为 $t$，样本点 $(X_1, \ldots, X_n)$ 落在各处的概率（或密度）各是多少？"</em></p>
+      <p>如果这个条件分布<strong>与 $\theta$ 无关</strong>，意味着：</p>
+      <ul>
+        <li>一旦 $T$ 的值确定了，样本数据中<strong>剩余的随机性</strong>——即除了 $T$ 之外、样本还"长什么样"——与参数 $\theta$ 完全无关。</li>
+        <li>换言之，关于 $\theta$ 的所有信息都已经被 $T$ "榨干"了。知道 $T$ 之后，再看完整的样本数据 $(X_1, \ldots, X_n)$ 也不能让你对 $\theta$ 了解更多。</li>
+      </ul>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 用定义验证 Bernoulli 分布的充分统计量</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：设 $X_1, X_2$ i.i.d. $\sim B(1, p)$（0-1 分布），即 $P(X_i=1)=p$，$P(X_i=0)=1-p$，$0 < p < 1$。验证 $T = X_1 + X_2$ 是 $p$ 的充分统计量。</p>
+        <p><strong>解</strong>：样本空间为 $\{(0,0), (0,1), (1,0), (1,1)\}$。</p>
+        <p>$T$ 的取值及对应条件分布：</p>
+        <ul>
+          <li><strong>$T = 0$</strong>（即 $X_1=X_2=0$）：$P(X=(0,0) \mid T=0) = 1$，与 $p$ 无关。</li>
+          <li><strong>$T = 2$</strong>（即 $X_1=X_2=1$）：$P(X=(1,1) \mid T=2) = 1$，与 $p$ 无关。</li>
+          <li><strong>$T = 1$</strong>：样本可能为 $(0,1)$ 或 $(1,0)$。在给定 $T=1$ 的条件下：
+            $$P(X=(0,1) \mid T=1) = \frac{P(X=(0,1))}{P(T=1)} = \frac{(1-p)p}{2p(1-p)} = \frac{1}{2}$$
+            $$P(X=(1,0) \mid T=1) = \frac{P(X=(1,0))}{P(T=1)} = \frac{p(1-p)}{2p(1-p)} = \frac{1}{2}$$
+          这两个条件概率均为 $1/2$，与 $p$ 无关。</li>
+        </ul>
+        <p>因此，对 $T$ 的所有可能取值，给定 $T$ 后样本的条件分布均不依赖于 $p$。由定义，$T = X_1+X_2$ 是 $p$ 的充分统计量。</p>
+        <p><strong>直观含义</strong>：知道 $T$（即"两个中有几个 1"）之后，是哪一个是 1、哪一个是 0 对推断 $p$ 没有任何额外帮助——因为每个具体排列（如 $(0,1)$ 和 $(1,0)$）在 $T=1$ 的条件下出现的概率相等（$1/2$），这个概率与 $p$ 无关。</p>
+      </div>
+    </div>
+
+    <!-- ====== 因子分解定理 ====== -->
+    <h3>Fisher-Neyman 因子分解定理</h3>
+
+    <p>直接使用定义验证充分性需要计算条件分布，在连续情形下非常繁琐。下面的定理提供了判断充分统计量的<strong>充要条件</strong>，是实际中唯一实用的方法。</p>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 · Fisher-Neyman 因子分解定理</div>
+      <p>设样本 $X_1, \ldots, X_n$ 的联合密度（或联合分布律）为 $f(x_1, \ldots, x_n; \theta)$。统计量 $T = T(X_1, \ldots, X_n)$ 是 $\theta$ 的充分统计量<strong>当且仅当</strong>存在两个非负函数 $g(\cdot, \cdot)$ 和 $h(\cdot)$，使得</p>
+      <div class="formula-highlight">
+        $$f(x_1, \ldots, x_n; \theta) = g\big(T(x_1, \ldots, x_n),\; \theta\big) \cdot h(x_1, \ldots, x_n)$$
+      </div>
+      <p>对所有的 $x_1, \ldots, x_n$ 和所有的 $\theta \in \Theta$ 成立。</p>
+      <p>其中：</p>
+      <ul>
+        <li>$g(T, \theta)$：通过数据<strong>仅经由 $T$</strong> 依赖样本，且包含所有与 $\theta$ 有关的部分；</li>
+        <li>$h(x_1, \ldots, x_n)$：<strong>不依赖 $\theta$</strong>，可以理解为"与参数无关的冗余部分"。</li>
+      </ul>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">因子分解定理的证明思路（离散情形）</div>
+      <p>这里只证离散情形的必要性（$\Rightarrow$），使读者理解定理的本质。</p>
+      <p>设 $T$ 是充分统计量。令样本观测值为 $x = (x_1, \ldots, x_n)$，$T(x) = t$。则联合分布律：</p>
+      $$f(x;\theta) = P_\theta(X=x) = P_\theta(X=x,\; T=t) = P_\theta(T=t) \cdot P_\theta(X=x \mid T=t)$$
+      <p>由充分性定义，条件概率 $P_\theta(X=x \mid T=t)$ <strong>不依赖于 $\theta$</strong>，记为 $h(x)$（仅当 $T(x)=t$ 时有定义，否则 $h(x)=0$）。</p>
+      <p>而 $P_\theta(T=t)$ 依赖于数据仅通过 $T(x)$（且依赖于 $\theta$），记为 $g(T(x), \theta)$。</p>
+      <p>因此：</p>
+      $$f(x;\theta) = g(T(x), \theta) \cdot h(x)$$
+      <p>这个分解的结构揭示了充分统计量的本质：<strong>似然函数对 $\theta$ 的依赖完全通过 $T(x)$ 这个"接口"</strong>。数据 $x$ 的其余细节全部被封装在 $h(x)$ 中，而 $h(x)$ 在关于 $\theta$ 做推断时可以被约掉（例如出现在似然比中时）。</p>
+      <p>充分性的证明（$\Leftarrow$）需要对条件分布的构造，技术上较复杂，此处从略。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">使用因子分解定理的步骤</div>
+      <ol>
+        <li>写出样本的联合密度（或联合分布律）$f(x_1, \ldots, x_n; \theta)$；</li>
+        <li><strong>将所有与 $\theta$ 有关的部分归入 $g(T, \theta)$</strong>，与 $\theta$ 无关的部分归入 $h(x)$；</li>
+        <li>$g$ 对数据的依赖必须<strong>仅通过 $T$</strong>——如果 $g$ 中出现了不能仅用 $T$ 表示的数据函数，则需检查是否选错了 $T$；</li>
+        <li>通常取 $h(x) = 1$（常数），即全部信息都与 $\theta$ 有关。</li>
+      </ol>
+    </div>
+
+    <!-- ====== 例题集 ====== -->
+    <h3>典型例题</h3>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例 1 · Bernoulli 分布</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：设 $X_1, \ldots, X_n$ i.i.d. $\sim B(1, p)$，求 $p$ 的充分统计量。</p>
+        <p><strong>解</strong>：联合分布律为</p>
+        $$f(x_1, \ldots, x_n; p) = \prod_{i=1}^n p^{x_i}(1-p)^{1-x_i} = p^{\sum x_i}(1-p)^{n-\sum x_i} \cdot 1$$
+        <p>取 $T = \sum_{i=1}^n X_i$，则 $g(T, p) = p^T(1-p)^{n-T}$，$h(x) = 1$。</p>
+        <p>由因子分解定理，$T = \sum_{i=1}^n X_i$（或等价的 $\bar{X}$）是 $p$ 的充分统计量。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例 2 · Poisson 分布</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：设 $X_1, \ldots, X_n$ i.i.d. $\sim \text{Poisson}(\lambda)$，求 $\lambda$ 的充分统计量。</p>
+        <p><strong>解</strong>：联合分布律为</p>
+        $$f(x_1, \ldots, x_n; \lambda) = \prod_{i=1}^n \frac{\lambda^{x_i} e^{-\lambda}}{x_i!} = \lambda^{\sum x_i} e^{-n\lambda} \cdot \frac{1}{\prod_{i=1}^n x_i!}$$
+        <p>取 $T = \sum_{i=1}^n X_i$，$g(T, \lambda) = \lambda^T e^{-n\lambda}$，$h(x) = 1/\prod x_i!$（与 $\lambda$ 无关）。</p>
+        <p>由因子分解定理，$T = \sum_{i=1}^n X_i$ 是 $\lambda$ 的充分统计量。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例 3 · 正态分布（$\sigma^2$ 已知）</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：设 $X_1, \ldots, X_n$ i.i.d. $\sim N(\mu, \sigma_0^2)$，$\sigma_0^2$ 已知。求 $\mu$ 的充分统计量。</p>
+        <p><strong>解</strong>：联合密度为</p>
+        \begin{align*}
+        f(x_1, \ldots, x_n; \mu) &= \prod_{i=1}^n \frac{1}{\sqrt{2\pi}\sigma_0} \exp\!\left(-\frac{(x_i-\mu)^2}{2\sigma_0^2}\right) \\
+        &= \left(\frac{1}{\sqrt{2\pi}\sigma_0}\right)^n \exp\!\left(-\frac{1}{2\sigma_0^2}\sum_{i=1}^n (x_i-\mu)^2\right)
+        \end{align*}
+        <p>展开平方和：$\sum (x_i - \mu)^2 = \sum x_i^2 - 2\mu\sum x_i + n\mu^2$</p>
+        $$f = \underbrace{\exp\!\left(-\frac{1}{2\sigma_0^2}\left[\sum x_i^2 - 2\mu\sum x_i\right]\right)}_{\text{依赖 } \mu \text{ 的部分}} \cdot \underbrace{\left(\frac{1}{\sqrt{2\pi}\sigma_0}\right)^n \exp\!\left(-\frac{n\mu^2}{2\sigma_0^2}\right)}_{\text{只与 } \mu, n \text{ 有关，与数据无关}}$$
+        <p>等等——$n\mu^2$ 这一项与数据无关，可以放到 $g$ 或 $h$ 中。而依赖 $\mu$ 且依赖数据的部分只有 $\sum x_i$。因此：</p>
+        $$f(x_1, \ldots, x_n; \mu) = \exp\!\left(\frac{\mu}{\sigma_0^2}\sum x_i\right) \cdot \underbrace{\left(\frac{1}{\sqrt{2\pi}\sigma_0}\right)^n \exp\!\left(-\frac{\sum x_i^2 + n\mu^2}{2\sigma_0^2}\right)}_{*}$$
+        <p>取 $T = \sum_{i=1}^n X_i$，$g(T, \mu) = \exp(\mu T / \sigma_0^2)$，则 $g$ 依赖数据仅通过 $T$。</p>
+        <p>由因子分解定理，$T = \sum_{i=1}^n X_i$（或等价地 $\bar{X}$）是 $\mu$ 的充分统计量。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例 4 · 正态分布（$\mu$ 与 $\sigma^2$ 均未知）</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：设 $X_1, \ldots, X_n$ i.i.d. $\sim N(\mu, \sigma^2)$，$\mu$ 和 $\sigma^2$ 均未知。求 $(\mu, \sigma^2)$ 的充分统计量。</p>
+        <p><strong>解</strong>：联合密度为</p>
+        \begin{align*}
+        f(x_1, \ldots, x_n; \mu, \sigma^2) &= (2\pi\sigma^2)^{-n/2} \exp\!\left(-\frac{1}{2\sigma^2}\sum_{i=1}^n (x_i-\mu)^2\right) \\
+        &= (2\pi\sigma^2)^{-n/2} \exp\!\left(-\frac{1}{2\sigma^2}\left[\sum x_i^2 - 2\mu\sum x_i + n\mu^2\right]\right)
+        \end{align*}
+        <p>依赖数据且依赖参数 $(\mu, \sigma^2)$ 的部分涉及 $\sum x_i$ 和 $\sum x_i^2$ 两个量。取</p>
+        $$T_1 = \sum_{i=1}^n X_i, \quad T_2 = \sum_{i=1}^n X_i^2$$
+        <p>则 $g(T_1, T_2; \mu, \sigma^2) = (2\pi\sigma^2)^{-n/2} \exp\!\left(-\frac{1}{2\sigma^2}[T_2 - 2\mu T_1 + n\mu^2]\right)$，$h(x) = 1$。</p>
+        <p>由因子分解定理，$(T_1, T_2) = (\sum X_i,\; \sum X_i^2)$ 是 $(\mu, \sigma^2)$ 的联合充分统计量。</p>
+        <p><strong>等价形式</strong>：由于 $(\bar{X}, S^2)$ 与 $(\sum X_i, \sum X_i^2)$ 是一一对应的：</p>
+        $$\bar{X} = \frac{T_1}{n}, \quad S^2 = \frac{1}{n-1}\left(T_2 - \frac{T_1^2}{n}\right)$$
+        <p>因此 $(\bar{X}, S^2)$ 也是 $(\mu, \sigma^2)$ 的充分统计量。这就是为什么在后续的统计推断中，我们总是只需要 $\bar{X}$ 和 $S^2$——它们已经包含了样本中关于 $(\mu, \sigma^2)$ 的全部信息。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例 5 · 均匀分布（难度较高，重要）</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：设 $X_1, \ldots, X_n$ i.i.d. $\sim U(0, \theta)$，求 $\theta$ 的充分统计量。</p>
+        <p><strong>解</strong>：$U(0,\theta)$ 的密度为 $f(x;\theta) = \frac{1}{\theta} \cdot \mathbf{1}_{\{0 < x < \theta\}}$。</p>
+        <p>联合密度为</p>
+        $$f(x_1, \ldots, x_n; \theta) = \prod_{i=1}^n \frac{1}{\theta} \cdot \mathbf{1}_{\{0 < x_i < \theta\}} = \frac{1}{\theta^n} \cdot \mathbf{1}_{\{0 < x_{(1)}\}} \cdot \mathbf{1}_{\{x_{(n)} < \theta\}}$$
+        <p>其中 $x_{(1)} = \min(x_1, \ldots, x_n)$，$x_{(n)} = \max(x_1, \ldots, x_n)$。</p>
+        <p>注意：$\mathbf{1}_{\{x_{(n)} < \theta\}}$ 这个示性函数<strong>依赖于 $\theta$</strong>（通过 $x_{(n)} < \theta$ 这个条件），且它对数据的依赖<strong>仅通过 $x_{(n)}$</strong>。</p>
+        <p>取 $T = X_{(n)}$（样本最大值），$g(T, \theta) = \frac{1}{\theta^n} \cdot \mathbf{1}_{\{T < \theta\}}$，$h(x) = \mathbf{1}_{\{0 < x_{(1)}\}}$（与 $\theta$ 无关）。</p>
+        <p>由因子分解定理，$T = X_{(n)}$ 是 $\theta$ 的充分统计量。</p>
+        <p><strong>思考</strong>：为什么 $\bar{X}$ 不是充分的？因为均匀分布中，关于 $\theta$ 的信息主要来自"样本中的最大值"——如果最大值是 8.2，则 $\theta$ 至少是 8.2。而 $\bar{X}$ 不能告诉我们 $\theta$ 的下界。这反映了<strong>充分统计量的形式依赖于总体分布的具体形态</strong>。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例 6 · 指数分布</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：设 $X_1, \ldots, X_n$ i.i.d. $\sim \text{Exp}(\lambda)$，密度为 $f(x;\lambda) = \lambda e^{-\lambda x}\,(x > 0)$。求 $\lambda$ 的充分统计量。</p>
+        <p><strong>解</strong>：联合密度为</p>
+        $$f(x_1, \ldots, x_n; \lambda) = \prod_{i=1}^n \lambda e^{-\lambda x_i} = \lambda^n e^{-\lambda \sum x_i} \cdot \prod_{i=1}^n \mathbf{1}_{\{x_i > 0\}}$$
+        <p>取 $T = \sum_{i=1}^n X_i$，$g(T, \lambda) = \lambda^n e^{-\lambda T}$，$h(x) = \prod \mathbf{1}_{\{x_i > 0\}}$（与 $\lambda$ 无关）。</p>
+        <p>由因子分解定理，$T = \sum_{i=1}^n X_i$（或等价地 $\bar{X}$）是 $\lambda$ 的充分统计量。</p>
+      </div>
+    </div>
+
+    <!-- ====== 小结 ====== -->
+    <h3>小结与延伸</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">充分统计量一览表</div>
+      <table>
+        <tr><th>总体分布</th><th>未知参数</th><th>充分统计量</th><th>维度</th></tr>
+        <tr><td>$B(1, p)$</td><td>$p$</td><td>$\sum X_i$（或 $\bar{X}$）</td><td>1</td></tr>
+        <tr><td>$\text{Poisson}(\lambda)$</td><td>$\lambda$</td><td>$\sum X_i$</td><td>1</td></tr>
+        <tr><td>$\text{Exp}(\lambda)$</td><td>$\lambda$</td><td>$\sum X_i$</td><td>1</td></tr>
+        <tr><td>$N(\mu, \sigma_0^2)$</td><td>$\mu$</td><td>$\sum X_i$（或 $\bar{X}$）</td><td>1</td></tr>
+        <tr><td>$N(\mu, \sigma^2)$</td><td>$(\mu, \sigma^2)$</td><td>$(\sum X_i,\; \sum X_i^2)$ 或 $(\bar{X}, S^2)$</td><td>2</td></tr>
+        <tr><td>$U(0, \theta)$</td><td>$\theta$</td><td>$X_{(n)}$</td><td>1</td></tr>
+      </table>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">贯穿统计推断的主线</div>
+      <p>充分统计量是统计推断理论的<strong>核心概念</strong>之一。它贯穿后续章节：</p>
+      <ul>
+        <li><strong>第二章（参数估计）</strong>：完备充分统计量 + Lehmann-Scheffé 定理 ⇒ 一致最小方差无偏估计（MVUE）</li>
+        <li><strong>第三章（假设检验）</strong>：基于充分统计量的检验通常具有优良的性质（如一致最大功效）</li>
+        <li><strong>第五章（贝叶斯统计）</strong>：后验分布仅依赖于充分统计量——因为 $f(\theta \mid x) \propto f(x \mid \theta)\pi(\theta) = g(T,\theta)\pi(\theta) \cdot h(x)$，$h(x)$ 被归一化常数消去</li>
+      </ul>
+      <p>理解充分统计量，是理解<strong>"为什么这些统计方法有效"</strong>的关键。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">补充 · 极小充分统计量</div>
+      <p>如果 $T$ 是充分统计量，且对任何其他充分统计量 $S$，$T$ 都可以表示为 $S$ 的函数（即 $T$ 实现了最大程度的数据压缩），则称 $T$ 为<strong>极小充分统计量</strong>。</p>
+      <p>直观地说：极小充分统计量是<strong>维度最低的充分统计量</strong>——它在保留全部参数信息的前提下，对数据做了最大限度的压缩。上表中的充分统计量均为极小充分统计量。</p>
     </div>
   </div>
 
