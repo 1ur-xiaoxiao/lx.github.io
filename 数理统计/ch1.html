@@ -314,20 +314,146 @@
       </ol>
     </div>
 
-    <div class="box box-proof">
-      <div class="box-title">证明思路</div>
-      <p><strong>关键步骤</strong>：将 $X_i$ 标准化后利用正交变换。</p>
-      <p>令 $Z_i = \frac{X_i - \mu}{\sigma}$，则 $Z_1, \ldots, Z_n$ i.i.d. $\sim N(0,1)$。</p>
-      <p>构造正交矩阵 $A$（第一行为 $(1/\sqrt{n}, \ldots, 1/\sqrt{n})$），令 $Y = AZ$，其中 $Y = (Y_1, \ldots, Y_n)^T$。</p>
-      <p>由正交变换的性质：</p>
+    <!-- ====== Fisher 定理的完整证明 ====== -->
+
+    <div class="box box-note">
+      <div class="box-title">证明的整体思路</div>
+      <p>Fisher 定理的证明核心是一句话：<strong>把 $n$ 个相关的偏差 $(X_i - \bar{X})$ 变成 $n-1$ 个独立的标准正态变量</strong>。</p>
+      <p>我们想做的是：</p>
       <ol>
-        <li>$Y_1, \ldots, Y_n$ 相互独立，且 $Y_i \sim N(0,1)$（正交变换保持独立标准正态性）</li>
-        <li>$Y_1 = \frac{1}{\sqrt{n}}\sum_{i=1}^n Z_i = \sqrt{n}\bar{Z} = \frac{\sqrt{n}(\bar{X}-\mu)}{\sigma}$</li>
-        <li>$\sum_{i=1}^n Y_i^2 = \sum_{i=1}^n Z_i^2 = \sum_{i=1}^n \frac{(X_i-\mu)^2}{\sigma^2}$</li>
+        <li>把 $X_i$ 标准化为 $Z_i \sim N(0,1)$（独立）</li>
+        <li>用「旋转」把 $Z_1, \ldots, Z_n$ 变成一组新的独立标准正态变量 $Y_1, \ldots, Y_n$，使得 $Y_1$ 只包含 $\bar{X}$ 的信息，$Y_2, \ldots, Y_n$ 只包含 $S^2$ 的信息</li>
+        <li>这样 $S^2$ 就变成了 $n-1$ 个独立标准正态的平方和，自然服从 $\chi^2(n-1)$</li>
       </ol>
-      <p>因此 $\sum_{i=2}^n Y_i^2 = \sum_{i=1}^n Y_i^2 - Y_1^2 = \sum_{i=1}^n \frac{(X_i-\mu)^2}{\sigma^2} - \frac{n(\bar{X}-\mu)^2}{\sigma^2} = \frac{(n-1)S^2}{\sigma^2}$。</p>
-      <p>由于 $Y_2, \ldots, Y_n$ 独立于 $Y_1$（而 $Y_1$ 的函数决定了 $\bar{X}$），故 $\bar{X}$ 与 $S^2$ 独立。</p>
-      <p>又 $Y_2, \ldots, Y_n$ i.i.d. $\sim N(0,1)$，故 $\sum_{i=2}^n Y_i^2 \sim \chi^2(n-1)$，即 $\frac{(n-1)S^2}{\sigma^2} \sim \chi^2(n-1)$。</p>
+      <p>下面先用一个简单的例子建立直觉，再给出严格的矩阵证明。</p>
+    </div>
+
+    <h3>预备知识：需要用到的三个事实</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">事实 1 · 线性组合保持正态性</div>
+      <p>若 $Z_1, \ldots, Z_n$ 相互独立且 $Z_i \sim N(0,1)$，则它们的任意<strong>线性组合</strong>仍服从正态分布。特别地，如果系数满足某种条件（见事实 3），这些线性组合不仅各自正态，而且<strong>相互独立</strong>。</p>
+      <p>示例：$0.6 Z_1 + 0.8 Z_2$ 和 $-0.8 Z_1 + 0.6 Z_2$ 是两个独立的标准正态变量（因为系数向量 $(0.6, 0.8)$ 和 $(-0.8, 0.6)$ 正交且长度均为 1）。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">事实 2 · 平方和不变（勾股定理的高维推广）</div>
+      <p>如果从一个向量 $Z = (Z_1, \ldots, Z_n)$ 通过<strong>旋转/反射</strong>得到另一个向量 $Y = (Y_1, \ldots, Y_n)$（即 $Y = AZ$，$A$ 是正交矩阵），那么向量的长度平方不变：</p>
+      <div class="formula-highlight">
+        $$\sum_{i=1}^n Y_i^2 = \sum_{i=1}^n Z_i^2$$
+      </div>
+      <p>这和平面几何中「旋转不改变点到原点的距离」是同一个道理。$n$ 维空间中的正交变换就是高维的旋转（或旋转加反射）。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">事实 3 · 正交变换保持独立标准正态性（Fisher 引理）</div>
+      <p>若 $Z_1, \ldots, Z_n$ i.i.d. $\sim N(0,1)$，$A$ 是 $n \times n$ <strong>正交矩阵</strong>（即 $A^T A = I$，等价于各行是单位向量且两两正交），令 $Y = AZ$，则：</p>
+      <ol>
+        <li>$Y_1, \ldots, Y_n$ 仍然是 i.i.d. $\sim N(0,1)$</li>
+        <li>特别地，$\sum Y_i^2 = \sum Z_i^2$（由事实 2）</li>
+      </ol>
+      <p><strong>为什么成立？（给高代不熟的同学）</strong></p>
+      <ul>
+        <li>$Y_i = \sum_{j=1}^n a_{ij} Z_j$，这是独立正态的线性组合，所以 $Y_i$ 服从正态分布。</li>
+        <li>$E[Y_i] = \sum a_{ij} \cdot 0 = 0$。</li>
+        <li>$\Var(Y_i) = \sum a_{ij}^2 \cdot 1$（独立变量线性组合的方差 = 系数平方和）。因为 $A$ 的每一行长度都是 1，所以 $\sum a_{ij}^2 = 1$，$\Var(Y_i) = 1$。</li>
+        <li>$\Cov(Y_i, Y_k) = \sum a_{ij} a_{kj}$（独立变量线性组合的协方差 = 对应系数乘积之和）。因为 $A$ 的不同行正交，所以 $\sum a_{ij} a_{kj} = 0$，$\Cov(Y_i, Y_k) = 0$。</li>
+        <li><strong>对于联合正态分布，协方差为零 ⇔ 独立</strong>。所以 $Y_1, \ldots, Y_n$ 相互独立。</li>
+      </ul>
+      <p>核心要点：<strong>正交矩阵的行构成标准正交基——每行长度=1（保证方差为1），不同行内积=0（保证协方差为0，从而独立）</strong>。</p>
+    </div>
+
+    <h3>$n=2$ 时的直觉：把证明「看见」</h3>
+
+    <div class="box box-note">
+      <div class="box-title">简单情形 · $n=2$ 的手工验证</div>
+      <p>取 $n=2$，$X_1, X_2$ i.i.d. $\sim N(\mu, \sigma^2)$。标准化：$Z_i = (X_i - \mu)/\sigma \sim N(0,1)$。</p>
+      <p>构造一个 $2 \times 2$ 的正交矩阵，第一行取 $(\frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}})$，第二行需要与之正交且长度=1，自然取 $(\frac{1}{\sqrt{2}}, -\frac{1}{\sqrt{2}})$：</p>
+      <div class="formula-highlight">
+        $$A = \begin{pmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\[4pt] \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}} \end{pmatrix}$$
+      </div>
+      <p>令 $Y = AZ$，即：</p>
+      $$Y_1 = \frac{Z_1 + Z_2}{\sqrt{2}}, \qquad Y_2 = \frac{Z_1 - Z_2}{\sqrt{2}}$$
+      <p>现在检验关键事实：</p>
+      <ul>
+        <li>$E[Y_1] = 0$，$\Var(Y_1) = \frac{1}{2} + \frac{1}{2} = 1$ ✓</li>
+        <li>$E[Y_2] = 0$，$\Var(Y_2) = \frac{1}{2} + \frac{1}{2} = 1$ ✓</li>
+        <li>$\Cov(Y_1, Y_2) = \frac{1}{2}\cdot\frac{1}{\sqrt{2}}\cdot\frac{1}{\sqrt{2}} + \frac{1}{2}\cdot\frac{1}{\sqrt{2}}\cdot(-\frac{1}{\sqrt{2}}) = \frac{1}{4} - \frac{1}{4} = 0$，所以 $Y_1 \perp\\!\\!\\!\\perp Y_2$ ✓</li>
+      </ul>
+      <p>$Y_1$ 与 $\bar{X}$ 的关系：</p>
+      $$Y_1 = \frac{Z_1 + Z_2}{\sqrt{2}} = \frac{1}{\sqrt{2}} \cdot \frac{(X_1-\mu)+(X_2-\mu)}{\sigma} = \frac{\sqrt{2}(\bar{X}-\mu)}{\sigma}$$
+      <p>即 $Y_1$ 只和 $\bar{X}$ 有关。再看平方和：</p>
+      $$Y_1^2 + Y_2^2 = Z_1^2 + Z_2^2 \quad \text{（勾股定理 / 旋转保长度）}$$
+      <p>因此：</p>
+      $$Y_2^2 = (Z_1^2 + Z_2^2) - Y_1^2 = \sum_{i=1}^2 \frac{(X_i-\mu)^2}{\sigma^2} - \frac{2(\bar{X}-\mu)^2}{\sigma^2}$$
+      <p>回忆恒等式 $\sum (X_i - \mu)^2 = \sum (X_i - \bar{X})^2 + n(\bar{X} - \mu)^2$，当 $n=2$ 时：</p>
+      $$Y_2^2 = \frac{\sum (X_i - \bar{X})^2}{\sigma^2} = \frac{(2-1)S^2}{\sigma^2} = \frac{S^2}{\sigma^2}$$
+      <p>而 $Y_2 \sim N(0,1)$（由事实 3），故 $Y_2^2 \sim \chi^2(1)$，即 $\frac{S^2}{\sigma^2} \sim \chi^2(1) = \chi^2(2-1)$。</p>
+      <p>同时 $Y_1$（即 $\bar{X}$）与 $Y_2$（即 $S^2$）独立。$\quad\blacksquare$（$n=2$ 情形）</p>
+    </div>
+
+    <h3>一般 $n$ 的严格证明</h3>
+
+    <div class="box box-proof">
+      <div class="box-title">Fisher 定理的完整证明</div>
+
+      <p><strong>第 1 步：标准化。</strong>令</p>
+      $$Z_i = \frac{X_i - \mu}{\sigma}, \quad i = 1, 2, \ldots, n$$
+      <p>由于 $X_i$ 独立且 $X_i \sim N(\mu, \sigma^2)$，所以 $Z_1, \ldots, Z_n$ i.i.d. $\sim N(0,1)$。</p>
+
+      <p><strong>第 2 步：构造正交矩阵。</strong>找一个 $n \times n$ 的正交矩阵 $A$，使其<strong>第一行</strong>为</p>
+      <div class="formula-highlight">
+        $$\left(\frac{1}{\sqrt{n}},\; \frac{1}{\sqrt{n}},\; \ldots,\; \frac{1}{\sqrt{n}}\right)$$
+      </div>
+      <p><strong>这样的矩阵一定存在吗？</strong>是的。第一行已经是单位向量（长度 = $\sqrt{n \cdot (1/n)} = 1$）。根据线性代数中的 Gram-Schmidt 正交化过程，我们可以从这个向量出发，构造出 $n-1$ 个与之正交的单位向量，填满矩阵的其余 $n-1$ 行。所得矩阵就是正交矩阵。</p>
+      <p>（你不需要写出 $A$ 的具体形式——只需知道它<strong>存在</strong>。这就像你知道平面旋转 45° 的矩阵是 $\frac{1}{\sqrt{2}}\begin{pmatrix}1&1\\-1&1\end{pmatrix}$，高维情形同理。）</p>
+      <p>我们将 $A$ 的行记为 $a_1, a_2, \ldots, a_n$，其中 $a_1 = (\frac{1}{\sqrt{n}}, \ldots, \frac{1}{\sqrt{n}})$。由于 $A$ 是正交矩阵，满足：</p>
+      <ul>
+        <li>每行长度为 1：$\sum_{j=1}^n a_{ij}^2 = 1$，对所有 $i$</li>
+        <li>不同行正交：$\sum_{j=1}^n a_{ij} a_{kj} = 0$，对所有 $i \neq k$</li>
+      </ul>
+
+      <p><strong>第 3 步：做正交变换。</strong>令 $Y = AZ$，即</p>
+      $$Y_i = \sum_{j=1}^n a_{ij} Z_j, \quad i = 1, 2, \ldots, n$$
+      <p>由<strong>事实 3</strong>，$Y_1, Y_2, \ldots, Y_n$ 仍然是 i.i.d. $\sim N(0,1)$。特别地，$Y_1, \ldots, Y_n$ 相互独立。</p>
+
+      <p><strong>第 4 步：识别 $Y_1$。</strong>$Y_1$ 是第一行 $a_1$ 和 $Z$ 的内积：</p>
+      $$Y_1 = \sum_{j=1}^n \frac{1}{\sqrt{n}} Z_j = \frac{1}{\sqrt{n}} \sum_{j=1}^n \frac{X_j - \mu}{\sigma} = \frac{\sqrt{n}(\bar{X} - \mu)}{\sigma}$$
+      <p>所以 $Y_1$ <strong>完全由 $\bar{X}$ 决定</strong>——它就是标准化后的样本均值。</p>
+
+      <p><strong>第 5 步：平方和恒等式。</strong></p>
+      <p>由<strong>事实 2</strong>（正交变换保长度），$\sum_{i=1}^n Y_i^2 = \sum_{i=1}^n Z_i^2$。</p>
+      <p>因此：</p>
+      \begin{align*}
+      \sum_{i=2}^n Y_i^2 &= \sum_{i=1}^n Y_i^2 - Y_1^2 \\
+      &= \sum_{i=1}^n Z_i^2 - \left(\frac{\sqrt{n}(\bar{X} - \mu)}{\sigma}\right)^2 \\
+      &= \sum_{i=1}^n \frac{(X_i - \mu)^2}{\sigma^2} - \frac{n(\bar{X} - \mu)^2}{\sigma^2}
+      \end{align*}
+      <p>这里用到一个关键的<strong>代数恒等式</strong>（展开即证）：</p>
+      <div class="formula-highlight">
+        $$\sum_{i=1}^n (X_i - \mu)^2 = \sum_{i=1}^n (X_i - \bar{X})^2 + n(\bar{X} - \mu)^2$$
+      </div>
+      <p><strong>验证</strong>：$\sum (X_i - \mu)^2 = \sum [(X_i - \bar{X}) + (\bar{X} - \mu)]^2$，展开后交叉项 $\sum 2(X_i - \bar{X})(\bar{X} - \mu) = 2(\bar{X} - \mu)\sum (X_i - \bar{X}) = 2(\bar{X} - \mu) \cdot 0 = 0$。</p>
+      <p>将恒等式代入上式：</p>
+      \begin{align*}
+      \sum_{i=2}^n Y_i^2 &= \frac{\sum_{i=1}^n (X_i - \bar{X})^2 + n(\bar{X} - \mu)^2}{\sigma^2} - \frac{n(\bar{X} - \mu)^2}{\sigma^2} \\
+      &= \frac{\sum_{i=1}^n (X_i - \bar{X})^2}{\sigma^2} = \frac{(n-1)S^2}{\sigma^2}
+      \end{align*}
+
+      <p><strong>第 6 步：得出结论。</strong></p>
+      <ul>
+        <li>由于 $Y_2, \ldots, Y_n$ i.i.d. $\sim N(0,1)$，由 $\chi^2$ 分布的定义：
+        $$\sum_{i=2}^n Y_i^2 \sim \chi^2(n-1) \quad \Longrightarrow \quad \frac{(n-1)S^2}{\sigma^2} \sim \chi^2(n-1)$$</li>
+        <li>由于 $Y_1, Y_2, \ldots, Y_n$ 相互独立，$Y_1$（只含 $\bar{X}$）与 $Y_2, \ldots, Y_n$（决定 $S^2$）独立，因此 <strong>$\bar{X}$ 与 $S^2$ 相互独立</strong>。</li>
+      </ul>
+
+      <p>证毕。$\quad\blacksquare$</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">为什么自由度是 $n-1$？——两种理解方式</div>
+      <p><strong>方式一（代数）</strong>：$n$ 个偏差 $(X_i - \bar{X})$ 满足一个线性约束 $\sum_{i=1}^n (X_i - \bar{X}) = 0$，所以实际上只有 $n-1$ 个「自由变化的量」。在上面证明中，这体现在 $Y_2, \ldots, Y_n$ 正好有 $n-1$ 个独立的标准正态变量。</p>
+      <p><strong>方式二（几何）</strong>：向量 $(X_1 - \bar{X}, \ldots, X_n - \bar{X})$ 与向量 $(1, 1, \ldots, 1)$ 正交（内积为零）。在 $n$ 维空间中，与给定方向正交的子空间是 $n-1$ 维的。正交变换 $Y = AZ$ 本质上把 $Z$ 投影到了由 $A$ 的行张成的坐标轴上——$Y_1$ 对应 $(1,1,\ldots,1)$ 方向（$\bar{X}$ 的方向），而 $Y_2, \ldots, Y_n$ 张成与之正交的 $n-1$ 维子空间（偏差的方向）。</p>
     </div>
 
     <h3>定理 3：$t$ 分布的构造</h3>
