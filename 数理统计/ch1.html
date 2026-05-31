@@ -176,101 +176,289 @@
     </div>
 
     <h3>$\chi^2$ 分布</h3>
+
+    <!-- 定义 -->
     <div class="box box-definition">
       <div class="box-title">定义 · $\chi^2$ 分布</div>
-      <p>设 $X_1, X_2, \ldots, X_n$ 相互独立，且 $X_i \sim N(0,1)$，则称</p>
+      <p>设 $Z_1, Z_2, \ldots, Z_n$ 相互独立，且 $Z_i \sim N(0,1)$，则称</p>
       <div class="formula-highlight">
-        $$\chi^2 = X_1^2 + X_2^2 + \cdots + X_n^2$$
+        $$\chi^2 = Z_1^2 + Z_2^2 + \cdots + Z_n^2$$
       </div>
       <p>服从<strong>自由度为 $n$ 的 $\chi^2$ 分布</strong>，记为 $\chi^2 \sim \chi^2(n)$。</p>
+      <p>直观含义：$n$ 个独立标准正态变量的<strong>平方和</strong>。自由度 $n$ 就是参与求和的标准正态个数——也是约束为零的独立信息的条数。</p>
     </div>
 
+    <!-- 密度函数 -->
     <div class="box box-formula">
       <div class="box-title">$\chi^2(n)$ 的密度函数</div>
-      <p>$\chi^2(n)$ 分布的密度函数为：</p>
-      $$f(x; n) = \frac{1}{2^{n/2}\Gamma(n/2)} x^{n/2-1} e^{-x/2}, \quad x > 0$$
-      <p><strong>推导思路</strong>：利用 Gamma 分布。若 $Y \sim \text{Gamma}(\alpha, \lambda)$，密度为 $\frac{\lambda^\alpha}{\Gamma(\alpha)} x^{\alpha-1} e^{-\lambda x}$。</p>
-      <p>$X_i \sim N(0,1)$，则 $X_i^2 \sim \chi^2(1)$。利用 $N(0,1)$ 密度的对称性和变量替换可证 $X_i^2$ 的密度为：</p>
-      $$f_{X_i^2}(x) = \frac{1}{\sqrt{2\pi}} x^{-1/2} e^{-x/2}, \quad x > 0$$
-      <p>这恰好是 $\text{Gamma}(1/2, 1/2)$ 分布。由 Gamma 分布的可加性，$n$ 个独立 $\text{Gamma}(1/2, 1/2)$ 之和为 $\text{Gamma}(n/2, 1/2)$，即 $\chi^2(n)$。</p>
+      $$f(x; n) = \frac{1}{2^{n/2}\,\Gamma(n/2)}\,x^{n/2-1}\,e^{-x/2}, \quad x > 0$$
+      <p><strong>推导思路</strong>：先证 $Z_i^2 \sim \text{Gamma}(1/2,\, 1/2) = \chi^2(1)$（利用密度变换公式和 $\Gamma(1/2)=\sqrt{\pi}$），再用 Gamma 分布的可加性得到 $n$ 个独立 $\text{Gamma}(1/2, 1/2)$ 之和 $\sim \text{Gamma}(n/2, 1/2) = \chi^2(n)$。详细推导见<a href="ch0.html" style="color:var(--accent);">第零章 §0.2</a>。</p>
+    </div>
+
+    <!-- 性质分为三组 -->
+    <div class="box box-theorem">
+      <div class="box-title">性质（一）· 基本数字特征</div>
+      <table>
+        <tr><th>特征</th><th>值</th><th>推导</th></tr>
+        <tr><td>期望</td><td>$E[\chi^2(n)] = n$</td><td>$E[Z_i^2] = \Var(Z_i) + (E[Z_i])^2 = 1$，求和得 $n$</td></tr>
+        <tr><td>方差</td><td>$\Var(\chi^2(n)) = 2n$</td><td>$\Var(Z_i^2) = E[Z_i^4] - 1^2 = 3 - 1 = 2$（正态四阶矩 = 3），求和得 $2n$</td></tr>
+        <tr><td>众数（mode）</td><td>$n-2$（当 $n > 2$）</td><td>对密度求导令零；$n \leq 2$ 时密度单调递减，众数在 $x=0$</td></tr>
+        <tr><td>偏度</td><td>$\sqrt{8/n}$</td><td>随 $n$ 增大趋近于 0（趋于对称）</td></tr>
+      </table>
     </div>
 
     <div class="box box-theorem">
-      <div class="box-title">$\chi^2$ 分布的性质</div>
+      <div class="box-title">性质（二）· 分布关系与可加性</div>
       <ol>
-        <li><strong>可加性</strong>：若 $X \sim \chi^2(m)$，$Y \sim \chi^2(n)$，$X$ 与 $Y$ 独立，则 $X+Y \sim \chi^2(m+n)$</li>
-        <li><strong>期望</strong>：$E[\chi^2(n)] = n$</li>
-        <li><strong>方差</strong>：$\Var(\chi^2(n)) = 2n$</li>
+        <li><strong>与 Gamma 分布的关系</strong>：$\chi^2(n) = \text{Gamma}\!\left(\dfrac{n}{2},\, \dfrac{1}{2}\right)$。这是理解 $\chi^2$ 分布最简洁的方式——所有性质都可以从 Gamma 分布直接读出。</li>
+        <li><strong>可加性</strong>：若 $X \sim \chi^2(m)$，$Y \sim \chi^2(n)$，且 $X \perp\\!\\!\\!\\perp Y$，则 $X + Y \sim \chi^2(m+n)$。这等价于 $\text{Gamma}(m/2,\,1/2) + \text{Gamma}(n/2,\,1/2) = \text{Gamma}((m+n)/2,\,1/2)$。</li>
+        <li><strong>可加性的推论</strong>：若 $X_1, \ldots, X_k$ 独立且 $X_i \sim \chi^2(n_i)$，则 $\sum_{i=1}^k X_i \sim \chi^2(\sum_{i=1}^k n_i)$。</li>
       </ol>
-      <p><strong>证明（期望与方差）</strong>：$\chi^2(n) = \sum_{i=1}^n X_i^2$，其中 $X_i \sim N(0,1)$ 独立。</p>
-      <p>$E[X_i^2] = \Var(X_i) + (E[X_i])^2 = 1+0 = 1$，所以 $E[\chi^2(n)] = n \cdot 1 = n$。</p>
-      <p>$\Var(X_i^2) = E[X_i^4] - (E[X_i^2])^2 = 3 - 1 = 2$（标准正态的四阶矩为 $3$），所以 $\Var(\chi^2(n)) = n \cdot 2 = 2n$。</p>
     </div>
 
+    <div class="box box-theorem">
+      <div class="box-title">性质（三）· 极限行为</div>
+      <p>当 $n \to \infty$ 时，$\chi^2(n)$ 近似服从 $N(n,\, 2n)$。即：</p>
+      <div class="formula-highlight">
+        $$\frac{\chi^2(n) - n}{\sqrt{2n}} \xrightarrow{d} N(0, 1)$$
+      </div>
+      <p>这是中心极限定理的直接推论：$\chi^2(n) = \sum_{i=1}^n Z_i^2$，而 $Z_i^2$ 独立同分布，均值为 1、方差为 2。实际中 $n > 30$ 时正态近似已较好。</p>
+      <p><strong>常用推论</strong>：当 $n$ 较大时，$\sqrt{2\chi^2} - \sqrt{2n-1}$ 更接近 $N(0,1)$（Fisher 近似），精度高于直接的正态近似。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">$\chi^2$ 分布小结</div>
+      <table>
+        <tr><th>项目</th><th>内容</th></tr>
+        <tr><td>来源</td><td>$n$ 个独立 $N(0,1)$ 的平方和</td></tr>
+        <tr><td>本质</td><td>$\text{Gamma}(n/2,\, 1/2)$</td></tr>
+        <tr><td>$E$ / $\Var$ / 众数</td><td>$n$ / $2n$ / $\max(0,\, n-2)$</td></tr>
+        <tr><td>可加性</td><td>独立 $\chi^2$ 之和 = $\chi^2($自由度之和$)$</td></tr>
+        <tr><td>极限</td><td>$n \to \infty$ 时趋于 $N(n, 2n)$</td></tr>
+        <tr><td>密度图像</td><td>$n \leq 2$ 时单调递减（$x \to 0^+$ 爆破）；$n > 2$ 时单峰右偏，$n$ 越大越对称</td></tr>
+      </table>
+    </div>
+
+
     <h3>$t$ 分布</h3>
+
+    <!-- 定义 -->
     <div class="box box-definition">
       <div class="box-title">定义 · $t$ 分布</div>
-      <p>设 $Z \sim N(0,1)$，$V \sim \chi^2(n)$，$Z$ 与 $V$ 独立，则称</p>
+      <p>设 $Z \sim N(0,1)$，$V \sim \chi^2(n)$，且 $Z \perp\\!\\!\\!\\perp V$，则称</p>
       <div class="formula-highlight">
         $$T = \frac{Z}{\sqrt{V/n}}$$
       </div>
       <p>服从<strong>自由度为 $n$ 的 $t$ 分布</strong>，记为 $T \sim t(n)$。</p>
+      <p><strong>命名来源</strong>：W.S. Gosset 于 1908 年以笔名「Student」发表此分布，故亦称<strong>学生氏分布</strong>（Student's $t$-distribution）。</p>
     </div>
 
+    <!-- 密度函数 -->
     <div class="box box-formula">
       <div class="box-title">$t(n)$ 的密度函数</div>
       $$f(t; n) = \frac{\Gamma\!\left(\frac{n+1}{2}\right)}{\sqrt{n\pi}\;\Gamma\!\left(\frac{n}{2}\right)} \left(1 + \frac{t^2}{n}\right)^{-(n+1)/2}, \quad -\infty < t < +\infty$$
+      <p>密度关于 $t=0$ 对称，形状类似标准正态但尾部更厚。注意系数中含有 $\Gamma$ 函数——这来自 $\chi^2$ 密度的 Gamma 结构。</p>
+    </div>
+
+    <!-- 性质分为三组 -->
+    <div class="box box-theorem">
+      <div class="box-title">性质（一）· 矩的存在性与数值</div>
+      <p>$t(n)$ 分布的 $k$ 阶矩 $E[T^k]$ 存在当且仅当 $k < n$。这是 $t$ 分布最本质的性质——<strong>自由度越小，能存在的矩越少</strong>。</p>
+      <table>
+        <tr><th>矩</th><th>存在条件</th><th>值</th></tr>
+        <tr><td>$E[T]$</td><td>$n > 1$</td><td>$0$（由对称性）</td></tr>
+        <tr><td>$\Var(T)$</td><td>$n > 2$</td><td>$\dfrac{n}{n-2}$</td></tr>
+        <tr><td>偏度</td><td>$n > 3$</td><td>$0$（对称分布偏度恒为零）</td></tr>
+        <tr><td>峰度</td><td>$n > 4$</td><td>$3 + \dfrac{6}{n-4}$（$> 3$，即比正态更厚尾）</td></tr>
+      </table>
+      <p><strong>关键结论</strong>：$t(n)$ 的方差恒大于 1（标准正态的方差），因为分母中的随机变量 $V/n$ 引入了额外的波动。当 $n \to \infty$ 时 $\Var \to 1$。</p>
     </div>
 
     <div class="box box-theorem">
-      <div class="box-title">$t$ 分布的性质</div>
+      <div class="box-title">性质（二）· 重要特例与推论</div>
       <ol>
-        <li><strong>对称性</strong>：$f(t)$ 关于 $t=0$ 对称，即 $f(t) = f(-t)$</li>
-        <li><strong>期望与方差</strong>：$E[T] = 0$（$n>1$），$\Var(T) = \dfrac{n}{n-2}$（$n>2$）</li>
-        <li><strong>与正态的关系</strong>：当 $n \to \infty$ 时，$t(n)$ 分布趋近于 $N(0,1)$。实际应用中，$n \geq 30$ 时两者已非常接近</li>
+        <li>
+          <strong>$t(1)$ = 标准 Cauchy 分布（柯西分布）</strong>：当 $n = 1$ 时，
+          $$f(t; 1) = \frac{1}{\pi(1 + t^2)}, \quad -\infty < t < +\infty$$
+          这就是标准的 Cauchy 分布 $\text{Cauchy}(0, 1)$。
+          <p><strong>Cauchy 分布的奇特性质</strong>：</p>
+          <ul>
+            <li><strong>均值不存在</strong>：积分 $\int_{-\infty}^\infty t \cdot \frac{1}{\pi(1+t^2)}\dd t$ 不绝对收敛（$\int_0^\infty \frac{t}{1+t^2}\dd t = \infty$）。虽然由对称性 Cauchy 主值积分为 0，但期望按定义不存在。</li>
+            <li><strong>方差不存在</strong>：均值都不存在，高阶矩更不必说。</li>
+            <li><strong>没有矩母函数</strong>：$E[e^{tX}] = \infty$ 对所有 $t \neq 0$。</li>
+            <li><strong>样本均值的分布不变</strong>：若 $X_1, \ldots, X_n$ i.i.d. $\sim \text{Cauchy}(0,1)$，则 $\bar{X} \sim \text{Cauchy}(0,1)$——均值不会因样本量增大而更集中！这就是<strong>没有大数定律</strong>的例子。</li>
+          </ul>
+          <p><strong>为什么在 $t$ 分布中会出现 Cauchy？</strong>$t(1) = \frac{Z}{\sqrt{\chi^2(1)}} = \frac{Z}{|Z|}$（因为 $\chi^2(1) = Z^2$，$\sqrt{Z^2} = |Z|$）。$Z/|Z|$ 以概率 $1/2$ 取值 $+1$，以概率 $1/2$ 取值 $-1$——不对，$Z$ 是连续的，$Z/|Z| = \text{sign}(Z)$ 确实是 $\pm 1$ 的退化分布？</p>
+          <p>稍等——$\chi^2(1)$ 定义为 $Z_1^2$，其中 $Z_1 \sim N(0,1)$，但和分子中的 $Z$ 不是同一个变量！$t(1)$ 是两个独立标准正态的比值：$Z_1 / \sqrt{Z_2^2} = Z_1/|Z_2|$，这正是两个独立正态之比，其分布就是 Cauchy。详见下文推论。</p>
+        </li>
+        <li>
+          <strong>$t(2)$：均值存在（$=0$），但方差不存在</strong>。$\Var(T) = n/(n-2)$ 在 $n=2$ 时分母为零。
+        </li>
+        <li>
+          <strong>$t(3)$：均值 $=0$，方差 $=3$</strong>。这是 $t$ 分布中方差最小的整数自由度情形。
+        </li>
       </ol>
     </div>
 
-    <div class="box box-note">
-      <div class="box-title">$t$ 分布的直观理解</div>
-      <p>$t$ 分布可以看作"加了噪声的正态分布"。当用样本标准差 $S$ 代替已知的 $\sigma$ 时，额外的随机性使得分布尾部变厚（相对于标准正态），自由度越小尾部越厚。</p>
-      <p>$t$ 分布的密度曲线与 $N(0,1)$ 类似，但"更矮更胖"，自由度增大后逐渐逼近标准正态。</p>
-    </div>
-
-    <h3>$F$ 分布</h3>
-    <div class="box box-definition">
-      <div class="box-title">定义 · $F$ 分布</div>
-      <p>设 $U \sim \chi^2(m)$，$V \sim \chi^2(n)$，$U$ 与 $V$ 独立，则称</p>
-      <div class="formula-highlight">
-        $$F = \frac{U/m}{V/n}$$
-      </div>
-      <p>服从<strong>自由度为 $(m,n)$ 的 $F$ 分布</strong>，记为 $F \sim F(m,n)$，其中 $m$ 称为第一自由度（分子自由度），$n$ 称为第二自由度（分母自由度）。</p>
+    <div class="box box-theorem">
+      <div class="box-title">性质（三）· 极限行为与正态近似</div>
+      <ol>
+        <li><strong>收敛到标准正态</strong>：当 $n \to \infty$ 时，$t(n)$ 依分布收敛到 $N(0,1)$。这是因为 $\sqrt{V/n} \xrightarrow{P} 1$（由大数定律，$\chi^2(n)/n \to 1$），所以 $T = Z/\sqrt{V/n} \to Z \sim N(0,1)$。</li>
+        <li><strong>实际近似准则</strong>：$n \geq 30$ 时，$t(n)$ 分布与 $N(0,1)$ 的差异在多数应用中可以忽略。但若 $n$ 较小且需要精确的尾部概率（如 99% 置信区间），务必使用 $t$ 分布表。</li>
+        <li><strong>尾部比较</strong>：对任意有限的 $n$，$t(n)$ 的尾部始终比 $N(0,1)$ 厚——$P(|t(n)| > c) > P(|N(0,1)| > c)$ 对所有 $c > 0$ 成立。这就是为什么用 $S$ 替代 $\sigma$ 后，置信区间必须变宽。</li>
+      </ol>
     </div>
 
     <div class="box box-formula">
+      <div class="box-title">推论 · 两个独立正态之比与 Cauchy 分布</div>
+      <p>若 $X, Y$ 独立且均服从 $N(0,1)$，则</p>
+      <div class="formula-highlight">
+        $$\frac{X}{Y} \sim \text{Cauchy}(0, 1)$$
+      </div>
+      <p><strong>证明</strong>：$t(1) = \frac{Z_1}{\sqrt{Z_2^2/1}} = \frac{Z_1}{|Z_2|}$。由于 $Z_2 \sim N(0,1)$ 是对称的，$\frac{Z_1}{|Z_2|}$ 和 $\frac{Z_1}{Z_2}$ 有相同的分布（$Z_2$ 的正负各半，绝对值不影响）。而 $t(1)$ 的密度为 $\frac{1}{\pi(1+t^2)}$，正是标准 Cauchy 分布。所以两个独立标准正态的比值服从 Cauchy 分布——一个在概率论中经典的结论，在这里通过 $t$ 分布自然地统一起来。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">$t$ 分布小结</div>
+      <table>
+        <tr><th>项目</th><th>内容</th></tr>
+        <tr><td>来源</td><td>标准正态除以独立 $\sqrt{\chi^2(n)/n}$</td></tr>
+        <tr><td>$E$ 存在条件</td><td>$n > 1$，值为 $0$</td></tr>
+        <tr><td>$\Var$ 存在条件</td><td>$n > 2$，值为 $n/(n-2)$</td></tr>
+        <tr><td>$k$ 阶矩存在条件</td><td>$k < n$</td></tr>
+        <tr><td>特例 $n=1$</td><td>标准 Cauchy 分布 $\text{Cauchy}(0,1)$，均值不存在</td></tr>
+        <tr><td>特例 $n=2$</td><td>均值 $=0$，方差不存在</td></tr>
+        <tr><td>极限</td><td>$n \to \infty$ 时趋于 $N(0,1)$</td></tr>
+        <tr><td>密度图像</td><td>关于 0 对称，比正态「矮胖」；$n$ 越小尾部越厚</td></tr>
+      </table>
+    </div>
+
+
+    <h3>$F$ 分布</h3>
+
+    <!-- 定义 -->
+    <div class="box box-definition">
+      <div class="box-title">定义 · $F$ 分布</div>
+      <p>设 $U \sim \chi^2(m)$，$V \sim \chi^2(n)$，且 $U \perp\\!\\!\\!\\perp V$，则称</p>
+      <div class="formula-highlight">
+        $$F = \frac{U/m}{V/n}$$
+      </div>
+      <p>服从<strong>自由度为 $(m,n)$ 的 $F$ 分布</strong>，记为 $F \sim F(m,n)$。</p>
+      <ul>
+        <li>$m$：<strong>第一自由度</strong>（分子自由度）</li>
+        <li>$n$：<strong>第二自由度</strong>（分母自由度）</li>
+      </ul>
+      <p>直观含义：两个独立的、各自除以自由度的 $\chi^2$ 变量之<strong>比值</strong>。$F$ 分布天然用于比较两个方差（或两个变异来源的大小）。</p>
+      <p><strong>命名来源</strong>：为纪念 R.A. Fisher（他在方差分析中大量使用此分布）而命名为 $F$ 分布。</p>
+    </div>
+
+    <!-- 密度函数 -->
+    <div class="box box-formula">
       <div class="box-title">$F(m,n)$ 的密度函数</div>
       $$f(x; m,n) = \frac{\Gamma\!\left(\frac{m+n}{2}\right)}{\Gamma\!\left(\frac{m}{2}\right)\Gamma\!\left(\frac{n}{2}\right)} \left(\frac{m}{n}\right)^{m/2} x^{m/2-1} \left(1+\frac{m}{n}x\right)^{-(m+n)/2}, \quad x > 0$$
+      <p>注意到密度中 $x$ 的幂次为 $m/2-1$（与分子的 $\chi^2(m)$ 对应），而 $(1 + \frac{m}{n}x)^{-(m+n)/2}$ 同时涉及两个自由度。系数 $\frac{\Gamma((m+n)/2)}{\Gamma(m/2)\Gamma(n/2)} = \frac{1}{B(m/2,\, n/2)}$ 中包含 Beta 函数（<a href="ch0.html" style="color:var(--accent);">见第零章 §0.3</a>）。</p>
+    </div>
+
+    <!-- 性质 -->
+    <div class="box box-theorem">
+      <div class="box-title">性质（一）· 基本数字特征</div>
+      <table>
+        <tr><th>特征</th><th>存在条件</th><th>值</th></tr>
+        <tr><td>$E[F]$</td><td>$n > 2$</td><td>$\dfrac{n}{n-2} \;(> 1)$</td></tr>
+        <tr><td>$\Var(F)$</td><td>$n > 4$</td><td>$\dfrac{2n^2(m+n-2)}{m(n-2)^2(n-4)}$</td></tr>
+        <tr><td>众数</td><td>$m > 2$</td><td>$\dfrac{m-2}{m} \cdot \dfrac{n}{n+2} \;(< 1)$</td></tr>
+      </table>
+      <p><strong>注意</strong>：$F$ 分布期望的存在条件由<strong>分母自由度</strong> $n$ 决定，与分子自由度 $m$ 无关。这是因为 $F$ 取值由分母 $\chi^2(n)$ 的行为主导（分母接近 0 时 $F$ 爆炸）。</p>
     </div>
 
     <div class="box box-theorem">
-      <div class="box-title">$F$ 分布的性质</div>
+      <div class="box-title">性质（二）· 分布关系</div>
       <ol>
-        <li><strong>倒数性质</strong>：若 $F \sim F(m,n)$，则 $\dfrac{1}{F} \sim F(n,m)$</li>
-        <li>若 $T \sim t(n)$，则 $T^2 \sim F(1,n)$</li>
-        <li><strong>期望</strong>：$E[F(m,n)] = \dfrac{n}{n-2}$（$n>2$）</li>
+        <li><strong>倒数性质</strong>：若 $F \sim F(m,n)$，则 $\dfrac{1}{F} \sim F(n,m)$。
+          <p><em>证明</em>：$\frac{1}{F} = \frac{V/n}{U/m}$，由定义即得。这个性质在实际查表时极其实用——$F$ 分布表通常只给出右侧分位数，左侧分位数通过倒数性质转化为右侧。</p>
+        </li>
+        <li><strong>与 $t$ 分布的关系</strong>：若 $T \sim t(n)$，则 $T^2 \sim F(1, n)$。
+          <p><em>证明</em>：$T = \frac{Z}{\sqrt{V/n}}$，$T^2 = \frac{Z^2}{V/n} = \frac{Z^2/1}{V/n}$。由于 $Z^2 \sim \chi^2(1)$，由 $F$ 分布定义 $T^2 \sim F(1, n)$。</p>
+          <p><strong>实用推论</strong>：双侧 $t$ 检验的拒绝域 $\{|T| > t_{\alpha/2}(n)\}$ 等价于 $F$ 检验的拒绝域 $\{T^2 > F_\alpha(1,n)\}$。事实上 $t_{\alpha/2}(n) = \sqrt{F_\alpha(1,n)}$。</p>
+        </li>
+        <li><strong>与 Beta 分布的关系</strong>：若 $F \sim F(m,n)$，则
+          $$\frac{mF/n}{1 + mF/n} \sim \text{Beta}\!\left(\frac{m}{2},\, \frac{n}{2}\right)$$
+          这个关系在推导 $F$ 分布的分位数和构造 $F$ 检验的置信区间时有用。它也说明 $F$ 分布本质上是 $(0,1)$ 上 Beta 分布的一个单调变换。</li>
       </ol>
-      <p><strong>证明（倒数性质）</strong>：$F = \frac{U/m}{V/n}$，则 $\frac{1}{F} = \frac{V/n}{U/m}$，由 $F$ 分布定义，$\frac{1}{F} \sim F(n,m)$。</p>
-      <p><strong>证明（$T^2 \sim F(1,n)$）</strong>：$T = \frac{Z}{\sqrt{V/n}}$，其中 $Z \sim N(0,1)$，$V \sim \chi^2(n)$，独立。$T^2 = \frac{Z^2}{V/n} = \frac{Z^2/1}{V/n}$。由于 $Z^2 \sim \chi^2(1)$，由 $F$ 分布定义，$T^2 \sim F(1,n)$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">性质（三）· 极限行为</div>
+      <ol>
+        <li><strong>$n \to \infty$（分母自由度增大）</strong>：$V/n \xrightarrow{P} 1$，因此 $mF = \frac{U}{V/n} \xrightarrow{d} U \sim \chi^2(m)$。即 $m \cdot F(m,n) \xrightarrow{d} \chi^2(m)$ 当 $n \to \infty$。</li>
+        <li><strong>$m \to \infty$（分子自由度增大）</strong>：$n/F(m,n) = \frac{V}{U/m} \xrightarrow{d} V \sim \chi^2(n)$。</li>
+        <li>当 $m$ 和 $n$ 都很大时，$F(m,n) \approx 1$，检验失去鉴别力——这也是为什么 $F$ 检验在超大样本下需要谨慎解读。</li>
+      </ol>
     </div>
 
     <div class="box box-note">
-      <div class="box-title">三大分布之间的关系</div>
+      <div class="box-title">$F$ 分布的分位数与查表技巧</div>
+      <p>$F$ 分布有两个自由度，分位数表通常只给出右尾概率。对于左尾分位数 $F_{1-\alpha}(m,n)$（即 $P(F \leq F_{1-\alpha}) = 1-\alpha$），利用倒数性质：</p>
+      <div class="formula-highlight">
+        $$F_{1-\alpha}(m,n) = \frac{1}{F_\alpha(n,m)}$$
+      </div>
+      <p>注意等号右边分子分母的自由度<strong>交换</strong>了位置。这是 $F$ 分布查表中最常见的知识点，也是考试的高频考点。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">$F$ 分布小结</div>
       <table>
-        <tr><th>关系</th><th>公式</th></tr>
-        <tr><td>$\chi^2$ 与 $t$</td><td>$T = \frac{Z}{\sqrt{\chi^2(n)/n}} \sim t(n)$</td></tr>
-        <tr><td>$t$ 与 $F$</td><td>$T^2 \sim F(1,n)$</td></tr>
-        <tr><td>$\chi^2$ 的可加性</td><td>$\chi^2(m) + \chi^2(n) \sim \chi^2(m+n)$</td></tr>
-        <tr><td>$F$ 的倒数</td><td>$F(m,n)$ 的倒数为 $F(n,m)$</td></tr>
+        <tr><th>项目</th><th>内容</th></tr>
+        <tr><td>来源</td><td>两个独立 $\chi^2$ 各自除以自由度后的比值</td></tr>
+        <tr><td>$E$ 存在条件</td><td>$n > 2$，值为 $n/(n-2) > 1$</td></tr>
+        <tr><td>$\Var$ 存在条件</td><td>$n > 4$</td></tr>
+        <tr><td>倒数性质</td><td>$1/F(m,n) \sim F(n,m)$</td></tr>
+        <tr><td>与 $t$ 关系</td><td>$T^2 \sim F(1,n)$，$t_{\alpha/2}(n) = \sqrt{F_\alpha(1,n)}$</td></tr>
+        <tr><td>查表技巧</td><td>$F_{1-\alpha}(m,n) = 1/F_\alpha(n,m)$</td></tr>
+        <tr><td>密度图像</td><td>定义在 $(0, \infty)$，右偏；形状由两个自由度共同决定</td></tr>
+      </table>
+    </div>
+
+
+    <h3>三大分布的整体关系图</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">一张图看透三大分布</div>
+      <p>所有关系都源自<strong>标准正态</strong>和<strong>独立性的组合</strong>：</p>
+      <div style="text-align: center; line-height: 2.2; font-size: 0.95rem;">
+        <p>$N(0,1)^2 \;\longrightarrow\; \chi^2(1)$</p>
+        <p>$n$ 个独立 $N(0,1)^2$ 之和 $\;\longrightarrow\; \chi^2(n)$</p>
+        <p>$\chi^2(n)$ = $\text{Gamma}(n/2,\, 1/2)$ $\;\longleftrightarrow\;$ Gamma 可加性 = $\chi^2$ 可加性</p>
+        <p>$\dfrac{N(0,1)}{\sqrt{\chi^2(n)/n}} \;\longrightarrow\; t(n)$</p>
+        <p>$t(n)^2 \;\longrightarrow\; F(1,n)$</p>
+        <p>$\dfrac{\chi^2(m)/m}{\chi^2(n)/n} \;\longrightarrow\; F(m,n)$</p>
+        <p>$n=1$：$t(1) = \text{Cauchy}(0,1)$；$m=1$：$F(1,n) = t(n)^2$</p>
+      </div>
+      <p style="margin-top: 0.8rem;">从这个关系图可以看出：<strong>三大分布本质上都是独立正态变量的函数</strong>。$\chi^2$ 是「平方和」、$t$ 是「标准化比」、$F$ 是「方差比」。理解了正态分布和独立性，就理解了三大分布。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">三大分布的记忆口诀</div>
+      <table>
+        <tr><th>分布</th><th>定义</th><th>来源场景</th><th>一句话</th></tr>
+        <tr>
+          <td>$\chi^2(n)$</td>
+          <td>$n$ 个 $N(0,1)$ 平方和</td>
+          <td>估计 $\sigma^2$</td>
+          <td>"平方和"</td>
+        </tr>
+        <tr>
+          <td>$t(n)$</td>
+          <td>$N(0,1)$ / 独立 $\sqrt{\chi^2(n)/n}$</td>
+          <td>$\sigma$ 未知时估计 $\mu$</td>
+          <td>"标准化比"</td>
+        </tr>
+        <tr>
+          <td>$F(m,n)$</td>
+          <td>两个独立 $\chi^2$ 各自除自由度之比</td>
+          <td>比较两个 $\sigma^2$</td>
+          <td>"方差比"</td>
+        </tr>
       </table>
     </div>
   </div>
