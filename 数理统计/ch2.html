@@ -16,7 +16,8 @@
           PP: '\\mathbb{P}',
           Var: '\\mathrm{Var}',
           Cov: '\\mathrm{Cov}',
-          dd: '\\mathrm{d}'
+          dd: '\\mathrm{d}',
+          iid: '\\stackrel{\\text{i.i.d.}}{\\sim}'
         }
       },
       svg: { fontCache: 'global' }
@@ -46,443 +47,502 @@
 
   <div class="chapter-header">
     <h1>第二章 · 参数估计</h1>
-    <p>用样本数据推断总体参数：点估计给出"最佳猜测"，区间估计给出"可信范围"。掌握矩估计、最大似然估计、无偏性、充分统计量与置信区间。</p>
+    <p>用样本推断总体参数：点估计给出最佳猜测，区间估计给出可信范围。核心方法：矩估计、最大似然估计、贝叶斯估计；核心评判标准：无偏性、有效性、相合性。</p>
   </div>
 
   <div class="toc">
     <h3>本章目录</h3>
     <ol>
-      <li><a href="#s1">点估计方法</a></li>
-      <li><a href="#s2">估计量的评价标准</a></li>
-      <li><a href="#s3">充分统计量与完备统计量</a></li>
-      <li><a href="#s4">区间估计</a></li>
+      <li><a href="#s1">点估计与无偏性</a></li>
+      <li><a href="#s2">矩估计与相合性</a></li>
+      <li><a href="#s3">最大似然估计与 EM 算法</a></li>
+      <li><a href="#s4">贝叶斯估计与区间估计</a></li>
     </ol>
   </div>
 
-  <!-- ==================== 2.1 点估计方法 ==================== -->
+  <!-- ==================== 2.1 点估计与无偏性 ==================== -->
   <div class="section" id="s1">
-    <h2>2.1 点估计方法</h2>
+    <h2>2.1 点估计与无偏性</h2>
 
     <div class="box box-definition">
       <div class="box-title">定义 · 点估计</div>
-      <p>设总体 $X$ 的分布函数为 $F(x;\theta)$，$\theta \in \Theta$ 为未知参数。用样本 $X_1, \ldots, X_n$ 构造统计量 $\hat{\theta} = \hat{\theta}(X_1, \ldots, X_n)$ 来估计 $\theta$，称 $\hat{\theta}$ 为 $\theta$ 的<strong>点估计</strong>（或估计量）。</p>
-      <p>将样本观测值 $x_1, \ldots, x_n$ 代入后得到的具体数值 $\hat{\theta}(x_1, \ldots, x_n)$ 称为 $\theta$ 的<strong>估计值</strong>。</p>
-    </div>
-
-    <h3>矩估计法 (Method of Moments)</h3>
-    <div class="box box-definition">
-      <div class="box-title">矩估计法的基本思想</div>
-      <p>用<strong>样本矩</strong>替换对应的<strong>总体矩</strong>，建立方程组求解参数。</p>
-      <p>设总体 $X$ 的分布含 $k$ 个未知参数 $\theta_1, \ldots, \theta_k$。矩估计的步骤：</p>
-      <ol>
-        <li>计算总体的前 $k$ 阶原点矩 $\mu_j = E[X^j]$（表示为 $\theta_1, \ldots, \theta_k$ 的函数），$j=1,2,\ldots,k$</li>
-        <li>列出方程组：$\mu_j(\theta_1, \ldots, \theta_k) = A_j = \frac{1}{n}\sum_{i=1}^n X_i^j$，$j=1,2,\ldots,k$</li>
-        <li>解方程组，得到 $\hat{\theta}_j = \hat{\theta}_j(X_1, \ldots, X_n)$，$j=1,2,\ldots,k$</li>
-      </ol>
-    </div>
-
-    <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 正态分布的矩估计</div>
-      <div class="collapsible-body">
-        <p><strong>题目</strong>：设 $X_1, \ldots, X_n$ 是来自 $N(\mu, \sigma^2)$ 的样本，求 $\mu$ 和 $\sigma^2$ 的矩估计。</p>
-        <p><strong>解</strong>：正态分布有两个参数，需要前两阶矩。</p>
-        <p>总体矩：$\mu_1 = E[X] = \mu$，$\mu_2 = E[X^2] = \Var(X) + (E[X])^2 = \sigma^2 + \mu^2$</p>
-        <p>令样本矩等于总体矩：</p>
-        <p>$\mu = A_1 = \bar{X}$，故 $\hat{\mu} = \bar{X}$</p>
-        <p>$\sigma^2 + \mu^2 = A_2 = \frac{1}{n}\sum X_i^2$，故 $\hat{\sigma}^2 = A_2 - \bar{X}^2 = \frac{1}{n}\sum X_i^2 - \bar{X}^2 = \frac{1}{n}\sum (X_i - \bar{X})^2$</p>
-        <p><strong>注意</strong>：$\sigma^2$ 的矩估计分母是 $n$ 而非 $n-1$，即矩估计得到的是 $B_2$ 而非 $S^2$。</p>
-      </div>
-    </div>
-
-    <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 均匀分布 $U(0,\theta)$ 的矩估计</div>
-      <div class="collapsible-body">
-        <p><strong>题目</strong>：设 $X_1, \ldots, X_n$ 是来自 $U(0,\theta)$ 的样本，求 $\theta$ 的矩估计。</p>
-        <p><strong>解</strong>：$U(0,\theta)$ 有一个参数 $\theta$。</p>
-        <p>$\mu_1 = E[X] = \theta/2$</p>
-        <p>令 $\theta/2 = \bar{X}$，解得 $\hat{\theta} = 2\bar{X}$。</p>
-      </div>
-    </div>
-
-    <h3>最大似然估计 (Maximum Likelihood Estimation)</h3>
-    <div class="box box-definition">
-      <div class="box-title">最大似然估计的基本思想</div>
-      <p>选择使观测数据出现概率最大的参数值作为估计。设样本观测值为 $x_1, \ldots, x_n$：</p>
-      <p><strong>似然函数</strong>（连续型）：</p>
+      <p>设总体 $X$ 的分布函数为 $F(x;\theta)$，$\theta \in \Theta$ 为未知参数。用样本 $X_1, \ldots, X_n$ 构造一个统计量</p>
       <div class="formula-highlight">
-        $$L(\theta) = L(\theta; x_1, \ldots, x_n) = \prod_{i=1}^n f(x_i; \theta)$$
+        $$\hat{\theta} = \hat{\theta}(X_1, \ldots, X_n)$$
       </div>
-      <p><strong>似然函数</strong>（离散型）：将密度 $f$ 换为分布律 $p$。</p>
-      <p><strong>对数似然函数</strong>：</p>
-      $$\ell(\theta) = \ln L(\theta) = \sum_{i=1}^n \ln f(x_i; \theta)$$
-      <p>使 $L(\theta)$（或等价地 $\ell(\theta)$）达到最大的 $\hat{\theta}$ 称为 $\theta$ 的<strong>最大似然估计</strong>（MLE），记为 $\hat{\theta}_{\text{MLE}}$。</p>
-    </div>
-
-    <div class="box box-formula">
-      <div class="box-title">MLE 的求解步骤</div>
-      <ol>
-        <li>写出似然函数 $L(\theta) = \prod_{i=1}^n f(x_i; \theta)$</li>
-        <li>取对数 $\ell(\theta) = \sum_{i=1}^n \ln f(x_i; \theta)$</li>
-        <li>对 $\theta$ 求导，令 $\frac{\dd \ell}{\dd \theta} = 0$（似然方程）</li>
-        <li>解方程得 $\hat{\theta}$，并验证是最大值（二阶导数或直接判断）</li>
-      </ol>
-      <p><strong>注意</strong>：若似然函数单调或无驻点，需直接分析函数的极值点（如均匀分布的情况）。</p>
-    </div>
-
-    <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 正态分布 $N(\mu, \sigma^2)$ 的 MLE</div>
-      <div class="collapsible-body">
-        <p><strong>题目</strong>：设 $X_1, \ldots, X_n$ 是来自 $N(\mu, \sigma^2)$ 的样本，求 $\mu$ 和 $\sigma^2$ 的 MLE。</p>
-        <p><strong>解</strong>：</p>
-        <p>似然函数：$L(\mu, \sigma^2) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}} \exp\!\left(-\frac{(x_i-\mu)^2}{2\sigma^2}\right) = (2\pi\sigma^2)^{-n/2} \exp\!\left(-\frac{1}{2\sigma^2}\sum_{i=1}^n (x_i-\mu)^2\right)$</p>
-        <p>对数似然：$\ell(\mu, \sigma^2) = -\frac{n}{2}\ln(2\pi) - \frac{n}{2}\ln\sigma^2 - \frac{1}{2\sigma^2}\sum_{i=1}^n (x_i-\mu)^2$</p>
-        <p>对 $\mu$ 求导：$\frac{\partial \ell}{\partial \mu} = \frac{1}{\sigma^2}\sum_{i=1}^n (x_i-\mu) = \frac{1}{\sigma^2}\left(\sum x_i - n\mu\right) = 0$</p>
-        <p>解得 $\hat{\mu} = \bar{x}$。</p>
-        <p>对 $\sigma^2$ 求导：$\frac{\partial \ell}{\partial \sigma^2} = -\frac{n}{2\sigma^2} + \frac{1}{2(\sigma^2)^2}\sum_{i=1}^n (x_i-\mu)^2 = 0$</p>
-        <p>代入 $\hat{\mu} = \bar{x}$，解得 $\hat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^n (x_i - \bar{x})^2$。</p>
-        <p><strong>结论</strong>：正态分布的 MLE 与矩估计结果相同，但 $\hat{\sigma}^2_{\text{MLE}}$ 分母为 $n$，不是无偏估计。</p>
-      </div>
-    </div>
-
-    <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 指数分布的 MLE</div>
-      <div class="collapsible-body">
-        <p><strong>题目</strong>：设 $X_1, \ldots, X_n$ 是来自指数分布 $\text{Exp}(\lambda)$ 的样本（密度 $f(x;\lambda) = \lambda e^{-\lambda x}$，$x > 0$），求 $\lambda$ 的 MLE。</p>
-        <p><strong>解</strong>：</p>
-        <p>$L(\lambda) = \prod_{i=1}^n \lambda e^{-\lambda x_i} = \lambda^n e^{-\lambda \sum x_i}$</p>
-        <p>$\ell(\lambda) = n\ln\lambda - \lambda\sum x_i$</p>
-        <p>$\frac{\dd \ell}{\dd \lambda} = \frac{n}{\lambda} - \sum x_i = 0$</p>
-        <p>$\hat{\lambda} = \frac{n}{\sum x_i} = \frac{1}{\bar{x}}$</p>
-      </div>
-    </div>
-
-    <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 均匀分布 $U(0,\theta)$ 的 MLE</div>
-      <div class="collapsible-body">
-        <p><strong>题目</strong>：设 $X_1, \ldots, X_n$ 是来自 $U(0,\theta)$ 的样本，求 $\theta$ 的 MLE。</p>
-        <p><strong>解</strong>：$f(x;\theta) = 1/\theta$（$0 < x < \theta$）。</p>
-        <p>$L(\theta) = \prod_{i=1}^n \frac{1}{\theta} = \theta^{-n}$，但要求 $0 \leq x_i \leq \theta$ 对所有 $i$ 成立，即 $\theta \geq \max\{x_1, \ldots, x_n\} = x_{(n)}$。</p>
-        <p>$\ell(\theta) = -n\ln\theta$ 是 $\theta$ 的单调递减函数，所以在约束 $\theta \geq x_{(n)}$ 下，$\theta$ 越小 $L(\theta)$ 越大。</p>
-        <p>因此 $\hat{\theta}_{\text{MLE}} = x_{(n)} = \max\{x_1, \ldots, x_n\}$。</p>
-        <p><strong>注意</strong>：这里不能用求导法（似然方程无解），需要直接分析似然函数的单调性。</p>
-      </div>
+      <p>来估计 $\theta$，称 $\hat{\theta}$ 为 $\theta$ 的<strong>点估计</strong>（或估计量）。代入观测值 $x_1,\ldots,x_n$ 后得到的数值 $\hat{\theta}(x_1,\ldots,x_n)$ 称为<strong>估计值</strong>。</p>
     </div>
 
     <div class="box box-note">
-      <div class="box-title">MLE 的不变性原则</div>
-      <p>若 $\hat{\theta}$ 是 $\theta$ 的 MLE，$g$ 是一一映射（或单调函数），则 $g(\hat{\theta})$ 是 $g(\theta)$ 的 MLE。</p>
-      <p>例如：$\hat{\sigma}^2_{\text{MLE}} = \frac{1}{n}\sum(X_i-\bar{X})^2$，则 $\hat{\sigma}_{\text{MLE}} = \sqrt{\frac{1}{n}\sum(X_i-\bar{X})^2}$。</p>
+      <div class="box-title">核心问题</div>
+      <p>同一个参数 $\theta$ 有无穷多种估计方法。例如估计总体均值 $\mu$：</p>
+      <ul>
+        <li>$\hat{\mu}_1 = \bar{X}$（样本均值）</li>
+        <li>$\hat{\mu}_2 = \frac{X_1 + X_n}{2}$（首尾平均）</li>
+        <li>$\hat{\mu}_3 = X_{(1)}$（最小值）</li>
+      </ul>
+      <p>哪个更好？需要<strong>评价标准</strong>。</p>
     </div>
-  </div>
 
-  <!-- ==================== 2.2 估计量的评价标准 ==================== -->
-  <div class="section" id="s2">
-    <h2>2.2 估计量的评价标准</h2>
+    <h3>无偏性 (Unbiasedness)</h3>
 
-    <p>同一个参数可能有多种估计方法，如何比较不同估计量的优劣？</p>
-
-    <h3>无偏性</h3>
     <div class="box box-definition">
       <div class="box-title">定义 · 无偏估计</div>
-      <p>设 $\hat{\theta}$ 是参数 $\theta$ 的估计量，若</p>
+      <p>设 $\hat{\theta} = \hat{\theta}(X_1,\ldots,X_n)$ 是参数 $\theta$ 的估计量。若</p>
       <div class="formula-highlight">
-        $$E[\hat{\theta}] = \theta, \quad \forall\, \theta \in \Theta$$
+        $$\EE[\hat{\theta}] = \theta, \quad \forall\, \theta \in \Theta$$
       </div>
-      <p>则称 $\hat{\theta}$ 为 $\theta$ 的<strong>无偏估计</strong>。</p>
-      <p>$b_n = E[\hat{\theta}] - \theta$ 称为估计量 $\hat{\theta}$ 的<strong>偏差</strong>（bias）。无偏估计的偏差为零。</p>
-    </div>
-
-    <div class="box box-theorem">
-      <div class="box-title">定理 · $\bar{X}$ 是 $\mu$ 的无偏估计</div>
-      <p>$E[\bar{X}] = E\!\left[\frac{1}{n}\sum_{i=1}^n X_i\right] = \frac{1}{n}\sum_{i=1}^n E[X_i] = \frac{1}{n} \cdot n\mu = \mu$</p>
-      <p>因此 $\bar{X}$ 是 $E[X] = \mu$ 的无偏估计，对<strong>任意</strong>总体分布成立。</p>
-    </div>
-
-    <div class="box box-theorem">
-      <div class="box-title">定理 · $S^2$ 是 $\sigma^2$ 的无偏估计</div>
-      <p><strong>证明</strong>：需要证明 $E[S^2] = \sigma^2$。</p>
-      <p>令 $X_1, \ldots, X_n$ 来自 $N(\mu, \sigma^2)$（结论对一般总体也成立，这里以正态为例）。</p>
-      <p>由第一章定理 2：$\frac{(n-1)S^2}{\sigma^2} \sim \chi^2(n-1)$</p>
-      <p>$E\!\left[\frac{(n-1)S^2}{\sigma^2}\right] = n-1$（$\chi^2(n-1)$ 的期望为 $n-1$）</p>
-      <p>$\frac{n-1}{\sigma^2} E[S^2] = n-1$，故 $E[S^2] = \sigma^2$。</p>
-      <p><strong>一般情况的直接推导</strong>（不依赖正态假设）：</p>
-      <p>$\sum_{i=1}^n (X_i - \bar{X})^2 = \sum_{i=1}^n (X_i - \mu + \mu - \bar{X})^2 = \sum_{i=1}^n (X_i-\mu)^2 - n(\bar{X}-\mu)^2$</p>
-      <p>$E\!\left[\sum_{i=1}^n (X_i-\mu)^2\right] = n\sigma^2$，$E[n(\bar{X}-\mu)^2] = n \cdot \frac{\sigma^2}{n} = \sigma^2$</p>
-      <p>$E\!\left[\sum_{i=1}^n (X_i-\bar{X})^2\right] = n\sigma^2 - \sigma^2 = (n-1)\sigma^2$</p>
-      <p>$E[S^2] = \frac{1}{n-1} \cdot (n-1)\sigma^2 = \sigma^2$。证毕。</p>
+      <p>则称 $\hat{\theta}$ 为 $\theta$ 的<strong>无偏估计</strong>（unbiased estimator）。</p>
+      <p>$b_n(\hat{\theta}) = \EE[\hat{\theta}] - \theta$ 称为<strong>偏差</strong>（bias）。无偏即偏差为零。</p>
     </div>
 
     <div class="box box-note">
-      <div class="box-title">为什么 $S^2$ 的分母是 $n-1$</div>
-      <p>$\sum(X_i - \bar{X})^2$ 只有 $n-1$ 个"自由度"——因为 $\sum(X_i - \bar{X}) = 0$ 是一个约束条件，$n$ 个偏差中只有 $n-1$ 个是独立的。</p>
-      <p>如果分母用 $n$，则 $E\!\left[\frac{1}{n}\sum(X_i-\bar{X})^2\right] = \frac{n-1}{n}\sigma^2 < \sigma^2$，系统性地低估方差（有偏）。</p>
+      <div class="box-title">无偏性的直觉</div>
+      <p>无偏性意味着"平均而言估计量打中靶心"——虽然单次估计可能有误差，但无限次重复抽样下，估计量的期望等于真值。这是估计量最基本的要求。</p>
     </div>
 
-    <h3>有效性</h3>
+    <div class="box box-theorem">
+      <div class="box-title">例1 · $\bar{X}$ 是 $\mu$ 的无偏估计</div>
+      <p>设 $X_1,\ldots,X_n$ 是来自任意总体（均值为 $\mu$，方差为 $\sigma^2$）的样本：</p>
+      <p>$$\EE[\bar{X}] = \EE\!\left[\frac{1}{n}\sum_{i=1}^n X_i\right] = \frac{1}{n}\sum_{i=1}^n \EE[X_i] = \frac{1}{n} \cdot n\mu = \mu$$</p>
+      <p>因此 $\bar{X}$ 是 $\mu$ 的无偏估计，<strong>对任意总体分布均成立</strong>。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">例2 · $S^2$ 是 $\sigma^2$ 的无偏估计</div>
+      <p>设 $X_1,\ldots,X_n$ 为任意总体（均值为 $\mu$，方差为 $\sigma^2$）的样本：</p>
+      <p>$$S^2 = \frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2$$</p>
+      <p>证明 $\EE[S^2] = \sigma^2$：</p>
+      <p>$$\begin{aligned}
+      \sum_{i=1}^n (X_i - \bar{X})^2 &= \sum_{i=1}^n (X_i - \mu + \mu - \bar{X})^2 \\
+      &= \sum_{i=1}^n (X_i-\mu)^2 - n(\bar{X}-\mu)^2
+      \end{aligned}$$</p>
+      <p>取期望：$\EE\!\left[\sum (X_i-\mu)^2\right] = n\sigma^2$，$\EE[n(\bar{X}-\mu)^2] = n \cdot \frac{\sigma^2}{n} = \sigma^2$。</p>
+      <p>因此 $\EE[S^2] = \frac{1}{n-1}(n\sigma^2 - \sigma^2) = \sigma^2$。</p>
+      <p>这也是为什么 $S^2$ 的分母使用 $n-1$ 而非 $n$——保证无偏性。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">矩估计得到的 $\hat{\sigma}^2$ 有偏</div>
+      <p>$B_2 = \frac{1}{n}\sum_{i=1}^n (X_i - \bar{X})^2$ 的期望为 $\EE[B_2] = \frac{n-1}{n}\sigma^2$，系统性地<strong>低估</strong>了 $\sigma^2$。偏差为 $-\sigma^2/n$，当 $n \to \infty$ 时偏差趋于 0（渐近无偏）。</p>
+    </div>
+
+    <h3>有效性 (Effectiveness)</h3>
+
     <div class="box box-definition">
       <div class="box-title">定义 · 有效性</div>
-      <p>设 $\hat{\theta}_1$ 和 $\hat{\theta}_2$ 都是 $\theta$ 的无偏估计，若</p>
-      $$\Var(\hat{\theta}_1) \leq \Var(\hat{\theta}_2)$$
-      <p>则称 $\hat{\theta}_1$ 比 $\hat{\theta}_2$ <strong>有效</strong>。</p>
-      <p>在所有无偏估计中，方差最小的那个称为<strong>最小方差无偏估计</strong>（MVUE）。</p>
+      <p>设 $\hat{\theta}_1$ 和 $\hat{\theta}_2$ 都是 $\theta$ 的无偏估计。若</p>
+      <div class="formula-highlight">
+        $$\Var(\hat{\theta}_1) \leq \Var(\hat{\theta}_2), \quad \forall\,\theta \in \Theta$$
+      </div>
+      <p>且存在某个 $\theta$ 使严格不等号成立，则称 $\hat{\theta}_1$ 比 $\hat{\theta}_2$ <strong>更有效</strong>。</p>
+      <p>在所有无偏估计中，方差一致最小者称为<strong>一致最小方差无偏估计</strong>（UMVUE）。</p>
     </div>
 
     <div class="box box-theorem">
       <div class="box-title">Cramér-Rao 下界（信息不等式）</div>
-      <p>设 $\hat{\theta}$ 是 $\theta$ 的无偏估计，在一定正则条件下：</p>
+      <p>设总体 $X \sim f(x;\theta)$，$X_1,\ldots,X_n \iid f(x;\theta)$。若 $\hat{\theta}$ 是 $\theta$ 的无偏估计，则在正则条件下：</p>
       <div class="formula-highlight">
-        $$\Var(\hat{\theta}) \geq \frac{1}{nI(\theta)}$$
+        $$\Var(\hat{\theta}) \geq \frac{1}{n I(\theta)}$$
       </div>
-      <p>其中 $I(\theta) = E\!\left[\left(\frac{\partial \ln f(X;\theta)}{\partial \theta}\right)^2\right]$ 为单个观测的 Fisher 信息量，$nI(\theta)$ 为样本的总 Fisher 信息量。</p>
-      <p>达到 C-R 下界的无偏估计称为<strong>有效估计</strong>。</p>
-    </div>
-
-    <h3>均方误差</h3>
-    <div class="box box-definition">
-      <div class="box-title">定义 · 均方误差</div>
-      <p>估计量 $\hat{\theta}$ 的<strong>均方误差</strong>（MSE）定义为：</p>
-      <div class="formula-highlight">
-        $$\mathrm{MSE}(\hat{\theta}) = E[(\hat{\theta}-\theta)^2] = \Var(\hat{\theta}) + [E(\hat{\theta})-\theta]^2 = \Var(\hat{\theta}) + b_n^2$$
-      </div>
-      <p>均方误差同时衡量了估计量的<strong>精确度</strong>（方差部分）和<strong>准确度</strong>（偏差部分）。</p>
-      <p>对于无偏估计，$\mathrm{MSE}(\hat{\theta}) = \Var(\hat{\theta})$。</p>
+      <p>其中 $I(\theta) = \EE\!\left[\left(\frac{\partial}{\partial\theta}\ln f(X;\theta)\right)^2\right] = -\EE\!\left[\frac{\partial^2}{\partial\theta^2}\ln f(X;\theta)\right]$ 为单个观测的<strong>Fisher 信息量</strong>。</p>
+      <p>达到 C-R 下界的无偏估计称为<strong>有效估计</strong>——它已经"好到不能再好"。</p>
     </div>
 
     <div class="box box-note">
-      <div class="box-title">无偏估计不一定最优</div>
-      <p>有时有偏估计的均方误差反而更小。例如正态分布 $N(\mu, \sigma^2)$ 下 $\sigma^2$ 的估计：</p>
-      <ul>
-        <li>$S^2$（无偏）：$\mathrm{MSE}(S^2) = \frac{2\sigma^4}{n-1}$</li>
-        <li>$\hat{\sigma}^2_{\text{MLE}} = \frac{n-1}{n}S^2$（有偏）：$\mathrm{MSE} = \frac{2n-1}{n^2}\sigma^4$，当 $n \geq 2$ 时比 $S^2$ 的 MSE 更小</li>
-      </ul>
-      <p>这就是"偏差-方差权衡"——有偏估计用一点偏差换取方差的大幅降低。</p>
-    </div>
-
-    <h3>一致性（相合性）</h3>
-    <div class="box box-definition">
-      <div class="box-title">定义 · 一致估计</div>
-      <p>设 $\hat{\theta}_n = \hat{\theta}_n(X_1, \ldots, X_n)$ 是基于容量为 $n$ 的样本对 $\theta$ 的估计，若</p>
+      <div class="box-title">无偏估计并非总是最优</div>
+      <p>考虑<strong>均方误差</strong>（MSE）：</p>
       <div class="formula-highlight">
-        $$\hat{\theta}_n \xrightarrow{P} \theta, \quad \text{即}\;\; \forall\,\varepsilon>0,\;\lim_{n\to\infty} P(|\hat{\theta}_n - \theta| \geq \varepsilon) = 0$$
+        $$\mathrm{MSE}(\hat{\theta}) = \EE[(\hat{\theta} - \theta)^2] = \Var(\hat{\theta}) + [\EE(\hat{\theta}) - \theta]^2 = \Var(\hat{\theta}) + b_n^2$$
       </div>
-      <p>则称 $\hat{\theta}_n$ 是 $\theta$ 的<strong>一致估计</strong>（或<strong>相合估计</strong>）。</p>
+      <p>MSE 同时衡量<strong>精确度</strong>（方差）和<strong>准确度</strong>（偏差）。有时用一个小偏差换取方差的大幅降低，反而使 MSE 更小。</p>
+      <p>例：对于 $N(\mu,\sigma^2)$ 中 $\sigma^2$ 的估计，$\hat{\sigma}^2_{\text{MLE}} = \frac{n-1}{n}S^2$ 虽是有偏估计，但其 MSE 小于无偏的 $S^2$。</p>
     </div>
 
     <div class="box box-theorem">
-      <div class="box-title">充分条件：用 Chebyshev 不等式证明一致性</div>
-      <p>若 $E[\hat{\theta}_n] \to \theta$ 且 $\Var(\hat{\theta}_n) \to 0$（$n \to \infty$），则 $\hat{\theta}_n$ 是 $\theta$ 的一致估计。</p>
-      <p><strong>证明</strong>：由 Chebyshev 不等式：</p>
-      $$P(|\hat{\theta}_n - \theta| \geq \varepsilon) \leq \frac{E[(\hat{\theta}_n - \theta)^2]}{\varepsilon^2} = \frac{\Var(\hat{\theta}_n) + (E[\hat{\theta}_n]-\theta)^2}{\varepsilon^2} \to 0$$
-    </div>
-
-    <div class="box box-theorem">
-      <div class="box-title">$\bar{X}$ 是 $\mu$ 的一致估计</div>
-      <p><strong>证明</strong>：$E[\bar{X}] = \mu$，$\Var(\bar{X}) = \sigma^2/n \to 0$（$n \to \infty$）。</p>
-      <p>由 Chebyshev 不等式：$P(|\bar{X}-\mu| \geq \varepsilon) \leq \frac{\sigma^2}{n\varepsilon^2} \to 0$。</p>
-      <p>因此 $\bar{X} \xrightarrow{P} \mu$，即 $\bar{X}$ 是 $\mu$ 的一致估计。</p>
-      <p><strong>更强的结论</strong>：由大数定律，$\bar{X} \xrightarrow{a.s.} \mu$（几乎必然收敛），这比依概率收敛更强。</p>
+      <div class="box-title">Lehmann-Scheffé 定理（寻找 UMVUE 的方法）</div>
+      <p>若 $T$ 是<strong>完备充分统计量</strong>（见第一章 1.5 节），且 $g(T)$ 是 $h(\theta)$ 的无偏估计，则 $g(T)$ 是 $h(\theta)$ 的<strong>唯一 UMVUE</strong>。</p>
+      <p>这提供了一条构造最优无偏估计的标准路径：找到完备充分统计量 → 对其做无偏调整 → 即得 UMVUE。</p>
     </div>
   </div>
 
-  <!-- ==================== 2.3 充分统计量与完备统计量 ==================== -->
-  <div class="section" id="s3">
-    <h2>2.3 充分统计量与完备统计量</h2>
+  <!-- ==================== 2.2 矩估计与相合性 ==================== -->
+  <div class="section" id="s2">
+    <h2>2.2 矩估计与相合性</h2>
 
     <div class="box box-definition">
-      <div class="box-title">定义 · 充分统计量</div>
-      <p>设 $X_1, \ldots, X_n$ 是来自 $f(x;\theta)$ 的样本，$T = T(X_1, \ldots, X_n)$ 是统计量。若在给定 $T=t$ 的条件下，样本的条件分布 $f(x_1, \ldots, x_n | T=t)$ <strong>不依赖于 $\theta$</strong>，则称 $T$ 为 $\theta$ 的<strong>充分统计量</strong>。</p>
-    </div>
-
-    <div class="box box-note">
-      <div class="box-title">充分统计量的直觉理解</div>
-      <p>充分统计量"充分提取了样本中关于参数 $\theta$ 的全部信息"。一旦知道了 $T$ 的值，样本的具体数据对 $\theta$ 的推断不再有任何额外贡献。</p>
-      <p>例如：对于 $N(\mu, \sigma^2)$（$\sigma^2$ 已知），$(\bar{X})$ 是 $\mu$ 的充分统计量——关于 $\mu$ 的所有信息都包含在 $\bar{X}$ 中。</p>
-    </div>
-
-    <div class="box box-theorem">
-      <div class="box-title">Fisher-Neyman 因子分解定理</div>
-      <p>统计量 $T$ 是 $\theta$ 的充分统计量的<strong>充要条件</strong>是：似然函数可以分解为</p>
+      <div class="box-title">矩估计法 (Method of Moments, MoM)</div>
+      <p><strong>基本思想</strong>：用<strong>样本矩</strong>替换<strong>总体矩</strong>，建立方程组求解参数。</p>
+      <p>设总体 $X$ 的分布含 $k$ 个未知参数 $\theta_1,\ldots,\theta_k$，记总体原点矩为：</p>
+      <p>$$\mu_j = \mu_j(\theta_1,\ldots,\theta_k) = \EE[X^j], \quad j=1,2,\ldots,k$$</p>
+      <p>样本原点矩为 $A_j = \frac{1}{n}\sum_{i=1}^n X_i^j$。矩估计法<strong>令两者相等</strong>：</p>
       <div class="formula-highlight">
-        $$L(\theta) = \prod_{i=1}^n f(x_i;\theta) = g(T(x_1,\ldots,x_n), \theta) \cdot h(x_1, \ldots, x_n)$$
+        $$\mu_j(\theta_1,\ldots,\theta_k) = A_j, \quad j=1,2,\ldots,k$$
       </div>
-      <p>其中 $g(T, \theta)$ 通过 $T$ 依赖数据且依赖 $\theta$，$h(x_1,\ldots,x_n)$ 不依赖 $\theta$。</p>
+      <p>解此方程组即得 $\hat{\theta}_1,\ldots,\hat{\theta}_k$ 的矩估计。</p>
     </div>
 
     <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 正态分布的充分统计量</div>
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例1 · 正态分布 $N(\mu,\sigma^2)$ 的矩估计</div>
       <div class="collapsible-body">
-        <p><strong>题目</strong>：设 $X_1, \ldots, X_n$ 是来自 $N(\mu, \sigma^2)$ 的样本，$\mu$ 和 $\sigma^2$ 均未知。求 $(\mu, \sigma^2)$ 的充分统计量。</p>
-        <p><strong>解</strong>：</p>
-        <p>$L(\mu, \sigma^2) = (2\pi\sigma^2)^{-n/2} \exp\!\left(-\frac{1}{2\sigma^2}\sum_{i=1}^n (x_i-\mu)^2\right)$</p>
-        <p>展开 $\sum(x_i-\mu)^2 = \sum x_i^2 - 2\mu\sum x_i + n\mu^2$：</p>
-        <p>$L = (2\pi\sigma^2)^{-n/2} \exp\!\left(-\frac{1}{2\sigma^2}\sum x_i^2 + \frac{\mu}{\sigma^2}\sum x_i - \frac{n\mu^2}{2\sigma^2}\right)$</p>
-        <p>取 $T_1 = \sum x_i$，$T_2 = \sum x_i^2$，则 $L = g(T_1, T_2; \mu, \sigma^2) \cdot h$，其中 $h = 1$（可取为常数）。</p>
-        <p>由因子分解定理，$(T_1, T_2) = (\sum X_i, \sum X_i^2)$ 是 $(\mu, \sigma^2)$ 的充分统计量。</p>
-        <p>等价地，$(\bar{X}, S^2)$ 也是充分统计量（因为 $(\bar{X}, S^2)$ 与 $(T_1, T_2)$ 可以互相唯一确定）。</p>
+        <p>总体矩：$\mu_1 = \EE[X] = \mu$，$\mu_2 = \EE[X^2] = \sigma^2 + \mu^2$。</p>
+        <p>令 $\mu = A_1 = \bar{X}$，故 $\hat{\mu} = \bar{X}$。</p>
+        <p>令 $\sigma^2 + \mu^2 = A_2 = \frac{1}{n}\sum X_i^2$，代入 $\hat{\mu}$，得：</p>
+        <p>$$\hat{\sigma}^2 = A_2 - \bar{X}^2 = \frac{1}{n}\sum_{i=1}^n (X_i - \bar{X})^2 = B_2$$</p>
+        <p>矩估计得到的 $\hat{\sigma}^2$ 分母为 $n$（有偏但相合）。</p>
       </div>
     </div>
 
     <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 指数分布的充分统计量</div>
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例2 · 均匀分布 $U(0,\theta)$ 的矩估计</div>
       <div class="collapsible-body">
-        <p><strong>题目</strong>：设 $X_1, \ldots, X_n$ 是来自 $\text{Exp}(\lambda)$ 的样本，求 $\lambda$ 的充分统计量。</p>
-        <p><strong>解</strong>：</p>
-        <p>$L(\lambda) = \prod_{i=1}^n \lambda e^{-\lambda x_i} = \lambda^n e^{-\lambda \sum x_i}$</p>
-        <p>取 $T = \sum x_i$，则 $L = g(T, \lambda) \cdot h$，其中 $g(T,\lambda) = \lambda^n e^{-\lambda T}$，$h = 1$。</p>
-        <p>由因子分解定理，$T = \sum_{i=1}^n X_i$（或等价地 $\bar{X}$）是 $\lambda$ 的充分统计量。</p>
+        <p>$X \sim U(0,\theta)$，密度 $f(x) = 1/\theta$（$0 < x < \theta$）。</p>
+        <p>$\mu_1 = \EE[X] = \theta/2$。</p>
+        <p>令 $\theta/2 = \bar{X}$，解得 $\hat{\theta}_{\text{MoM}} = 2\bar{X}$。</p>
+        <p>$\EE[\hat{\theta}] = 2\EE[\bar{X}] = 2 \cdot \theta/2 = \theta$（无偏）。</p>
+        <p>$\Var(\hat{\theta}) = 4\Var(\bar{X}) = \frac{4\sigma^2}{n} = \frac{4}{n} \cdot \frac{\theta^2}{12} = \frac{\theta^2}{3n}$。</p>
       </div>
     </div>
 
-    <h3>完备统计量</h3>
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例3 · 指数分布 $\text{Exp}(\lambda)$ 的矩估计</div>
+      <div class="collapsible-body">
+        <p>$X \sim \text{Exp}(\lambda)$，$\EE[X] = 1/\lambda$。</p>
+        <p>令 $1/\lambda = \bar{X}$，解得 $\hat{\lambda}_{\text{MoM}} = 1/\bar{X}$。</p>
+        <p>注：$\hat{\lambda}$ 不是 $\lambda$ 的无偏估计（$\EE[1/\bar{X}] \neq \lambda$），但是相合估计。</p>
+      </div>
+    </div>
+
+    <h3>相合性 (Consistency)</h3>
+
     <div class="box box-definition">
-      <div class="box-title">定义 · 完备统计量</div>
-      <p>设 $T$ 是统计量，其分布族为 $\{f_T(t;\theta): \theta \in \Theta\}$。若对任意函数 $g(T)$，</p>
-      $$E_\theta[g(T)] = 0, \;\forall\,\theta \in \Theta \quad \Longrightarrow \quad P_\theta(g(T)=0) = 1, \;\forall\,\theta \in \Theta$$
-      <p>则称 $T$ 为<strong>完备统计量</strong>。</p>
+      <div class="box-title">定义 · 相合估计（一致估计）</div>
+      <p>设 $\hat{\theta}_n = \hat{\theta}_n(X_1,\ldots,X_n)$ 是基于容量为 $n$ 的样本对 $\theta$ 的估计。若当 $n \to \infty$ 时，</p>
+      <div class="formula-highlight">
+        $$\hat{\theta}_n \xrightarrow{P} \theta, \quad \text{即}\;\; \forall\,\varepsilon>0,\;\lim_{n\to\infty} \PP(|\hat{\theta}_n - \theta| \geq \varepsilon) = 0$$
+      </div>
+      <p>则称 $\hat{\theta}_n$ 是 $\theta$ 的<strong>相合估计</strong>（或一致估计，consistent estimator）。</p>
     </div>
 
     <div class="box box-note">
-      <div class="box-title">完备统计量的意义</div>
-      <p>完备性是一个技术性条件，它保证了"不存在非零的无偏估计为零"。完备充分统计量在寻找 MVUE 时起关键作用：</p>
-      <p><strong>Lehmann-Scheffé 定理</strong>：若 $T$ 是完备充分统计量，且 $g(T)$ 是 $h(\theta)$ 的无偏估计，则 $g(T)$ 是 $h(\theta)$ 的<strong>唯一</strong> MVUE。</p>
+      <div class="box-title">相合性的直觉</div>
+      <p>相合性是大样本性质：样本量越大，估计量越"逼近"真值。这是估计量最<strong>基本的大样本要求</strong>——如果不满足相合性，再多样本也无法估计准确。无偏性关注的是"平均对不对"，相合性关注的是"样本够多后对不对"。</p>
     </div>
 
     <div class="box box-theorem">
-      <div class="box-title">常见分布的充分完备统计量</div>
+      <div class="box-title">证明相合性的充分条件</div>
+      <p>若 $\EE[\hat{\theta}_n] \to \theta$（或 $\EE[\hat{\theta}_n] = \theta$）且 $\Var(\hat{\theta}_n) \to 0$（$n \to \infty$），则由 Chebyshev 不等式：</p>
+      <p>$$\PP(|\hat{\theta}_n - \theta| \geq \varepsilon) \leq \frac{\EE[(\hat{\theta}_n-\theta)^2]}{\varepsilon^2} = \frac{\Var(\hat{\theta}_n) + (\EE[\hat{\theta}_n]-\theta)^2}{\varepsilon^2} \to 0$$</p>
+      <p>因此 $\hat{\theta}_n$ 是 $\theta$ 的相合估计。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">矩估计的相合性</div>
+      <p><strong>结论</strong>：在很宽的条件下，矩估计是相合估计。</p>
+      <p><strong>理由</strong>：样本矩 $A_j = \frac{1}{n}\sum X_i^j$ 由大数定律知 $A_j \xrightarrow{P} \mu_j$（依概率收敛到总体矩）。矩估计量 $\hat{\theta} = g(A_1,\ldots,A_k)$ 是样本矩的连续函数，由<strong>连续映射定理</strong>知 $\hat{\theta} \xrightarrow{P} g(\mu_1,\ldots,\mu_k) = \theta$。</p>
+      <p>这正是矩估计与相合性天然配对的原因——矩估计由大数定律保证相合。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">相合性与无偏性的关系</div>
       <table>
-        <tr><th>分布</th><th>参数</th><th>充分完备统计量</th></tr>
-        <tr><td>$N(\mu, \sigma^2)$，$\sigma^2$ 已知</td><td>$\mu$</td><td>$\bar{X}$</td></tr>
-        <tr><td>$N(\mu, \sigma^2)$，$\mu, \sigma^2$ 未知</td><td>$(\mu, \sigma^2)$</td><td>$(\bar{X}, S^2)$</td></tr>
-        <tr><td>$\text{Exp}(\lambda)$</td><td>$\lambda$</td><td>$\sum X_i$</td></tr>
-        <tr><td>$B(1, p)$（0-1 分布）</td><td>$p$</td><td>$\sum X_i$</td></tr>
+        <tr><th>性质</th><th>样本量要求</th><th>衡量什么</th></tr>
+        <tr><td>无偏性</td><td>固定 $n$（有限样本）</td><td>"平均对不对"</td></tr>
+        <tr><td>相合性</td><td>$n \to \infty$（大样本）</td><td>"样本多了对不对"</td></tr>
+      </table>
+      <p>两者互不蕴含：无偏的估计可能不相合（如果方差始终不降），相合的估计可以有偏（如 $\hat{\sigma}^2_{\text{MoM}} = B_2$，有偏但相合）。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 2.3 最大似然估计与EM算法 ==================== -->
+  <div class="section" id="s3">
+    <h2>2.3 最大似然估计与 EM 算法</h2>
+
+    <h3>最大似然估计 (MLE)</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">最大似然估计的基本思想</div>
+      <p>选择一个参数值 $\theta$，使<strong>已观测到的数据出现的概率最大</strong>。</p>
+      <p><strong>似然函数</strong>（连续型）：</p>
+      <div class="formula-highlight">
+        $$L(\theta) = L(\theta; x_1,\ldots,x_n) = \prod_{i=1}^n f(x_i; \theta)$$
+      </div>
+      <p>（离散型将密度 $f$ 换为分布律 $p$）</p>
+      <p><strong>对数似然函数</strong>：$\ell(\theta) = \ln L(\theta) = \sum_{i=1}^n \ln f(x_i; \theta)$。</p>
+      <p>使 $L(\theta)$ 达到最大的 $\hat{\theta}$ 称为 $\theta$ 的<strong>最大似然估计</strong>（MLE），记为 $\hat{\theta}_{\text{MLE}}$。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">MLE 求解步骤</div>
+      <ol>
+        <li>写出似然函数 $L(\theta) = \prod_{i=1}^n f(x_i; \theta)$</li>
+        <li>取对数 $\ell(\theta) = \sum_{i=1}^n \ln f(x_i; \theta)$</li>
+        <li>对 $\theta$ 求导，令 $\frac{\dd \ell}{\dd \theta} = 0$（<strong>似然方程</strong>）</li>
+        <li>解方程得 $\hat{\theta}$，验证二阶导数为负（极大值）</li>
+      </ol>
+      <p><strong>注意</strong>：若似然函数单调或无驻点（如均匀分布），需直接分析边界。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例1 · 正态分布 $N(\mu,\sigma^2)$ 的 MLE</div>
+      <div class="collapsible-body">
+        <p>$L(\mu,\sigma^2) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}} \exp\!\left(-\frac{(x_i-\mu)^2}{2\sigma^2}\right) = (2\pi\sigma^2)^{-n/2} \exp\!\left(-\frac{1}{2\sigma^2}\sum (x_i-\mu)^2\right)$</p>
+        <p>$\ell(\mu,\sigma^2) = -\frac{n}{2}\ln(2\pi) - \frac{n}{2}\ln\sigma^2 - \frac{1}{2\sigma^2}\sum (x_i-\mu)^2$</p>
+        <p>$\frac{\partial\ell}{\partial\mu} = \frac{1}{\sigma^2}\sum (x_i-\mu) = 0 \;\Rightarrow\; \hat{\mu} = \bar{x}$</p>
+        <p>$\frac{\partial\ell}{\partial\sigma^2} = -\frac{n}{2\sigma^2} + \frac{1}{2(\sigma^2)^2}\sum (x_i-\mu)^2 = 0 \;\Rightarrow\; \hat{\sigma}^2 = \frac{1}{n}\sum (x_i-\bar{x})^2$</p>
+        <p>结论：正态的 MLE 与矩估计结果相同（$\hat{\mu}=\bar{X}$，$\hat{\sigma}^2=B_2$）。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例2 · 指数分布 $\text{Exp}(\lambda)$ 的 MLE</div>
+      <div class="collapsible-body">
+        <p>$L(\lambda) = \prod_{i=1}^n \lambda e^{-\lambda x_i} = \lambda^n e^{-\lambda\sum x_i}$</p>
+        <p>$\ell(\lambda) = n\ln\lambda - \lambda\sum x_i$</p>
+        <p>$\frac{\dd\ell}{\dd\lambda} = \frac{n}{\lambda} - \sum x_i = 0 \;\Rightarrow\; \hat{\lambda} = \frac{n}{\sum x_i} = \frac{1}{\bar{x}}$</p>
+        <p>MLE 结果与矩估计相同：$\hat{\lambda}_{\text{MLE}} = \hat{\lambda}_{\text{MoM}} = 1/\bar{X}$。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例3 · 均匀分布 $U(0,\theta)$ 的 MLE（不能用求导法）</div>
+      <div class="collapsible-body">
+        <p>$L(\theta) = \prod_{i=1}^n \frac{1}{\theta} \mathbf{1}_{\{0 < x_i < \theta\}} = \theta^{-n} \mathbf{1}_{\{x_{(n)} < \theta\}}$</p>
+        <p>$L(\theta)$ 在 $\theta \geq x_{(n)}$ 范围内是 $\theta$ 的单调递减函数。</p>
+        <p>$\therefore\; \hat{\theta}_{\text{MLE}} = X_{(n)} = \max\{X_1, \ldots, X_n\}$。</p>
+        <p><strong>与矩估计对比</strong>：矩估计 $\hat{\theta}_{\text{MoM}} = 2\bar{X}$，MLE 是 $\hat{\theta}_{\text{MLE}} = X_{(n)}$——两者完全不同。</p>
+      </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">MLE 的不变性</div>
+      <p>若 $\hat{\theta}$ 是 $\theta$ 的 MLE，$g$ 是任意函数，则 $g(\hat{\theta})$ 是 $g(\theta)$ 的 MLE。</p>
+      <p>例：$\hat{\sigma}^2_{\text{MLE}} = B_2$，则 $\hat{\sigma}_{\text{MLE}} = \sqrt{B_2}$。</p>
+    </div>
+
+    <h3>MLE 的渐近性质</h3>
+
+    <div class="box box-theorem">
+      <div class="box-title">MLE 的优良大样本性质</div>
+      <p>在一定正则条件下，MLE 具有以下渐近性质：</p>
+      <ol>
+        <li><strong>相合性</strong>：$\hat{\theta}_{\text{MLE}} \xrightarrow{P} \theta$（$n \to \infty$）</li>
+        <li><strong>渐近正态性</strong>：$\sqrt{n}(\hat{\theta}_{\text{MLE}} - \theta) \xrightarrow{d} N\!\left(0, \frac{1}{I(\theta)}\right)$</li>
+        <li><strong>渐近有效性</strong>：渐近方差达到 C-R 下界 $\frac{1}{nI(\theta)}$</li>
+      </ol>
+      <p>这三条性质共同说明：<strong>当样本量足够大时，MLE 是最优的估计方法</strong>——不仅估计一致，而且方差最小（达到理论下限）。这就是 MLE 在统计推断中占据核心地位的原因。</p>
+    </div>
+
+    <h3>EM 算法 (Expectation-Maximization)</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">EM 算法的动机</div>
+      <p>MLE 要求似然函数有显式表达式且可求导。但当数据存在<strong>缺失</strong>或模型含有<strong>隐变量</strong>（latent variables）时，似然函数 $\ell(\theta) = \ln \int p(x,z;\theta)\,\dd z$ 往往难以直接优化。EM 算法正是为解决此类问题而设计的迭代算法。</p>
+      <p><strong>典型场景</strong>：高斯混合模型（GMM）、隐马尔可夫模型（HMM）、缺失数据问题。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">EM 算法的直觉</div>
+      <p>假设我们能观测到隐变量 $Z$，则完整数据的 MLE 很容易求。但 $Z$ 是未知的，我们只能根据当前参数猜测它的分布，然后用这个猜测去更新参数，如此迭代：</p>
+      <p style="text-align:center;font-weight:600;">
+        猜测隐变量 → 更新参数 → 再猜测 → 再更新 → … → 收敛
+      </p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">EM 算法的两步迭代</div>
+      <p>设观测数据为 $X$，隐变量为 $Z$，完整数据似然为 $L(\theta; X, Z)$。给定当前参数 $\theta^{(t)}$：</p>
+      <p><strong>E 步（Expectation）</strong>：计算完整数据对数似然关于隐变量条件分布的期望——</p>
+      <div class="formula-highlight">
+        $$Q(\theta \mid \theta^{(t)}) = \EE_{Z \mid X, \theta^{(t)}}\!\left[\ln L(\theta; X, Z)\right]$$
+      </div>
+      <p>这一步"填补"了缺失信息——用当前参数下隐变量的条件期望替代未知的 $Z$。</p>
+      <p><strong>M 步（Maximization）</strong>：最大化 $Q$ 函数，更新参数——</p>
+      <div class="formula-highlight">
+        $$\theta^{(t+1)} = \arg\max_\theta\, Q(\theta \mid \theta^{(t)})$$
+      </div>
+      <p>交替进行 E 步和 M 步，直至收敛。每一步迭代<strong>保证似然函数不降</strong>：$L(\theta^{(t+1)}) \geq L(\theta^{(t)})$。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例 · 两分量高斯混合模型的 EM 算法</div>
+      <div class="collapsible-body">
+        <p><strong>模型</strong>：设观测 $x_1,\ldots,x_n$ 来自两个正态分布的混合——</p>
+        <p>$$f(x) = \pi \cdot \phi(x; \mu_1, \sigma_1^2) + (1-\pi) \cdot \phi(x; \mu_2, \sigma_2^2)$$</p>
+        <p>其中 $\phi$ 为正态密度。隐变量 $z_i \in \{1,2\}$ 表示第 $i$ 个观测来自哪个分量。</p>
+        <p><strong>E 步</strong>：计算每个数据点属于各分量的后验概率（"责任"）——</p>
+        <p>$$\gamma_{ik}^{(t)} = \PP(z_i = k \mid x_i; \theta^{(t)}) = \frac{\pi_k^{(t)} \phi(x_i; \mu_k^{(t)}, \sigma_k^{2(t)})}{\sum_{j=1}^2 \pi_j^{(t)} \phi(x_i; \mu_j^{(t)}, \sigma_j^{2(t)})}, \quad k=1,2$$</p>
+        <p><strong>M 步</strong>：用加权矩估计更新参数——</p>
+        <p>$$\pi_k^{(t+1)} = \frac{1}{n}\sum_{i=1}^n \gamma_{ik}^{(t)}, \quad \mu_k^{(t+1)} = \frac{\sum_i \gamma_{ik}^{(t)} x_i}{\sum_i \gamma_{ik}^{(t)}}$$</p>
+        <p>$$\sigma_k^{2(t+1)} = \frac{\sum_i \gamma_{ik}^{(t)} (x_i - \mu_k^{(t+1)})^2}{\sum_i \gamma_{ik}^{(t)}}$$</p>
+        <p>交替进行 E 步和 M 步直至参数收敛。EM 算法的优美之处在于：<strong>M 步的更新公式就是加权版本的矩估计</strong>，形式极为简洁。</p>
+      </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">EM 算法注意事项</div>
+      <ul>
+        <li><strong>收敛性</strong>：保证似然函数单调不减，但可能收敛到局部极大值或鞍点。</li>
+        <li><strong>初始值敏感性</strong>：不同初始值可能导致不同收敛结果，实践中常多次随机初始化。</li>
+        <li><strong>收敛速度</strong>：线性收敛，比 Newton-Raphson 方法慢但更稳定。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ==================== 2.4 贝叶斯估计与区间估计 ==================== -->
+  <div class="section" id="s4">
+    <h2>2.4 贝叶斯估计与区间估计</h2>
+
+    <h3>贝叶斯估计</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">贝叶斯估计的基本思想</div>
+      <p>频率学派将参数 $\theta$ 视为<strong>未知常数</strong>，利用样本推断。</p>
+      <p>贝叶斯学派将 $\theta$ 视为<strong>随机变量</strong>，在观测数据前有<strong>先验分布</strong> $\pi(\theta)$，观测数据后更新为<strong>后验分布</strong>：</p>
+      <div class="formula-highlight">
+        $$\pi(\theta \mid x) = \frac{f(x \mid \theta)\,\pi(\theta)}{\int f(x \mid \theta)\,\pi(\theta)\,\dd\theta} \propto f(x \mid \theta)\,\pi(\theta)$$
+      </div>
+      <p>即：<strong>后验 ∝ 似然 × 先验</strong>。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">两种统计哲学的对比</div>
+      <table>
+        <tr><th></th><th>频率学派</th><th>贝叶斯学派</th></tr>
+        <tr><td>参数 $\theta$ 的本质</td><td>未知的固定常数</td><td>随机变量</td></tr>
+        <tr><td>推断依据</td><td>仅样本数据</td><td>样本数据 + 先验信息</td></tr>
+        <tr><td>点估计</td><td>MLE、矩估计</td><td>后验均值、后验众数(MAP)</td></tr>
+        <tr><td>区间估计</td><td>置信区间（覆盖概率）</td><td>可信区间（后验概率）</td></tr>
       </table>
     </div>
-  </div>
-
-  <!-- ==================== 2.4 区间估计 ==================== -->
-  <div class="section" id="s4">
-    <h2>2.4 区间估计</h2>
 
     <div class="box box-definition">
-      <div class="box-title">定义 · 置信区间</div>
-      <p>设总体分布含参数 $\theta$，$X_1, \ldots, X_n$ 为样本。若统计量 $\hat{\theta}_L$ 和 $\hat{\theta}_U$ 满足</p>
-      <div class="formula-highlight">
-        $$P(\hat{\theta}_L \leq \theta \leq \hat{\theta}_U) = 1 - \alpha, \quad \forall\,\theta \in \Theta$$
+      <div class="box-title">贝叶斯点估计</div>
+      <p>后验分布 $\pi(\theta \mid x)$ 完整描述了我们对 $\theta$ 的"认知状态"。从中提取点估计的常用方法：</p>
+      <ul>
+        <li><strong>后验均值</strong>：$\hat{\theta}_{\text{Bayes}} = \EE[\theta \mid X] = \int \theta\,\pi(\theta \mid X)\,\dd\theta$——在平方损失下最优</li>
+        <li><strong>后验众数 (MAP)</strong>：$\hat{\theta}_{\text{MAP}} = \arg\max_\theta \pi(\theta \mid X)$——等价于最大化 $\ln f(X\mid\theta) + \ln\pi(\theta)$</li>
+      </ul>
+      <p>MAP 可看作 MLE 的"正则化版本"——先验 $\pi(\theta)$ 起惩罚项的作用。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例 · 二项分布的贝叶斯估计（Beta-Binomial 共轭）</div>
+      <div class="collapsible-body">
+        <p><strong>设定</strong>：$X \sim B(n,p)$，$p$ 的先验取 $\text{Beta}(\alpha, \beta)$（共轭先验）。</p>
+        <p>似然：$f(x\mid p) = \binom{n}{x}p^x(1-p)^{n-x}$</p>
+        <p>先验：$\pi(p) \propto p^{\alpha-1}(1-p)^{\beta-1}$</p>
+        <p>后验：$\pi(p \mid x) \propto p^{x+\alpha-1}(1-p)^{n-x+\beta-1} \sim \text{Beta}(x+\alpha,\; n-x+\beta)$</p>
+        <p>后验均值：$\hat{p}_{\text{Bayes}} = \frac{x+\alpha}{n+\alpha+\beta} = \frac{n}{n+\alpha+\beta} \cdot \frac{x}{n} + \frac{\alpha+\beta}{n+\alpha+\beta} \cdot \frac{\alpha}{\alpha+\beta}$</p>
+        <p>这是 MLE $\hat{p}=x/n$ 与先验均值 $\alpha/(\alpha+\beta)$ 的<strong>加权平均</strong>。$n$ 越大，数据权重越大；先验越强（$\alpha+\beta$ 大），先验权重越大。</p>
       </div>
-      <p>则称 $[\hat{\theta}_L, \hat{\theta}_U]$ 为 $\theta$ 的置信水平为 $1-\alpha$ 的<strong>置信区间</strong>，$\hat{\theta}_L$ 为置信下限，$\hat{\theta}_U$ 为置信上限。</p>
+    </div>
+
+    <h3>区间估计</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">置信区间的定义</div>
+      <p>设总体分布含参数 $\theta$，$X_1,\ldots,X_n$ 为样本。若统计量 $\hat{\theta}_L$ 和 $\hat{\theta}_U$ 满足：</p>
+      <div class="formula-highlight">
+        $$\PP(\hat{\theta}_L \leq \theta \leq \hat{\theta}_U) = 1 - \alpha, \quad \forall\,\theta \in \Theta$$
+      </div>
+      <p>则称 $[\hat{\theta}_L,\; \hat{\theta}_U]$ 为 $\theta$ 的置信水平为 $1-\alpha$ 的<strong>置信区间</strong>。</p>
     </div>
 
     <div class="box box-note">
-      <div class="box-title">置信区间的正确理解</div>
-      <p>$1-\alpha$ 不是"$\theta$ 落在区间内的概率"——$\theta$ 是固定的常数，不是随机变量。</p>
-      <p>正确的理解：如果反复抽样，每次构造一个区间，则大约 $100(1-\alpha)\%$ 的区间会覆盖真正的 $\theta$。</p>
+      <div class="box-title">⚠️ 置信区间的正确理解（高频考点）</div>
+      <p>$1-\alpha$ <strong>不是</strong>"$\theta$ 落在该区间内的概率"——$\theta$ 是固定的常数，不是随机变量。</p>
+      <p>正确理解：如果反复独立抽样，每次构造一个置信区间，则大约 $100(1-\alpha)\%$ 的区间会<strong>覆盖</strong>真正的 $\theta$。这里的概率是对<strong>随机区间</strong>而言的，而非对 $\theta$。</p>
     </div>
 
     <h3>枢轴量法</h3>
+
     <div class="box box-definition">
-      <div class="box-title">枢轴量法的基本步骤</div>
-      <p><strong>枢轴量</strong>是包含待估参数 $\theta$ 但其分布<strong>不依赖 $\theta$</strong> 的随机变量 $Q = Q(X_1, \ldots, X_n; \theta)$。</p>
+      <div class="box-title">枢轴量法的步骤</div>
+      <p><strong>枢轴量</strong> $Q = Q(X_1,\ldots,X_n; \theta)$ 满足两个条件：(1) 包含待估参数 $\theta$；(2) 分布<strong>完全已知</strong>（不依赖 $\theta$ 或其他未知参数）。</p>
       <p>步骤：</p>
       <ol>
-        <li>构造枢轴量 $Q(X_1, \ldots, X_n; \theta)$</li>
-        <li>找到常数 $q_1, q_2$ 使得 $P(q_1 \leq Q \leq q_2) = 1-\alpha$</li>
-        <li>从 $q_1 \leq Q \leq q_2$ 中解出 $\theta$ 的范围，即为置信区间</li>
+        <li>构造合适的枢轴量 $Q$</li>
+        <li>找到 $q_1, q_2$ 使得 $\PP(q_1 \leq Q \leq q_2) = 1-\alpha$</li>
+        <li>从不等式 $q_1 \leq Q \leq q_2$ 中解出 $\theta$ 的范围</li>
       </ol>
     </div>
 
-    <h3>正态总体均值 $\mu$ 的置信区间</h3>
     <div class="box box-theorem">
-      <div class="box-title">情况一：$\sigma^2$ 已知</div>
-      <p><strong>枢轴量</strong>：$Z = \frac{\bar{X}-\mu}{\sigma/\sqrt{n}} \sim N(0,1)$</p>
-      <p>取 $z_{\alpha/2}$ 使得 $P(|Z| \leq z_{\alpha/2}) = 1-\alpha$，即 $\Phi(z_{\alpha/2}) = 1-\alpha/2$。</p>
-      <p>$\mu$ 的 $1-\alpha$ 置信区间为：</p>
+      <div class="box-title">正态总体均值 $\mu$ 的置信区间</div>
+      <p><strong>$\sigma^2$ 已知</strong>：枢轴量 $Z = \frac{\bar{X}-\mu}{\sigma/\sqrt{n}} \sim N(0,1)$</p>
       <div class="formula-highlight">
         $$\left[\bar{X} - z_{\alpha/2}\frac{\sigma}{\sqrt{n}},\;\; \bar{X} + z_{\alpha/2}\frac{\sigma}{\sqrt{n}}\right]$$
       </div>
-    </div>
-
-    <div class="box box-theorem">
-      <div class="box-title">情况二：$\sigma^2$ 未知</div>
-      <p><strong>枢轴量</strong>：$T = \frac{\bar{X}-\mu}{S/\sqrt{n}} \sim t(n-1)$</p>
-      <p>取 $t_{\alpha/2}(n-1)$ 使得 $P(|T| \leq t_{\alpha/2}(n-1)) = 1-\alpha$。</p>
-      <p>$\mu$ 的 $1-\alpha$ 置信区间为：</p>
+      <p><strong>$\sigma^2$ 未知</strong>：枢轴量 $T = \frac{\bar{X}-\mu}{S/\sqrt{n}} \sim t(n-1)$</p>
       <div class="formula-highlight">
         $$\left[\bar{X} - t_{\alpha/2}(n-1)\frac{S}{\sqrt{n}},\;\; \bar{X} + t_{\alpha/2}(n-1)\frac{S}{\sqrt{n}}\right]$$
       </div>
     </div>
 
-    <h3>正态总体方差 $\sigma^2$ 的置信区间</h3>
     <div class="box box-theorem">
-      <div class="box-title">$\sigma^2$ 的置信区间（$\mu$ 未知）</div>
-      <p><strong>枢轴量</strong>：$V = \frac{(n-1)S^2}{\sigma^2} \sim \chi^2(n-1)$</p>
-      <p>取 $\chi^2_{1-\alpha/2}(n-1)$ 和 $\chi^2_{\alpha/2}(n-1)$ 使得</p>
-      $$P\!\left(\chi^2_{1-\alpha/2}(n-1) \leq V \leq \chi^2_{\alpha/2}(n-1)\right) = 1-\alpha$$
-      <p>$\sigma^2$ 的 $1-\alpha$ 置信区间为：</p>
+      <div class="box-title">正态总体方差 $\sigma^2$ 的置信区间</div>
+      <p>枢轴量：$V = \frac{(n-1)S^2}{\sigma^2} \sim \chi^2(n-1)$</p>
       <div class="formula-highlight">
         $$\left[\frac{(n-1)S^2}{\chi^2_{\alpha/2}(n-1)},\;\; \frac{(n-1)S^2}{\chi^2_{1-\alpha/2}(n-1)}\right]$$
       </div>
-    </div>
-
-    <h3>两个正态总体的置信区间</h3>
-    <div class="box box-theorem">
-      <div class="box-title">均值差 $\mu_1 - \mu_2$ 的置信区间</div>
-      <p>设两组独立样本 $X_1, \ldots, X_m \sim N(\mu_1, \sigma_1^2)$，$Y_1, \ldots, Y_n \sim N(\mu_2, \sigma_2^2)$。</p>
-      <p><strong>情况一：$\sigma_1^2 = \sigma_2^2 = \sigma^2$（未知但相等）</strong></p>
-      <p>枢轴量：$T = \frac{(\bar{X}-\bar{Y})-(\mu_1-\mu_2)}{S_w\sqrt{1/m+1/n}} \sim t(m+n-2)$</p>
-      <p>其中 $S_w^2 = \frac{(m-1)S_1^2 + (n-1)S_2^2}{m+n-2}$ 为合并方差。</p>
-      <p>$\mu_1-\mu_2$ 的 $1-\alpha$ 置信区间：</p>
-      $$\left[(\bar{X}-\bar{Y}) - t_{\alpha/2}(m+n-2)\cdot S_w\sqrt{\frac{1}{m}+\frac{1}{n}},\;\; (\bar{X}-\bar{Y}) + t_{\alpha/2}(m+n-2)\cdot S_w\sqrt{\frac{1}{m}+\frac{1}{n}}\right]$$
+      <p><strong>注意</strong>：$\chi^2$ 分布不对称，上下分位点不同，因此 $\sigma^2$ 的置信区间<strong>不是关于 $S^2$ 对称</strong>的。</p>
     </div>
 
     <div class="box box-theorem">
-      <div class="box-title">方差比 $\sigma_1^2/\sigma_2^2$ 的置信区间</div>
-      <p><strong>枢轴量</strong>：$F = \frac{S_1^2/\sigma_1^2}{S_2^2/\sigma_2^2} \sim F(m-1, n-1)$</p>
-      <p>$\sigma_1^2/\sigma_2^2$ 的 $1-\alpha$ 置信区间：</p>
+      <div class="box-title">两正态总体均值差 $\mu_1 - \mu_2$ 的置信区间</div>
+      <p>设独立样本 $X_1,\ldots,X_m \iid N(\mu_1, \sigma_1^2)$，$Y_1,\ldots,Y_n \iid N(\mu_2, \sigma_2^2)$。</p>
+      <p><strong>$\sigma_1^2 = \sigma_2^2 = \sigma^2$ 未知</strong>：</p>
+      <p>枢轴量 $T = \frac{(\bar{X}-\bar{Y}) - (\mu_1-\mu_2)}{S_w\sqrt{1/m+1/n}} \sim t(m+n-2)$</p>
+      <p>其中 $S_w^2 = \frac{(m-1)S_1^2 + (n-1)S_2^2}{m+n-2}$ 为<strong>合并样本方差</strong>。</p>
       <div class="formula-highlight">
-        $$\left[\frac{S_1^2}{S_2^2} \cdot \frac{1}{F_{\alpha/2}(m-1,n-1)},\;\; \frac{S_1^2}{S_2^2} \cdot F_{\alpha/2}(n-1,m-1)\right]$$
+        $$\left[(\bar{X}-\bar{Y}) - t_{\alpha/2}(\nu)\cdot S_w\sqrt{\tfrac{1}{m}+\tfrac{1}{n}},\;\; (\bar{X}-\bar{Y}) + t_{\alpha/2}(\nu)\cdot S_w\sqrt{\tfrac{1}{m}+\tfrac{1}{n}}\right]$$
       </div>
-      <p><strong>注意</strong>：上界中利用了 $F$ 分布的倒数性质——$1/F_{\alpha/2}(m-1,n-1) = F_{\alpha/2}(n-1,m-1)$ 的记号需查表确认。</p>
+      <p>其中 $\nu = m+n-2$。</p>
     </div>
 
-    <h3>单侧置信区间</h3>
-    <div class="box box-definition">
-      <div class="box-title">单侧置信区间</div>
-      <p>有时只需估计参数的上限或下限。例如 $\mu$ 的<strong>单侧置信上限</strong>：</p>
-      $$P(\mu \leq \hat{\theta}_U) = 1-\alpha$$
-      <p>等价地，$\hat{\theta}_U$ 满足 $P\!\left(\frac{\bar{X}-\mu}{S/\sqrt{n}} \geq -t_\alpha(n-1)\right) = 1-\alpha$，故</p>
-      $$\mu \text{ 的单侧置信上限为 } \bar{X} + t_\alpha(n-1)\frac{S}{\sqrt{n}}$$
-      <p>$\mu$ 的<strong>单侧置信下限</strong>为 $\bar{X} - t_\alpha(n-1)\frac{S}{\sqrt{n}}$。</p>
-    </div>
-
-    <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 正态总体均值的置信区间</div>
-      <div class="collapsible-body">
-        <p><strong>题目</strong>：某零件长度 $X \sim N(\mu, \sigma^2)$，$\sigma^2$ 未知。现抽取 $n=16$ 个样本，测得 $\bar{x}=5.21$ cm，$s=0.36$ cm。求 $\mu$ 的 95% 置信区间。</p>
-        <p><strong>解</strong>：$\sigma^2$ 未知，使用 $t$ 分布。$1-\alpha = 0.95$，$\alpha = 0.05$，$t_{0.025}(15) = 2.131$。</p>
-        <p>$\bar{x} \pm t_{0.025}(15) \cdot \frac{s}{\sqrt{n}} = 5.21 \pm 2.131 \times \frac{0.36}{4} = 5.21 \pm 0.192$</p>
-        <p>置信区间为 $[5.018,\; 5.402]$（单位：cm）。</p>
+    <div class="box box-theorem">
+      <div class="box-title">两正态总体方差比 $\sigma_1^2/\sigma_2^2$ 的置信区间</div>
+      <p>枢轴量：$F = \frac{S_1^2/\sigma_1^2}{S_2^2/\sigma_2^2} \sim F(m-1, n-1)$</p>
+      <div class="formula-highlight">
+        $$\left[\frac{S_1^2}{S_2^2} \cdot \frac{1}{F_{\alpha/2}(m-1,\,n-1)},\;\; \frac{S_1^2}{S_2^2} \cdot F_{\alpha/2}(n-1,\,m-1)\right]$$
       </div>
     </div>
 
     <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 正态总体方差的置信区间</div>
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 均值与方差的置信区间</div>
       <div class="collapsible-body">
-        <p><strong>题目</strong>：沿用上例数据 $n=16$，$s^2 = 0.1296$。求 $\sigma^2$ 的 95% 置信区间。</p>
-        <p><strong>解</strong>：$\chi^2_{0.025}(15) = 27.488$，$\chi^2_{0.975}(15) = 6.262$。</p>
-        <p>置信区间：$\left[\frac{15 \times 0.1296}{27.488},\;\; \frac{15 \times 0.1296}{6.262}\right] = [0.0707,\; 0.3102]$</p>
-        <p>$\sigma$ 的置信区间：$[\sqrt{0.0707},\; \sqrt{0.3102}] = [0.266,\; 0.557]$（单位：cm）。</p>
+        <p><strong>题目</strong>：某零件长度 $X \sim N(\mu,\sigma^2)$，$\sigma^2$ 未知。$n=16$，$\bar{x}=5.21$ cm，$s=0.36$ cm。求 $\mu$ 和 $\sigma^2$ 的 95% 置信区间。</p>
+        <p><strong>$\mu$ 的区间</strong>：$t_{0.025}(15) = 2.131$</p>
+        <p>$5.21 \pm 2.131 \times \frac{0.36}{4} = 5.21 \pm 0.192 = [5.018,\; 5.402]$</p>
+        <p><strong>$\sigma^2$ 的区间</strong>：$\chi^2_{0.025}(15) = 27.488$，$\chi^2_{0.975}(15) = 6.262$</p>
+        <p>$$\left[\frac{15 \times 0.1296}{27.488},\; \frac{15 \times 0.1296}{6.262}\right] = [0.0707,\; 0.3102]$$</p>
+        <p>$\sigma$ 的区间：$[0.266,\; 0.557]$。</p>
       </div>
     </div>
+
+    <h3>贝叶斯可信区间 vs 频率置信区间</h3>
 
     <div class="box box-note">
-      <div class="box-title">正态总体置信区间公式总结</div>
+      <div class="box-title">两种区间的本质区别</div>
+      <table>
+        <tr><th></th><th>频率置信区间</th><th>贝叶斯可信区间</th></tr>
+        <tr><td>概率含义</td><td>"区间覆盖参数"的长期频率</td><td>"参数落在区间内"的后验概率</td></tr>
+        <tr><td>$\theta$ 的角色</td><td>未知常数</td><td>随机变量</td></tr>
+        <tr><td>区间角色</td><td>随机的</td><td>固定的（给定数据后）</td></tr>
+      </table>
+      <p>贝叶斯可信区间更符合人的直觉——它直接告诉我们"在观测到这些数据后，参数有多大概率落在此区间内"。频率置信区间的概率陈述则是对<strong>方法</strong>而言的，而非对某个具体区间。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">正态总体置信区间公式速查表</div>
       <table>
         <tr><th>待估参数</th><th>条件</th><th>枢轴量</th><th>分布</th></tr>
         <tr><td>$\mu$</td><td>$\sigma^2$ 已知</td><td>$\frac{\bar{X}-\mu}{\sigma/\sqrt{n}}$</td><td>$N(0,1)$</td></tr>
         <tr><td>$\mu$</td><td>$\sigma^2$ 未知</td><td>$\frac{\bar{X}-\mu}{S/\sqrt{n}}$</td><td>$t(n-1)$</td></tr>
         <tr><td>$\sigma^2$</td><td>$\mu$ 未知</td><td>$\frac{(n-1)S^2}{\sigma^2}$</td><td>$\chi^2(n-1)$</td></tr>
         <tr><td>$\mu_1-\mu_2$</td><td>$\sigma_1^2=\sigma_2^2$ 未知</td><td>$\frac{(\bar{X}-\bar{Y})-(\mu_1-\mu_2)}{S_w\sqrt{1/m+1/n}}$</td><td>$t(m+n-2)$</td></tr>
-        <tr><td>$\sigma_1^2/\sigma_2^2$</td><td>$\mu_1, \mu_2$ 未知</td><td>$\frac{S_1^2/\sigma_1^2}{S_2^2/\sigma_2^2}$</td><td>$F(m{-}1,n{-}1)$</td></tr>
+        <tr><td>$\sigma_1^2/\sigma_2^2$</td><td>$\mu_1,\mu_2$ 未知</td><td>$\frac{S_1^2/\sigma_1^2}{S_2^2/\sigma_2^2}$</td><td>$F(m{-}1,n{-}1)$</td></tr>
       </table>
     </div>
   </div>
