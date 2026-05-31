@@ -211,7 +211,7 @@
       <div class="box-title">性质（二）· 分布关系与可加性</div>
       <ol>
         <li><strong>与 Gamma 分布的关系</strong>：$\chi^2(n) = \text{Gamma}\!\left(\dfrac{n}{2},\, \dfrac{1}{2}\right)$。这是理解 $\chi^2$ 分布最简洁的方式——所有性质都可以从 Gamma 分布直接读出。</li>
-        <li><strong>可加性</strong>：若 $X \sim \chi^2(m)$，$Y \sim \chi^2(n)$，且 $X \perp\\!\\!\\!\\perp Y$，则 $X + Y \sim \chi^2(m+n)$。这等价于 $\text{Gamma}(m/2,\,1/2) + \text{Gamma}(n/2,\,1/2) = \text{Gamma}((m+n)/2,\,1/2)$。</li>
+        <li><strong>可加性</strong>：若 $X \sim \chi^2(m)$，$Y \sim \chi^2(n)$，且 $X \perp\!\!\!\perp Y$，则 $X + Y \sim \chi^2(m+n)$。这等价于 $\text{Gamma}(m/2,\,1/2) + \text{Gamma}(n/2,\,1/2) = \text{Gamma}((m+n)/2,\,1/2)$。</li>
         <li><strong>可加性的推论</strong>：若 $X_1, \ldots, X_k$ 独立且 $X_i \sim \chi^2(n_i)$，则 $\sum_{i=1}^k X_i \sim \chi^2(\sum_{i=1}^k n_i)$。</li>
       </ol>
     </div>
@@ -245,7 +245,7 @@
     <!-- 定义 -->
     <div class="box box-definition">
       <div class="box-title">定义 · $t$ 分布</div>
-      <p>设 $Z \sim N(0,1)$，$V \sim \chi^2(n)$，且 $Z \perp\\!\\!\\!\\perp V$，则称</p>
+      <p>设 $Z \sim N(0,1)$，$V \sim \chi^2(n)$，且 $Z \perp\!\!\!\perp V$，则称</p>
       <div class="formula-highlight">
         $$T = \frac{Z}{\sqrt{V/n}}$$
       </div>
@@ -288,8 +288,9 @@
             <li><strong>没有矩母函数</strong>：$E[e^{tX}] = \infty$ 对所有 $t \neq 0$。</li>
             <li><strong>样本均值的分布不变</strong>：若 $X_1, \ldots, X_n$ i.i.d. $\sim \text{Cauchy}(0,1)$，则 $\bar{X} \sim \text{Cauchy}(0,1)$——均值不会因样本量增大而更集中！这就是<strong>没有大数定律</strong>的例子。</li>
           </ul>
-          <p><strong>为什么在 $t$ 分布中会出现 Cauchy？</strong>$t(1) = \frac{Z}{\sqrt{\chi^2(1)}} = \frac{Z}{|Z|}$（因为 $\chi^2(1) = Z^2$，$\sqrt{Z^2} = |Z|$）。$Z/|Z|$ 以概率 $1/2$ 取值 $+1$，以概率 $1/2$ 取值 $-1$——不对，$Z$ 是连续的，$Z/|Z| = \text{sign}(Z)$ 确实是 $\pm 1$ 的退化分布？</p>
-          <p>稍等——$\chi^2(1)$ 定义为 $Z_1^2$，其中 $Z_1 \sim N(0,1)$，但和分子中的 $Z$ 不是同一个变量！$t(1)$ 是两个独立标准正态的比值：$Z_1 / \sqrt{Z_2^2} = Z_1/|Z_2|$，这正是两个独立正态之比，其分布就是 Cauchy。详见下文推论。</p>
+          <p><strong>为什么在 $t$ 分布中会出现 Cauchy？</strong>回顾 $t$ 分布的定义：分子和分母必须<strong>独立</strong>。设分子中的标准正态为 $Z_1 \sim N(0,1)$，分母中的 $\chi^2(1)$ 来自另一个独立的标准正态 $Z_2$，即 $\chi^2(1) = Z_2^2$。则</p>
+          $$t(1) = \frac{Z_1}{\sqrt{Z_2^2 / 1}} = \frac{Z_1}{|Z_2|}$$
+          <p>由于 $Z_2$ 关于 0 对称，$Z_2$ 取正和取负的概率各为 $\frac{1}{2}$，且 $|Z_2|$ 与 $\text{sign}(Z_2)$ 独立。因此 $Z_1/|Z_2|$ 的分布与 $Z_1/Z_2$ 相同。而两个独立标准正态的比值 $Z_1/Z_2$ 服从标准 Cauchy 分布——这是概率论中的经典结论（下文推论给出简洁证明）。</p>
         </li>
         <li>
           <strong>$t(2)$：均值存在（$=0$），但方差不存在</strong>。$\Var(T) = n/(n-2)$ 在 $n=2$ 时分母为零。
@@ -339,7 +340,7 @@
     <!-- 定义 -->
     <div class="box box-definition">
       <div class="box-title">定义 · $F$ 分布</div>
-      <p>设 $U \sim \chi^2(m)$，$V \sim \chi^2(n)$，且 $U \perp\\!\\!\\!\\perp V$，则称</p>
+      <p>设 $U \sim \chi^2(m)$，$V \sim \chi^2(n)$，且 $U \perp\!\!\!\perp V$，则称</p>
       <div class="formula-highlight">
         $$F = \frac{U/m}{V/n}$$
       </div>
@@ -566,7 +567,7 @@
       <ul>
         <li>$E[Y_1] = 0$，$\Var(Y_1) = \frac{1}{2} + \frac{1}{2} = 1$ ✓</li>
         <li>$E[Y_2] = 0$，$\Var(Y_2) = \frac{1}{2} + \frac{1}{2} = 1$ ✓</li>
-        <li>$\Cov(Y_1, Y_2) = \frac{1}{2}\cdot\frac{1}{\sqrt{2}}\cdot\frac{1}{\sqrt{2}} + \frac{1}{2}\cdot\frac{1}{\sqrt{2}}\cdot(-\frac{1}{\sqrt{2}}) = \frac{1}{4} - \frac{1}{4} = 0$，所以 $Y_1 \perp\\!\\!\\!\\perp Y_2$ ✓</li>
+        <li>$\Cov(Y_1, Y_2) = \frac{1}{2}\cdot\frac{1}{\sqrt{2}}\cdot\frac{1}{\sqrt{2}} + \frac{1}{2}\cdot\frac{1}{\sqrt{2}}\cdot(-\frac{1}{\sqrt{2}}) = \frac{1}{4} - \frac{1}{4} = 0$，所以 $Y_1 \perp\!\!\!\perp Y_2$ ✓</li>
       </ul>
       <p>$Y_1$ 与 $\bar{X}$ 的关系：</p>
       $$Y_1 = \frac{Z_1 + Z_2}{\sqrt{2}} = \frac{1}{\sqrt{2}} \cdot \frac{(X_1-\mu)+(X_2-\mu)}{\sigma} = \frac{\sqrt{2}(\bar{X}-\mu)}{\sigma}$$
