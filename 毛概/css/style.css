@@ -236,6 +236,25 @@ body {
   margin-bottom: 14px;
   padding-bottom: 10px;
   border-bottom: 1px dashed var(--border-light);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.qa-question::before {
+  content: 'Q';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 5px;
+  flex-shrink: 0;
+  margin-top: 1px;
 }
 
 .qa-answer {
@@ -245,19 +264,178 @@ body {
 }
 
 .qa-answer p {
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .qa-answer ul, .qa-answer ol {
-  margin: 8px 0 12px 24px;
+  margin: 10px 0 14px 24px;
 }
 
 .qa-answer li {
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .qa-answer strong {
   color: var(--primary);
+}
+
+/* ===== 关键词高亮 ===== */
+.kw {
+  display: inline-block;
+  background: linear-gradient(135deg, #fff7e0, #fff3cd);
+  color: #8b6914;
+  padding: 1px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.92em;
+  border: 1px solid rgba(180, 140, 50, 0.25);
+  margin: 0 2px;
+  white-space: nowrap;
+}
+
+/* ===== 核心句高亮 ===== */
+.core {
+  display: inline;
+  background: linear-gradient(180deg, transparent 60%, rgba(196, 30, 58, 0.12) 60%);
+  padding: 0 2px;
+}
+
+/* ===== 编号要点块 ===== */
+.qa-answer .point {
+  padding: 6px 10px 6px 14px;
+  margin-bottom: 4px;
+  border-left: 2px solid transparent;
+  border-radius: 0 4px 4px 0;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.qa-answer .point:hover {
+  border-left-color: var(--accent);
+  background: rgba(196, 30, 58, 0.02);
+}
+
+.qa-answer .point .kw {
+  margin-right: 4px;
+}
+
+/* ===== 重点段落 ===== */
+.key-point {
+  border-left: 3px solid var(--accent);
+  padding: 8px 14px;
+  margin: 10px 0;
+  background: linear-gradient(90deg, rgba(196, 30, 58, 0.04) 0%, transparent 100%);
+  border-radius: 0 6px 6px 0;
+}
+
+/* ===== 摘要/总起句 ===== */
+.summary {
+  background: var(--accent-light);
+  border: 1px solid rgba(196, 30, 58, 0.15);
+  border-radius: var(--radius);
+  padding: 10px 16px;
+  margin: 8px 0 16px;
+  font-weight: 500;
+}
+
+/* ===== 编号列表优化 ===== */
+.qa-answer .num-list {
+  counter-reset: item;
+  list-style: none;
+  padding-left: 0;
+  margin: 10px 0 14px;
+}
+
+.qa-answer .num-list li {
+  counter-increment: item;
+  padding-left: 28px;
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.qa-answer .num-list li::before {
+  content: counter(item, cjk-ideographic);
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 0.85em;
+  font-weight: 700;
+  color: var(--primary);
+  background: var(--accent-light);
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
+  text-align: center;
+  border-radius: 4px;
+}
+
+/* ===== 章节内小标题 ===== */
+.qa-answer .sub-head {
+  display: block;
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 1.02rem;
+  margin: 18px 0 8px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid var(--accent);
+}
+
+/* ===== 强调变体 ===== */
+.qa-answer em.hl {
+  font-style: normal;
+  background: #fff3cd;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+/* ===== 分隔提示 ===== */
+.qa-answer .tag-block {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0 14px;
+}
+
+.qa-answer .tag-block .tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 14px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  background: rgba(139, 0, 0, 0.06);
+  color: var(--primary);
+  border: 1px solid rgba(139, 0, 0, 0.12);
+}
+
+/* ===== 两栏对比 ===== */
+.qa-answer .compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.qa-answer .compare > div {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+}
+
+.qa-answer .compare > div strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+/* ===== 响应式微调 ===== */
+@media (max-width: 768px) {
+  .qa-answer .compare {
+    grid-template-columns: 1fr;
+  }
+  .kw {
+    white-space: normal;
+  }
 }
 
 /* ===== 底部导航 ===== */
