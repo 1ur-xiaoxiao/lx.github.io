@@ -2,3 +2,8 @@ __pycache__/
 *.pyc
 .idea/
 .claude/
+extract_*.py
+stage*.sh
+stage*.py
+*ppt_ch4_output.txt
+*/.ipynb_checkpoints/
