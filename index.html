@@ -117,6 +117,7 @@ body::before {
 .course-card:nth-child(7) { animation-delay: 1.05s; }
 .course-card:nth-child(8) { animation-delay: 1.2s; }
 .course-card:nth-child(9) { animation-delay: 1.35s; }
+.course-card:nth-child(10) { animation-delay: 1.5s; }
 
 .course-card::before {
   content: '';
@@ -161,6 +162,10 @@ body::before {
 
 .course-card.aa::before {
   background: linear-gradient(90deg, #805ad5, #dd6b20);
+}
+
+.course-card.maogai::before {
+  background: linear-gradient(90deg, #c41e3a, #d4a017);
 }
 
 .course-card:hover {
@@ -268,7 +273,7 @@ body::before {
 
 <div class="header">
   <h1>数学系课程总览</h1>
-  <p>数学分析、高等代数、概率论、数理统计、复变函数、偏微分方程、常微分方程、抽象代数与数据挖掘 · 在线复习指南</p>
+  <p>数学分析、高等代数、概率论、数理统计、复变函数、偏微分方程、常微分方程、抽象代数、数据挖掘与毛概 · 在线复习指南</p>
 </div>
 
 <div class="cards">
@@ -379,10 +384,22 @@ body::before {
     </div>
     <div class="card-enter">进入课程 <span class="arrow">→</span></div>
   </a>
+
+  <a href="毛概/index.html" class="course-card maogai">
+    <span class="card-icon">📜</span>
+    <div class="card-title">毛概</div>
+    <div class="card-subtitle">2023 版教材 · 课后题知识点标答<br>毛泽东思想与中国特色社会主义理论体系概论</div>
+    <div class="card-meta">
+      <span class="tag">7 个章节</span>
+      <span class="tag">课后题标答</span>
+      <span class="tag">知识点整理</span>
+    </div>
+    <div class="card-enter">进入课程 <span class="arrow">→</span></div>
+  </a>
 </div>
 
 <div class="footer">
-  数学系 · 九门课程 · 在线复习平台
+  数学系 · 十门课程 · 在线复习平台
 </div>
 
 </body>

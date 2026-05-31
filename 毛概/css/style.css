@@ -1,0 +1,335 @@
+/* ===== 全局重置与基础 ===== */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #8b0000;
+  --primary-light: #a31515;
+  --accent: #c41e3a;
+  --accent-light: #fff0f0;
+  --bg: #fdfbfb;
+  --bg-white: #ffffff;
+  --text: #1a1a1a;
+  --text-light: #444444;
+  --text-muted: #777777;
+  --border: #e0d5d5;
+  --border-light: #f0e8e8;
+  --success: #1a6b3c;
+  --success-bg: #f0fff4;
+  --warning: #8b6914;
+  --warning-bg: #fffff0;
+  --info: #1a3a6b;
+  --info-bg: #f0f4ff;
+  --shadow: 0 1px 3px rgba(0,0,0,0.10), 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.05);
+  --radius: 8px;
+  --max-width: 900px;
+  --nav-height: 60px;
+}
+
+body {
+  font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+  padding-top: var(--nav-height);
+}
+
+/* ===== 导航栏 ===== */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-height);
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  gap: 16px;
+}
+
+.navbar a {
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+
+.navbar a:hover {
+  color: #fff;
+}
+
+.nav-brand {
+  font-weight: 700;
+  font-size: 1.05rem !important;
+  color: #fff !important;
+  margin-right: auto;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.nav-links a {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  background: rgba(255,255,255,0.08);
+}
+
+.nav-links a:hover {
+  background: rgba(255,255,255,0.18);
+}
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+/* ===== 主内容 ===== */
+.main-content {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}
+
+/* ===== 英雄区 ===== */
+.hero {
+  text-align: center;
+  padding: 48px 0 36px;
+  border-bottom: 2px solid var(--accent);
+  margin-bottom: 36px;
+}
+
+.hero h1 {
+  font-size: 2.2rem;
+  color: var(--primary);
+  margin-bottom: 12px;
+  letter-spacing: 2px;
+}
+
+.hero p {
+  font-size: 1.05rem;
+  color: var(--text-light);
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+/* ===== 章节标题 ===== */
+.chapter-header {
+  text-align: center;
+  padding: 40px 0 28px;
+  border-bottom: 2px solid var(--accent);
+  margin-bottom: 36px;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.chapter-header p {
+  color: var(--text-light);
+  font-size: 0.95rem;
+}
+
+/* ===== 章节目录卡片（主页） ===== */
+.chapter-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.chapter-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  position: relative;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.chapter-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.card-number {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--accent);
+  opacity: 0.18;
+  line-height: 1;
+}
+
+.chapter-card h3 {
+  font-size: 1.15rem;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.chapter-card p {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.card-link {
+  display: inline-block;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.card-link:hover {
+  text-decoration: underline;
+}
+
+/* ===== Q&A 区块 ===== */
+.qa-section {
+  margin-bottom: 40px;
+}
+
+.qa-section h2 {
+  font-size: 1.35rem;
+  color: var(--primary);
+  margin-bottom: 24px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.qa-item {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+
+.qa-question {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--border-light);
+}
+
+.qa-answer {
+  font-size: 0.95rem;
+  color: var(--text);
+  line-height: 2;
+}
+
+.qa-answer p {
+  margin-bottom: 8px;
+}
+
+.qa-answer ul, .qa-answer ol {
+  margin: 8px 0 12px 24px;
+}
+
+.qa-answer li {
+  margin-bottom: 4px;
+}
+
+.qa-answer strong {
+  color: var(--primary);
+}
+
+/* ===== 底部导航 ===== */
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 48px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 18px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  transition: all 0.2s;
+}
+
+.chapter-nav a:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* ===== 页脚 ===== */
+.footer {
+  text-align: center;
+  padding: 28px;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    background: var(--primary);
+    flex-direction: column;
+    padding: 8px 16px;
+    gap: 2px;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-toggle {
+    display: block;
+  }
+
+  .hero h1 {
+    font-size: 1.6rem;
+  }
+
+  .chapter-header h1 {
+    font-size: 1.4rem;
+  }
+
+  .chapter-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .qa-item {
+    padding: 18px 16px;
+  }
+}
