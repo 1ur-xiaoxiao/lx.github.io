@@ -132,6 +132,12 @@
 document.querySelector('.nav-toggle').addEventListener('click', function() {
   document.querySelector('.nav-links').classList.toggle('open');
 });
+// 折叠/展开 Q&A 答案
+document.querySelectorAll('.qa-question').forEach(function(q) {
+  q.addEventListener('click', function() {
+    this.closest('.qa-item').classList.toggle('collapsed');
+  });
+});
 </script>
 </body>
 </html>

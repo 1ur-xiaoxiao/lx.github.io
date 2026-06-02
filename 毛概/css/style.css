@@ -575,12 +575,12 @@ body::before {
   box-shadow: 0 2px 8px rgba(184, 134, 11, 0.25);
 }
 
-/* ===== 问题标题 ===== */
+/* ===== 问题标题（可点击折叠） ===== */
 .qa-question {
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--primary-deep);
-  margin-bottom: 18px;
+  margin-bottom: 0;
   padding-bottom: 14px;
   border-bottom: 1px dashed var(--border-light);
   display: flex;
@@ -589,6 +589,39 @@ body::before {
   line-height: 1.7;
   font-family: "STSong", "KaiTi", "SimSun", serif;
   letter-spacing: 0.5px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: border-color 0.25s, margin-bottom 0.35s;
+}
+
+.qa-question:hover {
+  border-bottom-color: rgba(192, 57, 43, 0.3);
+}
+
+/* 折叠指示箭头 */
+.qa-question::after {
+  content: '▾';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  transition: transform 0.35s var(--ease-out), color 0.25s;
+  min-width: 22px;
+  height: 22px;
+  margin-top: 3px;
+}
+
+.qa-item.collapsed .qa-question::after {
+  transform: rotate(-90deg);
+  color: var(--primary-glow);
+}
+
+.qa-question:hover::after {
+  color: var(--primary-glow);
 }
 
 .qa-question::before {
@@ -609,11 +642,31 @@ body::before {
   font-family: "Noto Sans SC", sans-serif;
 }
 
-/* ===== 答案主体 ===== */
+/* ===== 答案主体（可折叠） ===== */
 .qa-answer {
   font-size: 0.95rem;
   color: var(--text-body);
   line-height: 2.1;
+  max-height: 8000px;
+  overflow: hidden;
+  transition: max-height 0.55s var(--ease-out),
+              opacity 0.35s var(--ease-out),
+              margin-top 0.35s var(--ease-out),
+              padding-top 0.35s var(--ease-out);
+  margin-top: 18px;
+}
+
+.qa-item.collapsed .qa-answer {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* collapsed 时恢复问题下边距 */
+.qa-item.collapsed .qa-question {
+  margin-bottom: 0;
+  border-bottom-color: transparent;
 }
 
 .qa-answer p {
