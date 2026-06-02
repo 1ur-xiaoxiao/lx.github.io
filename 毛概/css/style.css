@@ -688,7 +688,7 @@ body::before {
 
 /* ===== 关键词高亮 ===== */
 .kw {
-  display: inline-block;
+  display: inline;
   background: linear-gradient(135deg, #fdf6e8, #f9edcc);
   color: var(--gold-deep);
   padding: 2px 11px;
