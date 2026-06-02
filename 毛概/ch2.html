@@ -136,6 +136,7 @@
   <p>毛概重点知识点梳理 · 基于 2023 版教材 · 仅供学习参考</p>
 </footer>
 
+<button class="back-to-top" aria-label="回到顶部" title="回到顶部">▲</button>
 <script>
 document.querySelector('.nav-toggle').addEventListener('click', function() {
   document.querySelector('.nav-links').classList.toggle('open');
@@ -145,6 +146,14 @@ document.querySelectorAll('.qa-question').forEach(function(q) {
   q.addEventListener('click', function() {
     this.closest('.qa-item').classList.toggle('collapsed');
   });
+});
+// 回到顶部按钮
+var btt = document.querySelector('.back-to-top');
+window.addEventListener('scroll', function() {
+  btt.classList.toggle('visible', window.scrollY > 300);
+});
+btt.addEventListener('click', function() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 </script>
 </body>
