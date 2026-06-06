@@ -37,19 +37,20 @@
 
   <div class="chapter-header">
     <h1>第四章 · 常见算法</h1>
-    <p>排序、搜索、贪心与动态规划——这些是计算机科学的经典算法范式。本章不求面面俱到，而是通过典型例子帮助你建立"评估算法好坏"的直觉和"拆分问题"的思维。</p>
+    <p>从算法基础（时间/空间复杂度）到排序、搜索、贪心、动态规划，再到回文素数、水仙花数等常见简单算法——帮助你建立"评估算法好坏"的直觉和"拆分问题"的思维。</p>
   </div>
 
   <div class="toc">
     <h3>本章目录</h3>
     <ol>
-      <li><a href="#s1">时间复杂度与大 O 记号</a></li>
+      <li><a href="#s1">时间复杂度、空间复杂度与大 O 记号</a></li>
       <li><a href="#s2">排序算法：从冒泡到快排</a></li>
       <li><a href="#s3">二分搜索与二分法解方程</a></li>
       <li><a href="#s4">基础数据结构：栈、队列、链表</a></li>
       <li><a href="#s5">贪心算法初步</a></li>
       <li><a href="#s6">动态规划初步</a></li>
       <li><a href="#s7">综合例题（背包、LCS、LPS、扩展欧几里得）</a></li>
+      <li><a href="#s8">常见简单算法与例题（回文素数、水仙花数、筛法等）</a></li>
     </ol>
   </div>
 
@@ -108,6 +109,70 @@ def cubic(n):       # O(n³)
       <p>$n \le 10^6$：$O(n)$ 没问题；$O(n \log n)$ 通常也可以。<br>
       $n \le 5000$：$O(n^2)$ 勉强可接受。<br>
       $n \gt 20$：$O(2^n)$ 和 $O(n!)$ 基本不可行——需要用更好的算法。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">什么是算法？</div>
+      <p><strong>算法</strong>是解决特定问题的<strong>有限步骤序列</strong>。一个好的算法具备五个特征：</p>
+      <ul>
+        <li><strong>有穷性</strong>：必须在有限步后结束（不能死循环）</li>
+        <li><strong>确定性</strong>：每一步的含义是明确的、无歧义的</li>
+        <li><strong>输入</strong>：有零个或多个输入</li>
+        <li><strong>输出</strong>：至少有一个输出（结果）</li>
+        <li><strong>可行性</strong>：每一步都能用基本操作完成</li>
+      </ul>
+      <p style="margin-top:0.5rem;">评价一个算法的好坏，主要看两个维度：<strong>时间复杂度</strong>（运行快不快）和<strong>空间复杂度</strong>（内存用得多不多）。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">空间复杂度（Space Complexity）</div>
+      <p><strong>空间复杂度</strong>描述算法运行时所需的<strong>额外内存</strong>随输入规模增长的趋势。同样用大 O 记号表示。</p>
+      <p style="margin-top:0.5rem;"><strong>常见空间复杂度</strong>：</p>
+      <ul>
+        <li><strong>$O(1)$ — 常数空间</strong>：只用固定数量的变量，不随 $n$ 增长。如冒泡排序（原地交换）、二分搜索</li>
+        <li><strong>$O(n)$ — 线性空间</strong>：需要创建与输入同等大小的辅助结构。如归并排序的临时数组、集合去重</li>
+        <li><strong>$O(n^2)$ — 平方空间</strong>：需要二维表。如动态规划中的 DP 表格（LCS、背包问题）</li>
+      </ul>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">空间复杂度示例：同一个问题，不同空间开销</div>
+      <pre><code class="language-python"># 计算斐波那契数列第 n 项
+
+# 方法1：迭代法 — O(1) 空间（只需3个变量）
+def fib_iter(n):
+    a, b = 0, 1
+    for _ in range(n):
+        a, b = b, a + b
+    return a
+
+# 方法2：DP 数组 — O(n) 空间（需要存储所有中间结果）
+def fib_dp(n):
+    dp = [0] * (n + 1)
+    dp[1] = 1
+    for i in range(2, n + 1):
+        dp[i] = dp[i-1] + dp[i-2]
+    return dp[n]
+
+# 方法3：递归（无记忆化）— O(n) 栈空间但指数时间
+def fib_rec(n):
+    if n <= 1:
+        return n
+    return fib_rec(n-1) + fib_rec(n-2)</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">时间与空间的权衡（Space-Time Tradeoff）</div>
+      <p>很多问题中，<strong>更快的算法需要更多内存</strong>，反之亦然。</p>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>例子</th><th>时间最优解</th><th>空间最优解</th></tr>
+          <tr><td>判断重复元素</td><td>$O(n)$ 时间用 set（$O(n)$ 空间）</td><td>$O(n^2)$ 时间用暴力比较（$O(1)$ 空间）</td></tr>
+          <tr><td>斐波那契</td><td>$O(n)$ 时间用 DP 数组（$O(n)$ 空间）</td><td>$O(n)$ 时间用迭代（$O(1)$ 空间）→ 两者兼得！</td></tr>
+          <tr><td>记忆化搜索</td><td>用字典缓存结果 → 时间优化</td><td>额外空间存储缓存</td></tr>
+        </table>
+      </div>
+      <p style="margin-top:0.5rem;"><strong>口诀</strong>：<strong>空间换时间</strong>——这是算法设计中反复出现的权衡。在考试和竞赛中，时间通常是首要优化目标，因为内存一般比较充裕。</p>
     </div>
   </div>
 
@@ -785,6 +850,493 @@ print(has_dup_set([1,2,3,2]))         # True</code></pre>
     </div>
   </div>
 
+  <!-- ==================== 4.8 ==================== -->
+  <div class="section" id="s8">
+    <h2>4.8 常见简单算法与例题</h2>
+    <p style="margin-bottom:1.5rem;">在掌握了排序、搜索和动态规划之后，本节集中讲解考试中高频出现的<strong>简单算法</strong>——它们通常只涉及基础的循环和判断，但组合起来能解决许多经典问题。</p>
+
+    <!-- 4.8.1 回文判断 -->
+    <h3>4.8.1 回文判断</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">什么是回文？</div>
+      <p><strong>回文（Palindrome）</strong>：正着读和反着读<strong>完全一样</strong>的字符串或数字。如 "racecar"、"12321"、121。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">判断字符串回文 — 两种方法</div>
+      <pre><code class="language-python">def is_palindrome(s):
+    """方法1：双指针从两端向中间比较 — O(n)"""
+    left, right = 0, len(s) - 1
+    while left < right:
+        if s[left] != s[right]:
+            return False
+        left += 1
+        right -= 1
+    return True
+
+def is_palindrome2(s):
+    """方法2：Python 切片反转 — 最简洁"""
+    return s == s[::-1]
+
+print(is_palindrome("racecar"))   # True
+print(is_palindrome("hello"))     # False
+print(is_palindrome("12321"))     # True</code></pre>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">判断数字回文（不用字符串）</div>
+      <pre><code class="language-python">def is_palindrome_num(n):
+    """反转数字，比较是否相等"""
+    if n < 0:
+        return False          # 负数不是回文
+    original = n
+    reversed_num = 0
+    while n > 0:
+        reversed_num = reversed_num * 10 + n % 10
+        n //= 10
+    return original == reversed_num
+
+print(is_palindrome_num(12321))   # True
+print(is_palindrome_num(12345))   # False
+print(is_palindrome_num(121))     # True</code></pre>
+    </div>
+
+    <!-- 4.8.2 素数判断 -->
+    <h3>4.8.2 素数判断</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">什么是素数？</div>
+      <p><strong>素数（质数）</strong>：大于 1 的自然数，除了 1 和它本身外<strong>没有其他因子</strong>。</p>
+      <p>1 <strong>不是</strong>素数。最小的素数是 2（也是唯一的偶素数）。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">素数判断 — 基础版 vs 优化版</div>
+      <pre><code class="language-python"># 基础版：从 2 遍历到 n-1 — O(n)
+def is_prime_basic(n):
+    if n < 2:
+        return False
+    for i in range(2, n):
+        if n % i == 0:
+            return False
+    return True
+
+# 优化版：从 2 遍历到 √n — O(√n)
+# 原理：若 n 有因子，必然成对出现，一个 ≤ √n，一个 ≥ √n
+def is_prime(n):
+    if n < 2:
+        return False
+    if n == 2:
+        return True
+    if n % 2 == 0:     # 偶数提前排除（2除外）
+        return False
+    for i in range(3, int(n ** 0.5) + 1, 2):  # 只检查奇数
+        if n % i == 0:
+            return False
+    return True
+
+# 比较：n=1000003 时，基础版约 100 万次循环，优化版约 500 次！
+for n in [2, 3, 4, 17, 97, 100]:
+    print(f"{n}: {is_prime(n)}", end=" | ")
+# 2: True | 3: True | 4: False | 17: True | 97: True | 100: False |</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">为什么只要检查到 √n？— 零基础理解</div>
+      <p>假设 n=36。它的因子有：1×36, 2×18, 3×12, 4×9, <strong>6×6</strong>。</p>
+      <p>注意到 √36 = 6。所有因子对中，<strong>较小的那个一定 ≤ 6</strong>。因此只需检查到 6。如果 2 到 6 之间没有任何因子，那 36 就是素数。</p>
+      <p>更直观的理解：如果 n 有一个大于 √n 的因子，那它必定对应一个小于 √n 的因子。所以我们只需找到"小因子"即可。</p>
+    </div>
+
+    <!-- 4.8.3 回文素数 -->
+    <h3>4.8.3 回文素数（Palindrome Prime）</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">回文素数</div>
+      <p>既是<strong>回文</strong>（正反读一样）又是<strong>素数</strong>的数。例如：2, 3, 5, 7, 11, 101, 131, 151, 181, 191, 313, 353, 373, 383, 727, 757, 787, 797, 919, 929…</p>
+      <p>这是"回文判断"和"素数判断"两个知识点的<strong>组合应用</strong>——考试极爱考这种组合题。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">找前 N 个回文素数</div>
+      <pre><code class="language-python">def is_palindrome_num(n):
+    """判断数字是否为回文"""
+    if n < 0:
+        return False
+    original, reversed_num = n, 0
+    while n > 0:
+        reversed_num = reversed_num * 10 + n % 10
+        n //= 10
+    return original == reversed_num
+
+def is_prime(n):
+    """判断是否为素数"""
+    if n < 2:
+        return False
+    if n == 2:
+        return True
+    if n % 2 == 0:
+        return False
+    for i in range(3, int(n ** 0.5) + 1, 2):
+        if n % i == 0:
+            return False
+    return True
+
+def find_palindrome_primes(n):
+    """找出前 n 个回文素数"""
+    result = []
+    num = 2
+    while len(result) < n:
+        if is_palindrome_num(num) and is_prime(num):
+            result.append(num)
+        num += 1
+    return result
+
+print(find_palindrome_primes(15))
+# [2, 3, 5, 7, 11, 101, 131, 151, 181, 191, 313, 353, 373, 383, 727]</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">零基础看懂 — find_palindrome_primes(15) 逐步追踪</div>
+      <div class="code-output">从 num=2 开始，逐个检查：
+num=2:  回文✓(2反转=2)  素数✓ → [2]
+num=3:  回文✓(3反转=3)  素数✓ → [2, 3]
+num=4:  回文✓ 素数✗(4=2×2) → 跳过
+num=5:  回文✓ 素数✓ → [2, 3, 5]
+num=6:  回文✓ 素数✗ → 跳过
+num=7:  回文✓ 素数✓ → [2, 3, 5, 7]
+num=8:  回文✓ 素数✗ → 跳过
+num=9:  回文✓ 素数✗(9=3×3) → 跳过
+num=10: 回文✗(10反转=01≠10) → 跳过
+num=11: 回文✓(11反转=11) 素数✓ → [2,3,5,7,11]
+...
+num=101: 回文✓ 素数✓ → 第6个
+...
+找到15个时停止。</div>
+      <p style="margin-top:0.5rem;"><strong>关键理解</strong>：回文素数 = <strong>两个独立判断的组合</strong>。程序结构清晰——先写回文判断函数，再写素数判断函数，最后组合使用。这就是"<strong>分而治之</strong>"的思想：把复杂问题拆成已掌握的小问题。</p>
+    </div>
+
+    <!-- 4.8.4 水仙花数 -->
+    <h3>4.8.4 水仙花数（Armstrong Number）</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">什么是水仙花数？</div>
+      <p><strong>水仙花数（阿姆斯特朗数）</strong>：一个 $n$ 位数，<strong>每个数位上的数字的 $n$ 次幂之和</strong>等于它本身。</p>
+      <p>例如 153 = $1^3 + 5^3 + 3^3$ = 1 + 125 + 27 = 153。</p>
+      <p>三位水仙花数共有 4 个：<strong>153, 370, 371, 407</strong>。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">找出所有 n 位水仙花数</div>
+      <pre><code class="language-python">def is_armstrong(n):
+    """判断一个数是否为水仙花数"""
+    digits = str(n)              # 转字符串，逐位处理
+    num_digits = len(digits)     # 位数
+    total = 0
+    for d in digits:
+        total += int(d) ** num_digits
+    return total == n
+
+def find_armstrong(digits):
+    """找出所有指定位数的水仙花数"""
+    start = 10 ** (digits - 1)   # 如 3位从100开始
+    end = 10 ** digits - 1       # 到 999
+    result = []
+    for n in range(start, end + 1):
+        if is_armstrong(n):
+            result.append(n)
+    return result
+
+print("三位水仙花数:", find_armstrong(3))
+# [153, 370, 371, 407]
+
+print("四位水仙花数:", find_armstrong(4))
+# [1634, 8208, 9474]</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">零基础看懂 — 153 为什么是水仙花数？</div>
+      <div class="code-output">n = 153
+digits = "153"
+num_digits = 3
+
+遍历每位数字：
+  d='1': total += 1³ = 1
+  d='5': total += 5³ = 1 + 125 = 126
+  d='3': total += 3³ = 126 + 27 = 153
+
+total(153) == n(153) → True ✓ 是水仙花数！
+
+对比 n=154:
+  total = 1³ + 5³ + 4³ = 1 + 125 + 64 = 190
+  190 ≠ 154 → 不是水仙花数</div>
+      <p style="margin-top:0.5rem;"><strong>关键理解</strong>：水仙花数的核心是<strong>数位分解</strong>——用 <code>str(n)</code> 把数字转成字符串，再逐位处理。这是常见的取位技巧。</p>
+    </div>
+
+    <!-- 4.8.5 完数 -->
+    <h3>4.8.5 完数（Perfect Number）</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">什么是完数？</div>
+      <p><strong>完数（完美数）</strong>：一个正整数，它所有的<strong>真因子</strong>（即除了自身以外的约数）之和等于它本身。</p>
+      <p>例如 6 = 1 + 2 + 3，28 = 1 + 2 + 4 + 7 + 14。</p>
+      <p>前几个完数：<strong>6, 28, 496, 8128</strong>。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">判断完数 + 找完数</div>
+      <pre><code class="language-python">def is_perfect(n):
+    """判断 n 是否为完数"""
+    if n < 2:
+        return False
+    total = 1                     # 1 是所有数的因子
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0:
+            total += i
+            if i != n // i:       # 配对的因子（如 i=2 时配对的 3）
+                total += n // i
+    return total == n
+
+def find_perfect(limit):
+    """找出 limit 以内的完数"""
+    result = []
+    for n in range(2, limit + 1):
+        if is_perfect(n):
+            result.append(n)
+    return result
+
+print(is_perfect(6))              # True
+print(is_perfect(28))             # True
+print(find_perfect(10000))
+# [6, 28, 496, 8128]</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">零基础看懂 — 28 为什么是完数？逐步追踪求因子</div>
+      <div class="code-output">n = 28
+total = 1  (1 是所有数的因子)
+
+i=2: 28%2==0 → total += 2 + 14(配对) = 1+2+14 = 17
+i=3: 28%3≠0 → 跳过
+i=4: 28%4==0 → total += 4 + 7(配对) = 17+4+7 = 28
+i=5: 28%5≠0 → 跳过
+结束（5 > √28≈5.3）
+
+total(28) == n(28) → True ✓ 是完数！
+
+因子全貌: 1, 2, 4, 7, 14 → 1+2+4+7+14 = 28
+
+对比 n=12:
+  i=2: total=1+2+6=9, i=3: total=9+3+4=16
+  16≠12 → 不是完数（而是"盈数"）</div>
+      <p style="margin-top:0.5rem;"><strong>关键理解</strong>：找因子时也用了 <strong>√n 优化</strong>——i 和 n//i 是成对的，一次找到两个。这和素数判断的思想一致。</p>
+    </div>
+
+    <!-- 4.8.6 质因数分解 -->
+    <h3>4.8.6 质因数分解（Prime Factorization）</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">质因数分解</div>
+      <p>把一个正整数分解为<strong>若干个素数的乘积</strong>。根据算术基本定理，每个大于 1 的整数有<strong>唯一</strong>的质因数分解形式。</p>
+      <p>例如：$12 = 2^2 \times 3$，$60 = 2^2 \times 3 \times 5$。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">质因数分解实现</div>
+      <pre><code class="language-python">def prime_factorization(n):
+    """返回 n 的质因数分解字典 {质因数: 指数}"""
+    factors = {}
+    d = 2
+    while d * d <= n:
+        while n % d == 0:
+            factors[d] = factors.get(d, 0) + 1
+            n //= d
+        d += 1 if d == 2 else 2      # 2 之后只试奇数
+    if n > 1:                         # 最后剩下的是一个大质因数
+        factors[n] = factors.get(n, 0) + 1
+    return factors
+
+def format_factors(factors):
+    """格式化为可读形式"""
+    parts = [f"{p}^{e}" if e > 1 else str(p)
+             for p, e in sorted(factors.items())]
+    return " × ".join(parts)
+
+n = 60
+factors = prime_factorization(n)
+print(f"{n} = {format_factors(factors)}")
+# 60 = 2^2 × 3 × 5
+
+n = 84
+factors = prime_factorization(n)
+print(f"{n} = {format_factors(factors)}")
+# 84 = 2^2 × 3 × 7</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">零基础看懂 — 60 的质因数分解逐步追踪</div>
+      <div class="code-output">n = 60
+d=2: 60%2==0 → factors[2]=1, n=30
+     30%2==0 → factors[2]=2, n=15
+     15%2≠0 → d++
+d=3: 15%3==0 → factors[3]=1, n=5
+     5%3≠0 → d++
+d=4: 跳过(d>√5≈2.2) → while循环结束
+n=5>1 → factors[5]=1
+
+结果: {2:2, 3:1, 5:1} → 60 = 2² × 3 × 5</div>
+      <p style="margin-top:0.5rem;"><strong>关键理解</strong>：从最小的素数 2 开始试除，找到因子就不停地除，直到除不尽为止。然后换下一个数。<strong>能除尽的数一定是素数</strong>——因为合数因子早在之前就被拆分完了。</p>
+    </div>
+
+    <!-- 4.8.7 埃拉托色尼筛法 -->
+    <h3>4.8.7 埃拉托色尼筛法（Sieve of Eratosthenes）</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">筛法思想</div>
+      <p>如果要找出 <strong>n 以内的所有素数</strong>，逐个判断效率太低（$O(n\sqrt{n})$）。埃拉托色尼筛法用 $O(n \log \log n)$ 的时间<strong>一次性</strong>筛选出全部素数。</p>
+      <p><strong>思想</strong>：从 2 开始，把 2 的所有倍数标记为"非素数"；然后找下一个未被标记的数（3），把 3 的所有倍数标记；重复直到 √n。最后<strong>所有未被标记的数就是素数</strong>。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">筛法实现</div>
+      <pre><code class="language-python">def sieve(n):
+    """返回 n 以内的所有素数"""
+    is_prime = [True] * (n + 1)
+    is_prime[0] = is_prime[1] = False
+    for i in range(2, int(n ** 0.5) + 1):
+        if is_prime[i]:               # i 是素数
+            # 把 i 的所有倍数标记为非素数
+            for j in range(i * i, n + 1, i):
+                is_prime[j] = False
+    return [i for i in range(n + 1) if is_prime[i]]
+
+print(sieve(50))
+# [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]
+print(f"100以内有{len(sieve(100))}个素数")
+# 100以内有25个素数</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">零基础看懂筛法 — n=30 的筛选过程</div>
+      <div class="code-output">初始: [F, F, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T]
+      索引:  0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30
+
+i=2: is_prime[2]=True → 标记 4,6,8,10,12,14,16,18,20,22,24,26,28,30 为 False
+i=3: is_prime[3]=True → 标记 9,12,15,18,21,24,27,30 为 False
+     (从3×3=9开始，因为3×2=6已被2标记过了)
+i=4: is_prime[4]=False → 跳过
+i=5: is_prime[5]=True → 标记 25,30 为 False
+i=6: is_prime[6]=False → 跳过
+
+结束（6 > √30≈5.5）
+
+最终仍为 True 的索引: 2,3,5,7,11,13,17,19,23,29  ← 全素数！</div>
+      <p style="margin-top:0.5rem;"><strong>关键理解</strong>：<code>j 从 i*i 开始</code>是重要的优化——比 i*i 小的 i 的倍数（如 i×2, i×3…）已经被更小的素数的筛选过程处理过了。例如 i=5 时，5×2=10 和 5×3=15 分别被 2 和 3 的筛选覆盖。</p>
+    </div>
+
+    <!-- 4.8.8 哥德巴赫猜想 -->
+    <h3>4.8.8 验证哥德巴赫猜想</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">哥德巴赫猜想</div>
+      <p><strong>哥德巴赫猜想</strong>：任一大于 2 的偶数都可以写成<strong>两个素数之和</strong>。至今未被完全证明，但已验证到极大的范围（超过 $4 \times 10^{18}$）。</p>
+      <p>验证哥德巴赫猜想是将<strong>素数判断 + 循环搜索</strong>组合起来的经典例题。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">验证哥德巴赫猜想</div>
+      <pre><code class="language-python">def goldbach(n):
+    """将大于2的偶数 n 分解为两个素数之和，返回所有方案"""
+    if n <= 2 or n % 2 != 0:
+        return []
+    result = []
+    sieve_limit = n
+    is_prime = [True] * (sieve_limit + 1)
+    is_prime[0] = is_prime[1] = False
+    for i in range(2, int(sieve_limit ** 0.5) + 1):
+        if is_prime[i]:
+            for j in range(i * i, sieve_limit + 1, i):
+                is_prime[j] = False
+
+    # 搜索素数对
+    for p in range(2, n // 2 + 1):
+        if is_prime[p] and is_prime[n - p]:
+            result.append((p, n - p))
+    return result
+
+print(goldbach(10))   # [(3, 7), (5, 5)]
+print(goldbach(28))   # [(5, 23), (11, 17)]
+print(goldbach(100))  # [(3, 97), (11, 89), (17, 83), (29, 71), (41, 59), (47, 53)]</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">零基础看懂 — 验证 n=28 的哥德巴赫猜想</div>
+      <div class="code-output">先用筛法标记 28 以内的素数: [2,3,5,7,11,13,17,19,23]
+
+然后遍历 p=2 到 14:
+  p=2:  is_prime[2]✓, 28-2=26 is_prime[26]✗ → 跳过
+  p=3:  is_prime[3]✓, 28-3=25 is_prime[25]✗ → 跳过
+  p=4:  is_prime[4]✗ → 跳过
+  p=5:  is_prime[5]✓, 28-5=23 is_prime[23]✓ → 找到 (5, 23) ✓
+  p=6:  is_prime[6]✗ → 跳过
+  p=7:  is_prime[7]✓, 28-7=21 is_prime[21]✗ → 跳过
+  ...
+  p=11: is_prime[11]✓, 28-11=17 is_prime[17]✓ → 找到 (11, 17) ✓
+
+结果: [(5, 23), (11, 17)]
+验证: 5+23=28 ✓, 11+17=28 ✓</div>
+      <p style="margin-top:0.5rem;"><strong>关键理解</strong>：哥德巴赫猜想的验证用到了<strong>筛法</strong>预处理素数表，然后只需 $O(n)$ 的遍历即可找到所有分解方案。这就是<strong>用空间（素数表）换时间</strong>的典型应用。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 练习 · 求 1000 到 10000 内的所有回文素数</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：找出 1000 到 10000 之间所有的回文素数。</p>
+        <pre><code class="language-python">def is_palindrome_num(n):
+    original, rev = n, 0
+    while n > 0:
+        rev = rev * 10 + n % 10
+        n //= 10
+    return original == rev
+
+def is_prime(n):
+    if n < 2: return False
+    if n == 2: return True
+    if n % 2 == 0: return False
+    for i in range(3, int(n**0.5)+1, 2):
+        if n % i == 0: return False
+    return True
+
+result = [n for n in range(1000, 10001) if is_palindrome_num(n) and is_prime(n)]
+print(result)
+# 注意：1000-10000范围内的回文素数五位范围较小，可以验证</code></pre>
+        <p><strong>分析</strong>：1000-10000 是四到五位数，回文数只有少数几个（首尾相同），先判断回文再判断素数可以大幅减少素数判断的次数。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 练习 · 找出 1~1000 的所有完数</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：找出 1 到 1000 内所有的完数。</p>
+        <pre><code class="language-python">def is_perfect(n):
+    if n < 2: return False
+    total = 1
+    for i in range(2, int(n**0.5)+1):
+        if n % i == 0:
+            total += i
+            if i != n // i:
+                total += n // i
+    return total == n
+
+perfects = [n for n in range(1, 1001) if is_perfect(n)]
+print(perfects)  # [6, 28, 496]</code></pre>
+        <p><strong>趣味知识</strong>：目前已知的完数全是偶数，是否存在<strong>奇完数</strong>是数学界未解之谜！</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 章节导航 -->
   <div class="chapter-nav">
     <a href="ch3.html" class="prev">第三章 · 蒙特卡洛模拟</a>
     <span></span>
