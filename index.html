@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>数学系课程总览</title>
+<title>课程总览</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
@@ -34,8 +34,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
+  padding: 40px 20px 60px;
   overflow-x: hidden;
 }
 
@@ -83,13 +82,56 @@ body::before {
   letter-spacing: 0.5px;
 }
 
+/* Category section */
+.category-section {
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 64px;
+}
+
+.category-section:last-of-type {
+  margin-bottom: 0;
+}
+
+.category-header {
+  text-align: left;
+  margin-bottom: 28px;
+  padding-left: 4px;
+  animation: fadeUp 0.8s ease-out;
+}
+
+.category-title {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.category-title::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 28px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--accent), var(--accent2));
+}
+
+.category-subtitle {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 300;
+  margin-top: 6px;
+  padding-left: 20px;
+}
+
 /* Cards container */
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 32px;
-  max-width: 1200px;
-  width: 100%;
 }
 
 /* Course card */
@@ -108,16 +150,17 @@ body::before {
   animation: fadeUp 0.8s ease-out backwards;
 }
 
-.course-card:nth-child(1) { animation-delay: 0.15s; }
-.course-card:nth-child(2) { animation-delay: 0.3s; }
-.course-card:nth-child(3) { animation-delay: 0.45s; }
-.course-card:nth-child(4) { animation-delay: 0.6s; }
-.course-card:nth-child(5) { animation-delay: 0.75s; }
-.course-card:nth-child(6) { animation-delay: 0.9s; }
-.course-card:nth-child(7) { animation-delay: 1.05s; }
-.course-card:nth-child(8) { animation-delay: 1.2s; }
-.course-card:nth-child(9) { animation-delay: 1.35s; }
-.course-card:nth-child(10) { animation-delay: 1.5s; }
+.course-card:nth-child(1) { animation-delay: 0.1s; }
+.course-card:nth-child(2) { animation-delay: 0.18s; }
+.course-card:nth-child(3) { animation-delay: 0.26s; }
+.course-card:nth-child(4) { animation-delay: 0.34s; }
+.course-card:nth-child(5) { animation-delay: 0.42s; }
+.course-card:nth-child(6) { animation-delay: 0.50s; }
+.course-card:nth-child(7) { animation-delay: 0.58s; }
+.course-card:nth-child(8) { animation-delay: 0.66s; }
+.course-card:nth-child(9) { animation-delay: 0.74s; }
+.course-card:nth-child(10) { animation-delay: 0.82s; }
+.course-card:nth-child(11) { animation-delay: 0.90s; }
 
 .course-card::before {
   content: '';
@@ -166,6 +209,10 @@ body::before {
 
 .course-card.maogai::before {
   background: linear-gradient(90deg, #c41e3a, #d4a017);
+}
+
+.course-card.prog::before {
+  background: linear-gradient(90deg, #00b894, #0984e3);
 }
 
 .course-card:hover {
@@ -272,134 +319,164 @@ body::before {
 <body>
 
 <div class="header">
-  <h1>数学系课程总览</h1>
-  <p>数学分析、高等代数、概率论、数理统计、复变函数、偏微分方程、常微分方程、抽象代数、数据挖掘与毛概 · 在线复习指南</p>
+  <h1>课程总览</h1>
+  <p>数学系课程 · 其他专业课程 · 在线复习指南</p>
 </div>
 
-<div class="cards">
-  <a href="数据挖掘/datamining.html" class="course-card dm">
-    <span class="card-icon">📊</span>
-    <div class="card-title">数据挖掘</div>
-    <div class="card-subtitle">董平 · 机器学习中的统计思想<br>从线性回归到提升方法，以统计学视角审视经典算法</div>
-    <div class="card-meta">
-      <span class="tag">10 个章节</span>
-      <span class="tag">Python 实现</span>
-      <span class="tag">前置知识</span>
-    </div>
-    <div class="card-enter">进入课程 <span class="arrow">→</span></div>
-  </a>
+<!-- ===== 数学系课程 ===== -->
+<section class="category-section">
+  <div class="category-header">
+    <h2 class="category-title">数学系课程</h2>
+    <p class="category-subtitle">数学分析、高等代数、概率论、数理统计、复变函数、偏微分方程、常微分方程、抽象代数、数据挖掘</p>
+  </div>
 
-  <a href="概率论/index.html" class="course-card prob">
-    <span class="card-icon">🎲</span>
-    <div class="card-title">概率论</div>
-    <div class="card-subtitle">基于茆诗松教材 · 前四章系统梳理<br>从随机事件到大数定律与中心极限定理</div>
-    <div class="card-meta">
-      <span class="tag">4 个章节</span>
-      <span class="tag">附录速查</span>
-      <span class="tag">公式整理</span>
-    </div>
-    <div class="card-enter">进入课程 <span class="arrow">→</span></div>
-  </a>
+  <div class="cards">
+    <a href="数学分析/index.html" class="course-card ma">
+      <span class="card-icon">📐</span>
+      <div class="card-title">数学分析</div>
+      <div class="card-subtitle">基于陈纪修教材 · 三学期课程系统梳理<br>从极限论到多元微积分，完整覆盖数学分析核心内容</div>
+      <div class="card-meta">
+        <span class="tag">6 个章节</span>
+        <span class="tag">ε-δ 语言</span>
+        <span class="tag">定理证明</span>
+      </div>
+      <div class="card-enter">进入课程 <span class="arrow">→</span></div>
+    </a>
 
-  <a href="数理统计/index.html" class="course-card stat">
-    <span class="card-icon">📈</span>
-    <div class="card-title">数理统计</div>
-    <div class="card-subtitle">基于茆诗松教材 · 第五至八章系统讲解<br>参数估计、假设检验、回归分析与贝叶斯统计</div>
-    <div class="card-meta">
-      <span class="tag">5 个章节</span>
-      <span class="tag">定理证明</span>
-      <span class="tag">公式速查</span>
-    </div>
-    <div class="card-enter">进入课程 <span class="arrow">→</span></div>
-  </a>
+    <a href="高等代数/index.html" class="course-card la">
+      <span class="card-icon">🔢</span>
+      <div class="card-title">高等代数</div>
+      <div class="card-subtitle">基于丘维声教材 · 两学期课程系统梳理<br>从多项式到线性变换，完整覆盖高等代数核心内容</div>
+      <div class="card-meta">
+        <span class="tag">6 个章节</span>
+        <span class="tag">矩阵理论</span>
+        <span class="tag">线性空间</span>
+      </div>
+      <div class="card-enter">进入课程 <span class="arrow">→</span></div>
+    </a>
 
-  <a href="复变函数/index.html" class="course-card ca">
-    <span class="card-icon">📐</span>
-    <div class="card-title">复变函数</div>
-    <div class="card-subtitle">基于钟玉泉教材 · 六章系统讲解<br>从复数到留数，完整覆盖数学系复变函数核心内容</div>
-    <div class="card-meta">
-      <span class="tag">6 个章节</span>
-      <span class="tag">定理证明</span>
-      <span class="tag">积分计算</span>
-    </div>
-    <div class="card-enter">进入课程 <span class="arrow">→</span></div>
-  </a>
+    <a href="概率论/index.html" class="course-card prob">
+      <span class="card-icon">🎲</span>
+      <div class="card-title">概率论</div>
+      <div class="card-subtitle">基于茆诗松教材 · 前四章系统梳理<br>从随机事件到大数定律与中心极限定理</div>
+      <div class="card-meta">
+        <span class="tag">4 个章节</span>
+        <span class="tag">附录速查</span>
+        <span class="tag">公式整理</span>
+      </div>
+      <div class="card-enter">进入课程 <span class="arrow">→</span></div>
+    </a>
 
-  <a href="偏微分方程/index.html" class="course-card pde">
-    <span class="card-icon">🌊</span>
-    <div class="card-title">偏微分方程</div>
-    <div class="card-subtitle">基于陈祖墀教材 · 六章系统讲解<br>波动方程、热传导方程、Laplace 方程三类经典 PDE 完整推导</div>
-    <div class="card-meta">
-      <span class="tag">6 个章节</span>
-      <span class="tag">定理证明</span>
-      <span class="tag">边值问题</span>
-    </div>
-    <div class="card-enter">进入课程 <span class="arrow">→</span></div>
-  </a>
+    <a href="数理统计/index.html" class="course-card stat">
+      <span class="card-icon">📈</span>
+      <div class="card-title">数理统计</div>
+      <div class="card-subtitle">基于茆诗松教材 · 第五至八章系统讲解<br>参数估计、假设检验、回归分析与贝叶斯统计</div>
+      <div class="card-meta">
+        <span class="tag">5 个章节</span>
+        <span class="tag">定理证明</span>
+        <span class="tag">公式速查</span>
+      </div>
+      <div class="card-enter">进入课程 <span class="arrow">→</span></div>
+    </a>
 
-  <a href="数学分析/index.html" class="course-card ma">
-    <span class="card-icon">📐</span>
-    <div class="card-title">数学分析</div>
-    <div class="card-subtitle">基于陈纪修教材 · 三学期课程系统梳理<br>从极限论到多元微积分，完整覆盖数学分析核心内容</div>
-    <div class="card-meta">
-      <span class="tag">6 个章节</span>
-      <span class="tag">ε-δ 语言</span>
-      <span class="tag">定理证明</span>
-    </div>
-    <div class="card-enter">进入课程 <span class="arrow">→</span></div>
-  </a>
+    <a href="复变函数/index.html" class="course-card ca">
+      <span class="card-icon">📐</span>
+      <div class="card-title">复变函数</div>
+      <div class="card-subtitle">基于钟玉泉教材 · 六章系统讲解<br>从复数到留数，完整覆盖数学系复变函数核心内容</div>
+      <div class="card-meta">
+        <span class="tag">6 个章节</span>
+        <span class="tag">定理证明</span>
+        <span class="tag">积分计算</span>
+      </div>
+      <div class="card-enter">进入课程 <span class="arrow">→</span></div>
+    </a>
 
-  <a href="高等代数/index.html" class="course-card la">
-    <span class="card-icon">🔢</span>
-    <div class="card-title">高等代数</div>
-    <div class="card-subtitle">基于丘维声教材 · 两学期课程系统梳理<br>从多项式到线性变换，完整覆盖高等代数核心内容</div>
-    <div class="card-meta">
-      <span class="tag">6 个章节</span>
-      <span class="tag">矩阵理论</span>
-      <span class="tag">线性空间</span>
-    </div>
-    <div class="card-enter">进入课程 <span class="arrow">→</span></div>
-  </a>
+    <a href="偏微分方程/index.html" class="course-card pde">
+      <span class="card-icon">🌊</span>
+      <div class="card-title">偏微分方程</div>
+      <div class="card-subtitle">基于陈祖墀教材 · 六章系统讲解<br>波动方程、热传导方程、Laplace 方程三类经典 PDE 完整推导</div>
+      <div class="card-meta">
+        <span class="tag">6 个章节</span>
+        <span class="tag">定理证明</span>
+        <span class="tag">边值问题</span>
+      </div>
+      <div class="card-enter">进入课程 <span class="arrow">→</span></div>
+    </a>
 
-  <a href="常微分方程/index.html" class="course-card ode">
-    <span class="card-icon">🔄</span>
-    <div class="card-title">常微分方程</div>
-    <div class="card-subtitle">基于王高雄教材 · 六章系统讲解<br>从初等解法到幂级数解法，完整覆盖常微分方程核心内容</div>
-    <div class="card-meta">
-      <span class="tag">6 个章节</span>
-      <span class="tag">存在唯一性</span>
-      <span class="tag">特征根法</span>
-    </div>
-    <div class="card-enter">进入课程 <span class="arrow">→</span></div>
-  </a>
+    <a href="常微分方程/index.html" class="course-card ode">
+      <span class="card-icon">🔄</span>
+      <div class="card-title">常微分方程</div>
+      <div class="card-subtitle">基于王高雄教材 · 六章系统讲解<br>从初等解法到幂级数解法，完整覆盖常微分方程核心内容</div>
+      <div class="card-meta">
+        <span class="tag">6 个章节</span>
+        <span class="tag">存在唯一性</span>
+        <span class="tag">特征根法</span>
+      </div>
+      <div class="card-enter">进入课程 <span class="arrow">→</span></div>
+    </a>
 
-  <a href="抽象代数/index.html" class="course-card aa">
-    <span class="card-icon">🔮</span>
-    <div class="card-title">抽象代数</div>
-    <div class="card-subtitle">从群到域再到 Galois 理论 · 六章系统讲解<br>代数结构的定义、性质与经典定理完整梳理</div>
-    <div class="card-meta">
-      <span class="tag">6 个章节</span>
-      <span class="tag">群论</span>
-      <span class="tag">Galois 理论</span>
-    </div>
-    <div class="card-enter">进入课程 <span class="arrow">→</span></div>
-  </a>
+    <a href="抽象代数/index.html" class="course-card aa">
+      <span class="card-icon">🔮</span>
+      <div class="card-title">抽象代数</div>
+      <div class="card-subtitle">从群到域再到 Galois 理论 · 六章系统讲解<br>代数结构的定义、性质与经典定理完整梳理</div>
+      <div class="card-meta">
+        <span class="tag">6 个章节</span>
+        <span class="tag">群论</span>
+        <span class="tag">Galois 理论</span>
+      </div>
+      <div class="card-enter">进入课程 <span class="arrow">→</span></div>
+    </a>
 
-  <a href="毛概/index.html" class="course-card maogai">
-    <span class="card-icon">📜</span>
-    <div class="card-title">毛概</div>
-    <div class="card-subtitle">2023 版教材 · 课后题知识点标答<br>毛泽东思想与中国特色社会主义理论体系概论</div>
-    <div class="card-meta">
-      <span class="tag">7 个章节</span>
-      <span class="tag">课后题标答</span>
-      <span class="tag">知识点整理</span>
-    </div>
-    <div class="card-enter">进入课程 <span class="arrow">→</span></div>
-  </a>
-</div>
+    <a href="数据挖掘/datamining.html" class="course-card dm">
+      <span class="card-icon">📊</span>
+      <div class="card-title">数据挖掘</div>
+      <div class="card-subtitle">董平 · 机器学习中的统计思想<br>从线性回归到提升方法，以统计学视角审视经典算法</div>
+      <div class="card-meta">
+        <span class="tag">10 个章节</span>
+        <span class="tag">Python 实现</span>
+        <span class="tag">前置知识</span>
+      </div>
+      <div class="card-enter">进入课程 <span class="arrow">→</span></div>
+    </a>
+  </div>
+</section>
+
+<!-- ===== 其他专业课程 ===== -->
+<section class="category-section">
+  <div class="category-header">
+    <h2 class="category-title">其他专业课程</h2>
+    <p class="category-subtitle">程序设计、思想政治等通识与专业基础课程</p>
+  </div>
+
+  <div class="cards">
+    <a href="程序设计B/index.html" class="course-card prog">
+      <span class="card-icon">💻</span>
+      <div class="card-title">程序设计B</div>
+      <div class="card-subtitle">Python 编程基础与常用算法<br>从基本语法到递推、蒙特卡洛模拟等经典算法</div>
+      <div class="card-meta">
+        <span class="tag">4 个章节</span>
+        <span class="tag">Python</span>
+        <span class="tag">算法实践</span>
+      </div>
+      <div class="card-enter">进入课程 <span class="arrow">→</span></div>
+    </a>
+
+    <a href="毛概/index.html" class="course-card maogai">
+      <span class="card-icon">📜</span>
+      <div class="card-title">毛概</div>
+      <div class="card-subtitle">2023 版教材 · 课后题知识点标答<br>毛泽东思想与中国特色社会主义理论体系概论</div>
+      <div class="card-meta">
+        <span class="tag">7 个章节</span>
+        <span class="tag">课后题标答</span>
+        <span class="tag">知识点整理</span>
+      </div>
+      <div class="card-enter">进入课程 <span class="arrow">→</span></div>
+    </a>
+  </div>
+</section>
 
 <div class="footer">
-  数学系 · 十门课程 · 在线复习平台
+  十一门课程 · 在线复习平台
 </div>
 
 </body>
