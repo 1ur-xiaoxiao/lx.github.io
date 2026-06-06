@@ -29,6 +29,7 @@
     <li><a href="ch2.html">递推与递归</a></li>
     <li><a href="ch3.html">蒙特卡洛模拟</a></li>
     <li><a href="ch4.html">常见算法</a></li>
+    <li><a href="appendix.html">附录</a></li>
   </ul>
 </nav>
 
@@ -44,11 +45,11 @@
     <ol>
       <li><a href="#s1">时间复杂度与大 O 记号</a></li>
       <li><a href="#s2">排序算法：从冒泡到快排</a></li>
-      <li><a href="#s3">二分搜索</a></li>
+      <li><a href="#s3">二分搜索与二分法解方程</a></li>
       <li><a href="#s4">基础数据结构：栈、队列、链表</a></li>
       <li><a href="#s5">贪心算法初步</a></li>
       <li><a href="#s6">动态规划初步</a></li>
-      <li><a href="#s7">综合例题</a></li>
+      <li><a href="#s7">综合例题（背包、LCS、LPS、扩展欧几里得）</a></li>
     </ol>
   </div>
 
@@ -134,6 +135,29 @@ print(bubble_sort([5, 1, 4, 2, 8]))
       <p>冒泡排序简单直观，适合教学和小数据量。但它需要 $O(n^2)$ 次比较，对大数据集不实用。</p>
     </div>
 
+    <div class="box box-note">
+      <div class="box-title">零基础看懂冒泡排序 — 逐步追踪 [5, 1, 4, 2, 8]</div>
+      <p>冒泡排序就像<strong>气泡从水底往上浮</strong>——每一轮把当前未排序部分的最大值"浮"到最右边。</p>
+      <div class="code-output">初始: [5, 1, 4, 2, 8]
+
+第1轮（比较 4 次）:
+  比较 5>1 → 交换 → [1, 5, 4, 2, 8]
+  比较 5>4 → 交换 → [1, 4, 5, 2, 8]
+  比较 5>2 → 交换 → [1, 4, 2, 5, 8]
+  比较 5<8 → 不交换 → [1, 4, 2, 5, 8]  ← 8 已就位(最大)
+  本轮有交换，继续
+
+第2轮（比较 3 次）:
+  比较 1<4 → 不交换 → [1, 4, 2, 5, 8]
+  比较 4>2 → 交换   → [1, 2, 4, 5, 8]
+  比较 4<5 → 不交换 → [1, 2, 4, 5, 8]  ← 5 已就位
+  本轮有交换，继续
+
+第3轮（比较 2 次）:
+  比较 1<2 → 不交换 → [1, 2, 4, 5, 8]
+  比较 2<4 → 不交换 → [1, 2, 4, 5, 8]  ← 本轮无交换 → 已有序，提前退出！</div>
+      <p style="margin-top:0.5rem;"><strong>关键理解</strong>：<code>swapped</code> 标志位是优化——如果某一轮没有任何交换，说明已经排好序了，不需要继续。这就是代码中 <code>if not swapped: break</code> 的作用。</p>
+
     <div class="box box-example">
       <div class="box-title">快速排序（Quick Sort） — 平均 $O(n \log n)$</div>
       <p><strong>分治思想</strong>：选一个"基准"（pivot），把小于它的放左边，大于它的放右边，然后递归排序左右两部分。</p>
@@ -151,6 +175,44 @@ print(quicksort([3, 6, 8, 10, 1, 2, 1]))
     </div>
 
     <div class="box box-note">
+      <div class="box-title">零基础看懂快速排序 — 逐步追踪 [3, 6, 8, 10, 1, 2, 1]</div>
+      <p>快速排序的核心是<strong>分治</strong>：选一个"基准值"（pivot），把比它小的放左边，比它大的放右边，然后对左右两部分<strong>递归</strong>做同样的事。</p>
+      <div class="code-output">初始: [3, 6, 8, 10, 1, 2, 1]
+选 pivot = 8（中间元素）
+
+第1层: pivot=8
+  left  = [3, 6, 1, 2, 1]  ← 比 8 小的
+  mid   = [8]               ← 等于 8 的
+  right = [10]              ← 比 8 大的
+  递归处理 left → [3, 6, 1, 2, 1]
+
+  第2层(left): pivot=1
+    left  = []
+    mid   = [1, 1]
+    right = [3, 6, 2]
+    递归处理 right → [3, 6, 2]
+
+    第3层(right): pivot=6
+      left  = [3, 2]
+      mid   = [6]
+      right = []
+      递归处理 left → [3, 2]
+
+      第4层(left): pivot=3
+        left  = [2]
+        mid   = [3]
+        right = []
+        → 合并: [2, 3]
+
+      → 合并: [2, 3] + [6] = [2, 3, 6]
+
+    → 合并: [] + [1, 1] + [2, 3, 6] = [1, 1, 2, 3, 6]
+
+→ 最终合并: [1, 1, 2, 3, 6] + [8] + [10] = [1, 1, 2, 3, 6, 8, 10]</div>
+      <p style="margin-top:0.5rem;"><strong>关键理解</strong>：每一层递归都把问题<strong>减半</strong>（因为 pivot 把数据拆成两半），所以总共需要约 $\log_2 n$ 层，每层处理 $n$ 个元素，总复杂度 $O(n \log n)$。</p>
+    </div>
+
+    <div class="box box-note">
       <div class="box-title">分治思想（Divide and Conquer）</div>
       <p>分治是算法设计的核心范式：<strong>分解</strong>（拆成子问题）→ <strong>解决</strong>（递归处理子问题）→ <strong>合并</strong>（拼接结果）。快速排序和归并排序都是分治的经典应用。</p>
     </div>
@@ -158,7 +220,7 @@ print(quicksort([3, 6, 8, 10, 1, 2, 1]))
 
   <!-- ==================== 4.3 ==================== -->
   <div class="section" id="s3">
-    <h2>4.3 二分搜索</h2>
+    <h2>4.3 二分搜索与二分法解方程</h2>
 
     <div class="box box-definition">
       <div class="box-title">二分搜索（Binary Search） — $O(\log n)$</div>
@@ -201,6 +263,96 @@ def linear_search(arr, target):
           <tr><td>100 万元素</td><td>约 100 万次比较</td><td>约 20 次比较</td></tr>
         </table>
       </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">零基础看懂二分搜索 — 逐步追踪：在 [1,3,5,7,9,11,13,15,17,19] 中搜索 7</div>
+      <p>二分搜索的核心思想是<strong>每次排除一半</strong>。因为数组已排序，比较中间元素就能知道目标在左边还是右边。</p>
+      <div class="code-output">数组: [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]
+索引:  0  1  2  3  4   5   6   7   8   9
+目标: 7
+
+第1步: left=0, right=9, mid=(0+9)//2=4
+  arr[4] = 9
+  9 > 7 → 目标在左边 → right = 4-1 = 3
+  搜索范围缩小到索引 [0, 3]
+
+第2步: left=0, right=3, mid=(0+3)//2=1
+  arr[1] = 3
+  3 < 7 → 目标在右边 → left = 1+1 = 2
+  搜索范围缩小到索引 [2, 3]
+
+第3步: left=2, right=3, mid=(2+3)//2=2
+  arr[2] = 5
+  5 < 7 → 目标在右边 → left = 2+1 = 3
+  搜索范围缩小到索引 [3, 3]
+
+第4步: left=3, right=3, mid=(3+3)//2=3
+  arr[3] = 7
+  7 == 7 → 找到了！返回索引 3</div>
+      <p style="margin-top:0.5rem;"><strong>关键理解</strong>：每一步都把搜索范围<strong>减半</strong>。10 个元素只需要约 $\log_2 10 \approx 4$ 步。100 万个元素只需要约 20 步！这就是 $O(\log n)$ 的威力。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">二分法解方程（Bisection Method）</div>
+      <p><strong>二分法解方程</strong>与二分搜索共享相同的核心思想——不断把区间<strong>折半</strong>，缩小区间直到找到目标。区别在于：二分搜索在<strong>数组</strong>中查找<strong>元素</strong>，二分法在<strong>连续区间</strong>中寻找<strong>方程的根</strong>。</p>
+      <p style="margin-top:0.5rem;"><strong>原理</strong>：对于连续函数 $f(x)$，如果 $f(a) \times f(b) < 0$（即区间两端函数值异号），则 $[a, b]$ 内<strong>一定存在</strong>至少一个根（介值定理）。每次取中点 $c = \frac{a+b}{2}$：</p>
+      <ul>
+        <li>若 $f(a) \times f(c) < 0$，根在 $[a, c]$（左半边）</li>
+        <li>否则根在 $[c, b]$（右半边）</li>
+      </ul>
+      <p>每次迭代区间长度减半，直到区间足够小（$< 2 \times \text{tol}$），中点即为近似根。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">二分法解方程 — Python 实现</div>
+      <p>求解 $f(x) = x^3 - x - 2 = 0$ 在 $[1, 2]$ 内的根。</p>
+      <pre><code class="language-python">def bisection(f, a, b, tol=1e-6):
+    """二分法求 f(x)=0 在 [a,b] 内的根
+    前提：f(a) 和 f(b) 异号（即 f(a)*f(b) < 0）"""
+    if f(a) * f(b) > 0:
+        return None  # 不能保证区间内有根
+    while (b - a) / 2 > tol:
+        c = (a + b) / 2
+        if f(c) == 0:
+            return c          # 恰好命中
+        elif f(a) * f(c) < 0:
+            b = c             # 根在左半边
+        else:
+            a = c             # 根在右半边
+    return (a + b) / 2
+
+# 解 x³ - x - 2 = 0
+f = lambda x: x**3 - x - 2
+root = bisection(f, 1, 2)
+print(f"根 ≈ {root:.6f}")  # 根 ≈ 1.521380</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">零基础看懂二分法 — 逐步追踪：解 $x^3 - x - 2 = 0$</div>
+      <div class="code-output">f(x) = x³ - x - 2
+f(1) = 1 - 1 - 2 = -2  (负)
+f(2) = 8 - 2 - 2 = 4   (正)
+f(1)×f(2) < 0 → [1, 2] 内必有根！
+
+第1次: 区间 [1.000000, 2.000000], 中点 c=1.5
+  f(1.5) = 3.375 - 1.5 - 2 = -0.125 (负)
+  f(1)×f(1.5) = (-2)×(-0.125) > 0 → 根在右半边
+  → a = 1.5
+
+第2次: 区间 [1.500000, 2.000000], 中点 c=1.75
+  f(1.75) = 5.359 - 1.75 - 2 = 1.609 (正)
+  f(1.5)×f(1.75) < 0 → 根在左半边
+  → b = 1.75
+
+第3次: 区间 [1.500000, 1.750000], 中点 c=1.625
+  f(1.625) = 4.291 - 1.625 - 2 = 0.666 (正)
+  → 根在左半边 → b = 1.625
+
+...持续缩小区间...
+
+最终: 区间宽度 < 2×1e-6，中点 ≈ 1.521380 即为近似根</div>
+      <p style="margin-top:0.5rem;"><strong>关键理解</strong>：二分法不关心 $f(x)$ 长什么样，只需要能<strong>计算函数值</strong>和<strong>判断符号</strong>。这是一种通用、稳定但收敛速度固定（每步减半）的求根方法。与二分搜索一样，保证 $O(\log(\frac{b-a}{\text{tol}}))$ 次迭代。</p>
     </div>
   </div>
 
@@ -339,6 +491,30 @@ print(coin_change_dp([1, 5, 11], 100))  # 14（9个11 + 1个1）</code></pre>
     </div>
 
     <div class="box box-note">
+      <div class="box-title">零基础看懂 DP 硬币问题 — dp 表逐步追踪：coins=[1,5,11], amount=15</div>
+      <p>DP 的核心思想是<strong>从小到大填表</strong>：先算凑 0 元需要几张，再算凑 1 元、2 元……一直算到目标金额。</p>
+      <div class="code-output">dp[0] = 0  （凑 0 元不需要硬币）
+
+i=1: 只用面额 1 → dp[1] = min(inf, dp[0]+1) = 1
+i=2: 只用面额 1 → dp[2] = dp[1]+1 = 2
+i=3: 只用面额 1 → dp[3] = dp[2]+1 = 3
+i=4: 只用面额 1 → dp[4] = dp[3]+1 = 4
+i=5: 面额 1 → dp[4]+1 = 5；面额 5 → dp[0]+1 = 1 → 取 min = 1  ← 关键！
+i=6: 面额 1 → dp[5]+1 = 2；面额 5 → dp[1]+1 = 2 → dp[6] = 2
+i=7: 面额 1→3；面额 5→3 → dp[7] = 3
+...
+i=10: 面额 1→2, 面额 5→dp[5]+1=2 → dp[10] = 2 (5+5)
+i=11: 面额 1→3, 面额 5→dp[6]+1=3, 面额 11→dp[0]+1=1 → dp[11] = 1  ← 关键！
+i=12: 面额 1→2, 面额 5→dp[7]+1=4, 面额 11→dp[1]+1=2 → dp[12] = 2
+i=13: 面额 1→3, 面额 5→dp[8]+1=3, 面额 11→dp[2]+1=3 → dp[13] = 3
+i=14: 面额 1→4, 面额 5→dp[9]+1=3, 面额 11→dp[3]+1=4 → dp[14] = 3
+i=15: 面额 1→4, 面额 5→dp[10]+1=3, 面额 11→dp[4]+1=5 → dp[15] = 3
+
+最终: dp[15] = 3（方案：5+5+5）</div>
+      <p style="margin-top:0.5rem;"><strong>关键理解</strong>：<code>dp[i] = min(dp[i], dp[i-coin] + 1)</code> 的意思是"凑 i 元 = 凑 (i-coin) 元的硬币数 + 当前这一枚"。我们遍历每种面额，取最小值。对每个 i 都尝试所有面额，保证找到最优解。</p>
+    </div>
+
+    <div class="box box-note">
       <div class="box-title">DP 的两要素</div>
       <ol>
         <li><strong>最优子结构</strong>：问题的最优解包含子问题的最优解</li>
@@ -391,6 +567,189 @@ print(knapsack(w, v, 8))  # 12（选第2件和第4件）</code></pre>
 
 print(lcs("ABCDGH", "AEDFHR"))  # 3 (ADH)
 print(lcs("AGGTAB", "GXTXAYB"))  # 4 (GTAB)</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">零基础看懂 LCS — DP 表逐步追踪：s1="ABCDGH", s2="AEDFHR"</div>
+      <p>LCS 的递推逻辑非常直观：<strong>逐字符比较两个字符串</strong>。如果当前字符相同，就继承左上角的值 +1；不同，就取上方或左方的最大值。</p>
+      <p style="margin-bottom:0.5rem;">我们建立一个二维表，行对应 s1 的字符，列对应 s2 的字符。</p>
+      <div class="code-output">    ""  A  E  D  F  H  R
+""   0  0  0  0  0  0  0
+A    0  1  1  1  1  1  1   ← A==A, 左上0+1=1
+B    0  1  1  1  1  1  1   ← B≠任何, 取max(上方1,左方1)
+C    0  1  1  1  1  1  1
+D    0  1  1  2  2  2  2   ← D==D, 左上1+1=2!
+G    0  1  1  2  2  2  2
+H    0  1  1  2  2  3  3   ← H==H, 左上2+1=3!
+
+最终 dp[6][6] = 3 → LCS 长度 = 3
+
+回溯得到子序列: A → D → H = "ADH"
+
+怎么回溯的？从右下角出发：
+- dp[6][6]=3, s1[5]='H'==s2[5]='H' → 匹配! 加入结果，往左上走
+- dp[5][5]=2, s1[4]='G'≠s2[4]='F' → 往值大的方向走
+- dp[4][4]=2, s1[3]='D'==s2[2]='D' → 匹配! 加入结果
+- dp[3][2]=1, s1[2]='C'≠s2[1]='E' → 往值大的方向走
+- dp[1][1]=1, s1[0]='A'==s2[0]='A' → 匹配! 加入结果
+- 到边界，结束。反向得到 "ADH"</div>
+      <p style="margin-top:0.5rem;"><strong>关键理解</strong>：<code>dp[i][j]</code> 的含义是 "s1 前 i 个字符 与 s2 前 j 个字符 的 LCS 长度"。填表时只需要看<strong>三个位置</strong>：左上、上、左。这就是 DP 的威力——每个格子 $O(1)$ 时间填完，总共 $O(mn)$。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">最长回文子序列（Longest Palindromic Subsequence, LPS）</div>
+      <p><strong>回文</strong>：正读反读相同的字符串，如 "aba"、"bb"、"racecar"。</p>
+      <p><strong>子序列</strong>：从原字符串中按顺序选取字符（可以不连续）。例如 "abc" 的子序列有 "", "a", "b", "c", "ab", "ac", "bc", "abc"。</p>
+      <p style="margin-top:0.5rem;"><strong>LPS 问题</strong>：给定一个字符串，求<strong>最长</strong>的回文子序列的长度。</p>
+      <p style="margin-top:0.5rem;"><strong>递推思路</strong>：定义 $dp[i][j]$ 为子串 $s[i..j]$ 的最长回文子序列长度。</p>
+      <ul>
+        <li>若 $s[i] == s[j]$：两端字符相同 → 它们都可以加入回文 → $dp[i][j] = dp[i+1][j-1] + 2$</li>
+        <li>若 $s[i] \neq s[j]$：两端不同 → 至少有一端不能同时用 → $dp[i][j] = \max(dp[i+1][j], dp[i][j-1])$</li>
+      </ul>
+      <p><strong>初始化</strong>：单个字符本身是回文 → $dp[i][i] = 1$</p>
+      <p><strong>填表顺序</strong>：按子串长度从小到大（因为 $dp[i][j]$ 依赖更短的子串 $dp[i+1][j-1]$）。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">最长回文子序列 — Python 实现</div>
+      <pre><code class="language-python">def longest_palindrome_subseq(s):
+    """返回 s 的最长回文子序列长度"""
+    n = len(s)
+    # dp[i][j] = s[i..j] 的最长回文子序列长度
+    dp = [[0] * n for _ in range(n)]
+
+    # 长度为 1 的子串都是回文
+    for i in range(n):
+        dp[i][i] = 1
+
+    # 按子串长度从小到大填表
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            if s[i] == s[j]:
+                dp[i][j] = dp[i+1][j-1] + 2
+            else:
+                dp[i][j] = max(dp[i+1][j], dp[i][j-1])
+
+    return dp[0][n-1]
+
+print(longest_palindrome_subseq("bbbab"))   # 4（"bbbb"）
+print(longest_palindrome_subseq("cbbd"))    # 2（"bb"）
+print(longest_palindrome_subseq("a"))       # 1（"a"）</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">零基础看懂 LPS — DP 表逐步追踪：s="bbbab"</div>
+      <div class="code-output">s = " b  b  b  a  b "
+索引:  0  1  2  3  4
+
+初始化: dp[i][i] = 1
+dp[0][0]=1  dp[1][1]=1  dp[2][2]=1  dp[3][3]=1  dp[4][4]=1
+
+长度=2:
+  i=0,j=1: s[0]='b'==s[1]='b' → dp[0][1] = dp[1][0]+2 = 0+2 = 2
+  i=1,j=2: s[1]='b'==s[2]='b' → dp[1][2] = dp[2][1]+2 = 0+2 = 2
+  i=2,j=3: s[2]='b'≠s[3]='a' → dp[2][3] = max(dp[3][3], dp[2][2]) = max(1,1) = 1
+  i=3,j=4: s[3]='a'≠s[4]='b' → dp[3][4] = max(dp[4][4], dp[3][3]) = max(1,1) = 1
+
+长度=3:
+  i=0,j=2: s[0]='b'==s[2]='b' → dp[0][2] = dp[1][1]+2 = 1+2 = 3
+  i=1,j=3: s[1]='b'≠s[3]='a' → dp[1][3] = max(dp[2][3], dp[1][2]) = max(1,2) = 2
+  i=2,j=4: s[2]='b'==s[4]='b' → dp[2][4] = dp[3][3]+2 = 1+2 = 3
+
+长度=4:
+  i=0,j=3: s[0]='b'≠s[3]='a' → dp[0][3] = max(dp[1][3], dp[0][2]) = max(2,3) = 3
+  i=1,j=4: s[1]='b'==s[4]='b' → dp[1][4] = dp[2][3]+2 = 1+2 = 3
+
+长度=5:
+  i=0,j=4: s[0]='b'==s[4]='b' → dp[0][4] = dp[1][3]+2 = 2+2 = 4
+
+最终: dp[0][4] = 4 → 最长回文子序列 = "bbbb"</div>
+      <p style="margin-top:0.5rem;"><strong>DP 表总览</strong>（下三角无效，只填上半部分）：</p>
+      <div class="code-output">dp[i][j] 表:
+i\j  0  1  2  3  4
+0    1  2  3  3  4
+1    -  1  2  2  3
+2    -  -  1  1  3
+3    -  -  -  1  1
+4    -  -  -  -  1</div>
+      <p style="margin-top:0.5rem;"><strong>关键理解</strong>：LPS 的递推和 LCS 有相似之处（都看两端相等与否），但 LPS 只涉及<strong>一个字符串</strong>，在它上面定义区间 $[i,j]$。填表顺序很有讲究——必须<strong>按长度从小到大</strong>，因为 $dp[i][j]$ 依赖更短区间 $dp[i+1][j-1]$ 的值。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题3 · 扩展欧几里得算法（Extended Euclidean Algorithm）</div>
+      <p>普通欧几里得算法只能求最大公约数。扩展欧几里得算法不仅能求 $\gcd(a,b)$，还能找到<strong>一对整数</strong> $x, y$ 使得：</p>
+      <div class="formula-highlight">$$a \cdot x + b \cdot y = \gcd(a, b)$$</div>
+      <p>这对系数 $(x, y)$ 称为 <strong>Bézout 系数</strong>，在求模逆元、解同余方程等问题中非常关键。</p>
+
+      <p style="margin-top:1rem;"><strong>原理（零基础版）</strong>：回忆普通辗转相除法：</p>
+      <div class="code-output">gcd(30, 18):
+30 = 18 × 1 + 12
+18 = 12 × 1 + 6
+12 = 6 × 2 + 0  → gcd = 6</div>
+      <p>扩展欧几里得的关键思路是<strong>倒着推回去</strong>，把余数用原始的 $a$ 和 $b$ 表示出来：</p>
+      <div class="code-output">从倒数第二步往前代：
+  6 = 18 - 12 × 1                          ...(1)
+把 12 = 30 - 18 × 1 代入(1)：
+  6 = 18 - (30 - 18 × 1) × 1
+  6 = 18 - 30 + 18
+  6 = (-1) × 30 + 2 × 18
+→ x = -1, y = 2，即 30×(-1) + 18×2 = 6 ✓</div>
+
+      <pre><code class="language-python">def extended_gcd(a, b):
+    """返回 (gcd, x, y) 使得 a*x + b*y = gcd"""
+    if b == 0:
+        return a, 1, 0
+    # 递归：gcd(b, a%b)，得到 b*(x') + (a%b)*(y') = gcd
+    gcd_val, x1, y1 = extended_gcd(b, a % b)
+    # 回代：用 a 和 b 表示
+    # a%b = a - (a//b)*b，代入：b*x1 + (a - a//b*b)*y1 = a*y1 + b*(x1 - a//b*y1)
+    x = y1
+    y = x1 - (a // b) * y1
+    return gcd_val, x, y
+
+# 测试
+g, x, y = extended_gcd(30, 18)
+print(f"gcd={g}, x={x}, y={y}")          # gcd=6, x=-1, y=2
+print(f"验证: {30}×({x}) + {18}×({y}) = {30*x + 18*y}")  # = 6
+
+g, x, y = extended_gcd(35, 15)
+print(f"gcd={g}, x={x}, y={y}")          # gcd=5, x=1, y=-2
+print(f"验证: {35}×({x}) + {15}×({y}) = {35*x + 15*y}")  # = 5</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">零基础看懂扩展欧几里得 — 递归追踪：a=30, b=18</div>
+      <div class="code-output">调用 extended_gcd(30, 18):
+  b≠0 → 递归调用 extended_gcd(18, 30%18=12)
+
+  调用 extended_gcd(18, 12):
+    b≠0 → 递归调用 extended_gcd(12, 18%12=6)
+
+    调用 extended_gcd(12, 6):
+      b≠0 → 递归调用 extended_gcd(6, 12%6=0)
+
+      调用 extended_gcd(6, 0):
+        b==0 → 返回 (gcd=6, x=1, y=0)
+
+      回到 extended_gcd(12, 6):
+        gcd=6, x1=1, y1=0
+        x = y1 = 0
+        y = x1 - (12//6)*y1 = 1 - 2×0 = 1
+        返回 (6, 0, 1)        ← 验证: 12×0 + 6×1 = 6 ✓
+
+    回到 extended_gcd(18, 12):
+      gcd=6, x1=0, y1=1
+      x = y1 = 1
+      y = x1 - (18//12)*y1 = 0 - 1×1 = -1
+      返回 (6, 1, -1)         ← 验证: 18×1 + 12×(-1) = 6 ✓
+
+  回到 extended_gcd(30, 18):
+    gcd=6, x1=1, y1=-1
+    x = y1 = -1
+    y = x1 - (30//18)*y1 = 1 - 1×(-1) = 2
+    返回 (6, -1, 2)           ← 验证: 30×(-1) + 18×2 = 6 ✓</div>
+      <p style="margin-top:0.5rem;"><strong>关键理解</strong>：每一层递归返回后，用公式 <code>x = y1, y = x1 - (a//b) * y1</code> 把子问题的系数"翻译"成当前这层的系数。这就是<strong>自底向上的回代过程</strong>——和第二章的递推思想一脉相承。</p>
     </div>
 
     <div class="collapsible">

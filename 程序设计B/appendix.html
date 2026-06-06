@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>附录 · 实用知识速查</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script src="js/main.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../index.html" style="color:rgba(255,255,255,0.65);text-decoration:none;font-size:0.82rem;margin-right:8px;">← 总览</a>
+  <a href="index.html" class="nav-brand">程序设计B</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">Python 基础</a></li>
+    <li><a href="ch2.html">递推与递归</a></li>
+    <li><a href="ch3.html">蒙特卡洛模拟</a></li>
+    <li><a href="ch4.html">常见算法</a></li>
+    <li><a href="appendix.html">附录</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>附录 · 实用知识速查</h1>
+    <p>零散知识点一页汇总——输入输出、数值运算、列表操作、函数参数、字符串处理等最常用技巧，考前快速回顾。</p>
+  </div>
+
+  <div class="toc">
+    <h3>附录目录</h3>
+    <ol>
+      <li><a href="#a">输入输出与格式化</a></li>
+      <li><a href="#b">数值运算</a></li>
+      <li><a href="#c">列表操作大全</a></li>
+      <li><a href="#d">函数参数</a></li>
+      <li><a href="#e">字符串操作</a></li>
+      <li><a href="#f">实用代码片段</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== A ==================== -->
+  <div class="section" id="a">
+    <h2>A. 输入输出与格式化</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">split() 函数 — 拆分字符串</div>
+      <p><code>input()</code> 读取整行字符串，<code>split()</code> 自动按<strong>任意空白字符</strong>（空格、Tab、换行）分割，返回列表。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">split() 基本用法</div>
+      <pre><code class="language-python"># input() 读取整行，split() 按空白分割
+data = input().split()        # 输入: 3.14 5 → data = ['3.14', '5']
+
+# 按逗号分割
+s = "a,b,c,d"
+lst = s.split(",")            # ['a', 'b', 'c', 'd']
+
+# 默认按空格分割
+s = "I love Python"
+lst = s.split()               # ['I', 'love', 'Python']</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">保留小数：两种方法对比</div>
+      <p><strong>方法1</strong>：<code>"{:.Nf}".format(x)</code> — 返回<strong>字符串</strong>，固定显示 N 位小数，标准四舍五入。<br>
+      <strong>方法2</strong>：<code>round(x, N)</code> — 返回<strong>浮点数</strong>，自动省略末尾的零，使用<strong>银行家舍入</strong>。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">两种方法对比</div>
+      <pre><code class="language-python">x = 3.14159
+print("{:.4f}".format(x))   # "3.1416"  (str，固定4位)
+print(round(x, 4))          # 3.1416    (float)
+
+x = 2.5
+print("{:.2f}".format(x))   # "2.50"    (str，补零)
+print(round(x, 2))          # 2.5       (float，省略末尾零)</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">⚠ 重要：银行家舍入 vs 标准四舍五入</div>
+      <p>Python 的 <code>round()</code> 使用<strong>银行家舍入</strong>（四舍六入五成双），而 <code>.Nf</code> 格式化使用<strong>标准四舍五入</strong>。考试中遇到保留小数，优先使用 <code>.Nf</code> 格式化。</p>
+      <pre><code class="language-python">print(round(2.335, 2))   # 2.33（银行家舍入：5前面是3奇数→进位？不，5成双→看前一位，3是奇数所以进到4...实际是2.33!）
+# 详解：2.335 → 5前面是3(奇数) → 进位 → 2.34? 错！
+# 浮点数存储有误差，2.335实际存储为2.334999...所以round得到2.33
+
+print(f"{2.335:.2f}")    # "2.34"（标准四舍五入，结果稳定）
+
+# 建议：需要固定小数位时，统一用 f"{x:.Nf}" 或 "{:.Nf}".format(x)</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">print() 的 end 参数</div>
+      <p><code>print()</code> 默认以<strong>换行符</strong>结尾。通过 <code>end</code> 参数可以改变结尾符号。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">end 参数示例</div>
+      <pre><code class="language-python"># 默认换行
+print("Hello")
+print("World")     # 两行输出
+
+# end='' 不换行
+print("Hello", end='')
+print("World")     # HelloWorld（一行）
+
+# end=' ' 空格结尾
+print("Hello", end=' ')
+print("World")     # Hello World
+
+# end='\n\n' 空一行
+print("Hello", end='\n\n')
+print("World")     # Hello
+                   # （空一行）
+                   # World</code></pre>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">综合示例：指数计算</div>
+      <pre><code class="language-python">def solve(a, n):
+    result = 1
+    if n == 0:
+        result = 0
+    else:
+        while n > 0:
+            n -= 1
+            result *= a
+    return "{:.4f}".format(result)
+
+a_str, n_str = input().split()
+a = float(a_str)
+n = int(n_str)
+print(solve(a, n))</code></pre>
+    </div>
+  </div>
+
+  <!-- ==================== B ==================== -->
+  <div class="section" id="b">
+    <h2>B. 数值运算</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">取模 %（求余数）</div>
+      <p>公式：<code>a % b = a - (a // b) * b</code></p>
+      <p><strong>关键规则：余数的符号与除数 b 一致！</strong></p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">取模运算示例</div>
+      <pre><code class="language-python"># 正数
+print(7 % 3)    # 1    (7÷3=2余1)
+print(9 % 2)    # 1
+
+# 负数 —— 余数符号与除数一致！
+print(-7 % 3)   # 2    (-7÷3=-3余2，除数3为正，余数也为正)
+print(7 % -3)   # -2   (7÷-3=-3余-2，除数-3为负，余数也为负)
+
+# 用途
+# 判断奇偶：n % 2 == 0（偶数）
+# 循环分组：索引 % 组数</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">地板除 // — 向下取整</div>
+      <p>结果往<strong>数轴更小的方向</strong>靠拢。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">地板除示例</div>
+      <pre><code class="language-python"># 正数：正常舍去小数
+print(7 // 3)     # 2
+print(5.9 // 2)   # 2.0
+
+# 负数：向下取整（变小！）
+print(-7 // 3)    # -3（不是-2！因为-2.33向下取整是-3）
+
+# 对比普通除法
+print(7 / 3)      # 2.333...
+print(-7 / 3)     # -2.333...</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">eval() 函数</div>
+      <p><code>eval(字符串)</code>：把字符串当成 Python 代码<strong>执行运算</strong>，自动转成对应数据类型。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">eval() 示例</div>
+      <pre><code class="language-python"># 输入列表
+a = eval(input())    # 输入 [1,2,3] → a 变成 list [1,2,3]
+
+# 输入数字
+a = eval(input())    # 输入 3.14 → a 变成 float 3.14
+
+# 输入元组
+a = eval(input())    # 输入 (1,2,3) → a 变成 tuple (1,2,3)
+
+# 与 int()/float() 的区别
+# int(input()) 只能转整数，eval(input()) 可以转任意类型
+
+# ⚠ 安全警告：eval() 会执行任意代码，考试或受控环境可用，
+# 实际项目中处理用户输入应避免使用 eval()</code></pre>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">综合示例：判断奇数</div>
+      <pre><code class="language-python">def panduan(a):
+    if a % 2 != 0:
+        print(a, end='\n\n')
+
+a = eval(input())      # eval 直接把输入转成列表
+
+for i in a:
+    panduan(i)</code></pre>
+    </div>
+  </div>
+
+  <!-- ==================== C ==================== -->
+  <div class="section" id="c">
+    <h2>C. 列表操作大全</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">创建与基础操作</div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">创建与内置函数</div>
+      <pre><code class="language-python">lst = [1, 2, 3, 4, 5]
+
+# len()：获取列表长度
+print(len(lst))      # 5
+
+# max() / min()：最大值 / 最小值
+print(max(lst))      # 5
+print(min(lst))      # 1
+
+# sum()：列表元素求和
+print(sum(lst))      # 15
+
+# list()：将其他类型转为列表
+print(list("abc"))   # ['a', 'b', 'c']</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">增加元素</div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">append / extend / insert</div>
+      <pre><code class="language-python">lst = [1, 2, 3]
+
+# append(x)：末尾添加 1 个元素
+lst.append(4)          # [1, 2, 3, 4]
+
+# extend(iterable)：末尾添加多个元素
+lst.extend([5, 6])     # [1, 2, 3, 4, 5, 6]
+
+# insert(index, x)：指定位置插入
+lst.insert(0, 0)       # [0, 1, 2, 3, 4, 5, 6]</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">删除元素</div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">pop / remove / clear</div>
+      <pre><code class="language-python">lst = [0, 1, 2, 3, 4, 5]
+
+# pop(index)：删除指定索引，默认删最后一个，返回被删元素
+lst.pop()              # 返回 5, lst = [0, 1, 2, 3, 4]
+lst.pop(0)             # 返回 0, lst = [1, 2, 3, 4]
+
+# remove(x)：删除第一个出现的指定值
+lst.remove(2)          # lst = [1, 3, 4]
+
+# clear()：清空列表
+lst.clear()            # []</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">查找元素</div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">index / count / in</div>
+      <pre><code class="language-python">lst = [10, 20, 30, 20]
+
+# index(x)：查找元素第一次出现的索引
+print(lst.index(20))   # 1
+
+# count(x)：统计元素出现次数
+print(lst.count(20))   # 2
+
+# in / not in：判断元素是否存在
+print(30 in lst)       # True
+print(50 not in lst)   # True</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">排序与反转</div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">sort / sorted / reverse</div>
+      <pre><code class="language-python">lst = [3, 1, 4, 2]
+
+# sort()：原地排序（修改原列表）
+lst.sort()                     # [1, 2, 3, 4]
+lst.sort(reverse=True)         # [4, 3, 2, 1]
+
+# sorted()：生成新列表，不修改原列表
+new_lst = sorted(lst)
+
+# reverse()：原地反转
+lst.reverse()                  # [2, 4, 1, 3]
+
+# reversed()：返回反转迭代器，不修改原列表
+for x in reversed(lst):
+    print(x)</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">复制列表（重要！）</div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">三种复制方式</div>
+      <pre><code class="language-python">lst = [1, 2, 3]
+
+# 方法1：copy() 方法
+lst2 = lst.copy()
+
+# 方法2：切片
+lst3 = lst[:]
+
+# 方法3：list() 构造函数
+lst4 = list(lst)
+
+# ⚠ 错误方式：直接赋值（两个变量指向同一个列表！）
+lst5 = lst        # lst5 和 lst 是同一个列表
+lst5[0] = 100     # lst 也会变成 [100, 2, 3]！</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">快速记忆表</div>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>分类</th><th>函数/方法</th><th>作用</th></tr>
+          <tr><td>长度</td><td><code>len(lst)</code></td><td>求元素个数</td></tr>
+          <tr><td rowspan="3">增加</td><td><code>lst.append(x)</code></td><td>末尾加一个</td></tr>
+          <tr><td><code>lst.extend(seq)</code></td><td>末尾加多个</td></tr>
+          <tr><td><code>lst.insert(i, x)</code></td><td>指定位置插入</td></tr>
+          <tr><td rowspan="3">删除</td><td><code>lst.pop(i)</code></td><td>删除索引元素（默认最后一个）</td></tr>
+          <tr><td><code>lst.remove(x)</code></td><td>删除第一个指定值</td></tr>
+          <tr><td><code>lst.clear()</code></td><td>清空列表</td></tr>
+          <tr><td rowspan="3">查找</td><td><code>lst.index(x)</code></td><td>找元素索引</td></tr>
+          <tr><td><code>lst.count(x)</code></td><td>统计出现次数</td></tr>
+          <tr><td><code>x in lst</code></td><td>判断是否存在</td></tr>
+          <tr><td rowspan="2">排序</td><td><code>lst.sort()</code></td><td>原地排序</td></tr>
+          <tr><td><code>lst.reverse()</code></td><td>原地反转</td></tr>
+          <tr><td>复制</td><td><code>lst.copy()</code></td><td>浅复制</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== D ==================== -->
+  <div class="section" id="d">
+    <h2>D. 函数参数</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">*args — 可变位置参数</div>
+      <p><code>*args</code> 表示可以接收<strong>0 个、1 个或多个参数</strong>，所有传进来的参数自动<strong>打包成元组</strong>。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">*args 基本用法</div>
+      <pre><code class="language-python">def fun(*arg):
+    a = 1
+    for i in arg:
+        a *= i
+    return a
+
+print(fun(2, 3, 4))    # 24（2×3×4）
+print(fun(5, 10))       # 50
+print(fun())            # 1（没有参数，arg=()空元组）</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">* 拆包（解包）</div>
+      <p>在调用函数时，<code>*列表/元组</code> 会把容器<strong>拆开</strong>成一个个独立的参数。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">拆包示例</div>
+      <pre><code class="language-python">def fun(*arg):
+    a = 1
+    for i in arg:
+        a *= i
+    return a
+
+a = 2
+b = (3, 4, 5)
+
+# *b 把元组拆成 3, 4, 5，所以 fun(a, *b) = fun(2, 3, 4, 5)
+print(fun(a, *b))    # 120（2×3×4×5）
+
+# 更多拆包示例
+lst = [1, 2, 3]
+print(*lst)          # 1 2 3（相当于 print(1, 2, 3)）</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">Python 四种函数参数（必考）</div>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>参数类型</th><th>语法</th><th>说明</th></tr>
+          <tr><td>1. 位置参数</td><td><code>def f(x, y):</code></td><td>必须按顺序传，个数必须匹配</td></tr>
+          <tr><td>2. 默认参数</td><td><code>def f(x, y=10):</code></td><td>不传则用默认值；默认参数尽量不用可变对象</td></tr>
+          <tr><td>3. 可变位置参数</td><td><code>def f(*args):</code></td><td>接收任意多个位置参数，打包成元组</td></tr>
+          <tr><td>4. 可变关键字参数</td><td><code>def f(**kwargs):</code></td><td>接收任意多个 key=value 参数，打包成字典</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">四种参数类型完整示例</div>
+      <pre><code class="language-python"># 1. 位置参数（必传）
+def func(x, y):
+    print(x + y)
+func(2, 3)             # 5
+
+# 2. 默认参数（不传用默认值）
+def func(x, y=10):
+    print(x + y)
+func(5)                # 15（y用默认值10）
+func(5, 20)            # 25
+
+# 3. *args：打包成元组
+def func(*args):
+    print(args)
+func(1, 2, 3)          # (1, 2, 3)
+
+# 4. **kwargs：打包成字典
+def func(**kwargs):
+    print(kwargs)
+func(a=1, b=2)         # {'a': 1, 'b': 2}
+
+# 调用时拆字典
+func(**{"x": 1, "y": 2})  # {'x': 1, 'y': 2}
+
+# 关键字参数（调用时指定键名）
+def func(x, y):
+    print(x, y)
+func(y=5, x=3)         # 3 5（不需要按顺序）</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">⚠ 参数书写顺序（固定，不能乱）</div>
+      <div class="formula-highlight">
+        <strong>位置参数 → 默认参数 → *args → **kwargs</strong>
+      </div>
+      <pre><code class="language-python">def f(a, b=10, *args, **kwargs):
+    pass
+# a: 位置参数（必传）
+# b: 默认参数（可选）
+# *args: 额外位置参数打包
+# **kwargs: 额外关键字参数打包</code></pre>
+    </div>
+  </div>
+
+  <!-- ==================== E ==================== -->
+  <div class="section" id="e">
+    <h2>E. 字符串操作</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">大小写转换</div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">四个常用方法</div>
+      <pre><code class="language-python">s = "hello WORLD"
+
+print(s.upper())        # "HELLO WORLD"  全大写
+print(s.lower())        # "hello world"  全小写
+print(s.capitalize())   # "Hello world"  仅首字符大写
+print(s.title())        # "Hello World"  每个单词首字母大写</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">字符串转列表的两种方式</div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">list() vs split()</div>
+      <pre><code class="language-python"># 方法1：list(字符串) → 逐字符拆成列表
+s = "hello"
+lst = list(s)
+print(lst)    # ['h', 'e', 'l', 'l', 'o']
+
+# 方法2：split(分隔符) → 按符号切成一段一段
+s = "a,b,c,d"
+lst = s.split(",")     # ['a', 'b', 'c', 'd']
+
+s = "I love Python"
+lst = s.split()         # ['I', 'love', 'Python']
+
+# 记忆：list → 拆字符；split → 切段落</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">字符串切片 — 手机号脱敏示例</div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">切片实际应用</div>
+      <pre><code class="language-python">phone = input()    # 输入 13812345678
+
+if len(phone) != 11:
+    print("输入有误，请输入11位手机号")
+else:
+    # 前3位 + **** + 后4位
+    new_phone = phone[:3] + "****" + phone[7:]
+    print(f"您的手机号是: {new_phone}")
+    # 输出: 您的手机号是: 138****5678
+
+# 切片语法：s[start:end]  — 从 start 到 end-1
+# s[:3]  → 索引 0,1,2
+# s[7:]  → 索引 7 到末尾</code></pre>
+    </div>
+  </div>
+
+  <!-- ==================== F ==================== -->
+  <div class="section" id="f">
+    <h2>F. 实用代码片段</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">身份证校验码计算</div>
+      <p>身份证前17位加权求和，模11得到校验码。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">校验码计算代码</div>
+      <pre><code class="language-python">def produce(a: str):
+    # 固定权值
+    weights = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2]
+
+    # 转成数字列表
+    nums = list(map(int, a))
+
+    # 加权求和
+    total = 0
+    for i in range(17):
+        total += nums[i] * weights[i]
+
+    # 算余数，映射校验码
+    res = total % 11
+    mapping = {
+        0: "1", 1: "0", 2: "X", 3: "9", 4: "8",
+        5: "7", 6: "6", 7: "5", 8: "4", 9: "3", 10: "2"
+    }
+    return mapping[res]
+
+a = input().strip()
+print(produce(a))</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">重复数字乘积 — 两种去重方式</div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">方法1：用列表记录已处理</div>
+      <pre><code class="language-python">def jisuan(a: list):
+    res = 1
+    used = []                   # 记录已乘过的数字
+    for i in a:
+        b = a.count(i)
+        if b > 1 and i not in used:
+            res *= i
+            used.append(i)      # 标记已乘
+    return res
+
+a = eval(input())
+print(jisuan(a))</code></pre>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">方法2：用 set 自动去重</div>
+      <pre><code class="language-python">def count_duplicate_product(num_list):
+    duplicates = set()          # set 自动去重
+    for num in num_list:
+        if num_list.count(num) > 1:
+            duplicates.add(num)
+
+    product = 1
+    for num in duplicates:
+        product *= num
+    return product
+
+# set 的特点：元素不重复、无序、添加用 add()</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">ASCII 码速记</div>
+      <p>口诀：<strong>空格三二，零四八，大 A 六五，小 a 九七</strong></p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">ASCII 码对照与口诀</div>
+      <pre><code class="language-python"># 空格 = 32, '0' = 48, 'A' = 65, 'a' = 97
+print(ord(' '))    # 32
+print(ord('0'))    # 48
+print(ord('A'))    # 65
+print(ord('a'))    # 97
+
+# 大小写转换
+print(chr(ord('A') + 32))   # 'a'
+print(chr(ord('b') - 32))   # 'B'
+
+# 判断字符类型
+c = '5'
+print('0' <= c <= '9')      # True（是数字）
+c = 'G'
+print('A' <= c <= 'Z')      # True（是大写字母）
+c = 'm'
+print('a' <= c <= 'z')      # True（是小写字母）</code></pre>
+      <div class="box box-note" style="margin:0.75rem 0 0 0;">
+        <div class="box-title">口诀2（顺序记忆）</div>
+        <p>空格标点在前头，数字随后四六八；<br>大写六五起 A-Z，小写再加三十二。</p>
+      </div>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">字符频率统计（字典法）</div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">统计每个字符出现次数，按 ASCII 排序输出</div>
+      <pre><code class="language-python">s = input()
+
+count_dict = {}
+
+for char in s:
+    if char == ' ' or char == '\n':
+        continue            # 忽略空格和换行
+
+    if char in count_dict:
+        count_dict[char] += 1
+    else:
+        count_dict[char] = 1
+
+# 按 ASCII 码从小到大排序
+sorted_chars = sorted(count_dict.keys())
+
+for c in sorted_chars:
+    print(f"{c}:{count_dict[c]}")</code></pre>
+    </div>
+  </div>
+
+  <div class="chapter-nav">
+    <a href="ch4.html" class="prev">第四章 · 常见算法</a>
+    <span></span>
+  </div>
+
+</div>
+
+<div class="footer">程序设计B · Python 编程与算法 · 在线学习指南</div>
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+</body>
+</html>
