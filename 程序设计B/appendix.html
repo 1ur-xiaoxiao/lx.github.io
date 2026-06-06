@@ -49,6 +49,11 @@
       <li><a href="#d">函数参数</a></li>
       <li><a href="#e">字符串操作</a></li>
       <li><a href="#f">实用代码片段</a></li>
+      <li><a href="#g">推导式（Comprehensions）</a></li>
+      <li><a href="#h">enumerate / zip / filter</a></li>
+      <li><a href="#i">字符串方法速查</a></li>
+      <li><a href="#j">切片（Slice）详解</a></li>
+      <li><a href="#k">可变对象与不可变对象 + 类型转换</a></li>
     </ol>
   </div>
 
@@ -711,6 +716,329 @@ sorted_chars = sorted(count_dict.keys())
 
 for c in sorted_chars:
     print(f"{c}:{count_dict[c]}")</code></pre>
+    </div>
+  </div>
+
+  <!-- ==================== G ==================== -->
+  <div class="section" id="g">
+    <h2>G. 推导式（Comprehensions）— 一行生成容器</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">什么是推导式？</div>
+      <p>推导式是 Python 的<strong>语法糖</strong>——用<strong>一行代码</strong>生成列表、字典或集合。写法是 <strong>for 循环的反向表达</strong>：把结果放前面，循环条件放后面。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">列表推导式（最常用）</div>
+      <pre><code class="language-python"># 基本形式: [表达式 for 变量 in 可迭代对象]
+squares = [x**2 for x in range(1, 6)]
+print(squares)    # [1, 4, 9, 16, 25]
+
+# 带条件过滤: [表达式 for 变量 in 可迭代对象 if 条件]
+evens = [x for x in range(10) if x % 2 == 0]
+print(evens)      # [0, 2, 4, 6, 8]
+
+# 对比：传统 for 循环写法
+evens = []
+for x in range(10):
+    if x % 2 == 0:
+        evens.append(x)     # 4行 vs 1行
+
+# 字符串处理
+words = ["hello", "world", "python"]
+upper = [w.upper() for w in words]
+print(upper)      # ['HELLO', 'WORLD', 'PYTHON']</code></pre>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">字典推导式</div>
+      <pre><code class="language-python"># {键: 值 for 变量 in 可迭代对象}
+squares_dict = {x: x**2 for x in range(1, 6)}
+print(squares_dict)   # {1: 1, 2: 4, 3: 9, 4: 16, 5: 25}
+
+# 反转键值
+d = {"a": 1, "b": 2, "c": 3}
+reversed_d = {v: k for k, v in d.items()}
+print(reversed_d)     # {1: 'a', 2: 'b', 3: 'c'}</code></pre>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">集合推导式</div>
+      <pre><code class="language-python"># {表达式 for 变量 in 可迭代对象}
+nums = [1, -2, 3, -2, 4, 1]
+abs_set = {abs(x) for x in nums}
+print(abs_set)        # {1, 2, 3, 4}  自动去重！</code></pre>
+    </div>
+  </div>
+
+  <!-- ==================== H ==================== -->
+  <div class="section" id="h">
+    <h2>H. enumerate / zip / filter — 循环好帮手</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">enumerate() — 同时拿索引和值</div>
+      <p>在遍历列表时需要<strong>同时知道索引和元素</strong>时使用，返回 <code>(索引, 元素)</code> 对。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">enumerate 用法</div>
+      <pre><code class="language-python">fruits = ["苹果", "香蕉", "橙子"]
+
+# 基本用法
+for i, fruit in enumerate(fruits):
+    print(f"{i}: {fruit}")
+# 0: 苹果
+# 1: 香蕉
+# 2: 橙子
+
+# 起始索引可自定义
+for i, fruit in enumerate(fruits, start=1):
+    print(f"第{i}个: {fruit}")
+# 第1个: 苹果
+# 第2个: 香蕉
+# 第3个: 橙子</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">zip() — 并行遍历多个序列</div>
+      <p>把多个列表<strong>按位置配对</strong>，返回配对元组的迭代器。常用于同时遍历两个列表。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">zip 用法</div>
+      <pre><code class="language-python">names = ["张三", "李四", "王五"]
+scores = [92, 85, 78]
+
+# 并行遍历
+for name, score in zip(names, scores):
+    print(f"{name}: {score}")
+# 张三: 92
+# 李四: 85
+# 王五: 78
+
+# 转成字典
+score_dict = dict(zip(names, scores))
+print(score_dict)     # {'张三': 92, '李四': 85, '王五': 78}
+
+# 长度不一致时：以最短的为准
+a = [1, 2, 3]
+b = [10, 20]
+print(list(zip(a, b)))  # [(1, 10), (2, 20)]  3被忽略</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">filter() — 筛选符合条件的元素</div>
+      <p><code>filter(判断函数, 序列)</code> 保留使函数返回 <code>True</code> 的元素，返回迭代器。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">filter 用法</div>
+      <pre><code class="language-python">nums = [1, 2, 3, 4, 5, 6]
+
+# 筛选偶数
+evens = list(filter(lambda x: x % 2 == 0, nums))
+print(evens)          # [2, 4, 6]
+
+# 筛选非空字符串
+words = ["hello", "", "world", "", "python"]
+non_empty = list(filter(None, words))  # None 自动过滤空值
+print(non_empty)      # ['hello', 'world', 'python']
+
+# filter + map 组合技
+nums = ["10", "20", "abc", "30"]
+# 先过滤纯数字字符串，再转整数
+int_nums = list(map(int, filter(str.isdigit, nums)))
+print(int_nums)       # [10, 20, 30]</code></pre>
+    </div>
+  </div>
+
+  <!-- ==================== I ==================== -->
+  <div class="section" id="i">
+    <h2>I. 字符串方法速查</h2>
+
+    <div class="box box-example">
+      <div class="box-title">查找与判断</div>
+      <pre><code class="language-python">s = "hello world"
+
+# find()：查找子串位置，找不到返回 -1
+print(s.find("wo"))       # 6
+print(s.find("xyz"))      # -1
+
+# count()：统计子串出现次数
+print(s.count("l"))       # 3
+
+# startswith / endswith：判断开头/结尾
+print(s.startswith("he")) # True
+print(s.endswith("ld"))   # True
+
+# isdigit / isalpha / isalnum：判断字符类型
+print("123".isdigit())    # True（全是数字）
+print("abc".isalpha())    # True（全是字母）
+print("a1b2".isalnum())   # True（字母数字混合）
+
+# isupper / islower：判断大小写
+print("ABC".isupper())    # True
+print("abc".islower())    # True</code></pre>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">修改与清洗</div>
+      <pre><code class="language-python">s = "  Hello, World!  "
+
+# strip()：去除两端空白（或指定字符）
+print(s.strip())          # "Hello, World!"
+print(s.lstrip())         # 去左端
+print(s.rstrip())         # 去右端
+
+# replace()：替换子串
+print(s.replace("World", "Python"))  # "  Hello, Python!  "
+
+# split()：按分隔符切分成列表
+print("a,b,c".split(",")) # ['a', 'b', 'c']
+
+# join()：用分隔符拼接列表为字符串
+words = ["hello", "world"]
+print(" ".join(words))    # "hello world"
+print("-".join(words))    # "hello-world"
+print(", ".join(words))   # "hello, world"</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">split() vs join() — 互为逆操作</div>
+      <div class="formula-highlight">
+        <code>"分隔符".join(列表)</code> ← 列表变字符串<br>
+        <code>"字符串".split("分隔符")</code> ← 字符串变列表
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== J ==================== -->
+  <div class="section" id="j">
+    <h2>J. 切片（Slice）详解</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">切片语法：s[start:end:step]</div>
+      <p>切片适用于 <strong>列表、元组、字符串</strong> 等序列类型。语法：<code>s[起始:结束:步长]</code></p>
+      <ul>
+        <li><strong>start</strong>：起始索引（包含），默认 0</li>
+        <li><strong>end</strong>：结束索引（不包含），默认到末尾</li>
+        <li><strong>step</strong>：步长，默认 1。负数表示反向</li>
+      </ul>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">切片基础</div>
+      <pre><code class="language-python">s = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+# 基本用法
+print(s[2:5])     # [2, 3, 4]       索引 2,3,4（不含5）
+print(s[:3])      # [0, 1, 2]       从开头到索引3
+print(s[7:])      # [7, 8, 9]       从索引7到末尾
+print(s[:])       # [0..9]          完整复制！
+
+# 步长
+print(s[::2])     # [0, 2, 4, 6, 8]  每隔一个
+print(s[1::2])    # [1, 3, 5, 7, 9]  从索引1开始每隔一个
+
+# 反转序列（常见技巧）
+print(s[::-1])    # [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+
+# 字符串同样适用
+name = "Python"
+print(name[::-1]) # "nohtyP"</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">切片不抛异常</div>
+      <p>索引越界会报错，但<strong>切片越界不会</strong>——Python 会自动取到可用的部分。这是切片比索引安全的地方。</p>
+      <pre><code class="language-python">s = [1, 2, 3]
+print(s[100])       # IndexError!
+print(s[0:100])     # [1, 2, 3]  没问题</code></pre>
+    </div>
+  </div>
+
+  <!-- ==================== K ==================== -->
+  <div class="section" id="k">
+    <h2>K. 可变对象与不可变对象</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">核心概念</div>
+      <p><strong>不可变对象</strong>：创建后内容<strong>不能修改</strong>。每次"修改"实际上是创建了新对象。<br>
+      <strong>可变对象</strong>：创建后内容<strong>可以修改</strong>，原对象地址不变。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">分类速记表</div>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>不可变（Immutable）</th><th>可变（Mutable）</th></tr>
+          <tr><td><code>int</code>, <code>float</code>, <code>bool</code>, <code>str</code></td><td><code>list</code>, <code>set</code>, <code>dict</code></td></tr>
+          <tr><td><code>tuple</code></td><td>自定义类对象</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">可变 vs 不可变 — 实际效果</div>
+      <pre><code class="language-python"># 不可变示例：str
+s = "hello"
+t = s
+s = s + " world"    # 创建了新字符串，s 指向新对象
+print(t)            # "hello"  t 还是指向原来的
+
+# 可变示例：list
+a = [1, 2, 3]
+b = a               # a 和 b 指向同一个列表
+a.append(4)         # 修改原列表
+print(b)            # [1, 2, 3, 4]   b 也跟着变了！</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">⚠ 常见陷阱：默认参数用可变对象</div>
+      <pre><code class="language-python"># ❌ 错误写法
+def add_item(item, lst=[]):
+    lst.append(item)
+    return lst
+
+print(add_item(1))   # [1]
+print(add_item(2))   # [1, 2]  ← 不是 [2]！默认参数只创建一次
+
+# ✓ 正确写法
+def add_item(item, lst=None):
+    if lst is None:
+        lst = []
+    lst.append(item)
+    return lst</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">类型转换速查</div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">常用类型转换</div>
+      <pre><code class="language-python"># int()：转整数
+print(int(3.14))      # 3
+print(int("42"))      # 42
+
+# float()：转浮点数
+print(float(3))       # 3.0
+print(float("3.14"))  # 3.14
+
+# str()：转字符串
+print(str(100))       # "100"
+
+# bool()：转布尔值
+# 以下为 False：0, 0.0, "", [], {}, (), None, set()
+# 其余都是 True
+print(bool([]))       # False
+print(bool([1,2]))    # True
+
+# list() / tuple() / set()：序列互转
+s = "abc"
+print(list(s))        # ['a', 'b', 'c']
+print(tuple(s))       # ('a', 'b', 'c')
+print(set(s))         # {'b', 'c', 'a'}  无序！</code></pre>
     </div>
   </div>
 
