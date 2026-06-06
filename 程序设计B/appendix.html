@@ -37,7 +37,7 @@
 
   <div class="chapter-header">
     <h1>附录 · 实用知识速查</h1>
-    <p>零散知识点一页汇总——输入输出、数值运算、列表操作、函数参数、字符串处理等最常用技巧，考前快速回顾。</p>
+    <p>零散知识点一页汇总——15 个章节覆盖输入输出、容器操作、函数参数、字符串处理、文件IO、异常处理等最常用技巧，考前快速回顾。</p>
   </div>
 
   <div class="toc">
@@ -54,6 +54,10 @@
       <li><a href="#i">字符串方法速查</a></li>
       <li><a href="#j">切片（Slice）详解</a></li>
       <li><a href="#k">可变对象与不可变对象 + 类型转换</a></li>
+      <li><a href="#l">字典方法速查（.get / .update / .setdefault）</a></li>
+      <li><a href="#m">sorted / max / min 的 key 参数</a></li>
+      <li><a href="#n">range() 详解</a></li>
+      <li><a href="#o">零散实用知识（三元表达式 / del / import / 生成器）</a></li>
     </ol>
   </div>
 
@@ -1039,6 +1043,394 @@ s = "abc"
 print(list(s))        # ['a', 'b', 'c']
 print(tuple(s))       # ('a', 'b', 'c')
 print(set(s))         # {'b', 'c', 'a'}  无序！</code></pre>
+    </div>
+  </div>
+
+  <!-- ==================== L ==================== -->
+  <div class="section" id="l">
+    <h2>L. 字典方法速查</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">常用字典方法一览</div>
+      <p>字典是考试中最高频的数据结构之一，以下方法必须熟练。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">取值与默认值</div>
+      <pre><code class="language-python">d = {"name": "张三", "age": 20}
+
+# 直接索引：键不存在会报 KeyError
+print(d["name"])          # "张三"
+
+# .get(key, default)：键不存在返回默认值（不报错）
+print(d.get("name"))      # "张三"
+print(d.get("score"))     # None（键不存在，默认返回 None）
+print(d.get("score", 0))  # 0（自定义默认值）
+
+# ⚠ 考试技巧：用 .get() 代替 [] 避免程序崩溃</code></pre>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">增、删、改、更新</div>
+      <pre><code class="language-python">d = {"name": "张三", "age": 20}
+
+# 添加/修改：直接赋值
+d["score"] = 95           # 添加新键值对
+d["age"] = 21             # 修改已有键
+
+# .update({k:v, ...})：批量更新（有则改，无则加）
+d.update({"score": 100, "grade": "A"})
+
+# .setdefault(key, default)：键存在返回值，不存在则设置并返回
+val = d.setdefault("level", 1)  # d中没有"level"，设置 d["level"]=1，返回1
+# 常用于字典中计数：
+word_count = {}
+for word in ["a", "b", "a"]:
+    word_count.setdefault(word, 0)
+    word_count[word] += 1
+print(word_count)         # {'a': 2, 'b': 1}</code></pre>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">遍历、键、值、元素</div>
+      <pre><code class="language-python">d = {"name": "张三", "age": 20, "score": 95}
+
+# .keys()：所有键（视图，可迭代）
+print(list(d.keys()))     # ['name', 'age', 'score']
+# 其实直接遍历 d 就是在遍历键
+for key in d:
+    print(key)            # name, age, score
+
+# .values()：所有值
+print(list(d.values()))   # ['张三', 20, 95]
+
+# .items()：所有键值对（最重要）
+for k, v in d.items():
+    print(f"{k}: {v}")
+# name: 张三
+# age: 20
+# score: 95</code></pre>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">删除与判断</div>
+      <pre><code class="language-python">d = {"name": "张三", "age": 20, "score": 95}
+
+# pop(key)：删除并返回该键对应的值
+age = d.pop("age")        # age = 20, d = {"name": "张三", "score": 95}
+
+# popitem()：删除并返回最后插入的键值对
+last = d.popitem()        # ('score', 95)
+
+# del：直接删除键（不返回值）
+del d["name"]
+
+# 判断键是否存在
+if "score" in d:
+    print("存在")</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">字典方法速记表</div>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>方法</th><th>作用</th><th>安全？</th></tr>
+          <tr><td><code>d[key]</code></td><td>取值</td><td>❌ 键不存在报错</td></tr>
+          <tr><td><code>d.get(key, default)</code></td><td>取值（带默认值）</td><td>✅ 不报错</td></tr>
+          <tr><td><code>d[key] = value</code></td><td>设置/修改</td><td>✅</td></tr>
+          <tr><td><code>d.update({...})</code></td><td>批量更新</td><td>✅</td></tr>
+          <tr><td><code>d.setdefault(key, val)</code></td><td>键不存在时设置</td><td>✅</td></tr>
+          <tr><td><code>d.pop(key)</code></td><td>删除并返回值</td><td>❌ 键不存在报错</td></tr>
+          <tr><td><code>d.keys() / .values() / .items()</code></td><td>获取键/值/键值对</td><td>✅</td></tr>
+          <tr><td><code>key in d</code></td><td>判断键是否存在</td><td>✅</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== M ==================== -->
+  <div class="section" id="m">
+    <h2>M. sorted / max / min 的 key 参数</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">key 参数是什么？</div>
+      <p><code>sorted()</code>、<code>max()</code>、<code>min()</code> 都有一个 <code>key</code> 参数，它指定一个<strong>函数</strong>，排序/比较时先对每个元素调用该函数，然后按函数返回值来比较。</p>
+      <p>简单理解：<strong>"按什么规则来排序/比较"</strong>。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">sorted 的 key 参数</div>
+      <pre><code class="language-python"># 按绝对值排序
+nums = [-5, 3, -1, 4, -2]
+print(sorted(nums, key=abs))
+# [ -1, -2, 3, 4, -5]    按绝对值: 1,2,3,4,5
+
+# 按字符串长度排序
+words = ["apple", "pie", "a", "banana"]
+print(sorted(words, key=len))
+# ['a', 'pie', 'apple', 'banana']
+
+# 按元组的第二个元素排序
+pairs = [("张三", 95), ("李四", 88), ("王五", 92)]
+print(sorted(pairs, key=lambda x: x[1]))
+# [('李四', 88), ('王五', 92), ('张三', 95)]
+
+# 不传 key 默认按第一个元素排序（字典序）
+print(sorted(pairs))
+# [('张三', 95), ('李四', 88), ('王五', 92)]
+
+# reverse=True 降序
+print(sorted(pairs, key=lambda x: x[1], reverse=True))
+# [('张三', 95), ('王五', 92), ('李四', 88)]</code></pre>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">max / min 的 key 参数</div>
+      <pre><code class="language-python">words = ["apple", "pie", "a", "banana"]
+
+# 找最长的字符串
+print(max(words, key=len))    # "banana"（不是"apple"！长度一样取先遇到的）
+print(min(words, key=len))    # "a"
+
+# 找绝对值最大的数
+nums = [-5, 3, -1, 4, -2]
+print(max(nums, key=abs))     # -5（不是4！绝对值5>4）
+
+# 实际应用：找最高分的学生
+students = [("张三", 95), ("李四", 88), ("王五", 92)]
+best = max(students, key=lambda x: x[1])
+print(best)                   # ('张三', 95)</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">key 参数 vs 无 key</div>
+      <p>不给 key 时，按元素<strong>本身的值</strong>比较；给了 key，按 <strong>key(元素)</strong> 的结果比较。<br>
+      常见 key 函数：<code>abs</code>（绝对值）、<code>len</code>（长度）、<code>str.lower</code>（忽略大小写）、<code>lambda x: ...</code>（自定义规则）。</p>
+    </div>
+  </div>
+
+  <!-- ==================== N ==================== -->
+  <div class="section" id="n">
+    <h2>N. range() 详解</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">range(start, stop, step)</div>
+      <p><code>range()</code> 生成一个<strong>整数序列</strong>，三个参数都可以省略：</p>
+      <ul>
+        <li><strong>start</strong>：起始值（包含），默认 0</li>
+        <li><strong>stop</strong>：结束值（<strong>不包含</strong>），必须指定</li>
+        <li><strong>step</strong>：步长，默认 1。负数表示倒数</li>
+      </ul>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">range 的各种写法</div>
+      <pre><code class="language-python"># range(stop)：默认从0开始
+for i in range(5):
+    print(i, end=' ')       # 0 1 2 3 4
+
+# range(start, stop)
+for i in range(2, 7):
+    print(i, end=' ')       # 2 3 4 5 6
+
+# range(start, stop, step)：指定步长
+for i in range(1, 10, 2):
+    print(i, end=' ')       # 1 3 5 7 9（奇数）
+
+# range(start, stop, -step)：倒数
+for i in range(5, 0, -1):
+    print(i, end=' ')       # 5 4 3 2 1
+
+# 常见用法：从大到小遍历
+for i in range(10, -1, -1):
+    print(i, end=' ')       # 10 9 8 7 6 5 4 3 2 1 0</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">range() 的关键特点</div>
+      <ul>
+        <li><strong>左闭右开</strong>：包左不包右，即 <code>start</code> 的元素包含，<code>stop</code> 的元素不包含</li>
+        <li><strong>惰性</strong>：range 不创建完整列表，只在需要时生成下一个数 → 内存高效</li>
+        <li><strong>转列表</strong>：需要看到所有值用 <code>list(range(...))</code></li>
+        <li><strong>len(range)</strong>：可以求 "range 包含的元素个数"</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ==================== O ==================== -->
+  <div class="section" id="o">
+    <h2>O. 零散实用知识</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">三元表达式 — 一行 if-else</div>
+      <p>格式：<code>A if 条件 else B</code></p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">三元表达式示例</div>
+      <pre><code class="language-python">score = 75
+result = "及格" if score >= 60 else "不及格"
+
+# 等价于：
+# if score >= 60: result = "及格"
+# else: result = "不及格"
+
+# 列表推导式中也常用
+nums = [1, 2, 3, 4, 5]
+labels = ["偶数" if x % 2 == 0 else "奇数" for x in nums]
+print(labels)  # ['奇数', '偶数', '奇数', '偶数', '奇数']</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">del 语句 — 删除变量或元素</div>
+      <p><code>del</code> 可以删除变量、列表元素、字典键、切片等。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">del 的多种用法</div>
+      <pre><code class="language-python"># 删除变量
+x = 10
+del x
+# print(x)  # NameError: name 'x' is not defined
+
+# 删除列表指定位置
+lst = [1, 2, 3, 4, 5]
+del lst[0]              # [2, 3, 4, 5]
+del lst[1:3]            # [2, 5]（删除索引1,2）
+
+# 删除字典键
+d = {"a": 1, "b": 2}
+del d["a"]              # {"b": 2}
+
+# del vs pop vs remove
+# del lst[i]：删索引，不返回值
+# lst.pop(i)：删索引，返回被删值
+# lst.remove(x)：删第一个匹配的值</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">列表拼接与重复：+ 和 *</div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">+ 和 * 运算符</div>
+      <pre><code class="language-python"># + 拼接：返回新列表，不修改原列表
+a = [1, 2]
+b = [3, 4]
+c = a + b               # [1, 2, 3, 4]
+print(a)                # [1, 2]  原列表不变
+
+# * 重复
+lst = [0] * 5           # [0, 0, 0, 0, 0]
+lst = [1, 2] * 3        # [1, 2, 1, 2, 1, 2]
+
+# 字符串也可以用
+print("ha" * 3)         # "hahaha"
+print("-" * 20)         # "--------------------"
+
+# ⚠ 陷阱：* 复制的是引用！
+lst = [[0] * 3] * 2     # [[0, 0, 0], [0, 0, 0]]
+lst[0][0] = 1           # [[1, 0, 0], [1, 0, 0]]  两个子列表都变了！
+# 正确写法：各子列表独立
+lst = [[0] * 3 for _ in range(2)]
+lst[0][0] = 1           # [[1, 0, 0], [0, 0, 0]]</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">print() 的 sep 参数</div>
+      <p><code>sep</code> 控制多个参数之间的<strong>分隔符</strong>，默认是空格。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">sep 与 end 对比</div>
+      <pre><code class="language-python"># 默认：空格分隔，换行结尾
+print(1, 2, 3)            # 1 2 3
+
+# sep=""：参数之间不空格
+print(1, 2, 3, sep="")    # 123
+
+# sep=", "：用逗号分隔
+print("a", "b", "c", sep=", ")  # a, b, c
+
+# sep + end 组合
+print(1, 2, 3, sep="-", end="!")   # 1-2-3!
+
+# sep="\n"：每个参数一行
+print("姓名", "年龄", "成绩", sep="\n")
+# 姓名
+# 年龄
+# 成绩
+
+# 总结：sep 管"之间"，end 管"最后"</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">import 详解 — 导入模块的三种方式</div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">三种导入方式</div>
+      <pre><code class="language-python"># 方式1：导入整个模块
+import math
+print(math.sqrt(16))        # 4.0
+print(math.pi)              # 3.1415926535...
+
+# 方式2：导入并取别名（模块名长时常用）
+import numpy as np
+arr = np.array([1, 2, 3])
+
+# 方式3：从模块导入特定函数
+from math import sqrt, pi
+print(sqrt(25))             # 5.0  不用写 math.
+print(pi)                   # 3.14159...
+
+# 方式4：导入所有（不推荐，可能重名）
+from math import *
+print(sin(0))               # 0.0
+
+# 常用标准库速记
+# math      → 数学函数 (sqrt, sin, cos, pi, e, ceil, floor)
+# random    → 随机数 (random, randint, uniform, shuffle)
+# collections → Counter（计数）, defaultdict（默认值字典）</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">生成器表达式 — 省内存的"懒加载推导式"</div>
+      <p>把列表推导式的 <code>[]</code> 换成 <code>()</code>，得到的就是生成器表达式。它<strong>不立即算出所有结果</strong>，而是需要一个才生成一个，节省内存。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">生成器 vs 列表推导式</div>
+      <pre><code class="language-python"># 列表推导式（立即生成全部元素，占内存）
+squares_list = [x**2 for x in range(1000000)]
+# → 100万个元素的列表，约8MB
+
+# 生成器表达式（懒加载，1个元素都不占）
+squares_gen = (x**2 for x in range(1000000))
+# → 生成器对象，几乎不占内存
+
+# 用法：逐个取，不一次性创建
+for sq in squares_gen:
+    if sq > 100:
+        break         # 只计算了前几个，后面的根本没算
+    print(sq)
+
+# 内置函数可以直接传生成器（省一次 list() 转换）
+total = sum(x**2 for x in range(100))    # 不用加括号！
+biggest = max(x**2 for x in range(100))
+print(total, biggest)  # 328350 9801
+
+# ⚠ 生成器只能迭代一次！
+gen = (x for x in range(3))
+print(list(gen))  # [0, 1, 2]
+print(list(gen))  # []  第二次是空的！</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">什么时候用生成器？</div>
+      <p>数据量很大但只需<strong>遍历一次</strong> → 用生成器。<br>
+      需要<strong>多次访问</strong>或<strong>索引/切片</strong> → 用列表推导式。<br>
+      传给 <code>sum()</code>、<code>max()</code>、<code>min()</code>、<code>all()</code>、<code>any()</code> 时 → 直接用生成器表达式，省内存又简洁。</p>
     </div>
   </div>
 

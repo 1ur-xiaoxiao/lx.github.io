@@ -48,8 +48,10 @@
       <li><a href="#s3">运算符与表达式</a></li>
       <li><a href="#s4">条件判断</a></li>
       <li><a href="#s5">循环结构（for / while / break / continue）</a></li>
-      <li><a href="#s6">函数定义与使用（含 lambda 表达式）</a></li>
+      <li><a href="#s6">函数定义与使用（含 lambda / pass / __name__）</a></li>
       <li><a href="#s7">综合例题</a></li>
+      <li><a href="#s8">文件操作基础（读写文件 / with 语句）</a></li>
+      <li><a href="#s9">异常处理基础（try / except / finally）</a></li>
     </ol>
   </div>
 
@@ -327,6 +329,28 @@ else:
 # 等腰三角形</code></pre>
       </div>
     </div>
+
+    <div class="box box-definition">
+      <div class="box-title">三元表达式 — 一行写完 if-else</div>
+      <p>格式：<code>A if 条件 else B</code>。条件为真返回 A，否则返回 B。适合简单的二选一赋值。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">三元表达式示例</div>
+      <pre><code class="language-python">score = 75
+result = "及格" if score >= 60 else "不及格"
+print(result)     # 及格
+
+# 等价于
+if score >= 60:
+    result = "及格"
+else:
+    result = "不及格"
+
+# 嵌套（不推荐，可读性差）
+a, b = 10, 20
+bigger = "a大" if a > b else "b大" if b > a else "一样大"</code></pre>
+    </div>
   </div>
 
   <!-- ==================== 1.5 ==================== -->
@@ -504,6 +528,51 @@ print(pairs)              # [(2, 1), (3, 2), (1, 3)]</code></pre>
       <strong>用 def</strong>：函数体多行、需要文档字符串、需要被多次调用。<br>
       lambda 本质上就是 <code>def</code> 的<strong>精简版</strong>，能不能用 def？都能，但 lambda 更简洁。</p>
     </div>
+
+    <div class="box box-definition">
+      <div class="box-title">pass 语句 — 占位符</div>
+      <p><code>pass</code> 什么都不做，是一个<strong>占位符</strong>。当你需要一个语句但暂时不想写任何代码时使用（如空函数、空循环）。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">pass 用法</div>
+      <pre><code class="language-python"># 先搭框架，以后再实现
+def my_function():
+    pass          # 不写会报错！必须有语句
+
+# 空循环（等待条件满足）
+while True:
+    pass          # 占位，以后填入逻辑
+
+class MyClass:
+    pass          # 空类</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">if __name__ == "__main__" — 程序的入口</div>
+      <p>Python 文件可以作为<strong>脚本直接运行</strong>，也可以作为<strong>模块被导入</strong>。<code>__name__</code> 在不同场景下值不同：</p>
+      <ul>
+        <li><strong>直接运行</strong>时：<code>__name__</code> = <code>"__main__"</code></li>
+        <li><strong>被导入</strong>时：<code>__name__</code> = <strong>文件名</strong>（模块名）</li>
+      </ul>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">示例</div>
+      <pre><code class="language-python"># my_math.py
+def add(a, b):
+    return a + b
+
+def multiply(a, b):
+    return a * b
+
+if __name__ == "__main__":
+    # 只有在直接运行 python my_math.py 时才执行
+    print("测试 add:", add(3, 5))
+    print("测试 multiply:", multiply(3, 5))
+
+# 如果被 import my_math 导入，测试代码不会执行</code></pre>
+    </div>
   </div>
 
   <!-- ==================== 1.7 ==================== -->
@@ -553,6 +622,152 @@ nums = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 print(filter_primes(nums))  # [2, 3, 5, 7, 11]</code></pre>
         <p>这里用到了<strong>列表推导式</strong> <code>[x for x in numbers if is_prime(x)]</code>，它是 for 循环的简洁写法，非常 Pythonic。</p>
       </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1.8 ==================== -->
+  <div class="section" id="s8">
+    <h2>1.8 文件操作基础</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">为什么需要文件操作？</div>
+      <p>程序运行时的数据都在<strong>内存</strong>里，程序一关就没了。把数据<strong>写入文件</strong>（硬盘）可以永久保存，<strong>读文件</strong>可以加载已有数据。这在处理大量数据时尤其重要。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">打开文件：open() 与模式</div>
+      <p><code>open("文件名", "模式")</code> 返回一个<strong>文件对象</strong>。常用模式：</p>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>模式</th><th>含义</th><th>文件不存在时</th></tr>
+          <tr><td><code>"r"</code></td><td>只读（默认）</td><td>报错</td></tr>
+          <tr><td><code>"w"</code></td><td>写入（覆盖）</td><td>创建新文件</td></tr>
+          <tr><td><code>"a"</code></td><td>追加（在末尾添加）</td><td>创建新文件</td></tr>
+          <tr><td><code>"r+"</code></td><td>读写</td><td>报错</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">写入文件</div>
+      <pre><code class="language-python"># 打开文件（w模式：覆盖写入）
+f = open("scores.txt", "w", encoding="utf-8")
+f.write("张三 95\n")
+f.write("李四 88\n")
+f.write("王五 92\n")
+f.close()           # ⚠ 一定要关闭！否则数据可能丢失</code></pre>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">读取文件</div>
+      <pre><code class="language-python"># 方法1：read() 一次性读入整个字符串
+f = open("scores.txt", "r", encoding="utf-8")
+content = f.read()
+f.close()
+print(content)
+
+# 方法2：readlines() 按行读入列表
+f = open("scores.txt", "r", encoding="utf-8")
+lines = f.readlines()      # ['张三 95\n', '李四 88\n', '王五 92\n']
+f.close()
+
+# 方法3：逐行遍历（最省内存，推荐）
+f = open("scores.txt", "r", encoding="utf-8")
+for line in f:
+    print(line.strip())    # strip() 去掉末尾换行符
+f.close()</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">with 语句 — 自动关闭文件（推荐）</div>
+      <p><code>with open(...) as f:</code> 在代码块执行完后<strong>自动关闭文件</strong>，即使发生异常也不会忘记关闭。这是 Python 处理文件的最佳实践。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">with 语句用法</div>
+      <pre><code class="language-python"># 读文件：最常用写法
+with open("scores.txt", "r", encoding="utf-8") as f:
+    for line in f:
+        name, score = line.strip().split()
+        print(f"{name}: {int(score)}分")
+
+# 写文件
+data = ["第一行\n", "第二行\n", "第三行\n"]
+with open("output.txt", "w", encoding="utf-8") as f:
+    f.writelines(data)
+
+# 不用 close()——with 帮你自动做了</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">encoding="utf-8" 很重要</div>
+      <p>Windows 默认编码不是 UTF-8，如果不指定 <code>encoding="utf-8"</code>，包含中文的文件可能读写乱码。养成每次都写的习惯。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 1.9 ==================== -->
+  <div class="section" id="s9">
+    <h2>1.9 异常处理基础</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">什么是异常？</div>
+      <p><strong>异常</strong>是程序运行时发生的错误（如除零、文件不存在、类型错误等）。如果不处理，程序会<strong>立刻崩溃</strong>并打印错误堆栈。<code>try/except</code> 可以捕获异常，让程序优雅地处理错误而不是直接崩溃。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">基本语法</div>
+      <pre><code class="language-python"># try/except 基本结构
+try:
+    num = int(input("请输入一个整数: "))
+    print(f"100 / {num} = {100 / num}")
+except ValueError:
+    print("输入的不是整数！")
+except ZeroDivisionError:
+    print("不能除以零！")
+except:
+    print("其他未知错误")
+
+# 无论是否异常都会执行的清理代码
+try:
+    f = open("data.txt", "r")
+    content = f.read()
+except FileNotFoundError:
+    print("文件不存在")
+finally:
+    f.close()     # 确保文件一定被关闭（但用 with 更好）</code></pre>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">常见异常类型</div>
+      <pre><code class="language-python"># IndexError：索引越界
+lst = [1, 2, 3]
+try:
+    print(lst[10])
+except IndexError:
+    print("列表中不存在该索引")
+
+# KeyError：字典键不存在
+d = {"name": "张三"}
+try:
+    print(d["age"])
+except KeyError:
+    print("该键不存在，可以用 d.get('age', 0) 更安全")
+
+# TypeError：类型错误
+try:
+    result = "3" + 5
+except TypeError:
+    print("字符串和整数不能直接相加，需要先转换")</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">异常处理的最佳实践</div>
+      <ul>
+        <li><strong>捕获具体异常</strong>：用 <code>except ValueError</code> 而不是裸 <code>except:</code></li>
+        <li><strong>最小范围</strong>：只把真正可能出错的代码放进 try 块</li>
+        <li><strong>搭配 with</strong>：文件操作用 <code>with open()</code> 而非 try/finally 手动关闭</li>
+        <li><strong>不要用异常控制流程</strong>：异常用于处理"意外"情况，不要当 if-else 来用</li>
+      </ul>
     </div>
   </div>
 
