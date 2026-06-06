@@ -256,6 +256,46 @@ print(list("abc"))   # ['a', 'b', 'c']</code></pre>
     </div>
 
     <div class="box box-definition">
+      <div class="box-title">map() 函数 — 对每个元素做同样的操作</div>
+      <p><code>map(函数, 可迭代对象)</code> 把函数<strong>逐个应用</strong>到序列的每个元素上，返回一个迭代器。通常配合 <code>list()</code> 转成列表。</p>
+      <p>简单理解：<strong>批量处理</strong>——不用写 for 循环，一行搞定对全体元素的同一种操作。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">map() 基本用法</div>
+      <pre><code class="language-python"># 基础：对每个元素执行函数
+nums = [1, 2, 3, 4, 5]
+squared = list(map(lambda x: x**2, nums))
+print(squared)    # [1, 4, 9, 16, 25]
+
+# 配合内置函数
+str_nums = ["1", "2", "3"]
+int_nums = list(map(int, str_nums))
+print(int_nums)   # [1, 2, 3]
+
+# 转大写
+words = ["hello", "world"]
+upper = list(map(str.upper, words))
+print(upper)      # ['HELLO', 'WORLD']
+
+# 多个序列：逐个对应位置操作
+a = [1, 2, 3]
+b = [4, 5, 6]
+sums = list(map(lambda x, y: x + y, a, b))
+print(sums)       # [5, 7, 9]</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">map() 关键点</div>
+      <ul>
+        <li><strong>返回值是迭代器</strong>，不是列表 — 需要用 <code>list()</code> 包一层才能看到内容或索引访问</li>
+        <li>迭代器只能遍历<strong>一次</strong>，第二次遍历就是空的</li>
+        <li><code>map(int, lst)</code> 比 <code>[int(x) for x in lst]</code> 更简洁，考试中常见</li>
+        <li>传入多个序列时，以<strong>最短的那个</strong>长度为准，多的会忽略</li>
+      </ul>
+    </div>
+
+    <div class="box box-definition">
       <div class="box-title">增加元素</div>
     </div>
 
@@ -374,6 +414,7 @@ lst5[0] = 100     # lst 也会变成 [100, 2, 3]！</code></pre>
           <tr><td rowspan="2">排序</td><td><code>lst.sort()</code></td><td>原地排序</td></tr>
           <tr><td><code>lst.reverse()</code></td><td>原地反转</td></tr>
           <tr><td>复制</td><td><code>lst.copy()</code></td><td>浅复制</td></tr>
+          <tr><td>批量</td><td><code>list(map(f, lst))</code></td><td>每个元素执行 f</td></tr>
         </table>
       </div>
     </div>
