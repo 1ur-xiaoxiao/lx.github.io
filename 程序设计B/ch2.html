@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第二章 · 递推与递归</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script src="js/main.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../index.html" style="color:rgba(255,255,255,0.65);text-decoration:none;font-size:0.82rem;margin-right:8px;">← 总览</a>
+  <a href="index.html" class="nav-brand">程序设计B</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">Python 基础</a></li>
+    <li><a href="ch2.html">递推与递归</a></li>
+    <li><a href="ch3.html">蒙特卡洛模拟</a></li>
+    <li><a href="ch4.html">常见算法</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第二章 · 递推与递归</h1>
+    <p>从"已知推未知"的递推思维，到"自相似分解"的递归艺术。递推与递归是算法设计的核心范式，也是计算机科学最具美感的思维工具之一。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">递推的思想：从已知推未知</a></li>
+      <li><a href="#s2">递推的经典实例</a></li>
+      <li><a href="#s3">递归三要素</a></li>
+      <li><a href="#s4">经典递归：阶乘与斐波那契</a></li>
+      <li><a href="#s5">经典递归：汉诺塔问题</a></li>
+      <li><a href="#s6">递归 vs 迭代：效率与可读性</a></li>
+      <li><a href="#s7">记忆化搜索：让递归飞起来</a></li>
+      <li><a href="#s8">综合例题</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 2.1 ==================== -->
+  <div class="section" id="s1">
+    <h2>2.1 递推的思想：从已知推未知</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">递推（Recurrence）</div>
+      <p><strong>递推</strong>是一种由已知条件出发，利用特定关系逐步推导出未知结果的数学方法。其核心结构是：</p>
+      <div class="formula-highlight">
+        $$x_n = f(x_{n-1}, x_{n-2}, \ldots, x_{n-k})$$
+      </div>
+      <p>即第 $n$ 项由前面若干项确定。要启动递推，还需要<strong>初始条件</strong>（前几项的值）。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">递推的直觉</div>
+      <p>假设你在爬楼梯，每次可以走 1 级或 2 级。到达第 $n$ 级有多少种走法？</p>
+      <p><strong>思考</strong>：到达第 $n$ 级，最后一步要么从第 $n-1$ 级走 1 级上来，要么从第 $n-2$ 级走 2 级上来。因此：</p>
+      <div class="formula-highlight">$$f(n) = f(n-1) + f(n-2)$$</div>
+      <p>而 $f(1)=1$（只有一种走法：迈 1 级），$f(2)=2$（迈两次 1 级，或一次 2 级）。</p>
+      <p>这就是递推——<strong>大问题的解由小问题的解组合而来</strong>。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 2.2 ==================== -->
+  <div class="section" id="s2">
+    <h2>2.2 递推的经典实例</h2>
+
+    <div class="box box-example">
+      <div class="box-title">例1 · 等差数列求和</div>
+      <p><strong>递推关系</strong>：$S_n = S_{n-1} + n$，初始 $S_1 = 1$。</p>
+      <pre><code class="language-python">def sum_1_to_n(n):
+    """递推求 1+2+...+n"""
+    total = 0
+    for i in range(1, n + 1):
+        total += i       # 每一步：total_n = total_{n-1} + i
+    return total
+
+print(sum_1_to_n(100))   # 5050</code></pre>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例2 · 等比数列</div>
+      <p><strong>递推关系</strong>：$a_n = r \cdot a_{n-1}$，初始 $a_0 = 1$。</p>
+      <pre><code class="language-python">def geometric(r, n):
+    """返回等比数列的前 n 项"""
+    seq = [1]             # a_0 = 1
+    for i in range(1, n):
+        seq.append(seq[-1] * r)  # a_i = r * a_{i-1}
+    return seq
+
+print(geometric(2, 10))
+# [1, 2, 4, 8, 16, 32, 64, 128, 256, 512]</code></pre>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例3 · 阶乘的递推实现</div>
+      <p><strong>递推关系</strong>：$n! = n \cdot (n-1)!$，初始 $0! = 1$。</p>
+      <pre><code class="language-python">def factorial_iter(n):
+    """递推（迭代）求 n!"""
+    result = 1
+    for i in range(1, n + 1):
+        result *= i       # 第 i 步：result = i * 旧的 result
+    return result
+
+print(factorial_iter(5))  # 120 = 1×2×3×4×5</code></pre>
+    </div>
+  </div>
+
+  <!-- ==================== 2.3 ==================== -->
+  <div class="section" id="s3">
+    <h2>2.3 递归三要素</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">递归（Recursion）</div>
+      <p><strong>递归</strong>是函数<strong>直接或间接地调用自身</strong>的编程技巧。它天然对应数学中的递推关系，但实现方式是把"循环"变成了"函数自调用"。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">递归三要素（缺一不可）</div>
+      <ol>
+        <li><strong>边界条件（Base Case）</strong>：递归到什么时候停止——没有它，递归会无限进行直到栈溢出</li>
+        <li><strong>递推公式（Recursive Step）</strong>：如何把大问题分解为小问题——n 的问题用 n-1 来表达</li>
+        <li><strong>递归调用</strong>：函数调用自身，参数向边界条件逼近</li>
+      </ol>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">递归思维：以阶乘为例</div>
+      <pre><code class="language-python">def factorial(n):
+    # ① 边界条件：n=0 或 n=1 时，阶乘为 1
+    if n <= 1:
+        return 1
+    # ②③ 递推公式 + 递归调用：n! = n × (n-1)!
+    return n * factorial(n - 1)
+
+# 计算过程（factorial(4)）:
+# f(4) = 4 × f(3)
+#            = 3 × f(2)
+#                 = 2 × f(1)
+#                      = 1  ← 边界条件，开始逐层返回
+#                 = 2 × 1 = 2
+#            = 3 × 2 = 6
+# f(4) = 4 × 6 = 24</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">理解递归的关键：信任</div>
+      <p>写 <code>factorial(4)</code> 时，你不需要去想 <code>factorial(3)</code> 内部怎么算的——你只需要<strong>信任它返回正确的结果</strong>。递归的正确性由数学归纳法保证：只要边界和递推公式正确，所有结果都正确。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 2.4 ==================== -->
+  <div class="section" id="s4">
+    <h2>2.4 经典递归：阶乘与斐波那契</h2>
+
+    <div class="box box-example">
+      <div class="box-title">斐波那契数列的递推实现（迭代）</div>
+      <pre><code class="language-python">def fibonacci_iter(n):
+    """返回斐波那契数列的第 n 项（迭代版）"""
+    if n <= 1:
+        return n
+    a, b = 0, 1
+    for _ in range(2, n + 1):
+        a, b = b, a + b
+    return b
+
+for i in range(10):
+    print(fibonacci_iter(i), end=" ")
+# 0 1 1 2 3 5 8 13 21 34</code></pre>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">斐波那契数列的递归实现</div>
+      <pre><code class="language-python">def fibonacci_recur(n):
+    """返回斐波那契数列的第 n 项（递归版）"""
+    if n <= 1:                    # 边界条件
+        return n
+    return fibonacci_recur(n - 1) + fibonacci_recur(n - 2)  # 递推公式
+
+print(fibonacci_recur(10))  # 55</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">递归的代价</div>
+      <p>上面的递归版 Fibonacci 看似优雅，但<strong>效率极低</strong>。计算 $F(40)$ 时，$F(1)$ 会被重复计算超过 1 亿次！问题出在 <strong>大量重复计算</strong>：$F(n-1)$ 和 $F(n-2)$ 各自独立展开，产生指数级 $(O(2^n))$ 的时间复杂度。解决方法在 2.7 节——记忆化搜索。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 2.5 ==================== -->
+  <div class="section" id="s5">
+    <h2>2.5 经典递归：汉诺塔问题</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">汉诺塔（Tower of Hanoi）</div>
+      <p>有 A、B、C 三根柱子，A 柱上有 $n$ 个大小不等的圆盘，大的在下小的在上。目标：把所有盘子从 A 移到 C，每次只能移动一个盘子，且<strong>大盘不能放在小盘上面</strong>。B 柱作为辅助。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">递归求解汉诺塔</div>
+      <p><strong>递归思路</strong>：要把 $n$ 个盘子从 A 移到 C（借助 B）：</p>
+      <ol>
+        <li>先把上面 $n-1$ 个从 A 移到 B（借助 C）</li>
+        <li>再把最大的那个从 A 直接移到 C</li>
+        <li>最后把 B 上的 $n-1$ 个从 B 移到 C（借助 A）</li>
+      </ol>
+      <pre><code class="language-python">def hanoi(n, src, aux, dst):
+    """打印 n 个盘子从 src 移到 dst 的步骤（aux 为辅助柱）"""
+    if n == 1:                        # 边界条件：只有一个盘子，直接移
+        print(f"{src} → {dst}")
+    else:
+        hanoi(n - 1, src, dst, aux)   # Step 1: n-1 个从 src 移到 aux
+        print(f"{src} → {dst}")       # Step 2: 最大的从 src 移到 dst
+        hanoi(n - 1, aux, src, dst)   # Step 3: n-1 个从 aux 移到 dst
+
+print("3 个盘子的移动步骤：")
+hanoi(3, 'A', 'B', 'C')</code></pre>
+      <div class="code-output">3 个盘子的移动步骤：
+A → C
+A → B
+C → B
+A → C
+B → A
+B → C
+A → C</div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">复杂度分析</div>
+      <p>$n$ 个盘子需要 $2^n - 1$ 步。3 个盘子需要 7 步，64 个盘子需要 $2^{64}-1 \approx 1.84 \times 10^{19}$ 步——即便每秒移动一次，也需要约 5800 亿年。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 2.6 ==================== -->
+  <div class="section" id="s6">
+    <h2>2.6 递归 vs 迭代：效率与可读性</h2>
+
+    <div class="table-wrapper">
+      <table>
+        <tr><th>对比维度</th><th>递归</th><th>迭代（循环）</th></tr>
+        <tr>
+          <td>代码可读性</td>
+          <td>对自相似问题（树、分治）极其优雅</td>
+          <td>对简单线性问题更直观</td>
+        </tr>
+        <tr>
+          <td>时间复杂度</td>
+          <td>取决于是否有重复计算</td>
+          <td>通常 $O(n)$</td>
+        </tr>
+        <tr>
+          <td>空间复杂度</td>
+          <td>$O(n)$ 调用栈</td>
+          <td>$O(1)$</td>
+        </tr>
+        <tr>
+          <td>栈溢出风险</td>
+          <td>深度过大时有风险（Python 默认递归深度约 1000）</td>
+          <td>无风险</td>
+        </tr>
+        <tr>
+          <td>适用场景</td>
+          <td>树的遍历、分治算法、回溯</td>
+          <td>循环累加、遍历、简单递推</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">实用原则</div>
+      <p><strong>能用迭代就用迭代</strong>（更高效、无栈溢出风险）。遇到树、图、分治等自相似结构时，递归让代码简洁数倍——此时可以用记忆化搜索弥补效率。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 2.7 ==================== -->
+  <div class="section" id="s7">
+    <h2>2.7 记忆化搜索：让递归飞起来</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">记忆化搜索（Memoization）</div>
+      <p>把递归函数的<strong>中间结果存起来</strong>（通常用字典或列表），下次遇到相同的输入时直接返回缓存值，避免重复计算。时间复杂度从指数级降到线性级。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">用了记忆化的斐波那契 = 又快又优雅</div>
+      <pre><code class="language-python">def fibonacci_memo(n, memo={}):
+    """记忆化递归：memo 缓存已算过的值"""
+    if n in memo:
+        return memo[n]               # 缓存命中，直接返回
+    if n <= 1:
+        return n
+    memo[n] = fibonacci_memo(n - 1) + fibonacci_memo(n - 2)
+    return memo[n]
+
+print(fibonacci_memo(100))
+# 354224848179261915075（瞬间出结果！）</code></pre>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">更通用的装饰器写法</div>
+      <pre><code class="language-python">from functools import lru_cache
+
+@lru_cache(maxsize=None)   # Python 内置的记忆化装饰器
+def fib(n):
+    if n <= 1:
+        return n
+    return fib(n - 1) + fib(n - 2)
+
+print(fib(200))  # 同样瞬间出结果</code></pre>
+    </div>
+  </div>
+
+  <!-- ==================== 2.8 ==================== -->
+  <div class="section" id="s8">
+    <h2>2.8 综合例题</h2>
+
+    <div class="box box-example">
+      <div class="box-title">例题 · 爬楼梯问题的三种写法</div>
+      <p>每次可以爬 1 级或 2 级，到第 $n$ 级有多少种爬法？（递推关系：$f(n)=f(n-1)+f(n-2)$，$f(1)=1, f(2)=2$）</p>
+      <pre><code class="language-python"># 方法1：迭代递推（推荐！O(n)时间，O(1)空间）
+def climb_stairs_iter(n):
+    if n <= 2:
+        return n
+    a, b = 1, 2
+    for _ in range(3, n + 1):
+        a, b = b, a + b
+    return b
+
+# 方法2：记忆化递归（O(n)时间，O(n)空间）
+def climb_stairs_memo(n, memo={}):
+    if n in memo:
+        return memo[n]
+    if n <= 2:
+        return n
+    memo[n] = climb_stairs_memo(n-1) + climb_stairs_memo(n-2)
+    return memo[n]
+
+# 方法3：朴素递归（O(2^n)时间——不推荐！仅作对比）
+def climb_stairs_naive(n):
+    if n <= 2:
+        return n
+    return climb_stairs_naive(n-1) + climb_stairs_naive(n-2)
+
+print(climb_stairs_iter(30))   # 1346269
+print(climb_stairs_memo(30))   # 1346269（一样的结果）</code></pre>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 练习 · 全排列生成</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：用递归生成列表 <code>[1, 2, 3]</code> 的所有排列。</p>
+        <pre><code class="language-python">def permutations(items):
+    if len(items) <= 1:
+        return [items]
+    result = []
+    for i, item in enumerate(items):
+        rest = items[:i] + items[i+1:]          # 去掉当前元素
+        for p in permutations(rest):            # 递归求剩余元素的全排列
+            result.append([item] + p)
+    return result
+
+for p in permutations([1, 2, 3]):
+    print(p)
+# [1, 2, 3] [1, 3, 2] [2, 1, 3] [2, 3, 1] [3, 1, 2] [3, 2, 1]</code></pre>
+        <p>时间复杂度 $O(n!)$，这正是全排列数量的阶——不可能更优。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="chapter-nav">
+    <a href="ch1.html" class="prev">第一章 · Python 基础</a>
+    <a href="ch3.html" class="next">第三章 · 蒙特卡洛模拟</a>
+  </div>
+
+</div>
+
+<div class="footer">程序设计B · Python 编程与算法 · 在线学习指南</div>
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+</body>
+</html>

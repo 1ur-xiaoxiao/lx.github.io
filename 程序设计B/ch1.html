@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第一章 · Python 基础</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script src="js/main.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../index.html" style="color:rgba(255,255,255,0.65);text-decoration:none;font-size:0.82rem;margin-right:8px;">← 总览</a>
+  <a href="index.html" class="nav-brand">程序设计B</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">Python 基础</a></li>
+    <li><a href="ch2.html">递推与递归</a></li>
+    <li><a href="ch3.html">蒙特卡洛模拟</a></li>
+    <li><a href="ch4.html">常见算法</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第一章 · Python 基础</h1>
+    <p>从零开始掌握 Python 编程的核心语法与数据结构。本章是所有后续章节的基石——递推、模拟、算法都需要用代码来表达，而代码的书写能力就建立在本章之上。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">Python 简介与开发环境</a></li>
+      <li><a href="#s2">变量与数据类型</a></li>
+      <li><a href="#s3">运算符与表达式</a></li>
+      <li><a href="#s4">条件判断</a></li>
+      <li><a href="#s5">循环结构</a></li>
+      <li><a href="#s6">函数定义与使用</a></li>
+      <li><a href="#s7">综合例题</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 1.1 ==================== -->
+  <div class="section" id="s1">
+    <h2>1.1 Python 简介与开发环境</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">什么是 Python</div>
+      <p>Python 是一门<strong>解释型、面向对象</strong>的高级编程语言，由 Guido van Rossum 于 1991 年发布。其设计哲学强调<strong>代码可读性</strong>，使用缩进来定义代码块，语法简洁直观。</p>
+    </div>
+
+    <h3>为什么学 Python？</h3>
+    <ul>
+      <li><strong>语法简洁</strong>：接近自然语言，入门快，适合快速将数学思想转化为代码</li>
+      <li><strong>生态丰富</strong>：NumPy、SciPy、Matplotlib 等科学计算库，覆盖数值计算、数据可视化、机器学习</li>
+      <li><strong>应用广泛</strong>：从蒙特卡洛模拟到深度学习，从数据分析到 Web 开发</li>
+    </ul>
+
+    <div class="box box-example">
+      <div class="box-title">第一个 Python 程序</div>
+      <pre><code class="language-python"># 这是你的第一个 Python 程序
+print("Hello, 程序设计B!")
+
+# Python 可以当计算器用
+print(3 + 5)        # 加法 → 8
+print(2 ** 10)      # 2的10次方 → 1024
+print(22 / 7)       # 除法 → 3.142857...</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">运行方式</div>
+      <p>Python 代码有两种运行方式：</p>
+      <ul>
+        <li><strong>交互模式</strong>：在终端输入 <code>python</code>，逐行输入逐行执行，适合试验小段代码</li>
+        <li><strong>脚本模式</strong>：将代码写入 <code>.py</code> 文件，用 <code>python 文件名.py</code> 运行，适合完整程序</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ==================== 1.2 ==================== -->
+  <div class="section" id="s2">
+    <h2>1.2 变量与数据类型</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">变量</div>
+      <p><strong>变量</strong>是存储数据的命名容器。Python 是<strong>动态类型</strong>语言——变量不需要声明类型，赋值时自动推断。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">变量赋值与基本数据类型</div>
+      <pre><code class="language-python"># 数值类型
+age = 20                # int（整数）
+pi = 3.14159            # float（浮点数）
+is_sunny = True         # bool（布尔值）
+
+# 字符串
+name = "张三"
+course = '程序设计B'
+
+# 查看类型
+print(type(age))        # &lt;class 'int'&gt;
+print(type(pi))         # &lt;class 'float'&gt;
+print(type(name))       # &lt;class 'str'&gt;
+
+# 字符串操作
+greeting = "你好, " + name   # 拼接：你好, 张三
+repeated = "哈" * 3          # 重复：哈哈哈
+length = len(name)           # 长度：2</code></pre>
+    </div>
+
+    <h3>容器类型</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">列表（list）</div>
+      <p>有序、可变的元素集合，用 <code>[]</code> 表示。最常用的容器类型。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">列表操作</div>
+      <pre><code class="language-python">scores = [85, 92, 78, 95, 88]
+
+print(scores[0])        # 索引从 0 开始 → 85
+print(scores[-1])       # 负数从末尾倒着数 → 88
+print(scores[1:4])      # 切片 [1,4) → [92, 78, 95]
+print(len(scores))      # 长度 → 5
+
+scores.append(90)       # 末尾添加
+scores.sort()           # 排序 → [78, 85, 88, 90, 92, 95]
+print(sum(scores))      # 求和 → 528</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">字典（dict）</div>
+      <p>键值对（key-value）集合，用 <code>{}</code> 表示。通过键快速查找对应的值。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">字典操作</div>
+      <pre><code class="language-python">student = {"name": "张三", "age": 20, "score": 92}
+
+print(student["name"])          # 张三
+student["score"] = 95           # 修改值
+student["course"] = "程序设计B"  # 添加新键值对
+
+for key, value in student.items():
+    print(f"{key}: {value}")
+# name: 张三
+# age: 20
+# score: 95
+# course: 程序设计B</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">f-string 格式化</div>
+      <p><code>f"{变量}"</code> 是 Python 3.6+ 的字符串格式化语法，大括号内可以直接写变量名或表达式，比 <code>"%s" % x</code> 和 <code>"{}".format(x)</code> 更直观。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 1.3 ==================== -->
+  <div class="section" id="s3">
+    <h2>1.3 运算符与表达式</h2>
+
+    <div class="box box-example">
+      <div class="box-title">常用运算符一览</div>
+      <pre><code class="language-python"># 算术运算符
+a, b = 10, 3
+print(a + b)    # 加 → 13
+print(a - b)    # 减 → 7
+print(a * b)    # 乘 → 30
+print(a / b)    # 除（浮点） → 3.333...
+print(a // b)   # 整除 → 3
+print(a % b)    # 取余 → 1
+print(a ** b)   # 幂 → 1000
+
+# 比较运算符 → 返回 bool
+print(a > b)    # True
+print(a == b)   # False
+print(a != b)   # True
+
+# 逻辑运算符
+x, y = True, False
+print(x and y)  # False（全真才真）
+print(x or y)   # True（有真则真）
+print(not x)    # False（取反）</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">运算符优先级</div>
+      <p>记住这个顺序：<strong>括号 → 幂 → 乘除/整除/取余 → 加减 → 比较 → 逻辑</strong>。不确定时加括号最安全。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 1.4 ==================== -->
+  <div class="section" id="s4">
+    <h2>1.4 条件判断</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">if-elif-else 结构</div>
+      <p>根据条件决定程序的执行路径。<strong>缩进</strong>（通常 4 个空格）定义代码块的范围。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例1 · 判断成绩等级</div>
+      <pre><code class="language-python">score = 85
+
+if score >= 90:
+    grade = "A"
+elif score >= 80:
+    grade = "B"
+elif score >= 70:
+    grade = "C"
+elif score >= 60:
+    grade = "D"
+else:
+    grade = "不及格"
+
+print(f"成绩 {score} 的等级是 {grade}")
+# 成绩 85 的等级是 B</code></pre>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例2 · 判断闰年</div>
+      <pre><code class="language-python">year = 2024
+
+if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0):
+    print(f"{year} 是闰年")
+else:
+    print(f"{year} 不是闰年")
+# 2024 是闰年</code></pre>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 练习 · 判断三角形类型</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：输入三条边长 a, b, c，判断能否构成三角形，以及三角形的类型（等边、等腰、普通）。</p>
+        <pre><code class="language-python">a, b, c = 5, 5, 8
+
+if a + b > c and a + c > b and b + c > a:
+    if a == b == c:
+        print("等边三角形")
+    elif a == b or a == c or b == c:
+        print("等腰三角形")
+    else:
+        print("普通三角形")
+else:
+    print("不能构成三角形")
+# 等腰三角形</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1.5 ==================== -->
+  <div class="section" id="s5">
+    <h2>1.5 循环结构</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">for 循环</div>
+      <p>遍历可迭代对象（列表、字符串、range等）中的每个元素，逐次执行循环体。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例1 · 用 for 循环求累加和</div>
+      <pre><code class="language-python"># 求 1 + 2 + ... + 100
+total = 0
+for i in range(1, 101):   # range(1, 101) 生成 1 到 100
+    total += i
+print(f"1+2+...+100 = {total}")
+# 1+2+...+100 = 5050</code></pre>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例2 · 遍历列表</div>
+      <pre><code class="language-python">fruits = ["苹果", "香蕉", "橘子", "葡萄"]
+for i, fruit in enumerate(fruits):
+    print(f"第{i+1}种水果: {fruit}")
+# 第1种水果: 苹果
+# 第2种水果: 香蕉
+# 第3种水果: 橘子
+# 第4种水果: 葡萄</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">while 循环</div>
+      <p>当条件为真时<strong>反复执行</strong>循环体，直到条件变为假。适合不知道具体循环次数的情况。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例3 · 用 while 求最大公约数（辗转相除法）</div>
+      <pre><code class="language-python">a, b = 48, 18
+m, n = a, b
+while n != 0:
+    m, n = n, m % n    # Python 允许同时赋值
+print(f"gcd({a}, {b}) = {m}")
+# gcd(48, 18) = 6</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">for vs while</div>
+      <p><strong>for</strong>：知道要循环多少次（遍历固定集合）→ 用 for。<br>
+      <strong>while</strong>：不知道循环次数（等待条件满足）→ 用 while。<br>
+      能用 for 就不用 while——for 更不容易写出死循环。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 1.6 ==================== -->
+  <div class="section" id="s6">
+    <h2>1.6 函数定义与使用</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">函数</div>
+      <p>函数是一段<strong>可复用的代码块</strong>，接收输入（参数），执行操作，返回输出（返回值）。将复杂问题分解为小函数是编程的核心思维。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例1 · 判断素数的函数</div>
+      <pre><code class="language-python">def is_prime(n):
+    """判断 n 是否为素数（大于 1 的自然数，只有 1 和自身两个因子）"""
+    if n < 2:
+        return False
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+# 使用函数
+for x in range(1, 21):
+    if is_prime(x):
+        print(x, end=" ")
+# 2 3 5 7 11 13 17 19</code></pre>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例2 · 带默认参数的函数</div>
+      <pre><code class="language-python">def greet(name, greeting="你好"):
+    """默认参数：调用时可以不传 greeting"""
+    return f"{greeting}, {name}!"
+
+print(greet("张三"))                  # 你好, 张三!
+print(greet("李四", "早上好"))        # 早上好, 李四!</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">写函数的三个要点</div>
+      <ol>
+        <li><strong>单一职责</strong>：一个函数只做一件事</li>
+        <li><strong>好的命名</strong>：函数名应为动词（如 <code>is_prime</code>、<code>calculate_sum</code>），清晰表达做什么</li>
+        <li><strong>文档字符串</strong>：用 <code>"""..."""</code> 简要说明函数的用途、参数和返回值</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ==================== 1.7 ==================== -->
+  <div class="section" id="s7">
+    <h2>1.7 综合例题</h2>
+
+    <div class="box box-example">
+      <div class="box-title">例题 · 统计文本中的词频</div>
+      <p>综合运用字符串、列表、字典、循环和函数的知识。</p>
+      <pre><code class="language-python">text = "Python Python 基础 算法 算法 算法 基础"
+
+def word_frequency(text):
+    """返回每个单词出现次数的字典"""
+    words = text.split()          # 按空格分割成单词列表
+    freq = {}
+    for word in words:
+        if word in freq:
+            freq[word] += 1
+        else:
+            freq[word] = 1
+    return freq
+
+result = word_frequency(text)
+for word, count in result.items():
+    print(f"{word}: {count}")
+# Python: 2
+# 基础: 2
+# 算法: 3</code></pre>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 练习 · 筛选列表中的素数</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：给定一个整数列表，编写函数 <code>filter_primes</code> 返回其中所有的素数。</p>
+        <pre><code class="language-python">def is_prime(n):
+    if n < 2:
+        return False
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+def filter_primes(numbers):
+    return [x for x in numbers if is_prime(x)]  # 列表推导式
+
+nums = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+print(filter_primes(nums))  # [2, 3, 5, 7, 11]</code></pre>
+        <p>这里用到了<strong>列表推导式</strong> <code>[x for x in numbers if is_prime(x)]</code>，它是 for 循环的简洁写法，非常 Pythonic。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 章节导航 -->
+  <div class="chapter-nav">
+    <span></span>
+    <a href="ch2.html" class="next">第二章 · 递推与递归</a>
+  </div>
+
+</div>
+
+<div class="footer">程序设计B · Python 编程与算法 · 在线学习指南</div>
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+</body>
+</html>

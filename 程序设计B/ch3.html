@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第三章 · 蒙特卡洛模拟</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script src="js/main.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../index.html" style="color:rgba(255,255,255,0.65);text-decoration:none;font-size:0.82rem;margin-right:8px;">← 总览</a>
+  <a href="index.html" class="nav-brand">程序设计B</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">Python 基础</a></li>
+    <li><a href="ch2.html">递推与递归</a></li>
+    <li><a href="ch3.html">蒙特卡洛模拟</a></li>
+    <li><a href="ch4.html">常见算法</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第三章 · 蒙特卡洛模拟</h1>
+    <p>用随机采样解决确定性问题——这是计算科学中最有魅力的方法之一。从估算圆周率到金融风险评估，蒙特卡洛方法用"投点实验"的思想将复杂问题转化为可编程的随机试验。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">蒙特卡洛方法的核心思想</a></li>
+      <li><a href="#s2">Python 中的随机数</a></li>
+      <li><a href="#s3">经典案例：估算圆周率 $\pi$</a></li>
+      <li><a href="#s4">定积分的蒙特卡洛计算</a></li>
+      <li><a href="#s5">Buffon 投针问题</a></li>
+      <li><a href="#s6">概率分布采样</a></li>
+      <li><a href="#s7">综合例题</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 3.1 ==================== -->
+  <div class="section" id="s1">
+    <h2>3.1 蒙特卡洛方法的核心思想</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">蒙特卡洛方法（Monte Carlo Method）</div>
+      <p><strong>蒙特卡洛方法</strong>是一类基于<strong>随机采样</strong>的数值计算方法。其核心思想是：</p>
+      <ol>
+        <li>把求解的问题转化为某个<strong>概率模型</strong></li>
+        <li>通过<strong>大量随机试验</strong>来估计目标值</li>
+        <li>用<strong>统计量</strong>（如频率、均值）作为近似解</li>
+      </ol>
+      <p>它的名称来源于摩纳哥的 Monte Carlo 赌场——因为其核心就是"随机"。也被称为<strong>统计模拟方法</strong>。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">直觉：用投硬币估算概率</div>
+      <p>投一枚均匀硬币 1000 次，正面出现了 512 次。我们估计 $P(正面) \approx 512/1000 = 0.512$。</p>
+      <p>这里：<strong>概率模型</strong> = 硬币投掷 → <strong>随机试验</strong> = 投 1000 次 → <strong>统计量</strong> = 频率 0.512 ≈ 真实概率 0.5</p>
+      <p>投得越多，估计越准——这就是<strong>大数定律</strong>的直觉，也是蒙特卡洛方法的理论基础。</p>
+    </div>
+
+    <p><strong>为什么需要蒙特卡洛？</strong>很多问题没有解析解（比如高维积分、复杂系统的期望），但可以通过大量随机试验来逼近——虽然"不精确"，但"足够好"，而且实现简单。</p>
+  </div>
+
+  <!-- ==================== 3.2 ==================== -->
+  <div class="section" id="s2">
+    <h2>3.2 Python 中的随机数</h2>
+
+    <div class="box box-example">
+      <div class="box-title">random 模块常用函数</div>
+      <pre><code class="language-python">import random
+
+# 基本随机数
+x = random.random()          # [0, 1) 均匀分布的随机浮点数
+y = random.uniform(1, 10)    # [a, b] 均匀分布
+z = random.randint(1, 6)     # [a, b] 随机整数（模拟骰子）
+
+# 序列操作
+items = [1, 2, 3, 4, 5]
+a = random.choice(items)     # 随机选一个元素
+random.shuffle(items)        # 原地打乱列表
+
+# 按指定概率抽样
+result = random.choices(
+    ['A', 'B', 'C'],
+    weights=[0.1, 0.3, 0.6],  # 各自的概率权重
+    k=10                       # 抽样 10 次
+)
+
+# 设置随机种子（让结果可复现）
+random.seed(42)              # 固定种子后，每次运行结果相同</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">伪随机数</div>
+      <p>计算机产生的其实是<strong>伪随机数</strong>——由确定性算法生成，看起来像随机。对于蒙特卡洛模拟来说，高质量的伪随机数（Python 使用 Mersenne Twister 算法）完全够用。设置随机种子 <code>random.seed(42)</code> 可以让每次运行得到相同的"随机"序列，方便调试。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 3.3 ==================== -->
+  <div class="section" id="s3">
+    <h2>3.3 经典案例：估算圆周率 $\pi$</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">方法：投点法</div>
+      <p>在 $[0,1] \times [0,1]$ 的正方形内随机投点。落在一个 1/4 单位圆内的概率 = 扇形面积 / 正方形面积 = $\pi/4$。</p>
+      <p>所以在正方形内投 $N$ 个点，统计落在 1/4 圆内的比例 $\frac{M}{N}$，则有：</p>
+      <div class="formula-highlight">$$\frac{M}{N} \approx \frac{\pi}{4} \quad\Longrightarrow\quad \pi \approx 4 \cdot \frac{M}{N}$$</div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">估算 π 的 Python 实现</div>
+      <pre><code class="language-python">import random
+
+def estimate_pi(n):
+    """投 n 个点估算 π 值"""
+    inside = 0
+    for _ in range(n):
+        x, y = random.random(), random.random()
+        if x * x + y * y <= 1:   # 点在 1/4 单位圆内？
+            inside += 1
+    return 4 * inside / n
+
+# 不同样本量的精度
+for n in [100, 1000, 10000, 100000, 1000000]:
+    pi_est = estimate_pi(n)
+    error = abs(pi_est - 3.141592653589793)
+    print(f"n={n:>8}: π≈{pi_est:.6f}, 误差={error:.6f}")</code></pre>
+      <div class="code-output">n=     100: π≈3.120000, 误差=0.021593
+n=    1000: π≈3.144000, 误差=0.002407
+n=   10000: π≈3.137200, 误差=0.004393
+n=  100000: π≈3.142480, 误差=0.000887
+n= 1000000: π≈3.141292, 误差=0.000301</div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">收敛速率</div>
+      <p>蒙特卡洛方法的误差以 $O(1/\sqrt{n})$ 的速率收敛——每多一位有效数字，需要增加约 100 倍的样本量。这不是最快的数值方法，但它极其通用，对高维问题优势明显。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 3.4 ==================== -->
+  <div class="section" id="s4">
+    <h2>3.4 定积分的蒙特卡洛计算</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">方法：均值估计</div>
+      <p>对于定积分 $\int_a^b f(x)\,dx$，在 $[a,b]$ 上均匀随机取 $n$ 个点 $x_i$，则：</p>
+      <div class="formula-highlight">$$\int_a^b f(x)\,dx \approx \frac{b-a}{n} \sum_{i=1}^{n} f(x_i)$$</div>
+      <p>本质：积分 = 区间长度 × 函数均值。我们用随机采样的均值来估计函数的均值。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 · 计算 $\int_0^1 x^2\,dx$</div>
+      <p>解析结果为 $1/3 \approx 0.3333$。</p>
+      <pre><code class="language-python">import random
+
+def mc_integral(f, a, b, n):
+    """蒙特卡洛计算 ∫_a^b f(x) dx"""
+    total = 0
+    for _ in range(n):
+        x = random.uniform(a, b)   # 在 [a,b] 上均匀采样
+        total += f(x)
+    return (b - a) * total / n     # 区间长度 × 样本均值
+
+f = lambda x: x * x
+result = mc_integral(f, 0, 1, 100000)
+print(f"∫_0^1 x² dx ≈ {result:.6f}")  # ≈ 0.3333**</code></pre>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 · 计算 $\int_0^\pi \sin x\,dx$</div>
+      <p>解析结果为 2。</p>
+      <pre><code class="language-python">import math
+
+result = mc_integral(math.sin, 0, math.pi, 100000)
+print(f"∫_0^π sin(x) dx ≈ {result:.6f}")  # ≈ 2.000...</code></pre>
+    </div>
+  </div>
+
+  <!-- ==================== 3.5 ==================== -->
+  <div class="section" id="s5">
+    <h2>3.5 Buffon 投针问题</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">Buffon 投针（1777 年）</div>
+      <p>平面上画有间距为 $d$ 的平行线。随机投一根长度为 $\ell$（$\ell < d$）的针，针与任意平行线相交的概率为：</p>
+      <div class="formula-highlight">$$P(\text{相交}) = \frac{2\ell}{\pi d}$$</div>
+      <p>通过大量投针实验统计相交频率，就可以反解出 $\pi$。这是历史上最早用概率方法估算 $\pi$ 的尝试之一。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">Buffon 投针模拟</div>
+      <pre><code class="language-python">import random, math
+
+def buffon_needle(n, d=1.0, l=0.8):
+    """模拟 n 次 Buffon 投针，d=线间距, l=针长"""
+    crosses = 0
+    for _ in range(n):
+        # 针的中心到最近平行线的距离
+        y = random.uniform(0, d / 2)
+        # 针与平行线的夹角
+        theta = random.uniform(0, math.pi / 2)
+        # 相交条件：针的垂直投影半长 > 到线的距离
+        if y <= (l / 2) * math.sin(theta):
+            crosses += 1
+    pi_est = (2 * l * n) / (d * crosses) if crosses > 0 else 0
+    return crosses / n, pi_est
+
+prob, pi_est = buffon_needle(100000)
+print(f"相交频率: {prob:.4f}  (理论值: {2*0.8/math.pi:.4f})")
+print(f"π 估计值: {pi_est:.6f}")</code></pre>
+    </div>
+  </div>
+
+  <!-- ==================== 3.6 ==================== -->
+  <div class="section" id="s6">
+    <h2>3.6 概率分布采样</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">逆变换采样（Inverse Transform Sampling）</div>
+      <p>如何生成服从任意分布的随机数？<strong>逆变换法</strong>：若 $F(x)$ 是目标分布的 CDF，则 $X = F^{-1}(U)$（$U \sim \text{Uniform}(0,1)$）服从该分布。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 · 生成指数分布的随机数</div>
+      <p>指数分布 Exp($\lambda$) 的 PDF 为 $f(x)=\lambda e^{-\lambda x}$，CDF 为 $F(x)=1-e^{-\lambda x}$，反函数为 $F^{-1}(u)=-\frac{1}{\lambda}\ln(1-u)$。</p>
+      <pre><code class="language-python">import random, math
+
+def exponential_samples(lmbda, n):
+    """用逆变换法生成 n 个 Exp(λ) 样本"""
+    samples = []
+    for _ in range(n):
+        u = random.random()
+        x = -math.log(1 - u) / lmbda  # F^{-1}(u)
+        samples.append(x)
+    return samples
+
+samples = exponential_samples(lmbda=2.0, n=10000)
+mean = sum(samples) / len(samples)
+print(f"样本均值: {mean:.4f}  (理论值: 1/2 = 0.5)")</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">更多采样方法</div>
+      <p>除了逆变换法，还有<strong>取舍采样</strong>（Accept-Reject）、<strong>MCMC</strong>（马尔可夫链蒙特卡洛）、<strong>重要性采样</strong>等。在实际的贝叶斯统计和机器学习中，MCMC 是核心工具。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 3.7 ==================== -->
+  <div class="section" id="s7">
+    <h2>3.7 综合例题</h2>
+
+    <div class="box box-example">
+      <div class="box-title">例题1 · 估算 $e$</div>
+      <p><strong>思路</strong>：在 $[0,1]$ 均匀采样 $X_i$，不断累加直到总和超过 1。设 $N$ 为需要的个数，则 $E[N] = e$。</p>
+      <pre><code class="language-python">import random
+
+def estimate_e(trials=100000):
+    total_n = 0
+    for _ in range(trials):
+        s, n = 0, 0
+        while s <= 1:
+            s += random.random()
+            n += 1
+        total_n += n
+    return total_n / trials
+
+print(f"e ≈ {estimate_e():.6f}")  # ≈ 2.718...</code></pre>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题2 · 计算高维球体的体积</div>
+      <p>蒙特卡洛方法的真正威力在高维问题中显现。$d$ 维单位超球的体积有解析公式，但我们用模拟来验证。</p>
+      <pre><code class="language-python">import random, math
+
+def sphere_volume_mc(d, n=100000):
+    """蒙特卡洛估算 d 维单位超球的体积"""
+    inside = 0
+    for _ in range(n):
+        # 在 [-1, 1]^d 的超立方体内随机取点
+        point = [random.uniform(-1, 1) for _ in range(d)]
+        dist2 = sum(x * x for x in point)  # 到原点的距离平方
+        if dist2 <= 1:
+            inside += 1
+    # 超立方体体积为 2^d，球体积 = 2^d × 在里面 的比例
+    return (2 ** d) * inside / n
+
+for d in [2, 3, 5, 10]:
+    vol = sphere_volume_mc(d, 200000)
+    print(f"d={d}: 超球体积 ≈ {vol:.4f}")</code></pre>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 练习 · 用蒙特卡洛验证生日悖论</div>
+      <div class="collapsible-body">
+        <p><strong>生日悖论</strong>：一个房间里有 23 人，至少两人生日相同的概率超过 50%。用蒙特卡洛模拟验证。</p>
+        <pre><code class="language-python">import random
+
+def birthday_sim(n_people, trials=10000):
+    """模拟 n_people 人中至少两人生日相同的概率"""
+    same = 0
+    for _ in range(trials):
+        birthdays = [random.randint(1, 365) for _ in range(n_people)]
+        if len(birthdays) != len(set(birthdays)):
+            same += 1              # 有重复 → 生日碰撞
+    return same / trials
+
+for n in [10, 23, 30, 50, 70]:
+    prob = birthday_sim(n)
+    print(f"n={n}: P(碰撞) ≈ {prob:.4f}")
+# n=10: ≈ 0.117 | n=23: ≈ 0.507 | n=30: ≈ 0.706
+# n=50: ≈ 0.970 | n=70: ≈ 0.999</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="chapter-nav">
+    <a href="ch2.html" class="prev">第二章 · 递推与递归</a>
+    <a href="ch4.html" class="next">第四章 · 常见算法</a>
+  </div>
+
+</div>
+
+<div class="footer">程序设计B · Python 编程与算法 · 在线学习指南</div>
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+</body>
+</html>

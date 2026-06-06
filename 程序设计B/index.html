@@ -5,175 +5,88 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>程序设计B · Python 编程与算法</title>
   <link rel="stylesheet" href="css/style.css">
-  <script>
-    window.MathJax = {
-      tex: {
-        inlineMath: [['$', '$'], ['\\(', '\\)']],
-        displayMath: [['$$', '$$'], ['\\[', '\\]']],
-        macros: {
-          RR: '\\mathbb{R}',
-          pi: '\\pi',
-          frac: ['\\frac{#1}{#2}', 2],
-        }
-      },
-      svg: { fontCache: 'global' }
-    };
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script src="js/main.js"></script>
 </head>
 <body>
 
-<!-- 导航栏 -->
 <nav class="navbar">
   <a href="../index.html" style="color:rgba(255,255,255,0.65);text-decoration:none;font-size:0.82rem;margin-right:8px;">← 总览</a>
   <a href="index.html" class="nav-brand">程序设计B</a>
   <button class="nav-toggle" aria-label="菜单">☰</button>
   <ul class="nav-links">
-    <li><a href="index.html" class="active">首页</a></li>
-    <li><a href="#ch1">Python 基础</a></li>
-    <li><a href="#ch2">递推与递归</a></li>
-    <li><a href="#ch3">蒙特卡洛模拟</a></li>
-    <li><a href="#ch4">常见算法</a></li>
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">Python 基础</a></li>
+    <li><a href="ch2.html">递推与递归</a></li>
+    <li><a href="ch3.html">蒙特卡洛模拟</a></li>
+    <li><a href="ch4.html">常见算法</a></li>
   </ul>
 </nav>
 
-<!-- 主内容 -->
 <div class="main-content">
 
-  <!-- 英雄区 -->
   <div class="hero">
     <h1>程序设计B</h1>
     <p>Python 编程基础与常用算法 · 从基本语法到蒙特卡洛模拟，系统学习编程思想与算法设计</p>
   </div>
 
-  <!-- 四章总览卡片 -->
   <div class="chapter-cards">
 
-    <div class="chapter-card" id="ch1">
+    <a href="ch1.html" class="chapter-card">
       <span class="card-number">1</span>
       <h3>Python 基础</h3>
       <p>从零开始掌握 Python 编程的核心语法与数据结构，为后续算法学习打下坚实基础。</p>
       <ul>
         <li>变量、数据类型与运算符</li>
         <li>条件判断 (if-elif-else) 与循环 (for/while)</li>
-        <li>列表、元组、字典与集合</li>
+        <li>列表、字典等容器类型</li>
         <li>函数定义、参数传递与作用域</li>
-        <li>文件读写与异常处理</li>
+        <li>综合例题：词频统计、素数筛选</li>
       </ul>
-    </div>
+      <span class="card-link">进入第一章 →</span>
+    </a>
 
-    <div class="chapter-card" id="ch2">
+    <a href="ch2.html" class="chapter-card">
       <span class="card-number">2</span>
       <h3>递推与递归</h3>
-      <p>从递推关系到递归实现，理解问题分解与自相似结构的编程表达。</p>
+      <p>从"已知推未知"的递推思维到"自相似分解"的递归艺术，掌握算法设计的核心范式。</p>
       <ul>
-        <li>递推关系：数列求和、阶乘、幂运算</li>
-        <li>递归三要素：边界条件、递推公式、递归调用</li>
-        <li>经典递归：Fibonacci 数列、Hanoi 塔、全排列</li>
-        <li>递归与迭代的比较：效率与可读性</li>
-        <li>记忆化搜索：避免重复计算</li>
+        <li>递推思想：等差数列、等比数列、阶乘</li>
+        <li>递归三要素：边界、递推公式、递归调用</li>
+        <li>经典递归：Fibonacci、汉诺塔、全排列</li>
+        <li>递归 vs 迭代：效率与适用场景</li>
+        <li>记忆化搜索：用空间换时间</li>
       </ul>
-    </div>
+      <span class="card-link">进入第二章 →</span>
+    </a>
 
-    <div class="chapter-card" id="ch3">
+    <a href="ch3.html" class="chapter-card">
       <span class="card-number">3</span>
       <h3>蒙特卡洛模拟</h3>
-      <p>利用随机采样解决确定性问题的数值方法，是计算科学与金融工程的核心工具。</p>
+      <p>用随机采样解决确定性问题——从估算圆周率到高维积分，掌握统计模拟的核心方法。</p>
       <ul>
-        <li>随机数生成与 random 模块</li>
-        <li>用蒙特卡洛方法估算 $\pi$ 值</li>
+        <li>蒙特卡洛方法的核心思想与大数定律</li>
+        <li>Python random 模块与随机数生成</li>
+        <li>经典案例：投点法估算 $\pi$</li>
         <li>定积分的蒙特卡洛数值计算</li>
-        <li>Buffon 投针问题</li>
-        <li>概率分布的随机采样</li>
+        <li>Buffon 投针与概率分布采样</li>
       </ul>
-    </div>
+      <span class="card-link">进入第三章 →</span>
+    </a>
 
-    <div class="chapter-card" id="ch4">
+    <a href="ch4.html" class="chapter-card">
       <span class="card-number">4</span>
       <h3>常见算法</h3>
-      <p>排序、搜索与基础数据结构算法，理解时间复杂度与空间复杂度的基本概念。</p>
+      <p>排序、搜索、贪心与动态规划——建立评估算法好坏的直觉和拆分问题的思维方式。</p>
       <ul>
-        <li>排序算法：冒泡排序、快速排序、归并排序</li>
-        <li>搜索算法：线性搜索、二分搜索</li>
-        <li>贪心算法与动态规划初步</li>
         <li>时间复杂度与大 O 记号入门</li>
+        <li>排序：冒泡排序 ($O(n^2)$) vs 快速排序 ($O(n\log n)$)</li>
+        <li>二分搜索：从 $O(n)$ 到 $O(\log n)$</li>
         <li>基础数据结构：栈、队列、链表</li>
+        <li>贪心算法与动态规划初步</li>
       </ul>
-    </div>
+      <span class="card-link">进入第四章 →</span>
+    </a>
 
-  </div>
-
-  <!-- 示例代码区 -->
-  <div style="margin-top:3rem;">
-    <h2 style="color:var(--primary);margin-bottom:0.5rem;">示例代码速览</h2>
-    <p style="color:var(--text-muted);margin-bottom:1.25rem;">以下是课程中涉及的几个经典算法示例</p>
-
-    <div class="box box-example">
-      <div class="box-title">斐波那契数列 — 递推实现</div>
-      <pre><code class="language-python">def fibonacci(n):
-    """返回斐波那契数列的前 n 项"""
-    if n <= 0:
-        return []
-    if n == 1:
-        return [0]
-    seq = [0, 1]
-    for i in range(2, n):
-        seq.append(seq[-1] + seq[-2])
-    return seq
-
-print(fibonacci(10))
-# [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]</code></pre>
-    </div>
-
-    <div class="box box-example">
-      <div class="box-title">蒙特卡洛估算 π 值</div>
-      <pre><code class="language-python">import random
-
-def estimate_pi(n=100000):
-    """投 n 个点，统计落在 1/4 单位圆内的比例"""
-    inside = 0
-    for _ in range(n):
-        x, y = random.random(), random.random()
-        if x * x + y * y <= 1:
-            inside += 1
-    return 4 * inside / n
-
-print(estimate_pi(1000000))
-# ≈ 3.141592...</code></pre>
-    </div>
-
-    <div class="box box-example">
-      <div class="box-title">递归 — 汉诺塔问题</div>
-      <pre><code class="language-python">def hanoi(n, src, aux, dst):
-    """将 n 个盘子从 src 柱借助 aux 柱移动到 dst 柱"""
-    if n == 1:
-        print(f"{src} → {dst}")
-        return
-    hanoi(n - 1, src, dst, aux)
-    print(f"{src} → {dst}")
-    hanoi(n - 1, aux, src, dst)
-
-hanoi(3, 'A', 'B', 'C')
-# A → C  A → B  C → B  A → C  B → A  B → C  A → C</code></pre>
-    </div>
-
-    <div class="box box-example">
-      <div class="box-title">快速排序</div>
-      <pre><code class="language-python">def quicksort(arr):
-    if len(arr) <= 1:
-        return arr
-    pivot = arr[len(arr) // 2]
-    left  = [x for x in arr if x < pivot]
-    mid   = [x for x in arr if x == pivot]
-    right = [x for x in arr if x > pivot]
-    return quicksort(left) + mid + quicksort(right)
-
-print(quicksort([3, 6, 8, 10, 1, 2, 1]))
-# [1, 1, 2, 3, 6, 8, 10]</code></pre>
-    </div>
   </div>
 
 </div>
@@ -182,25 +95,7 @@ print(quicksort([3, 6, 8, 10, 1, 2, 1]))
   程序设计B · Python 编程与算法 · 在线学习指南
 </div>
 
-<!-- 回到顶部 -->
-<button class="back-to-top" aria-label="回到顶部" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
-
-<!-- 移动端菜单切换 -->
-<script>
-document.querySelector('.nav-toggle').addEventListener('click', function() {
-  document.querySelector('.nav-links').classList.toggle('open');
-});
-
-// 回到顶部按钮显隐
-window.addEventListener('scroll', function() {
-  document.querySelector('.back-to-top').classList.toggle('visible', window.scrollY > 400);
-});
-
-// 代码高亮
-document.addEventListener('DOMContentLoaded', function() {
-  hljs.highlightAll();
-});
-</script>
+<button class="back-to-top" aria-label="回到顶部">↑</button>
 
 </body>
 </html>
