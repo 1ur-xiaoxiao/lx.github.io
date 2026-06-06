@@ -157,6 +157,7 @@ print(bubble_sort([5, 1, 4, 2, 8]))
   比较 1<2 → 不交换 → [1, 2, 4, 5, 8]
   比较 2<4 → 不交换 → [1, 2, 4, 5, 8]  ← 本轮无交换 → 已有序，提前退出！</div>
       <p style="margin-top:0.5rem;"><strong>关键理解</strong>：<code>swapped</code> 标志位是优化——如果某一轮没有任何交换，说明已经排好序了，不需要继续。这就是代码中 <code>if not swapped: break</code> 的作用。</p>
+    </div>
 
     <div class="box box-example">
       <div class="box-title">快速排序（Quick Sort） — 平均 $O(n \log n)$</div>
