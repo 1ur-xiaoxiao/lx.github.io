@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCollapsibles();
   initBackToTop();
   initActiveNav();
+  if (typeof hljs !== 'undefined') hljs.highlightAll();
 });
 
 // ===== 移动端导航切换 =====
