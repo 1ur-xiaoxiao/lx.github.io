@@ -37,7 +37,7 @@
 
   <div class="chapter-header">
     <h1>附录 · 实用知识速查</h1>
-    <p>零散知识点一页汇总——15 个章节覆盖输入输出、容器操作、函数参数、字符串处理、文件IO、异常处理等最常用技巧，考前快速回顾。</p>
+    <p>零散知识点一页汇总——16 个章节覆盖输入输出、容器操作、函数参数、字符串处理、文件IO、异常处理等最常用技巧，考前快速回顾。</p>
   </div>
 
   <div class="toc">
@@ -58,6 +58,7 @@
       <li><a href="#m">sorted / max / min 的 key 参数</a></li>
       <li><a href="#n">range() 详解</a></li>
       <li><a href="#o">零散实用知识（三元表达式 / del / import / 生成器）</a></li>
+      <li><a href="#p">列表之间的操作（比较 / 包含 / 逐元素运算）</a></li>
     </ol>
   </div>
 
@@ -473,6 +474,26 @@ print(fun(a, *b))    # 120（2×3×4×5）
 # 更多拆包示例
 lst = [1, 2, 3]
 print(*lst)          # 1 2 3（相当于 print(1, 2, 3)）</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">深入理解 print(*b) — 为什么输出用空格分隔？</div>
+      <p><code>print(*b)</code> 这个写法包含<strong>两个关键操作</strong>：</p>
+      <ol>
+        <li><strong>解包操作 <code>*b</code></strong>：把列表 <code>b</code> 中的每个元素拆分成<strong>独立的位置参数</strong>传给 <code>print</code>。比如 <code>b = [47, 13, 11]</code>，<code>print(*b)</code> 完全等价于 <code>print(47, 13, 11)</code></li>
+        <li><strong>print 的默认分隔符 <code>sep</code></strong>：<code>print</code> 函数有一个关键字参数 <code>sep</code>，<strong>默认值就是空格 <code>' '</code></strong>。当传入多个参数时，<code>print</code> 自动在它们之间插入 <code>sep</code></li>
+      </ol>
+      <p style="margin-top:0.75rem;">二者合在一起，<code>print(*b)</code> 就产生了"空格分隔的输出"。</p>
+      <div class="table-wrapper" style="margin-top:0.75rem;">
+        <table>
+          <tr><th>代码写法</th><th>等价于</th><th>输出结果</th></tr>
+          <tr><td><code>print(*b)</code></td><td><code>print(47, 13, 11, sep=' ')</code></td><td><code>47 13 11</code></td></tr>
+          <tr><td><code>print(*b, sep=',')</code></td><td>—</td><td><code>47,13,11</code></td></tr>
+          <tr><td><code>print(*b, sep='')</code></td><td>—</td><td><code>471311</code></td></tr>
+          <tr><td><code>print(b)</code></td><td>直接打印列表对象</td><td><code>[47, 13, 11]</code></td></tr>
+        </table>
+      </div>
+      <p style="margin-top:0.75rem;">这也是 Python 中输出列表元素用空格分隔的<strong>最推荐写法</strong>——不需要手动拼接字符串，不需要处理最后一个元素后面多余的空格。</p>
     </div>
 
     <div class="box box-note">
@@ -1431,6 +1452,132 @@ print(list(gen))  # []  第二次是空的！</code></pre>
       <p>数据量很大但只需<strong>遍历一次</strong> → 用生成器。<br>
       需要<strong>多次访问</strong>或<strong>索引/切片</strong> → 用列表推导式。<br>
       传给 <code>sum()</code>、<code>max()</code>、<code>min()</code>、<code>all()</code>、<code>any()</code> 时 → 直接用生成器表达式，省内存又简洁。</p>
+    </div>
+  </div>
+
+  <!-- ==================== P ==================== -->
+  <div class="section" id="p">
+    <h2>P. 列表之间的操作</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">列表比较 — 按字典序逐个元素比较</div>
+      <p>两个列表可以用 <code>==, !=, &lt;, &gt;, &lt;=, &gt;=</code> 直接比较。<strong>规则</strong>：从索引 0 开始逐个元素比较，第一对不同的元素决定大小。这和字符串的字典序比较逻辑完全一样。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">列表比较示例</div>
+      <pre><code class="language-python"># == 比较：元素逐位相等
+print([1, 2, 3] == [1, 2, 3])    # True
+print([1, 2, 3] == [1, 2, 4])    # False（第3个元素不同）
+
+# < > 比较：按字典序
+print([1, 2, 3] < [1, 2, 4])     # True  (索引2: 3<4)
+print([1, 2] < [1, 2, 0])        # True  (前两个相同，短的更小)
+print([2, 1] > [1, 9])           # True  (索引0: 2>1 就决定了)
+
+# 比较规则：从索引0开始，找到第一对不同元素就比出结果
+# 如果前缀完全相同 → 较短的列表更小</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">判断一个列表是否包含另一个列表的元素</div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">包含关系判断</div>
+      <pre><code class="language-python">a = [1, 2, 3, 4, 5]
+b = [2, 4]
+
+# 判断 b 的每个元素是否都在 a 中（b 是 a 的子集）
+print(all(x in a for x in b))     # True
+
+# 判断是否至少有一个共同元素
+print(any(x in a for x in b))     # True
+
+# 用 set 更高效（O(n+m) vs O(n×m)）
+print(set(b).issubset(set(a)))    # True
+print(set(b) <= set(a))           # True（<= 即 issubset）
+
+# 找共同元素（交集）
+print(list(set(a) & set(b)))      # [2, 4]
+
+# 找 a 有 b 没有的元素（差集）
+print(list(set(a) - set(b)))      # [1, 3, 5]</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">all() 和 any() — 批量判断</div>
+      <p><code>all(可迭代对象)</code>：<strong>全部为 True</strong> 才返回 True（全真则真）。<br>
+      <code>any(可迭代对象)</code>：<strong>至少一个为 True</strong> 就返回 True（有真则真）。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">all / any 用法</div>
+      <pre><code class="language-python">nums = [2, 4, 6, 8]
+
+# 判断是否全部满足条件
+print(all(x % 2 == 0 for x in nums))   # True（全是偶数）
+print(all(x > 5 for x in nums))        # False（2和4不大于5）
+
+# 判断是否存在满足条件的
+print(any(x > 5 for x in nums))        # True（6和8大于5）
+print(any(x < 0 for x in nums))        # False（没有负数）
+
+# 常见用途
+scores = [85, 92, 78, 95, 88]
+print(all(s >= 60 for s in scores))    # True（全部及格）
+print(any(s == 100 for s in scores))   # False（没有满分）
+
+# 与生成器表达式搭配使用（省内存）
+# all(x > 0 for x in range(1000000))  只算到第一个 False 就停</code></pre>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">两个列表的元素逐一配对运算</div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">逐元素操作 — zip + 推导式</div>
+      <pre><code class="language-python">a = [1, 2, 3]
+b = [4, 5, 6]
+
+# 逐位相加
+c = [x + y for x, y in zip(a, b)]
+print(c)          # [5, 7, 9]
+
+# 逐位相乘
+c = [x * y for x, y in zip(a, b)]
+print(c)          # [4, 10, 18]
+
+# 找对应位置较大者
+c = [max(x, y) for x, y in zip(a, b)]
+print(c)          # [4, 5, 6]
+
+# 用 map 的另一种写法
+c = list(map(lambda x, y: x + y, a, b))
+print(c)          # [5, 7, 9]
+
+# 三个列表一起
+c = [1, 2, 3]
+total = [x + y + z for x, y, z in zip(a, b, c)]
+print(total)      # [6, 9, 12]</code></pre>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">列表与列表操作的速记</div>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>需求</th><th>写法</th><th>时间复杂度</th></tr>
+          <tr><td>判断相等</td><td><code>a == b</code></td><td>$O(n)$</td></tr>
+          <tr><td>拼接</td><td><code>a + b</code></td><td>$O(n+m)$</td></tr>
+          <tr><td>B 是否是 A 的子集</td><td><code>set(b) &lt;= set(a)</code></td><td>$O(n+m)$（推荐）</td></tr>
+          <tr><td>B 的元素是否都在 A 中</td><td><code>all(x in a for x in b)</code></td><td>$O(n \times m)$（小数据）</td></tr>
+          <tr><td>A 中是否包含 B 中任一元素</td><td><code>any(x in a for x in b)</code></td><td>$O(n \times m)$</td></tr>
+          <tr><td>逐元素运算</td><td><code>[f(x,y) for x,y in zip(a,b)]</code></td><td>$O(\min(n,m))$</td></tr>
+          <tr><td>元素是否全满足条件</td><td><code>all(cond(x) for x in lst)</code></td><td>$O(n)$ 但可提前退出</td></tr>
+          <tr><td>是否存在满足条件的</td><td><code>any(cond(x) for x in lst)</code></td><td>$O(n)$ 但可提前退出</td></tr>
+        </table>
+      </div>
     </div>
   </div>
 
