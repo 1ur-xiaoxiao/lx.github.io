@@ -197,7 +197,7 @@ const QUIZ_QUESTIONS = {
         "只在实轴上可导"
       ],
       correct: 2,
-      explanation: "$u=x^2+y^2, v=0$。C-R 方程要求 $u_x=v_y \\Rightarrow 2x=0$ 且 $u_y=-v_x \\Rightarrow 2y=0$，只可能在 $z=0$ 处满足。但仅在一点可导不能称为"解析"。"
+      explanation: '$u=x^2+y^2, v=0$。C-R 方程要求 $u_x=v_y \\Rightarrow 2x=0$ 且 $u_y=-v_x \\Rightarrow 2y=0$，只可能在 $z=0$ 处满足。但仅在一点可导不能称为"解析"。"'
     },
     {
       id: "ch2_q8",
@@ -782,7 +782,7 @@ const BOSS_INFO = {
     emoji: "🐉",
     title: "围绕闭合围道盘旋的巨龙",
     color: "#16a34a",
-    description: "守护着 Cauchy 积分公式这条"魔法"的巨龙，内部的值全由边界决定。"
+    description: '守护着 Cauchy 积分公式这条"魔法"的巨龙，内部的值全由边界决定。'
   },
   ch5: {
     name: "级数蜘蛛",
