@@ -36,6 +36,7 @@
     <li><a href="ch5.html">第五章</a></li>
     <li><a href="ch6.html">第六章</a></li>
     <li><a href="ch7.html">第七章</a></li>
+        <li><a href="appendix.html">附录</a></li>
   </ul>
 </nav>
 
@@ -193,6 +194,12 @@
     </div>
 
     <h3>Fourier变换简述（从零介绍）</h3>
+
+    <div class="box box-note">
+      <div class="box-title">如需更深入的理解</div>
+      <p>以下是对 Fourier 变换的扼要回顾，足以完成热传导方程的求解。如果你希望更系统地学习 Fourier 变换的定义来源（从级数到积分的过渡）、完整的性质推导、以及更多计算例题，请参阅<a href="appendix.html#sB" style="color:var(--accent);font-weight:600;">附录 B 节（从级数到积分）</a>和<a href="appendix.html#sC" style="color:var(--accent);font-weight:600;">C 节（傅里叶变换完整讲解）</a>。</p>
+      <p>如果你已经熟悉 Fourier 变换的基本操作，可以跳过这个提示，继续往下阅读。</p>
+    </div>
     <p>对于定义在 $\RR$ 上的函数 $f(x)$（满足适当的可积条件），其<strong>Fourier变换</strong>定义为：</p>
     $$\hat{f}(\xi) = \mathcal{F}[f](\xi) = \int_{-\infty}^{+\infty} f(x)\,e^{-i\xi x}\,\dd x, \quad \xi \in \RR.$$
     <p><strong>Fourier逆变换</strong>（从频率域回到空间域）：</p>

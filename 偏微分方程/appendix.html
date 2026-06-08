@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>附录 · 傅里叶分析基础与速成学习计划</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}', CC: '\\mathbb{C}', NN: '\\mathbb{N}', ZZ: '\\mathbb{Z}',
+          dd: '\\mathrm{d}', pd: '\\partial', lap: '\\Delta', grad: '\\nabla',
+          div: '\\mathrm{div}', rot: '\\mathrm{rot}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;margin-right:12px;">&larr; 总览</a>
+  <a href="index.html" class="nav-brand">偏微分方程教程</a>
+  <button class="nav-toggle" aria-label="菜单">&equiv;</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch0.html">第零章</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+    <li><a href="ch7.html">第七章</a></li>
+    <li><a href="appendix.html" style="color:#ffd966;">附录</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>附录 &middot; 傅里叶分析基础与速成学习计划</h1>
+    <p>从正弦波叠加到傅里叶变换——为偏微分方程学习铺设的数学基石，附带两周速成攻略</p>
+  </div>
+
+  <div class="toc">
+    <h3>附录目录</h3>
+    <ol>
+      <li><a href="#sA">A. 傅里叶级数——从正弦波叠加说起</a></li>
+      <li><a href="#sB">B. 从级数到积分——周期趋于无穷时的极限</a></li>
+      <li><a href="#sC">C. 傅里叶变换——完整讲解</a></li>
+      <li><a href="#sD">D. Fourier 分析在 PDE 各章中的角色地图</a></li>
+      <li><a href="#sE">E. 两周速成学习计划（目标期末 85+）</a></li>
+    </ol>
+  </div>
+
+  <div class="box box-motivation">
+    <div class="box-title">为什么需要这个附录？</div>
+    <p>在学习偏微分方程的过程中，你会反复遇到<strong>傅里叶级数</strong>和<strong>傅里叶变换</strong>：</p>
+    <ul>
+      <li><strong>第一章</strong>：分离变量法自然引出 Fourier 正弦级数展开</li>
+      <li><strong>第二章</strong>：Fourier 变换法是求解全空间热传导方程的核心工具</li>
+      <li><strong>第三章</strong>：矩形域上的 Laplace 方程同样需要 Fourier 展开</li>
+      <li><strong>第四章</strong>：Sturm-Liouville 理论是 Fourier 展开的数学根基</li>
+      <li><strong>第七章</strong>：谱方法直接用 Fourier 级数做数值计算</li>
+    </ul>
+    <p>如果你对傅里叶分析还不太熟悉，这个附录就是为你准备的。我们从最直观的正弦波叠加开始，一路走到傅里叶变换，最后给出一个为期两周的速成学习计划，帮助你在期末取得 85 分以上的成绩。</p>
+  </div>
+
+  <!-- ==================== A. 傅里叶级数 ==================== -->
+  <div class="section" id="sA">
+    <h2>A. 傅里叶级数——从正弦波叠加说起</h2>
+
+    <h3>A.1 核心直觉：任何周期函数 = 正弦波的"菜谱"</h3>
+
+    <div class="box box-intuition">
+      <div class="box-title">直觉建立：正弦波是"基本食材"</div>
+      <p>想象你在听一首歌。这首歌可以分解为：低音鼓的沉闷低频 + 人声的中频 + 镲片的高频嘶嘶声。每一个频率分量都是一种<strong>纯音</strong>（正弦波）。把所有这些纯音按照<strong>适当的强度（振幅）</strong>叠加在一起，就还原出了你听到的那首歌。</p>
+      <p>傅里叶的惊人洞察是：<strong>任何一个周期函数，都可以写成一系列正弦波和余弦波的叠加</strong>。每个正弦/余弦波的频率是基频的整数倍，振幅则由函数的"形状"决定。</p>
+      <p>把这个想法写成数学公式，就是<strong>傅里叶级数</strong>。</p>
+    </div>
+
+    <h3>A.2 三角级数的定义</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 A.1（三角级数）</div>
+      <p>设 $f(x)$ 是周期为 $2\pi$ 的函数。它的<strong>傅里叶级数</strong>为：</p>
+      $$f(x) \sim \frac{a_0}{2} + \sum_{n=1}^{\infty} \big(a_n \cos nx + b_n \sin nx\big),$$
+      <p>其中系数 $a_n, b_n$ 称为<strong>傅里叶系数</strong>，由以下积分给出：</p>
+      $$a_n = \frac{1}{\pi}\int_{-\pi}^{\pi} f(x)\cos nx\,\dd x, \quad n = 0, 1, 2, \ldots$$
+      $$b_n = \frac{1}{\pi}\int_{-\pi}^{\pi} f(x)\sin nx\,\dd x, \quad n = 1, 2, 3, \ldots$$
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">记号说明</div>
+      <p>注意 $a_0$ 是 $\cos(0\cdot x) = 1$ 对应的系数。$a_0/2$ 就是函数在一个周期上的<strong>平均值</strong>：</p>
+      $$\frac{a_0}{2} = \frac{1}{2\pi}\int_{-\pi}^{\pi} f(x)\,\dd x.$$
+      <p>$a_0$ 写成 $a_0/2$ 只是为了让 $a_n$ 的通项公式在 $n=0$ 时也成立（代入 $n=0$ 即得 $a_0 = \frac{1}{\pi}\int_{-\pi}^{\pi} f(x)\,\dd x$）。</p>
+    </div>
+
+    <h3>A.3 为什么刚好是这些系数？——正交性</h3>
+
+    <p>傅里叶系数公式不是凭空猜出来的，它来源于三角函数系的一个关键性质——<strong>正交性</strong>。</p>
+
+    <div class="box box-definition">
+      <div class="box-title">三角函数系的正交性</div>
+      <p>在区间 $[-\pi, \pi]$ 上，集合 $\{1, \cos x, \sin x, \cos 2x, \sin 2x, \ldots\}$ 中任意两个<strong>不同</strong>函数的内积为零：</p>
+      $$\int_{-\pi}^{\pi} \cos mx\cos nx\,\dd x = \begin{cases} 0, & m \neq n, \\ \pi, & m = n \neq 0, \\ 2\pi, & m = n = 0. \end{cases}$$
+      $$\int_{-\pi}^{\pi} \sin mx\sin nx\,\dd x = \begin{cases} 0, & m \neq n, \\ \pi, & m = n \neq 0. \end{cases}$$
+      $$\int_{-\pi}^{\pi} \cos mx\sin nx\,\dd x = 0, \quad \forall m, n.$$
+    </div>
+
+    <div class="box box-intuition">
+      <div class="box-title">类比理解：正交 = "互不干扰"</div>
+      <p>在三维空间中，向量 $\vec{e}_1 = (1,0,0), \vec{e}_2 = (0,1,0), \vec{e}_3 = (0,0,1)$ 两两正交。任何一个向量 $\vec{v}$ 都可以唯一地表示为 $\vec{v} = c_1\vec{e}_1 + c_2\vec{e}_2 + c_3\vec{e}_3$，其中系数由内积给出：$c_i = \vec{v}\cdot\vec{e}_i$。</p>
+      <p>三角函数系做的事情完全一样——<strong>在一个函数空间中提供了一组"正交坐标轴"</strong>。傅里叶系数 $a_n, b_n$ 就是函数 $f$ 在这些"坐标轴"上的投影（内积），其计算方式与向量投影完全类似：</p>
+      $$a_n = \frac{\langle f, \cos nx \rangle}{\langle \cos nx, \cos nx \rangle} = \frac{\int_{-\pi}^{\pi} f(x)\cos nx\,\dd x}{\int_{-\pi}^{\pi} \cos^2 nx\,\dd x}.$$
+      <p>分母对于 $n \ge 1$ 为 $\pi$，对于 $n=0$ 为 $2\pi$。</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">正交性验证（以 $\cos mx\cos nx$ 为例）</div>
+      <p>利用积化和差公式 $\cos mx\cos nx = \frac{1}{2}\big[\cos(m+n)x + \cos(m-n)x\big]$：</p>
+      <p>若 $m \neq n$：</p>
+      $$\int_{-\pi}^{\pi} \cos mx\cos nx\,\dd x = \frac{1}{2}\int_{-\pi}^{\pi} \big[\cos(m+n)x + \cos(m-n)x\big]\dd x = 0.$$
+      <p>（因为 $\cos kx$ 在完整周期上的积分为零，$k \neq 0$。）</p>
+      <p>若 $m = n \neq 0$：$\cos^2 nx = \frac{1+\cos 2nx}{2}$，积分得 $\frac{1}{2} \cdot 2\pi = \pi$。</p>
+    </div>
+
+    <h3>A.4 周期不是 $2\pi$ 怎么办？——一般周期的 Fourier 级数</h3>
+
+    <p>上面的公式假设函数的周期为 $2\pi$。对于一般周期 $2l$ 的函数 $f(x)$，只需要做一个简单的缩放：</p>
+
+    <div class="box box-formula">
+      <div class="box-title">周期 $2l$ 的 Fourier 级数</div>
+      <p>设 $f(x)$ 周期为 $2l$，在 $[-l, l]$ 上可积。其 Fourier 级数为：</p>
+      $$f(x) \sim \frac{a_0}{2} + \sum_{n=1}^{\infty} \left(a_n \cos\frac{n\pi x}{l} + b_n \sin\frac{n\pi x}{l}\right),$$
+      <p>其中：</p>
+      $$a_n = \frac{1}{l}\int_{-l}^{l} f(x)\cos\frac{n\pi x}{l}\,\dd x, \quad n = 0,1,2,\ldots$$
+      $$b_n = \frac{1}{l}\int_{-l}^{l} f(x)\sin\frac{n\pi x}{l}\,\dd x, \quad n = 1,2,3,\ldots$$
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 A.1</div>
+      <p>设 $f(x) = x$，$x \in (-\pi, \pi)$，周期为 $2\pi$。求其 Fourier 级数。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>$f(x) = x$ 是<strong>奇函数</strong>，因此所有余弦系数 $a_n = 0$。</p>
+          <p>正弦系数（分部积分）：</p>
+          $$b_n = \frac{1}{\pi}\int_{-\pi}^{\pi} x\sin nx\,\dd x = \frac{2}{\pi}\int_{0}^{\pi} x\sin nx\,\dd x$$
+          $$= \frac{2}{\pi}\left[-\frac{x\cos nx}{n}\bigg|_0^{\pi} + \frac{1}{n}\int_0^{\pi}\cos nx\,\dd x\right] = \frac{2}{\pi}\left[-\frac{\pi\cos n\pi}{n} + 0\right]$$
+          $$= -\frac{2}{n}\cos n\pi = \frac{2(-1)^{n+1}}{n}.$$
+          <p>因此：</p>
+          $$x \sim 2\left(\frac{\sin x}{1} - \frac{\sin 2x}{2} + \frac{\sin 3x}{3} - \frac{\sin 4x}{4} + \cdots\right) = 2\sum_{n=1}^{\infty}\frac{(-1)^{n+1}}{n}\sin nx.$$
+          <p>注意在 $x = \pm\pi$ 处，级数收敛于 $(f(\pi^+) + f(\pi^-))/2 = (\pi + (-\pi))/2 = 0$，与 $f(\pm\pi)$ 的实际值不相等——这正是 Dirichlet 收敛定理要解释的现象。</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>A.5 什么时候级数收敛到原函数？——Dirichlet 收敛定理</h3>
+
+    <div class="box box-theorem">
+      <div class="box-title">Dirichlet 收敛定理</div>
+      <p>设 $f(x)$ 以 $2\pi$ 为周期，在 $[-\pi, \pi]$ 上<strong>分段光滑</strong>（即 $f$ 和 $f'$ 都只有有限个第一类间断点），则 $f$ 的 Fourier 级数在每一点 $x$ 收敛于</p>
+      $$\frac{f(x^+) + f(x^-)}{2},$$
+      <p>即该点左右极限的<strong>算术平均</strong>。特别地，在 $f$ 的<strong>连续点</strong>处，级数收敛于 $f(x)$ 本身。</p>
+    </div>
+
+    <div class="box box-pitfall">
+      <div class="box-title">常见考试陷阱：间断点处的收敛值</div>
+      <p>考试中经常考察 Fourier 级数在<strong>间断点</strong>处的和。记住：级数不会"选边站"，而是取左右极限的<strong>平均值</strong>。例如 $f(x) = x$ 的 Fourier 级数在 $x = \pi$ 处收敛于 $0$（而非 $\pi$ 或 $-\pi$）。</p>
+      <p>在 PDE 的分离变量法中，初始条件 $\varphi(x)$ 必须满足 Dirichlet 条件才能保证 Fourier 展开逐点收敛——这被编入了定解问题的<strong>相容性条件</strong>中。</p>
+    </div>
+
+    <h3>A.6 奇偶延拓——正弦级数与余弦级数</h3>
+
+    <p>在 PDE 的有界区域问题中（如一端固定、一端绝热的杆），我们常常只需要<strong>正弦级数</strong>或只需要<strong>余弦级数</strong>。这时就要用到<strong>延拓</strong>技术。</p>
+
+    <div class="box box-definition">
+      <div class="box-title">奇延拓 → 正弦级数（Dirichlet 边界条件 $u=0$）</div>
+      <p>若 $f(x)$ 只在 $[0, l]$ 上有定义，将其<strong>奇延拓</strong>到 $[-l, l]$：</p>
+      $$\tilde{f}(x) = \begin{cases} f(x), & 0 \le x \le l, \\ -f(-x), & -l \le x \lt 0. \end{cases}$$
+      <p>则 $\tilde{f}$ 是奇函数，$a_n = 0$，展开为<strong>正弦级数</strong>：</p>
+      $$f(x) \sim \sum_{n=1}^{\infty} b_n \sin\frac{n\pi x}{l}, \quad b_n = \frac{2}{l}\int_0^l f(x)\sin\frac{n\pi x}{l}\,\dd x.$$
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">偶延拓 → 余弦级数（Neumann 边界条件 $u_x=0$）</div>
+      <p>将 $f(x)$ <strong>偶延拓</strong>到 $[-l, l]$：</p>
+      $$\tilde{f}(x) = \begin{cases} f(x), & 0 \le x \le l, \\ f(-x), & -l \le x \lt 0. \end{cases}$$
+      <p>则 $\tilde{f}$ 是偶函数，$b_n = 0$，展开为<strong>余弦级数</strong>：</p>
+      $$f(x) \sim \frac{a_0}{2} + \sum_{n=1}^{\infty} a_n \cos\frac{n\pi x}{l}, \quad a_n = \frac{2}{l}\int_0^l f(x)\cos\frac{n\pi x}{l}\,\dd x.$$
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">与 PDE 的深刻联系</div>
+      <p>你会发现：分离变量法中边界条件的不同类型（Dirichlet / Neumann）恰好对应着 Fourier 展开中不同的函数系（正弦 / 余弦）。这不是巧合——<strong>边界条件决定了本征函数系</strong>，而本征函数系的正交性和完备性（由 Sturm-Liouville 理论保证）使得任意初始条件都可以在该函数系下展开。这正是第四章要深入探讨的内容。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 A.2</div>
+      <p>设 $f(x) = x$，$x \in [0, \pi]$。分别求其正弦级数和余弦级数展开。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p><strong>正弦级数（奇延拓到 $[-\pi, \pi]$）</strong>：$l = \pi$。</p>
+          $$b_n = \frac{2}{\pi}\int_0^{\pi} x\sin nx\,\dd x = -\frac{2}{n}\cos n\pi = \frac{2(-1)^{n+1}}{n}.$$
+          $$x \sim 2\sum_{n=1}^{\infty}\frac{(-1)^{n+1}}{n}\sin nx, \quad x \in [0,\pi).$$
+          <p>在 $x = \pi$ 处级数和为 $0$（奇延拓后的间断点）。</p>
+          <p><strong>余弦级数（偶延拓到 $[-\pi, \pi]$）</strong>：</p>
+          $$a_0 = \frac{2}{\pi}\int_0^{\pi} x\,\dd x = \pi.$$
+          $$a_n = \frac{2}{\pi}\int_0^{\pi} x\cos nx\,\dd x = \frac{2}{n^2\pi}\big[(-1)^n - 1\big], \quad n \ge 1.$$
+          <p>当 $n$ 为偶数时 $a_n = 0$；$n$ 为奇数时 $a_n = -\frac{4}{n^2\pi}$。</p>
+          $$x \sim \frac{\pi}{2} - \frac{4}{\pi}\sum_{k=0}^{\infty}\frac{\cos(2k+1)x}{(2k+1)^2}, \quad x \in [0,\pi].$$
+          <p>余弦级数在 $x=\pi$ 处收敛于 $f(\pi) = \pi$（偶延拓后连续）。注意余弦级数收敛更快（系数 $O(1/n^2)$ vs 正弦的 $O(1/n)$）。</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>A.7 Parseval 等式——能量守恒</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">Parseval 等式</div>
+      <p>若 $f$ 在 $[-\pi, \pi]$ 上平方可积，则：</p>
+      $$\frac{1}{\pi}\int_{-\pi}^{\pi} f^2(x)\,\dd x = \frac{a_0^2}{2} + \sum_{n=1}^{\infty}(a_n^2 + b_n^2).$$
+      <p>Parseval 等式表达的是：<strong>信号的总能量 = 各频率分量能量的总和</strong>。在 PDE 中，这是能量积分的最简形式——各 Fourier 模态的能量相互独立，总能量是各模态能量的代数和。</p>
+    </div>
+
+  </div>
+
+  <!-- ==================== B. 从级数到积分 ==================== -->
+  <div class="section" id="sB">
+    <h2>B. 从级数到积分——周期趋于无穷时的极限</h2>
+
+    <h3>B.1 核心问题：非周期函数怎么办？</h3>
+
+    <div class="box box-intuition">
+      <div class="box-title">直觉建立：把周期"撑到无穷大"</div>
+      <p>傅里叶级数要求函数是<strong>周期</strong>的。但很多实际问题中，函数定义在整个实轴上且不是周期的——比如热传导方程 Cauchy 问题的初始温度分布 $\varphi(x)$。</p>
+      <p>解决思路：把定义在全空间 $\RR$ 上的函数看作是<strong>周期趋于无穷大</strong>的周期函数的极限。当周期 $2l \to \infty$ 时，相邻频率之间的间隔 $\Delta\omega = \pi/l \to 0$——离散的频率谱变成了<strong>连续</strong>的频率谱。级数中的求和 $\sum$ 变成了积分 $\int$。</p>
+    </div>
+
+    <h3>B.2 Fourier 积分定理</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">Fourier 积分（实数形式）</div>
+      <p>设 $f(x)$ 在 $\RR$ 上分段光滑且绝对可积（$\int_{-\infty}^{+\infty} |f(x)|\,\dd x \lt \infty$），则</p>
+      $$f(x) = \int_0^{\infty} \big[A(\omega)\cos\omega x + B(\omega)\sin\omega x\big]\,\dd\omega,$$
+      <p>其中：</p>
+      $$A(\omega) = \frac{1}{\pi}\int_{-\infty}^{+\infty} f(t)\cos\omega t\,\dd t, \quad B(\omega) = \frac{1}{\pi}\int_{-\infty}^{+\infty} f(t)\sin\omega t\,\dd t.$$
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">与级数的精确类比</div>
+      <p>$$\begin{array}{c|c}
+        \text{Fourier 级数（周期 $2l$）} & \text{Fourier 积分（全空间 $\RR$）} \\
+        \hline
+        \displaystyle f(x) = \frac{a_0}{2} + \sum_{n=1}^{\infty}(a_n\cos\frac{n\pi x}{l} + b_n\sin\frac{n\pi x}{l}) & \displaystyle f(x) = \int_0^{\infty}[A(\omega)\cos\omega x + B(\omega)\sin\omega x]\,\dd\omega \\
+        \displaystyle a_n = \frac{1}{l}\int_{-l}^{l} f(t)\cos\frac{n\pi t}{l}\,\dd t & \displaystyle A(\omega) = \frac{1}{\pi}\int_{-\infty}^{+\infty} f(t)\cos\omega t\,\dd t \\
+        \text{离散频率：} \omega_n = n\pi/l & \text{连续频率：} \omega \in (0, +\infty)
+      \end{array}$$
+    </div>
+
+    <div class="box box-pitfall">
+      <div class="box-title">注意 $\frac{1}{\pi}$ vs $\frac{1}{l}$</div>
+      <p>级数系数中的分母是 $1/l$，而积分中的分母是 $1/\pi$。这是因为在过渡 $l \to \infty$ 时，因子 $\Delta\omega = \pi/l$ 被吸收到了积分中。具体推导如下（见下一小节）。</p>
+    </div>
+
+    <h3>B.3 从级数到积分的推导概要</h3>
+
+    <p>将周期 $2l$ 的 Fourier 级数用复数形式写出（见 C.1 节），令 $\xi_n = n\pi/l$，$\Delta\xi = \pi/l$：</p>
+    $$f(x) = \sum_{n=-\infty}^{\infty} \frac{1}{2l}\left(\int_{-l}^{l} f(t)e^{-i\xi_n t}\dd t\right) e^{i\xi_n x}.$$
+    <p>令 $l \to \infty$，则 $\Delta\xi \to 0$，求和变为积分：</p>
+    $$f(x) = \frac{1}{2\pi}\int_{-\infty}^{+\infty} \left(\int_{-\infty}^{+\infty} f(t)e^{-i\xi t}\dd t\right) e^{i\xi x}\dd\xi.$$
+    <p>括号中的表达式正是 Fourier 变换 $\hat{f}(\xi)$——这就是 Fourier 积分定理的复数形式，也是 Fourier 变换和逆变换的来源。</p>
+
+  </div>
+
+  <!-- ==================== C. 傅里叶变换 ==================== -->
+  <div class="section" id="sC">
+    <h2>C. 傅里叶变换——完整讲解</h2>
+
+    <h3>C.1 用复数写——一个更优雅的形式</h3>
+
+    <div class="box box-intuition">
+      <div class="box-title">为什么用复数？</div>
+      <p>由欧拉公式 $e^{i\theta} = \cos\theta + i\sin\theta$，正弦和余弦可以统一写成指数形式。这使得 Fourier 分析的公式变得极其对称和简洁，也使得计算（尤其是求导和卷积）变得异常方便。</p>
+      <p>在 PDE 中，复数形式的 Fourier 变换是主流——简化了从 $u_{xx}$ 到 $-\xi^2\hat{u}$ 的转换，使求解过程清爽利落。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 C.1（Fourier 变换与逆变换）</div>
+      <p>设 $f: \RR \to \CC$ 满足适当的可积条件。其<strong>Fourier 变换</strong>为：</p>
+      $$\boxed{\hat{f}(\xi) = \mathcal{F}[f](\xi) = \int_{-\infty}^{+\infty} f(x)\,e^{-i\xi x}\,\dd x}, \quad \xi \in \RR.$$
+      <p><strong>Fourier 逆变换</strong>（从频率域回到空间域/时间域）：</p>
+      $$\boxed{f(x) = \mathcal{F}^{-1}[\hat{f}](x) = \frac{1}{2\pi}\int_{-\infty}^{+\infty} \hat{f}(\xi)\,e^{i\xi x}\,\dd\xi}.$$
+      <p>记号 $\hat{f}$ 或 $\mathcal{F}[f]$ 都常用。在 PDE 中 $\xi$ 称为<strong>频率变量</strong>（或波数），$x$ 为<strong>空间变量</strong>。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">物理中常见的另一种约定</div>
+      <p>物理和工程中常见的定义把 $2\pi$ 放在指数里：</p>
+      $$\hat{f}(k) = \int_{-\infty}^{+\infty} f(x)e^{-2\pi i k x}\,\dd x, \quad f(x) = \int_{-\infty}^{+\infty} \hat{f}(k)e^{2\pi i k x}\,\dd k.$$
+      <p>两种约定本质相同，本教程采用数学中更常见的第一种（$\frac{1}{2\pi}$ 在逆变换中）。考试中注意看清题目用的是哪种约定！</p>
+    </div>
+
+    <h3>C.2 Fourier 变换的核心性质</h3>
+
+    <p>以下性质是 Fourier 变换在 PDE 中发挥威力的原因。标 &star; 的是 PDE 求解中最常用的三条。</p>
+
+    <div class="box box-formula">
+      <div class="box-title">Fourier 变换性质速查表</div>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>性质</th><th>时域 $f(x)$</th><th>频域 $\hat{f}(\xi)$</th><th>在 PDE 中的用途</th></tr>
+          <tr>
+            <td>&star; <strong>微分</strong></td>
+            <td>$f'(x)$</td>
+            <td>$i\xi\,\hat{f}(\xi)$</td>
+            <td>把对 $x$ 的偏导变成乘以 $i\xi$——PDE 降为 ODE</td>
+          </tr>
+          <tr>
+            <td>&star; <strong>高阶微分</strong></td>
+            <td>$f^{(n)}(x)$</td>
+            <td>$(i\xi)^n\hat{f}(\xi)$</td>
+            <td>$\mathcal{F}[u_{xx}] = -\xi^2\hat{u}$（热方程、波方程核心）</td>
+          </tr>
+          <tr>
+            <td><strong>线性</strong></td>
+            <td>$af(x) + bg(x)$</td>
+            <td>$a\hat{f}(\xi) + b\hat{g}(\xi)$</td>
+            <td>叠加原理在频率域中依然成立</td>
+          </tr>
+          <tr>
+            <td><strong>平移（空间）</strong></td>
+            <td>$f(x - a)$</td>
+            <td>$e^{-ia\xi}\,\hat{f}(\xi)$</td>
+            <td>平移在频域体现为相位变化</td>
+          </tr>
+          <tr>
+            <td><strong>平移（频率）</strong></td>
+            <td>$e^{i\omega x}f(x)$</td>
+            <td>$\hat{f}(\xi - \omega)$</td>
+            <td>调制 ⇔ 频移（通信原理基础）</td>
+          </tr>
+          <tr>
+            <td><strong>伸缩</strong></td>
+            <td>$f(ax)$，$a \neq 0$</td>
+            <td>$\frac{1}{|a|}\hat{f}(\xi/a)$</td>
+            <td>压缩时域 ⇔ 展宽频域（不确定性原理）</td>
+          </tr>
+          <tr>
+            <td>&star; <strong>卷积</strong></td>
+            <td>$(f * g)(x)$</td>
+            <td>$\hat{f}(\xi)\,\hat{g}(\xi)$</td>
+            <td>热核卷积 → 乘积的逆变换（热传导方程解的核心）</td>
+          </tr>
+          <tr>
+            <td><strong>Parseval / Plancherel</strong></td>
+            <td>$\int |f|^2\dd x$</td>
+            <td>$\frac{1}{2\pi}\int |\hat{f}|^2\dd\xi$</td>
+            <td>能量在时域和频域中的守恒</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">微分性质的证明</div>
+      <p>设 $f$ 在 $\RR$ 上连续可微且当 $|x| \to \infty$ 时 $f(x) \to 0$（PDE 中通常满足）：</p>
+      $$\mathcal{F}[f'](\xi) = \int_{-\infty}^{+\infty} f'(x)e^{-i\xi x}\dd x$$
+      <p>分部积分（$u = e^{-i\xi x}$，$\dd v = f'(x)\dd x$）：</p>
+      $$= \Big[f(x)e^{-i\xi x}\Big]_{-\infty}^{+\infty} - \int_{-\infty}^{+\infty} f(x)(-i\xi)e^{-i\xi x}\dd x = 0 + i\xi\int_{-\infty}^{+\infty} f(x)e^{-i\xi x}\dd x = i\xi\,\hat{f}(\xi).$$
+      <p>重复应用即得 $\mathcal{F}[f^{(n)}](\xi) = (i\xi)^n\hat{f}(\xi)$。这一性质是将 PDE 转换为 ODE 的数学基础。</p>
+    </div>
+
+    <h3>C.3 常见函数的 Fourier 变换</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">常用 Fourier 变换对速查表</div>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>$f(x)$</th><th>$\hat{f}(\xi)$</th><th>备注 / PDE 中的位置</th></tr>
+          <tr>
+            <td>$e^{-a|x|}$，$a \gt 0$</td>
+            <td>$\displaystyle\frac{2a}{a^2 + \xi^2}$</td>
+            <td>ch2 例题 2.2.1 的初始条件</td>
+          </tr>
+          <tr>
+            <td>$e^{-ax^2}$，$a \gt 0$</td>
+            <td>$\displaystyle\sqrt{\frac{\pi}{a}}\,e^{-\xi^2/(4a)}$</td>
+            <td>&star; 热核推导的关键！</td>
+          </tr>
+          <tr>
+            <td>矩形脉冲 $\mathbf{1}_{[-a,a]}(x)$</td>
+            <td>$\displaystyle\frac{2\sin(a\xi)}{\xi} = 2a\,\operatorname{sinc}(a\xi)$</td>
+            <td>ch2 例题 2.2.2</td>
+          </tr>
+          <tr>
+            <td>$\delta(x)$（Dirac delta）</td>
+            <td>$1$</td>
+            <td>基本解 / 点源（ch2 热核，ch3 基本解，ch6）</td>
+          </tr>
+          <tr>
+            <td>$1$</td>
+            <td>$2\pi\,\delta(\xi)$</td>
+            <td>常数函数（分布意义）</td>
+          </tr>
+          <tr>
+            <td>$e^{i\omega x}$</td>
+            <td>$2\pi\,\delta(\xi - \omega)$</td>
+            <td>平面波 / 纯频信号</td>
+          </tr>
+          <tr>
+            <td>$\cos(\omega x)$</td>
+            <td>$\pi[\delta(\xi-\omega) + \delta(\xi+\omega)]$</td>
+            <td>分离变量法的本征模态</td>
+          </tr>
+          <tr>
+            <td>符号函数 $\operatorname{sgn}(x)$</td>
+            <td>$\displaystyle\frac{2}{i\xi}$</td>
+            <td>ch2 半无界问题的奇延拓</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 C.1（关键！Gauss 函数的 Fourier 变换）</div>
+      <p>验证 $\displaystyle\mathcal{F}[e^{-ax^2}](\xi) = \sqrt{\frac{\pi}{a}}\,e^{-\xi^2/(4a)}$（$a \gt 0$）。这个结果是热传导方程热核推导的数学核心。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>$$\mathcal{F}[e^{-ax^2}](\xi) = \int_{-\infty}^{+\infty} e^{-ax^2}e^{-i\xi x}\dd x = \int_{-\infty}^{+\infty} e^{-a(x^2 + \frac{i\xi}{a}x)}\dd x.$$</p>
+          <p><strong>配方法</strong>：$x^2 + \frac{i\xi}{a}x = \left(x + \frac{i\xi}{2a}\right)^2 + \frac{\xi^2}{4a^2}$。</p>
+          <p>$$\mathcal{F}[e^{-ax^2}](\xi) = e^{-\xi^2/(4a)}\int_{-\infty}^{+\infty} e^{-a(x + i\xi/(2a))^2}\dd x.$$</p>
+          <p>作复平移 $z = x + i\xi/(2a)$，沿实轴积分经围道积分可证（或直接用"复平移不影响 Gauss 积分的值"这一事实）：</p>
+          $$\int_{-\infty}^{+\infty} e^{-a(x + i\xi/(2a))^2}\dd x = \int_{-\infty}^{+\infty} e^{-ax^2}\dd x = \sqrt{\frac{\pi}{a}}.$$
+          <p>因此 $\mathcal{F}[e^{-ax^2}](\xi) = \sqrt{\frac{\pi}{a}}\,e^{-\xi^2/(4a)}$。注意：Gauss 函数的 Fourier 变换仍然是 Gauss 函数！这是 Gauss 函数独有的性质。</p>
+          <p><strong>在热传导方程中的应用：</strong>取 $a = 1/(4t)$，则 $\mathcal{F}[e^{-x^2/(4t)}] = \sqrt{4\pi t}\,e^{-\xi^2 t}$，进而 $\mathcal{F}^{-1}[e^{-\xi^2 t}] = \frac{1}{\sqrt{4\pi t}}e^{-x^2/(4t)}$——这就是热核。</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>C.4 卷积定理——PDE 求解的"瑞士军刀"</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 C.2（卷积）</div>
+      <p>两个函数 $f, g$ 在 $\RR$ 上的<strong>卷积</strong>定义为：</p>
+      $$(f * g)(x) = \int_{-\infty}^{+\infty} f(x - y)\,g(y)\,\dd y = \int_{-\infty}^{+\infty} f(y)\,g(x - y)\,\dd y.$$
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">卷积定理</div>
+      $$\mathcal{F}[f * g](\xi) = \hat{f}(\xi)\,\hat{g}(\xi),$$
+      $$\mathcal{F}^{-1}[\hat{f}\,\hat{g}](x) = (f * g)(x).$$
+      <p>即：<strong>卷积的 Fourier 变换 = 各自 Fourier 变换的乘积</strong>。反之，<strong>乘积的逆变换 = 各自逆变换的卷积</strong>。</p>
+    </div>
+
+    <div class="box box-intuition">
+      <div class="box-title">在 PDE 中卷积定理的妙用</div>
+      <p>回顾第二章热传导方程的求解过程：</p>
+      <ol>
+        <li>方程经 Fourier 变换后解得 $\hat{u}(\xi,t) = \hat{\varphi}(\xi) \cdot e^{-a^2\xi^2 t}$</li>
+        <li>$e^{-a^2\xi^2 t}$ 的逆变换 $\mathcal{F}^{-1}[e^{-a^2\xi^2 t}] = K(x,t)$（热核）</li>
+        <li>由卷积定理：$u(x,t) = \varphi(x) * K(x,t)$</li>
+      </ol>
+      <p>这正是"基本解的卷积给出一般解"这一现代 PDE 理论核心思想的雏形。第六章的广义函数理论将把这一思想系统化。</p>
+    </div>
+
+  </div>
+
+  <!-- ==================== D. 角色地图 ==================== -->
+  <div class="section" id="sD">
+    <h2>D. Fourier 分析在 PDE 各章中的角色地图</h2>
+
+    <p>下面的表格帮助你理解：当你在某个章节看到 Fourier 相关概念时，它在扮演什么角色，你应该回到附录的哪一部分复习。</p>
+
+    <div class="box box-summary">
+      <div class="box-title">Fourier 分析在 PDE 中的全景图</div>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>章节</th><th>出现的 Fourier 概念</th><th>起什么作用</th><th>对应附录节</th></tr>
+          <tr>
+            <td><strong>第一章</strong> 波动方程</td>
+            <td>Fourier 正弦级数展开<br>（分离变量法 §1.5）</td>
+            <td>将初始位移 $\varphi(x)$ 展开为本征函数 $\sin(n\pi x/l)$ 的级数，确定各模态的振幅系数</td>
+            <td><a href="#sA">A.2, A.4, A.6</a></td>
+          </tr>
+          <tr>
+            <td><strong>第二章</strong> 热传导方程</td>
+            <td>Fourier 变换法（§2.2）<br>Fourier 正弦级数（§2.3）<br>奇/偶延拓（§2.4）</td>
+            <td>把 PDE 变成 ODE；用热核卷积表达全空间解；有界区域展开；半无界区域延拓为全空间</td>
+            <td><a href="#sC">C.1-C.4</a>, <a href="#sA">A.4, A.6</a></td>
+          </tr>
+          <tr>
+            <td><strong>第三章</strong> 调和方程</td>
+            <td>Fourier 正弦展开<br>（矩形域 Laplace 方程 §3.3）</td>
+            <td>矩形域上的分离变量法产生双 Fourier 级数（同时对 $x$ 和 $y$ 展开）</td>
+            <td><a href="#sA">A.4, A.6</a></td>
+          </tr>
+          <tr>
+            <td><strong>第四章</strong> 分类与总结</td>
+            <td>Sturm-Liouville 理论（§4.6）<br>完备性、正交性</td>
+            <td>从数学上证明分离变量法本征函数系的完备性——Fourier 展开的合法性由 S-L 理论保证</td>
+            <td><a href="#sA">A.3, A.5</a></td>
+          </tr>
+          <tr>
+            <td><strong>第六章</strong> 广义解</td>
+            <td>分布 Fourier 变换<br>$\mathcal{F}[\delta] = 1$</td>
+            <td>将 Fourier 变换推广到广义函数（分布），严格定义基本解</td>
+            <td><a href="#sC">C.3</a>（$\delta$ 变换）</td>
+          </tr>
+          <tr>
+            <td><strong>第七章</strong> 数值解</td>
+            <td>Fourier 谱方法（§7.3）</td>
+            <td>用 Fourier 级数（或 Chebyshev 多项式）做全局逼近，离散 Fourier 变换（FFT）加速计算</td>
+            <td><a href="#sA">A 全部</a>, <a href="#sC">C.1-C.2</a></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">学习建议</div>
+      <p>如果你是<strong>零基础</strong>，建议在学完第零章后先浏览本附录的 A 和 C 节，对 Fourier 分析有一个整体概念。然后每当你在一章中遇到 Fourier 相关操作时，回到附录找到对应的基础知识复习。先有整体框架，再在应用中深化理解——这比从头到尾死磕附录要高效得多。</p>
+    </div>
+
+  </div>
+
+  <!-- ==================== E. 两周速成学习计划 ==================== -->
+  <div class="section" id="sE">
+    <h2>E. 两周速成学习计划（目标期末 85+）</h2>
+
+    <div class="box box-motivation">
+      <div class="box-title">计划设计理念</div>
+      <p>这个计划基于以下原则：</p>
+      <ul>
+        <li><strong>80/20 法则</strong>：20% 的核心内容覆盖 80% 的考试分数。优先掌握三类经典方程的求解方法和定性性质，而非面面俱到地学完所有细节。</li>
+        <li><strong>先具体、后抽象</strong>：先通过大量例题掌握<strong>怎么做</strong>（计算），再理解<strong>为什么</strong>（理论）。这与谷超豪教材的编排逻辑一致。</li>
+        <li><strong>重复暴露</strong>：Fourier 级数、分离变量法、Green 函数等核心工具会在不同章节反复出现——每次遇到都是一次复习和深化。</li>
+        <li><strong>输出驱动</strong>：精读一章后<strong>合上书默写</strong>关键公式和解题步骤，然后再对照原文。这比反复阅读有效 10 倍。</li>
+        <li><strong>目标导向</strong>：85 分 ≠ 满分。允许在一些纯理论证明（如极值原理的严格 $\varepsilon$ 论证）上只掌握思路而不默写细节，把时间花在会考计算的地方。</li>
+      </ul>
+    </div>
+
+    <h3>第一周（Day 1–7）：三类经典方程的求解方法</h3>
+
+    <div class="box box-roadmap">
+      <div class="box-title">Day 1 — 预备知识 + 波动方程物理推导</div>
+      <p><strong>上午（3小时）</strong></p>
+      <ul>
+        <li>通读 <a href="ch0.html">第零章</a>：偏导数回顾、PDE 术语、三类方程初览。重点确认自己理解偏导数的计算和链式法则（会出现在化标准型中）。</li>
+        <li>浏览本附录 <a href="#sA">A 节</a>（Fourier 级数）前半部分（A.1–A.3），理解"正交性 → 系数公式"这一核心逻辑链。</li>
+        <li>学习 <a href="ch1.html">第一章 §1.1</a>：从牛顿定律推导波动方程。动手写出微元受力分析，独立推导出 $u_{tt} = a^2 u_{xx}$。</li>
+      </ul>
+      <p><strong>下午（3小时）</strong></p>
+      <ul>
+        <li>学习 <a href="ch1.html">第一章 §1.2</a>：d'Alembert 公式。这是整个 PDE 课程<strong>第一个也是最美的一个显式解</strong>。务必理解变量代换 $\xi = x+at, \eta = x-at$ 的思路，并能独立推导出公式。</li>
+        <li>做 ch1 例题 1.2.1 和 1.2.2，先独立做再看答案。</li>
+        <li>晚上：合上书默写 d'Alembert 公式的推导全过程。</li>
+      </ul>
+      <p><strong>今日核心收获：</strong>波动方程的推导、d'Alembert 公式（无限长弦初值问题的解）。</p>
+    </div>
+
+    <div class="box box-roadmap">
+      <div class="box-title">Day 2 — 波动方程进阶</div>
+      <p><strong>上午（3小时）</strong></p>
+      <ul>
+        <li>学习 <a href="ch1.html">第一章 §1.3–§1.4</a>：依赖区间、决定区域、影响区域；半无界问题的延拓法。</li>
+        <li>重点理解"有限传播速度"的几何意义——特征线 $x \pm at = \text{const}$ 决定了信息传播的边界。</li>
+        <li>做半无界延拓的例题：奇延拓 vs 偶延拓（注意边界条件的对应关系）。</li>
+      </ul>
+      <p><strong>下午（3小时）</strong></p>
+      <ul>
+        <li>学习 <a href="ch1.html">第一章 §1.5</a>：有界弦的分离变量法。<strong>这是重中之重！</strong>从 $u(x,t) = X(x)T(t)$ 的假设开始，完整走一遍：分离变量 → 本征值问题 → 本征函数 → 叠加 → 初始条件确定系数。</li>
+        <li>对照本附录 <a href="#sA">A.4, A.6</a> 理解 Fourier 正弦级数的正交性和系数公式。</li>
+        <li>做 ch1 例题 1.5.1 和 1.5.2。</li>
+        <li>晚上：默写分离变量法求解有界弦振动的完整五步流程。</li>
+      </ul>
+      <p><strong>今日核心收获：</strong>特征线理论、延拓法、分离变量法（五步走）。</p>
+    </div>
+
+    <div class="box box-roadmap">
+      <div class="box-title">Day 3 — 热传导方程：物理 + Fourier 变换法</div>
+      <p><strong>上午（3小时）</strong></p>
+      <ul>
+        <li>学习 <a href="ch2.html">第二章 §2.1</a>：从 Fourier 热传导定律和能量守恒推导热传导方程。与波动方程的推导过程对比（一阶时间导数 vs 二阶时间导数）。</li>
+        <li>仔细阅读本附录 <a href="#sC">C.1–C.3</a>（Fourier 变换定义、性质、常见变换表）。特别记住微分性质 $\mathcal{F}[u_{xx}] = -\xi^2\hat{u}$。</li>
+        <li>学习 <a href="ch2.html">第二章 §2.2</a>：Fourier 变换法求解 Cauchy 问题。<strong>核心流程：</strong>PDE → (Fourier 变换) → ODE → 解 ODE → (逆变换 + 卷积) → 热核卷积公式。每一步都自己推一遍。</li>
+      </ul>
+      <p><strong>下午（3小时）</strong></p>
+      <ul>
+        <li>搞懂 Gauss 函数的 Fourier 变换（附录 <a href="#sC">例题 C.1</a>）——这是热核推导的数学核心。</li>
+        <li>理解热核的五个基本性质（正性、归一性、逼近初始数据、光滑性、满足方程）。</li>
+        <li>做 ch2 例题 2.2.1 和 2.2.2。特别注意 2.2.2 中误差函数 $\operatorname{erf}$ 的出现。</li>
+        <li>晚上：默写 Fourier 变换法求解热传导方程 Cauchy 问题的全过程。</li>
+      </ul>
+      <p><strong>今日核心收获：</strong>热传导方程推导、Fourier 变换法、热核及其性质。</p>
+    </div>
+
+    <div class="box box-roadmap">
+      <div class="box-title">Day 4 — 热传导方程：分离变量 + 极值原理</div>
+      <p><strong>上午（3小时）</strong></p>
+      <ul>
+        <li>学习 <a href="ch2.html">第二章 §2.3</a>：有界杆的分离变量法。重点关注 Dirichlet 和 Neumann 边界条件下本征函数系的区别（正弦 vs 余弦）。</li>
+        <li>理解"高频模态快速死亡"的物理含义——$e^{-a^2(n\pi/l)^2t}$ 中 $n^2$ 因子导致高频成分以平方速率衰减。</li>
+        <li>学习 <a href="ch2.html">第二章 §2.4</a>：半无界问题的延拓法。注意与 ch1 延拓法的异同——思想一样（奇/偶延拓），但用热核卷积公式而非 d'Alembert 公式。</li>
+      </ul>
+      <p><strong>下午（3小时）</strong></p>
+      <ul>
+        <li>学习 <a href="ch2.html">第二章 §2.5</a>：极值原理。理解辅助函数法 $v = u - \varepsilon t$ 的证明思路（不需要逐字默写，但要能说清楚为什么最大值在抛物边界上）。</li>
+        <li>理解极值原理的三个推论：解的唯一性、最大模估计（稳定性）、热传导的不可逆性。</li>
+        <li>学习 <a href="ch2.html">第二章 §2.6</a>：即时光滑化效应。理解为什么热核的 Gauss 型光滑性被"传递"给了任意初始数据。</li>
+        <li>晚上：画一张热传导方程的知识结构图（从物理推导到光滑性定理）。</li>
+      </ul>
+      <p><strong>今日核心收获：</strong>有界杆热传导、极值原理及其推论、即时光滑化的数学机制。</p>
+    </div>
+
+    <div class="box box-roadmap">
+      <div class="box-title">Day 5 — 调和方程</div>
+      <p><strong>上午（3小时）</strong></p>
+      <ul>
+        <li>学习 <a href="ch3.html">第三章 §3.1–§3.2</a>：调和函数定义、基本解、Green 公式与 Green 函数。</li>
+        <li>理解 Poisson 积分公式的推导逻辑：Green 第二公式 → Green 函数 → Poisson 核 → Poisson 积分。</li>
+        <li>重点掌握半空间和球上的 Green 函数构造（镜像法！）。</li>
+      </ul>
+      <p><strong>下午（3小时）</strong></p>
+      <ul>
+        <li>学习 <a href="ch3.html">第三章 §3.3</a>：分离变量法解矩形域和圆域上的 Laplace 方程。注意极坐标下用分离变量法会引出 Euler 方程和 Fourier 级数。</li>
+        <li>学习 <a href="ch3.html">第三章 §3.5–§3.6</a>：调和函数的极值原理、平均值性质、Liouville 定理、Harnack 不等式。理解但不要求默写严格证明——重点是知道这些性质在说什么。</li>
+        <li>晚上：对比三类方程极值原理的异同（波动无、热传导边界+初始、调和函数只边界）。</li>
+      </ul>
+      <p><strong>今日核心收获：</strong>调和函数、Green 函数法（镜像法）、Poisson 积分公式、调和函数的四大性质。</p>
+    </div>
+
+    <div class="box box-roadmap">
+      <div class="box-title">Day 6 — 第四章：分类与总结 + Sturm-Liouville 理论</div>
+      <p><strong>上午（3小时）</strong></p>
+      <ul>
+        <li>学习 <a href="ch4.html">第四章 §4.1–§4.4</a>：二阶线性 PDE 的分类。判别式 $\Delta = a_{12}^2 - a_{11}a_{22}$ 决定了双曲/抛物/椭圆型。</li>
+        <li>做三道化标准型的例题——这是考试的常见题型。掌握特征方程 $a_{11}(\frac{dy}{dx})^2 - 2a_{12}\frac{dy}{dx} + a_{22} = 0$。</li>
+        <li>学习 <a href="ch4.html">第四章 §4.5</a>：叠加原理和 Duhamel 原理（将非齐次方程转化为齐次方程的积分叠加）。</li>
+      </ul>
+      <p><strong>下午（3小时）</strong></p>
+      <ul>
+        <li>学习 <a href="ch4.html">第四章 §4.6</a>：Sturm-Liouville 理论。对照附录 <a href="#sA">A.3, A.5</a>，理解 S-L 理论如何从数学上保证分离变量法的合法性（正交性 + 完备性）。</li>
+        <li>确认一个关键认知：前三章分离变量法得到的 $\sin(n\pi x/l)$、$\cos(n\pi x/l)$、Bessel 函数、Legendre 多项式——全部是某种 S-L 问题的本征函数！</li>
+        <li>学习 <a href="ch4.html">第四章 §4.7</a>：三类方程统一视角。把前三章的知识串起来，填好那张全景对比表。</li>
+        <li>晚上：合上书画出三大方程的全景对比表（类型、判别式、初始条件数、传播速度、光滑性、极值、求解方法）。</li>
+      </ul>
+      <p><strong>今日核心收获：</strong>PDE 分类判别式、化标准型、S-L 理论框架、三大方程全景对比。</p>
+    </div>
+
+    <div class="box box-roadmap">
+      <div class="box-title">Day 7 — 第一周复习 + 综合练习</div>
+      <p><strong>上午（3小时）</strong></p>
+      <ul>
+        <li>回顾第一至四章的全部例题，重点重做那些你第一次做错了或没做出来的。</li>
+        <li>专项练习：分离变量法（波 + 热 + Laplace，每种至少独立做 2 道）。</li>
+        <li>专项练习：Fourier 变换法（热传导方程 Cauchy 问题，至少 2 道）。</li>
+        <li>专项练习：Green 函数法 / Poisson 积分公式（至少 2 道）。</li>
+      </ul>
+      <p><strong>下午（3小时）</strong></p>
+      <ul>
+        <li>做 3–5 道综合性大题（初边值问题的完整求解），计时完成，模拟考试状态。</li>
+        <li>检查薄弱环节：如果你在某个方法上卡壳，回到对应章节重新学习那一节。</li>
+        <li>特别检查：能否独立写出 Fourier 正弦/余弦系数的积分公式？能否独立完成一次完整的 Fourier 变换法求解（从变换到逆变换）？</li>
+      </ul>
+      <p><strong>今日核心收获：</strong>前三章全部求解方法融会贯通，任何经典方程的初边值问题拿到手能开始写。</p>
+    </div>
+
+    <hr style="margin:2rem 0;">
+
+    <h3>第二周（Day 8–14）：进阶理论与总复习</h3>
+
+    <div class="box box-roadmap">
+      <div class="box-title">Day 8 — 第五章：一阶方程与特征线法</div>
+      <p><strong>上午（3小时）</strong></p>
+      <ul>
+        <li>学习 <a href="ch5.html">第五章</a>前半：一阶拟线性 PDE 的特征线法。核心思想——沿特征线将 PDE 化为 ODE 系统。</li>
+        <li>掌握特征线方程 $\frac{dx}{dt} = a(x,t,u)$ 的建立和求解。</li>
+        <li>做 2–3 道一阶传输方程/拟线性方程的例题。</li>
+      </ul>
+      <p><strong>下午（2小时）</strong></p>
+      <ul>
+        <li>学习 <a href="ch5.html">第五章</a>后半：Charpit 方法（一阶完全非线性方程）和 Cauchy-Kovalevskaya 定理（了解即可，考试概率低）。</li>
+        <li>联系第一章的 d'Alembert 法和特征线——你会发现波动方程的特征线法本质上就是第五章的特殊情形。</li>
+        <li>做 1–2 道一阶方程组的特征线法例题。</li>
+      </ul>
+      <p><strong>今日核心收获：</strong>特征线法（PDE → ODE 沿特征线）、一阶传输方程求解。</p>
+    </div>
+
+    <div class="box box-roadmap">
+      <div class="box-title">Day 9 — 第六章：广义解与广义函数</div>
+      <p><strong>上午（3小时）</strong></p>
+      <ul>
+        <li>学习 <a href="ch6.html">第六章</a>前半：$\delta$ 函数与分布（广义函数）的基本概念和运算规则。</li>
+        <li>理解弱解的定义：将 PDE 乘以测试函数后分部积分，使导数转移到测试函数上。</li>
+        <li>理解为什么基本解 $\Phi$ 满足 $\mathcal{L}\Phi = \delta$——这是现代 PDE 理论的根基。</li>
+      </ul>
+      <p><strong>下午（2小时）</strong></p>
+      <ul>
+        <li>学习 Sobolev 空间 $H^1$、$H_0^1$ 的入门概念（只需知道它们是什么，不要求证定理）。</li>
+        <li>理解弱解的存在唯一性依赖于 Lax-Milgram 定理（知道结论即可）。</li>
+        <li>回顾：基本解 + 卷积 = 一般解——这在热传导方程和调和方程中已经见过。</li>
+      </ul>
+      <p><strong>今日核心收获：</strong>$\delta$ 函数与分布、弱解概念、Sobolev 空间入门。</p>
+    </div>
+
+    <div class="box box-roadmap">
+      <div class="box-title">Day 10 — 第七章：数值解简介</div>
+      <p><strong>上午（3小时）</strong></p>
+      <ul>
+        <li>学习 <a href="ch7.html">第七章 §7.1</a>：有限差分法。前向/后向/中心差分格式，显式 vs 隐式，CFL 条件。</li>
+        <li>理解为什么 CFL 条件与第一章特征线理论有关——信息传播速度不能超过数值格式的"信号速度"。</li>
+        <li>学习 <a href="ch7.html">第七章 §7.2–§7.3</a>：有限元法弱形式和谱方法的入门思想。不要求自己写代码，但要能说清楚每种方法的基本思路。</li>
+      </ul>
+      <p><strong>下午（2小时）</strong></p>
+      <ul>
+        <li>做一个数值方法的全景对比：有限差分（局部多项式）vs 有限元（分片多项式）vs 谱方法（全局 Fourier/多项式）。</li>
+        <li>联系解析解法（回顾前六章），理解数值方法本质上是对解析方法（分离变量法、Fourier 变换、变分原理）的离散化。</li>
+      </ul>
+      <p><strong>今日核心收获：</strong>有限差分法的三种格式、CFL 条件的物理来源、数值方法与解析方法的联系。</p>
+    </div>
+
+    <div class="box box-roadmap">
+      <div class="box-title">Day 11 — 核心方法总复习（分离变量法 + Fourier 变换法）</div>
+      <p><strong>上午（3小时）</strong></p>
+      <ul>
+        <li>分离变量法专题：重新做 ch1、ch2、ch3 中所有分离变量的例题。注意对比三种边界条件（Dirichlet/Dirichlet, Dirichlet/Neumann, Neumann/Neumann）下本征函数系的差异。</li>
+        <li>确保自己能从 $u(x,t) = X(x)T(t)$ 开始，独立走完全程到写出用 Fourier 系数表示的级数解。</li>
+      </ul>
+      <p><strong>下午（3小时）</strong></p>
+      <ul>
+        <li>Fourier 变换法专题：重做 ch2 的 Fourier 变换法例题。特别注意卷积定理的使用和 Gauss 积分的计算。</li>
+        <li>延拓法专题：重做 ch1 §1.4 和 ch2 §2.4 的半无界问题，区分奇延拓（$u=0$）和偶延拓（$u_x=0$）。</li>
+        <li>晚上：默写 Fourier 变换性质表（至少线性、微分、平移、卷积四条）和常见变换对（Gauss、指数衰减、矩形脉冲、$\delta$）。</li>
+      </ul>
+      <p><strong>今日核心收获：</strong>分离变量法和 Fourier 变换法达到"肌肉记忆"水平——看到题目就能动手。</p>
+    </div>
+
+    <div class="box box-roadmap">
+      <div class="box-title">Day 12 — 定性理论总复习 + 知识串联</div>
+      <p><strong>上午（3小时）</strong></p>
+      <ul>
+        <li>极值原理专题：对比热传导方程的弱极值原理和调和函数的极值原理。能口述证明思路（辅助函数法），并说出推论（唯一性、稳定性、不可逆性）。</li>
+        <li>能量方法专题：回顾波动方程的能量积分 $E(t) = \frac{1}{2}\int(u_t^2 + a^2u_x^2)\dd x$ 守恒，导出唯一性和稳定性。</li>
+        <li>光滑性对比：波的"忠实传播奇性" vs 热的"即时光滑化" vs 调和函数的"自动解析"。</li>
+      </ul>
+      <p><strong>下午（3小时）</strong></p>
+      <ul>
+        <li>画一张全局知识地图：从 PDE 分类 → 求解方法 → 定性性质，所有八章内容的逻辑关系一目了然。</li>
+        <li>合上书，凭记忆列出：三种经典方程的物理来源、标准形式、求解方法、核心定性定理。</li>
+        <li>回顾本附录 <a href="#sD">D 节</a>，确认你理解 Fourier 分析在每个章节中扮演的角色。</li>
+      </ul>
+      <p><strong>今日核心收获：</strong>定性理论串联，全局知识地图完成。</p>
+    </div>
+
+    <div class="box box-roadmap">
+      <div class="box-title">Day 13 — 模拟考试</div>
+      <p><strong>上午（3.5小时）</strong></p>
+      <ul>
+        <li>模拟一场完整的期末考试（3 小时）：</li>
+        <li>前 30 分钟：判断题/简答题（PDE 分类、极值原理含义、适定性三要素等）</li>
+        <li>中间 1.5 小时：计算题（2 道分离变量法 + 1 道 Fourier 变换法 + 1 道 Green 函数法）</li>
+        <li>最后 1 小时：证明题（极值原理推论 / 能量积分唯一性）</li>
+        <li><strong>闭卷，限时</strong>。不会的题标记下来但不要查书。</li>
+      </ul>
+      <p><strong>下午（2.5小时）</strong></p>
+      <ul>
+        <li>对答案，统计失分点和失分原因（是方法不会？计算出错？概念不清？时间不够？）。</li>
+        <li>针对性地复习失分最多的 2–3 个知识点。</li>
+        <li>如果某个方法（如 Green 函数法）反复出错，回到对应章节重做 3 道例题。</li>
+      </ul>
+      <p><strong>今日核心收获：</strong>发现知识盲区，针对性补强。</p>
+    </div>
+
+    <div class="box box-roadmap">
+      <div class="box-title">Day 14 — 考前冲刺 + 心态调整</div>
+      <p><strong>上午（3小时）</strong></p>
+      <ul>
+        <li>快速过一遍所有章节的总结框（box-summary），确认所有核心公式和定理名称都能说出来。</li>
+        <li>过一遍本附录的 Fourier 变换性质表和常见变换对——确保考试时不需要现场推导 Gauss 积分（记住结论即可）。</li>
+        <li>回顾 Day 13 模拟考中的错题，确保同类型的题不会再错。</li>
+      </ul>
+      <p><strong>下午（2小时）</strong></p>
+      <ul>
+        <li>整理一张"考前必背"清单：d'Alembert 公式、热核公式、Poisson 积分公式、分离变量法五步流程、Fourier 变换性质表、Fourier 系数公式、极值原理及其推论。</li>
+        <li>早睡，保证 7–8 小时睡眠。</li>
+      </ul>
+      <p><strong>今日核心收获：</strong>信心满满、条理清晰地走向考场。</p>
+    </div>
+
+    <hr style="margin:2rem 0;">
+
+    <h3>考试策略速递</h3>
+
+    <div class="box box-summary">
+      <div class="box-title">85+ 考试策略</div>
+      <ol>
+        <li><strong>先做计算题</strong>（通常占 60–70 分）：分离变量法、Fourier 变换法、d'Alembert 公式、Green 函数法。这些是确定性最强的分数——方法对就能拿满。</li>
+        <li><strong>再做判断题/概念题</strong>（通常占 15–20 分）：PDE 分类、三类方程的性质对比、适定性定义。快速作答，不纠结。</li>
+        <li><strong>最后做证明题</strong>（通常占 15–20 分）：极值原理推论、能量积分唯一性。即使不能完整写出严格证明，也要写出核心思路（如"引入辅助函数 $v = u - \varepsilon t$"）——这在很多老师那里能拿到一半以上的分数。</li>
+        <li><strong>时间分配</strong>：若有 3 小时，计算题分配 1 小时 40 分钟，概念题 20 分钟，证明题 40 分钟，最后 20 分钟检查。</li>
+        <li><strong>检查重点</strong>：边界条件是否满足？初始条件是否满足？系数的积分上下限和因子 $2/l$ 是否正确？正弦还是余弦？</li>
+        <li><strong>写清楚步骤</strong>：PDE 考试步骤分很重要。即使最终答案有误，清晰的解题思路（分离变量 → 本征值问题 → 叠加 → 定系数）也能拿到大部分分数。</li>
+      </ol>
+    </div>
+
+    <div class="box box-pitfall">
+      <div class="box-title">最常见的 5 个考场失分点</div>
+      <ol>
+        <li><strong>混淆边界条件对应的本征函数</strong>：$u=0$ → 正弦 $\sin$；$u_x=0$ → 余弦 $\cos$。零点条件 → 正弦，极值点条件 → 余弦。</li>
+        <li><strong>Fourier 系数公式忘因子 $2/l$</strong>：正交性积分 $\int_0^l \sin^2(n\pi x/l)\dd x = l/2$，所以系数 $C_n = \frac{2}{l}\int_0^l f(x)\sin(n\pi x/l)\dd x$，别忘了前面的 $2/l$。</li>
+        <li><strong>Fourier 逆变换忘 $\frac{1}{2\pi}$</strong>：$\mathcal{F}^{-1}[\hat{f}](x) = \frac{1}{2\pi}\int_{-\infty}^{+\infty}\hat{f}(\xi)e^{i\xi x}\dd\xi$。</li>
+        <li><strong>分离变量时常数符号取反</strong>：设 $\frac{X''}{X} = \frac{T'}{a^2T} = -\lambda$（取负号是为了得到振荡型空间解 $X'' + \lambda X = 0$）。如果取成 $+\lambda$，后续全都反了。</li>
+        <li><strong>延拓方向搞反</strong>：Dirichlet 条件（$u=0$）→ 奇延拓（$-$ 号）；Neumann 条件（$u_x=0$）→ 偶延拓（$+$ 号）。口诀："定温奇，绝热偶"。</li>
+      </ol>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">最后的话</div>
+      <p>14 天的速成计划强度很高，但它是有节奏的：第一周建立计算能力（会做题），第二周建立理论视野（懂为什么）+ 查漏补缺。如果你严格按照这个计划执行，85 分是完全现实的目标。</p>
+      <p>最重要的是：<strong>不要只是"看"——要"做"</strong>。PDE 是推导出来的，不是读出来的。每一道例题，先遮住答案自己推一遍。等你合上书也能独立写出 d'Alembert 公式的推导、热核的求解过程、分离变量法的五步流程时——你就不只是为考试准备了，你是真正学会了偏微分方程。</p>
+    </div>
+
+  </div>
+
+  <div class="chapter-nav">
+    <a href="ch7.html" class="prev">第七章 · 数值解简介</a>
+    <a href="index.html" class="next">返回课程首页</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>偏微分方程教程 · 基于谷超豪《数学物理方程》体系 · 零基础入门 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">&uarr;</button>
+<script src="js/main.js"></script>
+</body>
+</html>
