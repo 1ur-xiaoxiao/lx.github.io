@@ -198,6 +198,10 @@ const QuizRenderer = {
       { key: 'ch6', label: '第六章', topic: '留数' }
     ];
 
+    if (!this.container) {
+      console.error('[QuizGame] quiz-app 容器不存在');
+      return;
+    }
     let cardsHTML = '';
     chapters.forEach(ch => {
       const save = data.chapters[ch.key];
@@ -513,9 +517,17 @@ const QuizBattle = {
 // ==================== 顶层应用 ====================
 const QuizApp = {
   init() {
-    QuizState.init();
-    QuizRenderer.init();
-    this.showChapterSelect();
+    try {
+      QuizState.init();
+      QuizRenderer.init();
+      this.showChapterSelect();
+    } catch (e) {
+      console.error('QuizApp 初始化失败:', e);
+      const app = document.getElementById('quiz-app');
+      if (app) {
+        app.innerHTML = `<p style="text-align:center;color:var(--danger);padding:2rem;">游戏加载失败：${e.message}<br><small>请尝试刷新页面或清除浏览器数据后重试。</small></p>`;
+      }
+    }
   },
 
   showChapterSelect() {
@@ -567,9 +579,24 @@ document.addEventListener('DOMContentLoaded', () => {
   // 注意：initNavToggle, initCollapsibles, initBackToTop, initActiveNav
   // 已在 main.js 的 DOMContentLoaded 中注册，这里不需要重复调用。
 
+  console.log('[QuizGame] DOMContentLoaded, 开始初始化...');
+
+  // 检查依赖是否加载
+  if (typeof QUIZ_QUESTIONS === 'undefined') {
+    console.error('[QuizGame] quiz-questions.js 未加载！');
+    document.getElementById('quiz-app').innerHTML =
+      '<p style="text-align:center;color:var(--danger);padding:2rem;">题库文件加载失败，请刷新页面重试。</p>';
+    return;
+  }
+  if (typeof BOSS_INFO === 'undefined') {
+    console.error('[QuizGame] BOSS_INFO 未加载！');
+    return;
+  }
+
   // 启动游戏
   QuizApp.init();
 
   // 暴露 resetAll 给全局（供 header 中的重置按钮使用）
   window.QuizApp = QuizApp;
+  console.log('[QuizGame] 初始化完成');
 });
