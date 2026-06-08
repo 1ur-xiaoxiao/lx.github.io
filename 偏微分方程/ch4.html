@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>第四章 · 热传导方程</title>
+  <title>第四章 · 二阶线性偏微分方程的分类与总结</title>
   <link rel="stylesheet" href="css/style.css">
   <script>
     window.MathJax = {
@@ -23,388 +23,142 @@
 </head>
 <body>
 <nav class="navbar">
-  <a href="../index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
-  <a href="index.html" class="nav-brand">偏微分方程复习</a>
-  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <a href="../index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;margin-right:12px;">&larr; 总览</a>
+  <a href="index.html" class="nav-brand">偏微分方程教程</a>
+  <button class="nav-toggle" aria-label="菜单">&equiv;</button>
   <ul class="nav-links">
     <li><a href="index.html">首页</a></li>
+    <li><a href="ch0.html">第零章</a></li>
     <li><a href="ch1.html">第一章</a></li>
     <li><a href="ch2.html">第二章</a></li>
     <li><a href="ch3.html">第三章</a></li>
     <li><a href="ch4.html">第四章</a></li>
     <li><a href="ch5.html">第五章</a></li>
     <li><a href="ch6.html">第六章</a></li>
+    <li><a href="ch7.html">第七章</a></li>
   </ul>
 </nav>
 
 <div class="main-content">
+
   <div class="chapter-header">
-    <h1>第四章 · 热传导方程</h1>
-    <p>抛物型方程的典型代表——Fourier 变换法求解初值问题，极值原理揭示热传导的不可逆性</p>
+    <h1>第四章 &middot; 二阶线性偏微分方程的分类与总结</h1>
+    <p>回头看：将波动、热传导、Laplace三大方程统一在分类框架下，理解"双曲-抛物-椭圆"三分法的来源与意义</p>
   </div>
 
   <div class="toc">
     <h3>本章目录</h3>
     <ol>
-      <li><a href="#s1">4.1 方程的推导</a></li>
-      <li><a href="#s2">4.2 初值问题的求解</a></li>
-      <li><a href="#s3">4.3 半无界问题</a></li>
-      <li><a href="#s4">4.4 极值原理</a></li>
-      <li><a href="#s5">4.5 解的正则性</a></li>
+      <li><a href="#s1">4.1 为什么要分类？</a></li>
+      <li><a href="#s2">4.2 二阶线性方程的一般形式</a></li>
+      <li><a href="#s3">4.3 判别式与方程分类</a></li>
+      <li><a href="#s4">4.4 化标准型</a></li>
+      <li><a href="#s5">4.5 叠加原理与Duhamel原理</a></li>
+      <li><a href="#s6">4.6 Sturm-Liouville理论</a></li>
+      <li><a href="#s7">4.7 三类方程的统一视角</a></li>
     </ol>
   </div>
 
   <!-- ==================== 4.1 ==================== -->
   <div class="section" id="s1">
-    <h2>4.1 方程的推导</h2>
+    <h2>4.1 为什么要分类？</h2>
 
-    <h3>Fourier 热传导定律</h3>
-
-    <div class="box box-definition">
-      <div class="box-title">Fourier 定律</div>
-      <p>热流密度向量 $\vec{q}$（单位时间通过单位面积的热量）与温度梯度成正比，方向由高温指向低温：</p>
-      $$\vec{q} = -k\,\grad u,$$
-      <p>其中 $k > 0$ 为热传导系数，$u$ 为温度。负号表示热量从高温流向低温。</p>
-    </div>
-
-    <h3>能量守恒推导</h3>
-    <p>设物体占据区域 $\Omega$，其比热容为 $c$，密度为 $\rho$。取内部任意子区域 $D \subset \Omega$，由能量守恒：</p>
-    <p>（$D$ 内热量增加率）=（通过 $\pd D$ 流入的热流）+（$D$ 内热源产生的热量）。</p>
-
-    <p>用数学语言表达：</p>
-    $$\frac{\pd}{\pd t}\int_D c\rho u\,\dd V = -\oint_{\pd D}\vec{q}\cdot\vec{n}\,\dd S + \int_D f\,\dd V,$$
-
-    <p>其中 $f$ 为热源强度。由 Gauss 散度定理，$-\oint_{\pd D}\vec{q}\cdot\vec{n}\,\dd S = \int_D \div(k\grad u)\dd V$。由于 $D$ 的任意性，得</p>
-
-    $$c\rho\frac{\pd u}{\pd t} = \div(k\grad u) + f.$$
-
-    <p>当介质均匀（$k$ 为常数）且无热源（$f=0$）时：</p>
-
-    <div class="box box-formula">
-      <div class="box-title">热传导方程</div>
-      $$\frac{\pd u}{\pd t} = a^2 \lap u, \quad a^2 = \frac{k}{c\rho}.$$
-      <p>一维情形：$u_t = a^2 u_{xx}$。三维情形：$u_t = a^2(u_{xx}+u_{yy}+u_{zz})$。</p>
-    </div>
-
-    <h3>定解条件</h3>
-    <div class="box box-definition">
-      <div class="box-title">初始条件与边界条件</div>
-      <p><strong>初始条件：</strong>$u(x,0) = \varphi(x)$，$x \in \Omega$。</p>
-      <p><strong>边界条件（三种典型类型）：</strong></p>
+    <div class="box box-motivation">
+      <div class="box-title">从具体到抽象</div>
+      <p>前四章我们分别深入学习了波动方程、热传导方程和Laplace方程。尽管它们都是二阶线性PDE，但它们的<strong>数学行为截然不同</strong>：</p>
       <ul>
-        <li><strong>Dirichlet 条件：</strong>$u|_{\pd\Omega} = g(x,t)$（给定边界温度）；</li>
-        <li><strong>Neumann 条件：</strong>$\frac{\pd u}{\pd n}\bigg|_{\pd\Omega} = g(x,t)$（给定边界热流密度）；</li>
-        <li><strong>Robin 条件：</strong>$\left(\frac{\pd u}{\pd n} + \sigma u\right)\bigg|_{\pd\Omega} = g(x,t)$（对流换热的 Newton 冷却定律）。</li>
+        <li>波动方程有<strong>有限传播速度</strong>，热传导方程有<strong>无穷传播速度</strong></li>
+        <li>波动方程<strong>不光滑化</strong>初始数据，热传导方程<strong>即时光滑化</strong></li>
+        <li>Laplace方程的解在<strong>边界</strong>取到极值</li>
       </ul>
-    </div>
-
-    <div class="box box-note">
-      <div class="box-title">与波动方程的本质区别</div>
-      <p>热传导方程是<strong>抛物型</strong>方程，仅含一阶时间导数；波动方程是<strong>双曲型</strong>方程，含二阶时间导数。这一差异导致：</p>
-      <ul>
-        <li>热传导只需一个初始条件（初始温度），波动方程需要两个（初始位移和初始速度）；</li>
-        <li>热传导具有<strong>无穷传播速度</strong>（扰动瞬间影响所有点），波动方程有<strong>有限传播速度</strong>；</li>
-        <li>热传导具有<strong>不可逆性</strong>（时间反演后方程改变），波动方程在时间反演下不变。</li>
-      </ul>
-    </div>
-
-    <div class="box box-example">
-      <div class="box-title">例题 4.1.1</div>
-      <p><strong>问题：</strong>一根长为 $l$ 的均匀细杆，侧面绝热，左端保持 $0$ 度，右端绝热。初始温度分布为 $u(x,0) = x(l-x)$。写出定解问题。</p>
-      <p><strong>解：</strong></p>
-      $$\begin{cases} u_t = a^2 u_{xx}, & 0 < x < l,\ t > 0, \\ u(0,t) = 0,\quad u_x(l,t) = 0, & t > 0, \\ u(x,0) = x(l-x), & 0 \le x \le l. \end{cases}$$
-      <p>这是一个混合边值问题：左端 Dirichlet 条件、右端 Neumann 条件。</p>
-    </div>
-
-    <div class="box box-example">
-      <div class="box-title">例题 4.1.2</div>
-      <p><strong>问题：</strong>设二维区域 $\Omega$ 为单位圆盘，温度满足稳态方程 $\lap u = 0$（即 $u_t = 0$ 的极限情形）。若边界温度 $u|_{r=1} = \cos^2\theta$，求解。</p>
-      <div class="collapsible">
-        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
-        <div class="collapsible-body">
-          <p>用极坐标 $(r,\theta)$。边界值 $\cos^2\theta = \frac{1+\cos 2\theta}{2}$，这已经是 Fourier 展开形式。</p>
-          <p>设 $u(r,\theta) = A_0 + \sum_{n=1}^\infty r^n(A_n\cos n\theta + B_n\sin n\theta)$。</p>
-          <p>与边界条件对比：$A_0 = \frac{1}{2}$，$A_2 = \frac{1}{2}$，其余系数为零。故</p>
-          $$u(r,\theta) = \frac{1}{2} + \frac{r^2}{2}\cos 2\theta = \frac{1}{2}(1 + r^2\cos 2\theta).$$
-          <p>验证：$u(1,\theta) = \frac{1}{2}(1+\cos 2\theta) = \cos^2\theta$。$\square$</p>
-        </div>
-      </div>
+      <p>现在的问题是：<strong>这些差异的根源是什么？</strong> 如何不经过求解就直接从方程的形式判断其行为？</p>
+      <p>答案隐藏在方程<strong>主部系数</strong>之中——本章的核心发现是：二阶项系数矩阵的<strong>判别式符号</strong>决定了方程的一切。</p>
     </div>
   </div>
 
   <!-- ==================== 4.2 ==================== -->
   <div class="section" id="s2">
-    <h2>4.2 初值问题的求解</h2>
+    <h2>4.2 二阶线性方程的一般形式</h2>
 
-    <p>考虑全空间上的初值问题（Cauchy 问题）：</p>
-    $$\begin{cases} u_t = a^2 u_{xx}, & x \in \RR,\ t > 0, \\ u(x,0) = \varphi(x), & x \in \RR. \end{cases}$$
-
-    <h3>Fourier 变换法</h3>
-
-    <p><strong>Fourier 变换的定义：</strong></p>
-    $$\hat{f}(\xi) = \int_{-\infty}^{+\infty} f(x)e^{-i\xi x}\dd x, \quad f(x) = \frac{1}{2\pi}\int_{-\infty}^{+\infty}\hat{f}(\xi)e^{i\xi x}\dd\xi.$$
-
-    <p>对热传导方程两边取 Fourier 变换（关于变量 $x$）：</p>
-    $$\frac{\dd\hat{u}}{\dd t} = -a^2\xi^2\hat{u}.$$
-
-    <p>这是关于 $t$ 的常微分方程，解为</p>
-    $$\hat{u}(\xi,t) = \hat{\varphi}(\xi)\cdot e^{-a^2\xi^2 t}.$$
-
-    <p>$e^{-a^2\xi^2 t}$ 的逆 Fourier 变换为 $\frac{1}{2a\sqrt{\pi t}}e^{-x^2/(4a^2 t)}$（利用 Gauss 函数的 Fourier 变换性质）。由卷积定理：</p>
-
-    <div class="box box-formula">
-      <div class="box-title">热传导方程初值问题的解</div>
-      $$u(x,t) = \int_{-\infty}^{+\infty}\frac{1}{2a\sqrt{\pi t}}e^{-\frac{(x-y)^2}{4a^2 t}}\varphi(y)\,\dd y = \int_{-\infty}^{+\infty}K(x-y,t)\varphi(y)\,\dd y,$$
-      <p>其中热核（基本解）为</p>
-      $$\boxed{K(x,t) = \frac{1}{2a\sqrt{\pi t}}\exp\left(-\frac{x^2}{4a^2 t}\right), \quad t > 0.}$$
+    <div class="box box-definition">
+      <div class="box-title">定义 4.1（二阶线性PDE的一般形式）</div>
+      <p>两个自变量 $x, y$ 的二阶线性偏微分方程的一般形式为</p>
+      $$a_{11}u_{xx} + 2a_{12}u_{xy} + a_{22}u_{yy} + b_1 u_x + b_2 u_y + cu = f,$$
+      <p>其中 $a_{11}, a_{12}, a_{22}, b_1, b_2, c, f$ 均为 $(x, y)$ 的已知函数。</p>
+      <p>二次偏导数项 $a_{11}u_{xx} + 2a_{12}u_{xy} + a_{22}u_{yy}$ 称为方程的<strong>主部</strong>（principal part）。</p>
     </div>
 
-    <h3>热核的性质</h3>
-
-    <div class="box box-theorem">
-      <div class="box-title">热核的基本性质</div>
-      <ol>
-        <li>$K(x,t) > 0$，$\forall x \in \RR$，$t > 0$（正性）；</li>
-        <li>$\int_{-\infty}^{+\infty}K(x,t)\dd x = 1$，$\forall t > 0$（归一性）；</li>
-        <li>$\lim_{t \to 0^+}\int_{-\infty}^{+\infty}K(x-y,t)\varphi(y)\dd y = \varphi(x)$（逼近初始数据）；</li>
-        <li>对每个 $t > 0$，$K(x,t)$ 是 $x$ 的无穷次可微函数（光滑性）；</li>
-        <li>$K(x,t)$ 是 $u_t = a^2 u_{xx}$ 的解（$t > 0$）。</li>
-      </ol>
+    <div class="box box-definition">
+      <div class="box-title">定义 4.2（系数矩阵与判别式）</div>
+      <p>方程主部的<strong>系数矩阵</strong>为 $A = \begin{pmatrix} a_{11} & a_{12} \\ a_{12} & a_{22} \end{pmatrix}.$</p>
+      <p>定义<strong>判别式</strong> $\Delta = a_{12}^2 - a_{11}a_{22} = -\det A.$</p>
     </div>
 
-    <p><strong>性质 2 的验证：</strong>令 $z = x/(2a\sqrt{t})$，则</p>
-    $$\int_{-\infty}^{+\infty}K(x,t)\dd x = \frac{1}{2a\sqrt{\pi t}}\int_{-\infty}^{+\infty}e^{-z^2}\cdot 2a\sqrt{t}\,\dd z = \frac{1}{\sqrt{\pi}}\int_{-\infty}^{+\infty}e^{-z^2}\dd z = 1,$$
-
-    <p>其中用到 Gauss 积分 $\int_{-\infty}^{+\infty}e^{-z^2}\dd z = \sqrt{\pi}$。</p>
-
-    <div class="box box-note">
-      <div class="box-title">与波动方程公式的关键对比</div>
-      <table class="table-wrapper" style="width:100%;border-collapse:collapse;font-size:0.9rem;">
-        <tr><th style="border:1px solid var(--border);padding:0.5rem;background:var(--primary);color:#fff;">比较项</th>
-            <th style="border:1px solid var(--border);padding:0.5rem;background:var(--primary);color:#fff;">波动方程</th>
-            <th style="border:1px solid var(--border);padding:0.5rem;background:var(--primary);color:#fff;">热传导方程</th></tr>
-        <tr><td style="border:1px solid var(--border);padding:0.5rem;">传播速度</td>
-            <td style="border:1px solid var(--border);padding:0.5rem;">有限（$a$）</td>
-            <td style="border:1px solid var(--border);padding:0.5rem;">无穷大</td></tr>
-        <tr><td style="border:1px solid var(--border);padding:0.5rem;">解的光滑性</td>
-            <td style="border:1px solid var(--border);padding:0.5rem;">与初始数据相同</td>
-            <td style="border:1px solid var(--border);padding:0.5rem;">$t>0$ 时无穷次可微</td></tr>
-        <tr><td style="border:1px solid var(--border);padding:0.5rem;">时间反演</td>
-            <td style="border:1px solid var(--border);padding:0.5rem;">不变</td>
-            <td style="border:1px solid var(--border);padding:0.5rem;">变为反向热方程（不适定）</td></tr>
-        <tr><td style="border:1px solid var(--border);padding:0.5rem;">最大值</td>
-            <td style="border:1px solid var(--border);padding:0.5rem;">不一定减小</td>
-            <td style="border:1px solid var(--border);padding:0.5rem;">$t>0$ 时不超初始最大值</td></tr>
-      </table>
+    <div class="box box-pitfall">
+      <div class="box-title">注意符号约定</div>
+      <p>若方程写为 $a u_{xx} + 2b u_{xy} + c u_{yy} + \cdots = 0$，则 $\Delta = b^2 - ac$。但若写为 $a u_{xx} + b u_{xy} + c u_{yy} + \cdots = 0$（无因子2），则 $\Delta = (b/2)^2 - ac$。务必看清交叉项的系数约定！</p>
     </div>
-
-    <div class="box box-example">
-      <div class="box-title">例题 4.2.1</div>
-      <p><strong>问题：</strong>设初始温度 $\varphi(x) = e^{-|x|}$，求热传导方程 $u_t = u_{xx}$（$a=1$）的解。</p>
-      <div class="collapsible">
-        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
-        <div class="collapsible-body">
-          <p>由热核公式：</p>
-          $$u(x,t) = \frac{1}{2\sqrt{\pi t}}\int_{-\infty}^{+\infty}e^{-|y|}\cdot e^{-\frac{(x-y)^2}{4t}}\dd y.$$
-          <p>将积分拆为 $y<0$ 和 $y>0$ 两部分。对 $y>0$ 的部分令 $y-x = 2\sqrt{t}\,z$：</p>
-          $$\int_0^{+\infty}e^{-y}e^{-\frac{(x-y)^2}{4t}}\dd y = e^{-x}\int_0^{+\infty}e^{-y+x}e^{-\frac{(x-y)^2}{4t}}\dd y.$$
-          <p>通过配方可化为误差函数 $\operatorname{erf}$ 的形式。更直接地，利用 Fourier 变换：$\hat{\varphi}(\xi) = \frac{2}{1+\xi^2}$，故</p>
-          $$\hat{u}(\xi,t) = \frac{2}{1+\xi^2}e^{-\xi^2 t},$$
-          $$u(x,t) = \frac{1}{\pi}\int_{-\infty}^{+\infty}\frac{e^{-\xi^2 t}}{1+\xi^2}e^{i\xi x}\dd\xi.$$
-          <p>此积分可用复变函数方法（围道积分）或数值方法计算。当 $t \to 0^+$ 时 $u(x,t) \to e^{-|x|}$；当 $t \to +\infty$ 时 $u(x,t) \to 0$，热量逐渐扩散均匀后趋于零。</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="box box-example">
-      <div class="box-title">例题 4.2.2</div>
-      <p><strong>问题：</strong>设 $\varphi(x) = \begin{cases} 1, & |x| \le 1, \\ 0, & |x| > 1. \end{cases}$ 求 $u(0,t)$。</p>
-      <div class="collapsible">
-        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
-        <div class="collapsible-body">
-          <p>$a=1$，在 $x=0$ 处：</p>
-          $$u(0,t) = \frac{1}{2\sqrt{\pi t}}\int_{-1}^{1}e^{-y^2/(4t)}\dd y.$$
-          <p>令 $z = y/(2\sqrt{t})$：</p>
-          $$u(0,t) = \frac{1}{2\sqrt{\pi t}}\cdot 2\sqrt{t}\int_{-1/(2\sqrt{t})}^{1/(2\sqrt{t})}e^{-z^2}\dd z = \frac{1}{\sqrt{\pi}}\int_{-1/(2\sqrt{t})}^{1/(2\sqrt{t})}e^{-z^2}\dd z = \operatorname{erf}\!\left(\frac{1}{2\sqrt{t}}\right).$$
-          <p>当 $t \to 0^+$：$\operatorname{erf}(+\infty) = 1$，与 $\varphi(0)=1$ 一致。</p>
-          <p>当 $t \to +\infty$：$\operatorname{erf}(0^+) = 0$，温度趋于零。</p>
-          <p>物理意义：初始的矩形温度分布在 $x=0$ 处逐渐"模糊"，向周围扩散，最终归零。</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 可视化 · 热传导方程的解 -->
-  <div class="section" id="viz-heat">
-    <h2>可视化 · 热传导方程的解</h2>
-    <p>观察热传导方程 $u_t = u_{xx}$ 初值问题的解随时间的演化。初始温度分布为 $\varphi(x)$，热量逐渐扩散趋于均匀。</p>
-    <div style="margin:1rem 0;">
-      <label>初始条件:
-        <select id="heat-ic" style="padding:0.3rem;border-radius:6px;border:1px solid var(--border);">
-          <option value="gauss">φ(x) = e^{-x²}</option>
-          <option value="step">φ(x) = 矩形脉冲</option>
-          <option value="sincos">φ(x) = sin(πx)·1_[0,1](x)</option>
-        </select>
-      </label>
-      <button id="heat-btn" style="margin-left:1rem;padding:0.4rem 1rem;border-radius:6px;border:1px solid var(--border);background:var(--bg-white);cursor:pointer;">播放/暂停</button>
-    </div>
-    <canvas id="canvas-heat" width="700" height="300" style="width:100%;max-width:700px;"></canvas>
-    <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.5rem;">$u(x,t) = \int_{-\infty}^{+\infty} \frac{1}{2\sqrt{\pi t}} e^{-(x-\xi)^2/(4t)} \varphi(\xi)\,d\xi$（热核卷积）</p>
-    <script>
-    (function(){
-      var canvas = document.getElementById('canvas-heat');
-      if(!canvas) return;
-      var ctx = canvas.getContext('2d');
-      var W, H, dpr;
-      var XMIN=-8, XMAX=8;
-      var t=0.05, playing=false;
-
-      function resize(){
-        var rect = canvas.getBoundingClientRect();
-        var cw = rect.width || 700;
-        dpr = window.devicePixelRatio || 1;
-        canvas.width = Math.round(cw*dpr);
-        canvas.height = Math.round(300*dpr);
-        canvas.style.width = cw+'px';
-        canvas.style.height = '300px';
-        ctx.setTransform(dpr,0,0,dpr,0,0);
-        W=cw; H=300;
-      }
-
-      function phi(x,ic){
-        if(ic==='gauss') return Math.exp(-x*x);
-        if(ic==='step') return (Math.abs(x)<=1)?1:0;
-        if(ic==='sincos') return (x>=0&&x<=1)?Math.sin(Math.PI*x):0;
-        return 0;
-      }
-
-      function heatK(z,tt){
-        return Math.exp(-z*z/(4*tt))/(2*Math.sqrt(Math.PI*tt));
-      }
-
-      function heatU(x,tv,ic){
-        var a=-15, b=15, n=400;
-        var h=(b-a)/n, s=0;
-        for(var i=0;i<=n;i++){
-          var xi=a+i*h;
-          var w=heatK(x-xi,tv)*phi(xi,ic);
-          s+=(i===0||i===n)?w*0.5:w;
-        }
-        return s*h;
-      }
-
-      var YMIN=-0.2, YMAX=2.8;
-      function x2s(x){ return 50+(x-XMIN)/(XMAX-XMIN)*(W-80); }
-      function y2s(y){ return (H-30)-(y-YMIN)/(YMAX-YMIN)*(H-60); }
-
-      function drawAxes(){
-        ctx.save();
-        ctx.strokeStyle='#bbb'; ctx.lineWidth=1;
-        ctx.beginPath(); ctx.moveTo(50,H-30); ctx.lineTo(W-30,H-30); ctx.stroke();
-        var x0=x2s(0);
-        ctx.beginPath(); ctx.moveTo(x0,20); ctx.lineTo(x0,H-30); ctx.stroke();
-        ctx.fillStyle='#888'; ctx.font='11px sans-serif'; ctx.textAlign='center';
-        for(var v=-8;v<=8;v+=2) ctx.fillText(v,x2s(v),H-15);
-        ctx.fillText('x',W-18,H-15);
-        ctx.textAlign='right';
-        ctx.fillText('1',x0-5,y2s(1)+4); ctx.fillText('2',x0-5,y2s(2)+4); ctx.fillText('u',x0-5,25);
-        ctx.textAlign='left'; ctx.fillStyle='#555'; ctx.font='13px sans-serif';
-        ctx.fillText('t = '+t.toFixed(3),55,38);
-        ctx.restore();
-      }
-
-      function drawCurve(fn,color,lw,dash){
-        ctx.save(); ctx.strokeStyle=color; ctx.lineWidth=lw;
-        if(dash) ctx.setLineDash(dash);
-        ctx.beginPath();
-        var N=350;
-        for(var i=0;i<=N;i++){
-          var x=XMIN+(XMAX-XMIN)*i/N;
-          var v=fn(x), sx=x2s(x), sy=y2s(v);
-          i===0?ctx.moveTo(sx,sy):ctx.lineTo(sx,sy);
-        }
-        ctx.stroke(); ctx.restore();
-      }
-
-      function draw(){
-        var ic=document.getElementById('heat-ic').value;
-        ctx.clearRect(0,0,W,H);
-        drawAxes();
-        drawCurve(function(x){return phi(x,ic);},'rgba(66,133,244,0.35)',1.5,[5,5]);
-        drawCurve(function(x){return heatU(x,t,ic);},'#e63946',2.5,null);
-        ctx.save(); ctx.font='11px sans-serif';
-        ctx.fillStyle='rgba(66,133,244,0.6)'; ctx.fillText('φ(x) 初始',W-130,25);
-        ctx.fillStyle='#e63946'; ctx.fillText('u(x,t)',W-130,40);
-        ctx.restore();
-      }
-
-      function animate(){
-        if(playing){ t+=0.004; if(t>3) t=0.05; }
-        draw();
-        requestAnimationFrame(animate);
-      }
-
-      document.getElementById('heat-btn').addEventListener('click',function(){playing=!playing;});
-      document.getElementById('heat-ic').addEventListener('change',function(){t=0.05;});
-      window.addEventListener('resize',function(){resize();});
-      resize(); animate();
-    })();
-    </script>
   </div>
 
   <!-- ==================== 4.3 ==================== -->
   <div class="section" id="s3">
-    <h2>4.3 半无界问题</h2>
+    <h2>4.3 判别式与方程分类</h2>
 
-    <p>考虑半无界区域 $x > 0$ 上的热传导方程。</p>
-
-    <h3>Dirichlet 条件（奇延拓）</h3>
-
-    <div class="box box-formula">
-      <div class="box-title">Dirichlet 半无界热传导问题</div>
-      $$\begin{cases} u_t = a^2 u_{xx}, & x > 0,\ t > 0, \\ u(x,0) = \varphi(x), & x \ge 0, \\ u(0,t) = 0, & t > 0. \end{cases}$$
+    <div class="box box-theorem">
+      <div class="box-title">定义 4.3（方程的分类）</div>
+      <p>在点 $(x_0, y_0)$ 处，根据判别式 $\Delta = a_{12}^2 - a_{11}a_{22}$：</p>
+      <ul>
+        <li>$\Delta > 0$：<strong>双曲型</strong>（hyperbolic）——"波动家族"</li>
+        <li>$\Delta = 0$：<strong>抛物型</strong>（parabolic）——"热传导家族"</li>
+        <li>$\Delta < 0$：<strong>椭圆型</strong>（elliptic）——"Laplace家族"</li>
+      </ul>
     </div>
 
-    <p><strong>延拓法：</strong>将初始数据 $\varphi$ 奇延拓到 $x<0$：</p>
-    $$\tilde{\varphi}(x) = \begin{cases} \varphi(x), & x \ge 0, \\ -\varphi(-x), & x < 0. \end{cases}$$
+    <div class="box box-intuition">
+      <div class="box-title">特征值视角</div>
+      <p>分类也可通过系数矩阵 $A$ 的特征值判定：</p>
+      <ul>
+        <li>$A$ 有两个异号实特征值 → 双曲型</li>
+        <li>$A$ 有一个零特征值（秩为1）→ 抛物型</li>
+        <li>$A$ 有两个同号实特征值（正定或负定）→ 椭圆型</li>
+      </ul>
+      <p>这解释了为什么叫"双曲"、"抛物"、"椭圆"——它们对应二次型 $a_{11}x^2 + 2a_{12}xy + a_{22}y^2$ 的曲线类型！</p>
+    </div>
 
-    <p>由奇函数的对称性，$u(0,t)=0$ 自动满足。解为</p>
-    $$u(x,t) = \frac{1}{2a\sqrt{\pi t}}\int_0^{+\infty}\varphi(y)\left[e^{-\frac{(x-y)^2}{4a^2 t}} - e^{-\frac{(x+y)^2}{4a^2 t}}\right]\dd y.$$
-
-    <h3>Neumann 条件（偶延拓）</h3>
-    <p>若边界条件为 $u_x(0,t)=0$（绝热端），则对初始数据做偶延拓：</p>
-    $$\tilde{\varphi}(x) = \begin{cases} \varphi(x), & x \ge 0, \\ \varphi(-x), & x < 0. \end{cases}$$
-
-    <p>解为</p>
-    $$u(x,t) = \frac{1}{2a\sqrt{\pi t}}\int_0^{+\infty}\varphi(y)\left[e^{-\frac{(x-y)^2}{4a^2 t}} + e^{-\frac{(x+y)^2}{4a^2 t}}\right]\dd y.$$
+    <h3>验证前三章的方程</h3>
+    <div class="box box-formula">
+      <div class="box-title">三类典型方程的分类验证</div>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>方程</th><th>$a_{11}$</th><th>$a_{12}$</th><th>$a_{22}$</th><th>$\Delta$</th><th>类型</th></tr>
+          <tr><td>$u_{tt} - a^2 u_{xx} = 0$</td><td>$-a^2$</td><td>$0$</td><td>$1$</td><td>$a^2 > 0$</td><td>双曲型</td></tr>
+          <tr><td>$u_t - a^2 u_{xx} = 0$</td><td>$-a^2$</td><td>$0$</td><td>$0$</td><td>$0$</td><td>抛物型</td></tr>
+          <tr><td>$u_{xx} + u_{yy} = 0$</td><td>$1$</td><td>$0$</td><td>$1$</td><td>$-1 < 0$</td><td>椭圆型</td></tr>
+        </table>
+      </div>
+    </div>
 
     <div class="box box-example">
-      <div class="box-title">例题 4.3.1</div>
-      <p><strong>问题：</strong>求解 $u_t = u_{xx}$，$x>0$，$u(x,0)=1$，$u(0,t)=0$。</p>
+      <div class="box-title">例题 4.1</div>
+      <p>判断方程 $u_{xx} + 2u_{xy} + 5u_{yy} = 0$ 的类型，并求系数矩阵的特征值。</p>
       <div class="collapsible">
         <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
         <div class="collapsible-body">
-          <p>奇延拓 $\tilde\varphi(x) = \operatorname{sgn}(x)$。解为</p>
-          $$u(x,t) = \frac{1}{2\sqrt{\pi t}}\int_0^{+\infty}\left[e^{-\frac{(x-y)^2}{4t}} - e^{-\frac{(x+y)^2}{4t}}\right]\dd y.$$
-          <p>对第一项令 $z=(y-x)/(2\sqrt{t})$，对第二项令 $z=(y+x)/(2\sqrt{t})$：</p>
-          $$u(x,t) = \frac{1}{\sqrt{\pi}}\left[\int_{-x/(2\sqrt{t})}^{+\infty}e^{-z^2}\dd z - \int_{x/(2\sqrt{t})}^{+\infty}e^{-z^2}\dd z\right].$$
-          <p>由 $\operatorname{erf}$ 的定义和对称性：</p>
-          $$u(x,t) = \frac{1}{\sqrt{\pi}}\int_{-x/(2\sqrt{t})}^{x/(2\sqrt{t})}e^{-z^2}\dd z = \operatorname{erf}\!\left(\frac{x}{2\sqrt{t}}\right).$$
-          <p><strong>验证：</strong>$u(0,t) = \operatorname{erf}(0) = 0$（满足边界条件）。当 $t \to 0^+$（$x>0$）：$u \to \operatorname{erf}(+\infty) = 1$（满足初始条件）。当 $t \to +\infty$：$u \to 0$。</p>
+          <p>$a_{11}=1, a_{12}=1, a_{22}=5$。$\Delta = 1 - 5 = -4 < 0$，方程为<strong>椭圆型</strong>。</p>
+          <p>$A = \begin{pmatrix} 1 & 1 \\ 1 & 5 \end{pmatrix}$，特征值 $\lambda = 3 \pm \sqrt{5} > 0$，两个同号正特征值，确认为椭圆型。</p>
         </div>
       </div>
     </div>
 
     <div class="box box-example">
-      <div class="box-title">例题 4.3.2</div>
-      <p><strong>问题：</strong>求解 $u_t = u_{xx}$，$x>0$，$u(x,0)=0$，$u_x(0,t)=-q$（$q>0$ 为常数，即左端有恒定热流输入）。</p>
+      <div class="box-title">例题 4.2</div>
+      <p>判断 Tricomi 方程 $y u_{xx} + u_{yy} = 0$ 在各区域的类型。</p>
       <div class="collapsible">
         <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
         <div class="collapsible-body">
-          <p>令 $v = u + qx$，则 $v_t = u_t = u_{xx} = v_{xx}$，$v_x(0,t) = u_x(0,t) + q = 0$，$v(x,0) = qx$。</p>
-          <p>偶延拓 $\tilde\varphi(x) = q|x|$。解为</p>
-          $$v(x,t) = \frac{q}{2\sqrt{\pi t}}\int_0^{+\infty}y\left[e^{-\frac{(x-y)^2}{4t}} + e^{-\frac{(x+y)^2}{4t}}\right]\dd y.$$
-          <p>故 $u(x,t) = v(x,t) - qx$。通过配方和误差函数可以算出具体表达式。当 $t$ 很大时，$u(x,t) \approx \frac{2q\sqrt{t}}{\sqrt{\pi}}e^{-x^2/(4t)} - qx + \cdots$，表示热量不断从边界输入并向右扩散。</p>
+          <p>$a_{11}=y, a_{12}=0, a_{22}=1$。$\Delta = 0 - y \cdot 1 = -y$。</p>
+          <p>$y > 0$：$\Delta < 0$，椭圆型；$y < 0$：$\Delta > 0$，双曲型；$y = 0$：$\Delta = 0$，抛物型。</p>
+          <p>这是典型的<strong>混合型方程</strong>，在跨音速空气动力学中有重要应用。</p>
         </div>
       </div>
     </div>
@@ -412,160 +166,210 @@
 
   <!-- ==================== 4.4 ==================== -->
   <div class="section" id="s4">
-    <h2>4.4 极值原理</h2>
+    <h2>4.4 化标准型</h2>
 
-    <h3>极值原理的陈述</h3>
+    <p>通过自变量变换，可将方程的主部化为<strong>标准型</strong>，揭示方程的本质结构。</p>
+
+    <h3>特征方程</h3>
+    <div class="box box-formula">
+      <div class="box-title">特征方程</div>
+      <p>对二阶线性PDE，其特征方程为</p>
+      $$a_{11}\left(\frac{\dd y}{\dd x}\right)^2 - 2a_{12}\frac{\dd y}{\dd x} + a_{22} = 0.$$
+      <p>解此ODE得到的积分曲线族就是<strong>特征曲线族</strong>。</p>
+    </div>
+
+    <h3>三类标准型</h3>
+    <div class="box box-formula">
+      <div class="box-title">双曲型标准型（$\Delta > 0$）</div>
+      <p>特征方程有两个不同实根 → 两族实特征曲线。取 $\xi, \eta$ 为两族特征曲线的不变量：</p>
+      $$u_{\xi\eta} = \Phi(\xi,\eta,u,u_\xi,u_\eta) \quad \text{（第一标准型）}.$$
+      <p>再令 $\alpha = \frac{\xi+\eta}{2}, \beta = \frac{\xi-\eta}{2}$ → $u_{\alpha\alpha} - u_{\beta\beta} = \tilde\Phi$（第二标准型）。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">抛物型标准型（$\Delta = 0$）</div>
+      <p>特征方程有重根 → 一族特征曲线。取 $\xi$ 为特征不变量，$\eta$ 为与 $\xi$ 独立的任意函数：</p>
+      $$u_{\eta\eta} = \Phi(\xi,\eta,u,u_\xi,u_\eta).$$
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">椭圆型标准型（$\Delta < 0$）</div>
+      <p>特征方程有共轭复根。取 $\xi, \eta$ 为复特征不变量的实部和虚部：</p>
+      $$u_{\xi\xi} + u_{\eta\eta} = \Phi(\xi,\eta,u,u_\xi,u_\eta).$$
+    </div>
 
     <div class="box box-theorem">
-      <div class="box-title">极值原理（弱形式）</div>
-      <p>设 $u(x,t)$ 在有界区域 $\bar{D}_T = [0,l]\times[0,T]$ 上连续，在内部 $D_T = (0,l)\times(0,T]$ 上满足 $u_t = a^2 u_{xx}$。则 $u$ 在 $\bar{D}_T$ 上的最大值和最小值在<strong>抛物边界</strong></p>
-      $$\Gamma = \{(x,t): x=0 \text{ 或 } x=l \text{ 或 } t=0\}$$
-      <p>上取到。即</p>
-      $$\max_{\bar{D}_T} u = \max_\Gamma u, \quad \min_{\bar{D}_T} u = \min_\Gamma u.$$
-    </div>
-
-    <div class="box box-proof">
-      <div class="box-title">证明思路</div>
-      <p>设 $u$ 在 $(x_0, t_0) \in D_T$（$t_0 > 0$）处达到正的最大值 $M > 0$。由极值的必要条件，$u_t(x_0,t_0) = 0$，$u_{xx}(x_0,t_0) \le 0$。但 $u_t = a^2 u_{xx}$，故 $0 = a^2 u_{xx}(x_0,t_0) \le 0$，即 $u_{xx}(x_0,t_0) = 0$。</p>
-      <p>然而这仅是必要条件，不能排除 $u$ 在内部达到最大值的情况。严格证明需要辅助函数法（扰动法）：</p>
-      <p>令 $v(x,t) = u(x,t) + \varepsilon t$（$\varepsilon > 0$），则 $v_t - a^2 v_{xx} = \varepsilon > 0$。若 $v$ 在 $(x_0,t_0) \in D_T$ 处达到最大值，则 $v_t = 0$，$v_{xx} \le 0$，从而 $v_t - a^2 v_{xx} \ge 0$，但严格大于零矛盾（$0 < \varepsilon$ 的严格不等号）。故 $v$ 的最大值必在 $\Gamma$ 上取到。</p>
-      <p>令 $\varepsilon \to 0^+$，得 $u$ 的最大值也在 $\Gamma$ 上取到。最小值的结论对 $-u$ 应用上述结果得到。$\square$</p>
-    </div>
-
-    <h3>唯一性推论</h3>
-
-    <div class="box box-theorem">
-      <div class="box-title">初值问题解的唯一性</div>
-      <p>热传导方程初边值问题的解若存在，则唯一。</p>
-    </div>
-
-    <div class="box box-proof">
-      <div class="box-title">证明</div>
-      <p>设 $u_1, u_2$ 是同一问题的两个解，令 $w = u_1 - u_2$，则 $w$ 满足齐次方程 $w_t = a^2 w_{xx}$，齐次初始条件 $w(x,0)=0$，齐次边界条件。</p>
-      <p>由极值原理，$w$ 的最大值和最小值都在 $\Gamma$ 上取到。在 $\Gamma$ 上 $w=0$，故 $w \le 0$ 且 $w \ge 0$，即 $w \equiv 0$。$\square$</p>
-    </div>
-
-    <h3>最大模估计</h3>
-
-    <div class="box box-theorem">
-      <div class="box-title">最大模估计</div>
-      <p>若 $|u(x,0)| \le M_0$，$|u(0,t)| \le M_1$，$|u(l,t)| \le M_2$，则</p>
-      $$|u(x,t)| \le \max(M_0, M_1, M_2), \quad \forall (x,t) \in \bar{D}_T.$$
-    </div>
-
-    <div class="box box-note">
-      <div class="box-title">热传导的不可逆性</div>
-      <p>极值原理深刻地揭示了热传导的<strong>不可逆性</strong>：</p>
-      <ul>
-        <li>$t > 0$ 时，$u$ 的最大值不超过初始时刻和边界上的最大值——热量只会从高温流向低温，温度趋于均匀化；</li>
-        <li>时间反演 $t \to -t$ 后，方程变为 $u_t = -a^2 u_{xx}$（反向热方程），这是一个<strong>不适定</strong>问题：微小的初始扰动可导致解的巨大变化；</li>
-        <li>极值原理与波动方程的根本差异：波动方程中能量守恒，各处的振幅可以维持甚至叠加放大（驻波），而热传导中温度峰值只减不增。</li>
-      </ul>
+      <div class="box-title">化标准型的步骤总结</div>
+      <ol class="step-list">
+        <li>写出方程主部的系数 $a_{11}, a_{12}, a_{22}$</li>
+        <li>求特征方程 $a_{11}\lambda^2 - 2a_{12}\lambda + a_{22} = 0$（其中 $\lambda = \dd y/\dd x$）</li>
+        <li>根据根的类型确定方程类型</li>
+        <li>解特征方程求特征曲线族，取适当的 $\xi, \eta$</li>
+        <li>利用链式法则计算变换后的偏导数，代入原方程得标准型</li>
+      </ol>
     </div>
 
     <div class="box box-example">
-      <div class="box-title">例题 4.4.1</div>
-      <p><strong>问题：</strong>设 $u$ 满足 $u_t = u_{xx}$（$0 < x < \pi$），$u(0,t)=u(\pi,t)=0$，$u(x,0) = \sin x + \frac{1}{2}\sin 2x$。求 $\max_{x,t} u(x,t)$。</p>
+      <div class="box-title">例题 4.3</div>
+      <p>将 $u_{xx} + 4u_{xy} + 3u_{yy} = 0$ 化为标准型。</p>
       <div class="collapsible">
         <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
         <div class="collapsible-body">
-          <p>用分离变量法求解。设 $u(x,t) = \sum_{n=1}^\infty B_n e^{-n^2 t}\sin nx$。</p>
-          <p>由初始条件 $B_1 = 1$，$B_2 = \frac{1}{2}$，其余为零。故</p>
-          $$u(x,t) = e^{-t}\sin x + \frac{1}{2}e^{-4t}\sin 2x.$$
-          <p>由极值原理，最大值在初始时刻取到。$u(x,0) = \sin x + \frac{1}{2}\sin 2x$，求最大值：$u_x = \cos x + \cos 2x = 0$。</p>
-          <p>$\cos x + 2\cos^2 x - 1 = 0$，即 $2\cos^2 x + \cos x - 1 = 0$，$(2\cos x - 1)(\cos x + 1) = 0$。</p>
-          <p>$\cos x = \frac{1}{2}$（$x=\pi/3$）或 $\cos x = -1$（$x=\pi$，但 $u(\pi,0)=0$）。</p>
-          <p>$u(\pi/3, 0) = \sin\frac{\pi}{3} + \frac{1}{2}\sin\frac{2\pi}{3} = \frac{\sqrt{3}}{2} + \frac{1}{2}\cdot\frac{\sqrt{3}}{2} = \frac{3\sqrt{3}}{4}$。</p>
-          <p>因此 $\max u = \frac{3\sqrt{3}}{4} \approx 1.299$，在 $(x,t) = (\pi/3, 0)$ 处取到。</p>
+          <p>$a_{11}=1, a_{12}=2, a_{22}=3$。$\Delta = 4-3 = 1 > 0$，<strong>双曲型</strong>。</p>
+          <p>特征方程 $\lambda^2 - 4\lambda + 3 = 0$ → $\lambda_1=1, \lambda_2=3$。</p>
+          <p>特征曲线：$\dd y/\dd x = 1$ → $y-x=C_1$；$\dd y/\dd x = 3$ → $y-3x=C_2$。</p>
+          <p>取 $\xi = y-x, \eta = y-3x$。链式法则计算偏导数，代入后化简得：</p>
+          $$u_{\xi\eta} = 0.$$
+          <p>通解：$u = f(y-x) + g(y-3x)$，$f,g$ 为任意函数。</p>
         </div>
       </div>
     </div>
 
     <div class="box box-example">
-      <div class="box-title">例题 4.4.2</div>
-      <p><strong>问题：</strong>利用极值原理证明：若 $u$ 满足 $u_t = u_{xx}$（$0<x<l$，$t>0$），$u(x,0)=0$，$u(0,t)=0$，$u(l,t) = g(t)$，其中 $|g(t)| \le M$，则 $|u(x,t)| \le M$。</p>
-      <p><strong>解：</strong>这是极值原理的直接推论。在抛物边界 $\Gamma$ 上：</p>
-      <ul>
-        <li>$t=0$：$u(x,0)=0$，$|u|=0 \le M$；</li>
-        <li>$x=0$：$u(0,t)=0$，$|u|=0 \le M$；</li>
-        <li>$x=l$：$u(l,t)=g(t)$，$|u| \le M$。</li>
-      </ul>
-      <p>由极值原理 $|u(x,t)| \le \max_\Gamma |u| \le M$。$\square$</p>
+      <div class="box-title">例题 4.4</div>
+      <p>将 $u_{xx} + 2u_{xy} + 5u_{yy} = 0$ 化为标准型。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>$a_{11}=1, a_{12}=1, a_{22}=5$。$\Delta = 1-5 = -4 < 0$，<strong>椭圆型</strong>。</p>
+          <p>特征方程 $\lambda^2 - 2\lambda + 5 = 0$ → $\lambda = 1 \pm 2i$。</p>
+          <p>复特征曲线：$y = (1+2i)x + C$，即 $\zeta = y - (1+2i)x$ 为复不变量。</p>
+          <p>分离实部虚部：$\zeta = (y-x) - 2ix$ → 取 $\xi = y-x, \eta = 2x$。</p>
+          <p>链式法则代入，化简得标准型：$u_{\xi\xi} + u_{\eta\eta} = 0$（Laplace方程）。</p>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- ==================== 4.5 ==================== -->
   <div class="section" id="s5">
-    <h2>4.5 解的正则性</h2>
+    <h2>4.5 叠加原理与Duhamel原理</h2>
 
-    <h3>无穷次可微性</h3>
-
+    <h3>线性叠加原理</h3>
     <div class="box box-theorem">
-      <div class="box-title">解的光滑性</div>
-      <p>设 $u(x,t) = \int_{-\infty}^{+\infty}K(x-y,t)\varphi(y)\dd y$ 是热传导方程初值问题的解，其中 $\varphi$ 有界连续。则对任意 $t > 0$，$u(x,t)$ 是 $x$ 的 $C^\infty$ 函数。进一步，$u$ 在区域 $\RR \times (0,+\infty)$ 上是 $C^\infty$ 的（关于 $x$ 和 $t$ 的任意阶偏导数存在且连续）。</p>
+      <div class="box-title">定理 4.1（叠加原理）</div>
+      <p>设 $L$ 为线性微分算子，满足 $L(au + bv) = aLu + bLv$。则：</p>
+      <ol>
+        <li>若 $u_1, u_2$ 分别是 $Lu = f_1$ 和 $Lu = f_2$ 的解，则 $u_1+u_2$ 是 $Lu = f_1+f_2$ 的解。</li>
+        <li>若 $\{u_n\}$ 是 $Lu = f_n$ 的解，级数 $u = \sum c_n u_n$ 一致收敛且可逐项微分，则 $u$ 是 $Lu = \sum c_n f_n$ 的解。</li>
+      </ol>
     </div>
 
-    <div class="box box-proof">
-      <div class="box-title">证明思路</div>
-      <p>对热核 $K(x-y,t) = \frac{1}{2a\sqrt{\pi t}}e^{-(x-y)^2/(4a^2 t)}$，它关于 $x$ 和 $t$ 都是 $C^\infty$ 的（$t>0$）。对任意偏导数 $\pd_x^m \pd_t^n K(x-y,t)$，其衰减速度足以保证积分</p>
-      $$\pd_x^m \pd_t^n u(x,t) = \int_{-\infty}^{+\infty}\pd_x^m \pd_t^n K(x-y,t)\varphi(y)\dd y$$
-      <p>一致收敛（利用 $|\varphi|$ 的有界性和热核导数的 Gauss 型衰减）。因此可以在积分号下求导，得到的表达式连续。$\square$</p>
-    </div>
-
-    <h3>解析性</h3>
-
+    <h3>Duhamel 原理（齐次化原理）</h3>
     <div class="box box-theorem">
-      <div class="box-title">解的空间解析性</div>
-      <p>在更强的条件下（如 $\varphi$ 有界且满足一定增长条件），热传导方程的解 $u(x,t)$ 对 $x$ 是<strong>实解析</strong>的——在每一点附近可以展开为收敛的幂级数。</p>
-      <p>特别地，热核 $K(x,t)$ 本身关于 $x$ 是整解析函数（可展开为处处收敛的 Taylor 级数）。</p>
-    </div>
-
-    <div class="box box-note">
-      <div class="box-title">与波动方程的本质区别</div>
-      <p>解的正则性是热传导方程与波动方程最深刻的差异之一：</p>
-      <ul>
-        <li><strong>波动方程：</strong>解的光滑性与初始数据相同。若 $\varphi \in C^2$，则 $u(\cdot,t) \in C^2$；若 $\varphi$ 仅连续，则 $u$ 也仅连续。<strong>有限传播速度</strong>意味着解不能比初始数据更光滑。</li>
-        <li><strong>热传导方程：</strong>无论初始数据多"粗糙"（只需有界连续），$t > 0$ 时解立即变成 $C^\infty$，甚至解析。<strong>无穷传播速度</strong>（热核的 Gauss 型衰减使得任意远处的温度瞬间受到影响）导致了这种"即时光滑化"效应。</li>
-      </ul>
-      <p>物理意义：热量的扩散具有"平滑效应"——初始温度的突变会立即被抹平，任何尖峰和间断瞬间消失。而波动则忠实地传播初始形态的奇异性。</p>
+      <div class="box-title">定理 4.2（Duhamel 原理）</div>
+      <p>将非齐次源项 $f(x,t)$ 视为在时刻 $\tau$ 注入的"瞬时激励"。设 $v(x,t;\tau)$ 是在时刻 $\tau$ 以 $f(x,\tau)$ 为初始值的齐次问题解，则非齐次问题的解为这些瞬时响应的叠加：</p>
+      $$u(x,t) = \int_0^t v(x,t;\tau)\,\dd\tau.$$
     </div>
 
     <div class="box box-example">
-      <div class="box-title">例题 4.5.1</div>
-      <p><strong>问题：</strong>设初始温度 $\varphi(x) = |x|$（在原点不可微）。说明 $t>0$ 时解变为无穷次可微。</p>
+      <div class="box-title">例题 4.5</div>
+      <p>利用叠加原理分解：$u_{tt} = u_{xx} + \sin(2t)$，$u(x,0)=0, u_t(x,0)=\cos x$。</p>
       <div class="collapsible">
         <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
         <div class="collapsible-body">
-          <p>解为 $u(x,t) = \frac{1}{2\sqrt{\pi t}}\int_{-\infty}^{+\infty}|y|e^{-(x-y)^2/(4t)}\dd y$。</p>
-          <p>$\varphi(x)=|x|$ 在 $x=0$ 处不可微。但当 $t>0$ 时，热核 $K(x-y,t)$ 是 $x$ 的 $C^\infty$ 函数，由积分号下求导定理，</p>
-          $$\pd_x^n u(x,t) = \frac{1}{2\sqrt{\pi t}}\int_{-\infty}^{+\infty}|y|\pd_x^n e^{-(x-y)^2/(4t)}\dd y$$
-          <p>对任意 $n$ 存在且连续。特别地，</p>
-          $$u_x(0,t) = \frac{1}{2\sqrt{\pi t}}\int_{-\infty}^{+\infty}|y|\cdot\frac{y}{2t}e^{-y^2/(4t)}\dd y = \frac{1}{4t\sqrt{\pi t}}\int_{-\infty}^{+\infty}y|y|e^{-y^2/(4t)}\dd y = 0,$$
-          <p>因为被积函数 $y|y|e^{-y^2/(4t)}$ 是奇函数。初始数据的尖点（不可微点）在 $t>0$ 的瞬间被热核"平滑"掉了。</p>
+          <p>分解为两个子问题：</p>
+          <p>子问题1（齐次方程 + 非齐次初值）：$u^{(1)}_{tt} = u^{(1)}_{xx}$, $u^{(1)}(x,0)=0, u^{(1)}_t(x,0)=\cos x$。</p>
+          <p>子问题2（非齐次方程 + 零初值）：$u^{(2)}_{tt} = u^{(2)}_{xx} + \sin(2t)$, $u^{(2)}(x,0)=0, u^{(2)}_t(x,0)=0$。</p>
+          <p>子问题1用d'Alembert公式：$u^{(1)} = \cos x \sin t$。</p>
+          <p>子问题2用Duhamel原理或猜解：$u^{(2)} = \frac{t}{2} - \frac{\sin(2t)}{4}$。</p>
+          <p>总解：$u = \cos x \sin t + \frac{t}{2} - \frac{\sin(2t)}{4}$。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 4.6 ==================== -->
+  <div class="section" id="s6">
+    <h2>4.6 Sturm-Liouville 理论</h2>
+
+    <p>前三章中反复出现的<strong>分离变量法</strong>，其数学基础是 Sturm-Liouville 理论。本节给出其系统化的数学框架。</p>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 4.4（正则 Sturm-Liouville 问题）</div>
+      <p>在区间 $(a,b)$ 上求非平凡解 $X(x)$ 和常数 $\lambda$，使得</p>
+      $$\frac{\dd}{\dd x}\left[p(x)\frac{\dd X}{\dd x}\right] + [q(x) + \lambda r(x)]X = 0,$$
+      <p>满足分离边界条件 $\alpha_1 X(a) + \alpha_2 X'(a) = 0$，$\beta_1 X(b) + \beta_2 X'(b) = 0$。</p>
+      <p>其中 $p(x) > 0$，$r(x) > 0$ 为权函数。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 4.3（S-L问题的基本性质）</div>
+      <ol>
+        <li><strong>本征值</strong>：存在无穷多个实本征值 $\lambda_1 \le \lambda_2 \le \cdots$，$\lambda_n \to +\infty$。</li>
+        <li><strong>正交性</strong>：不同本征值对应的本征函数关于权 $r(x)$ 正交：$\int_a^b r(x)X_m(x)X_n(x)\dd x = 0$（$m \neq n$）。</li>
+        <li><strong>完备性</strong>：任意 $f \in L^2_r(a,b)$ 可展开为 Fourier 级数 $f = \sum c_n X_n$。</li>
+      </ol>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">S-L理论的统一视角</div>
+      <p>前三章中遇到的本征值问题都是S-L问题的特例：</p>
+      <ul>
+        <li>弦振动：$p=1, q=0, r=1$ → 正弦/余弦本征函数</li>
+        <li>Bessel方程：$p(r)=r, q(r)=-m^2/r, r(r)=r$ → Bessel函数</li>
+        <li>Legendre方程：$p(x)=1-x^2, q=0, r=1$ → Legendre多项式</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ==================== 4.7 ==================== -->
+  <div class="section" id="s7">
+    <h2>4.7 三类方程的统一视角</h2>
+
+    <div class="box box-summary">
+      <div class="box-title">三大方程的全景对比</div>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>特征</th><th>波动方程（双曲型）</th><th>热传导方程（抛物型）</th><th>Laplace方程（椭圆型）</th></tr>
+          <tr><td>标准形式</td><td>$u_{tt}=a^2u_{xx}$</td><td>$u_t=a^2u_{xx}$</td><td>$u_{xx}+u_{yy}=0$</td></tr>
+          <tr><td>判别式</td><td>$\Delta > 0$</td><td>$\Delta = 0$</td><td>$\Delta < 0$</td></tr>
+          <tr><td>时间导数阶</td><td>2阶</td><td>1阶</td><td>0阶（稳态）</td></tr>
+          <tr><td>初始条件数</td><td>2个</td><td>1个</td><td>0个</td></tr>
+          <tr><td>传播速度</td><td>有限</td><td>无穷</td><td>—</td></tr>
+          <tr><td>时间反演</td><td>不变</td><td>不适定</td><td>—</td></tr>
+          <tr><td>光滑性</td><td>保持初始光滑性</td><td>即时光滑化</td><td>自动解析</td></tr>
+          <tr><td>极值</td><td>不守恒</td><td>随t衰减</td><td>在边界达到</td></tr>
+          <tr><td>核心求解方法</td><td>d'Alembert公式、分离变量</td><td>Fourier变换、分离变量</td><td>Green函数、分离变量</td></tr>
+          <tr><td>核心定性工具</td><td>能量积分</td><td>极值原理</td><td>极值原理</td></tr>
+        </table>
+      </div>
+
+      <h3 style="margin-top:1.5rem;">从分类到求解的思维导图</h3>
+      <div class="concept-map" style="flex-direction:column;align-items:center;gap:0.25rem;">
+        <div class="concept-node" style="background:var(--primary);color:#fff;border-color:var(--primary);">二阶线性PDE</div>
+        <div class="concept-arrow" style="font-size:1.3rem;">&darr;</div>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;">
+          <div class="concept-node">Δ &gt; 0<br>双曲型</div>
+          <div class="concept-node">Δ = 0<br>抛物型</div>
+          <div class="concept-node">Δ &lt; 0<br>椭圆型</div>
+        </div>
+        <div class="concept-arrow" style="font-size:1.3rem;">&darr;</div>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;font-size:0.85rem;">
+          <span>特征线法<br>d'Alembert<br>能量方法</span>
+          <span>Fourier变换<br>热核<br>极值原理</span>
+          <span>Green函数<br>Poisson公式<br>极值原理</span>
         </div>
       </div>
     </div>
 
-    <div class="box box-example">
-      <div class="box-title">例题 4.5.2</div>
-      <p><strong>问题：</strong>设 $u(x,t) = e^{-t}\cos x$，验证它是热传导方程 $u_t = u_{xx}$ 的解，并说明其解析性。</p>
-      <p><strong>解：</strong>$u_t = -e^{-t}\cos x$，$u_{xx} = -e^{-t}\cos x$，故 $u_t = u_{xx}$。</p>
-      <p>关于 $x$，$e^{-t}\cos x = e^{-t}\sum_{n=0}^\infty \frac{(-1)^n x^{2n}}{(2n)!}$，这是一个处处收敛的幂级数，因此 $u$ 关于 $x$ 是解析的。</p>
-      <p>关于 $t$，$e^{-t} = \sum_{n=0}^\infty \frac{(-t)^n}{n!}$，故 $u$ 关于 $t$ 也是解析的。这与定理一致：热传导方程的解具有解析性。</p>
+    <div class="box box-intuition">
+      <div class="box-title">一句话总结</div>
+      <p><strong>分类不是目的，而是手段。</strong>知道了一个二阶线性PDE的类型，你就知道了该用什么方法求解、该期待什么样的解的行为。双曲→特征线法+能量守恒，抛物→积分变换+极值衰减，椭圆→Green函数+调和性质。这个框架是所有后续学习的基础。</p>
     </div>
   </div>
 
-  <!-- 章节导航 -->
   <div class="chapter-nav">
-    <a href="ch3.html" class="prev">第三章 · 波动方程</a>
-    <a href="ch5.html" class="next">第五章 · 拉普拉斯方程</a>
+    <a href="ch3.html" class="prev">第三章 · 调和方程</a>
+    <a href="ch5.html" class="next">第五章 · 一阶双曲型偏微分方程组</a>
   </div>
+
 </div>
 
 <footer class="footer">
-  <p>偏微分方程复习指南 · 基于陈祖墀教材 · 仅供学习参考</p>
+  <p>偏微分方程教程 · 基于谷超豪《数学物理方程》体系 · 零基础入门</p>
 </footer>
-<button class="back-to-top" aria-label="回到顶部">↑</button>
+<button class="back-to-top" aria-label="回到顶部">&uarr;</button>
 <script src="js/main.js"></script>
 </body>
 </html>

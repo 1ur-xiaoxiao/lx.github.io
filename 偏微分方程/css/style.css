@@ -339,6 +339,105 @@ img { max-width: 100%; }
 }
 .box-proof .box-title { color: var(--text-muted); }
 
+/* ===== 零基础教程新增 Box 类型 ===== */
+.box-intuition {
+  background: #edf2ff;
+  border-color: #5c7cfa;
+}
+.box-intuition .box-title { color: #364fc7; }
+
+.box-analogy {
+  background: #fff0f6;
+  border-color: #e64980;
+}
+.box-analogy .box-title { color: #c2255c; }
+
+.box-pitfall {
+  background: #fff9db;
+  border-color: #f59f00;
+}
+.box-pitfall .box-title { color: #e67700; }
+
+.box-motivation {
+  background: linear-gradient(135deg, #f0fff4, #e6fffa);
+  border-color: #38a169;
+  border-left: 6px solid #38a169;
+}
+.box-motivation .box-title { color: #276749; font-size: 1.1rem; }
+
+.box-summary {
+  background: linear-gradient(135deg, #ebf8ff, #faf5ff);
+  border-color: #6b46c1;
+  border-left: 6px solid #6b46c1;
+  padding: 1.5rem 1.75rem;
+}
+.box-summary .box-title { color: #553c9a; font-size: 1.05rem; }
+
+.box-roadmap {
+  background: var(--bg-white);
+  border: 2px dashed var(--accent);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  text-align: center;
+}
+.box-roadmap .box-title {
+  color: var(--accent);
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+/* ===== 步骤列表 ===== */
+.step-list {
+  counter-reset: step-counter;
+  list-style: none;
+  padding-left: 0;
+  margin: 1rem 0;
+}
+.step-list li {
+  counter-increment: step-counter;
+  padding: 0.5rem 0 0.5rem 2.5rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+.step-list li::before {
+  content: "第" counter(step-counter, cjk-ideographic) "步";
+  position: absolute;
+  left: 0;
+  top: 0.4rem;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* ===== 概念地图 ===== */
+.concept-map {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  font-size: 0.85rem;
+}
+.concept-map .concept-node {
+  background: var(--accent-light);
+  color: var(--accent);
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-weight: 600;
+  border: 1px solid var(--accent);
+}
+.concept-map .concept-arrow {
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+}
+
 /* ===== 可折叠内容 ===== */
 .collapsible {
   margin: 0.75rem 0;

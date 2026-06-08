@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第零章 · 预备知识——什么是偏微分方程？</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}', CC: '\\mathbb{C}', NN: '\\mathbb{N}', ZZ: '\\mathbb{Z}',
+          dd: '\\mathrm{d}', pd: '\\partial', lap: '\\Delta', grad: '\\nabla',
+          div: '\\mathrm{div}', rot: '\\mathrm{rot}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;margin-right:12px;">&larr; 总览</a>
+  <a href="index.html" class="nav-brand">偏微分方程教程</a>
+  <button class="nav-toggle" aria-label="菜单">&equiv;</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch0.html">第零章</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+    <li><a href="ch7.html">第七章</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第零章 &middot; 预备知识</h1>
+    <p>什么是偏微分方程？为什么它如此重要？从这里开始你的PDE学习之旅。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">0.1 什么是偏微分方程？</a></li>
+      <li><a href="#s2">0.2 为什么要学偏微分方程？</a></li>
+      <li><a href="#s3">0.3 偏导数快速回顾</a></li>
+      <li><a href="#s4">0.4 PDE的基本术语与概念</a></li>
+      <li><a href="#s5">0.5 三类经典方程初览</a></li>
+      <li><a href="#s6">0.6 学习路线图</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 0.1 ==================== -->
+  <div class="section" id="s1">
+    <h2>0.1 什么是偏微分方程？</h2>
+
+    <div class="box box-intuition">
+      <div class="box-title">直觉先行</div>
+      <p>想象一块正在加热的铁板：每个点的温度不仅取决于位置（坐标 $x, y$），还随时间 $t$ 变化。描述温度如何随位置和时间共同演化的方程，就是一个<strong>偏微分方程</strong>。</p>
+      <p>与常微分方程（ODE）只涉及一元函数不同，PDE 处理的是<strong>多元函数</strong>——描述的是"场"而不仅仅是"轨迹"。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 0.1（偏微分方程）</div>
+      <p>含有未知函数 $u(x_1, x_2, \ldots, x_n)$ 及其<strong>偏导数</strong>的关系式</p>
+      $$F\!\left(x_1, \ldots, x_n,\; u,\; \frac{\pd u}{\pd x_1}, \ldots, \frac{\pd u}{\pd x_n},\; \frac{\pd^2 u}{\pd x_1^2}, \ldots\right) = 0$$
+      <p>称为<strong>偏微分方程</strong>（Partial Differential Equation，简称PDE）。</p>
+    </div>
+
+    <div class="box box-analogy">
+      <div class="box-title">类比理解：ODE vs PDE</div>
+      <p>$$\begin{array}{c|c}
+        \text{ODE（常微分方程）} & \text{PDE（偏微分方程）} \\
+        \hline
+        \text{未知函数：} y = y(x) & \text{未知函数：} u = u(x, y, t, \ldots) \\
+        \text{导数：} \frac{\dd y}{\dd x} & \text{偏导数：} \frac{\pd u}{\pd x}, \frac{\pd u}{\pd t}, \frac{\pd^2 u}{\pd x^2} \ldots \\
+        \text{描述：轨迹、曲线} & \text{描述：场、曲面、波} \\
+        \text{例子：} \frac{\dd y}{\dd x} = ky & \text{例子：} \frac{\pd u}{\pd t} = \frac{\pd^2 u}{\pd x^2}
+      \end{array}$$</p>
+      <p>简单说：ODE 告诉你"一个东西怎么随时间变"，PDE 告诉你"整个场的状态怎么随多个变量共同变化"。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 0.2 ==================== -->
+  <div class="section" id="s2">
+    <h2>0.2 为什么要学偏微分方程？</h2>
+
+    <div class="box box-motivation">
+      <div class="box-title">PDE 是科学的语言</div>
+      <p>偏微分方程是描述自然规律最核心的数学工具。物理学家、工程师、金融分析师每天都在求解PDE。以下是你将遇到的PDE所描述的现象：</p>
+    </div>
+
+    <h3>物理学中的PDE</h3>
+    <ul>
+      <li><strong>波动方程</strong>：弦的振动、声波传播、地震波、电磁波（麦克斯韦方程组）</li>
+      <li><strong>热传导方程</strong>：热量的扩散、污染物在大气中的传播、金融期权的定价（Black-Scholes方程）</li>
+      <li><strong>Laplace方程</strong>：静电场的电位分布、不可压缩流体的流动、稳态热分布</li>
+      <li><strong>Navier-Stokes方程</strong>：流体力学的基本方程（百万美元千禧年问题之一）</li>
+      <li><strong>Schrödinger方程</strong>：量子力学的核心方程</li>
+    </ul>
+
+    <h3>工程与生活中的PDE</h3>
+    <ul>
+      <li><strong>图像处理</strong>：边缘检测、图像去噪（热传导方程的变体）</li>
+      <li><strong>机器学习</strong>：扩散模型（Diffusion Models）、偏微分方程约束的神经网络</li>
+      <li><strong>天气预报</strong>：大气运动由一组复杂的PDE描述</li>
+      <li><strong>结构工程</strong>：桥梁和建筑物的振动分析</li>
+      <li><strong>医学影像</strong>：CT、MRI的重建算法本质上是求解反问题的PDE</li>
+    </ul>
+
+    <div class="box box-intuition">
+      <div class="box-title">核心洞察</div>
+      <p>一旦你学会求解波动方程、热传导方程和Laplace方程这三种最基本的PDE，你就掌握了理解绝大多数物理现象的数学钥匙。这三种方程分别描述了：</p>
+      <p><strong>波动 = 振荡传播</strong>（有惯性，能量来回转换）</p>
+      <p><strong>热传导 = 扩散</strong>（无惯性，向平衡态单调趋近）</p>
+      <p><strong>Laplace = 稳态平衡</strong>（系统已到达终态，不再变化）</p>
+    </div>
+  </div>
+
+  <!-- ==================== 0.3 ==================== -->
+  <div class="section" id="s3">
+    <h2>0.3 偏导数快速回顾</h2>
+
+    <p>在学习PDE之前，你需要确保对偏导数的概念和计算是熟悉的。这里做一个最精简的回顾。</p>
+
+    <div class="box box-definition">
+      <div class="box-title">偏导数的意义</div>
+      <p>对多元函数 $u(x, y)$，偏导数 $\frac{\pd u}{\pd x}$ 表示：把 $y$ 固定不变，只看 $u$ 如何随 $x$ 变化。</p>
+      <p>$\frac{\pd u}{\pd y}$ 表示：把 $x$ 固定不变，只看 $u$ 如何随 $y$ 变化。</p>
+    </div>
+
+    <p><strong>几何直觉</strong>：$u(x, y)$ 的图像是一个曲面。$\frac{\pd u}{\pd x}$ 是沿 $x$ 方向切线的斜率，$\frac{\pd u}{\pd y}$ 是沿 $y$ 方向切线的斜率。</p>
+
+    <h3>高阶偏导数</h3>
+    <p>$\frac{\pd^2 u}{\pd x^2}$ 是"先对 $x$ 求导，再对 $x$ 求导"——即 $x$ 方向的"弯曲程度"。</p>
+    <p>$\frac{\pd^2 u}{\pd x \pd y}$ 是"先对 $x$ 求导，再对 $y$ 求导"——即混合变化率。对充分光滑的函数，求导次序可交换：</p>
+    $$\frac{\pd^2 u}{\pd x \pd y} = \frac{\pd^2 u}{\pd y \pd x}.$$
+
+    <h3>链式法则</h3>
+    <p>若 $u = u(x, y)$，而 $x = x(s, t)$，$y = y(s, t)$，则</p>
+    $$\frac{\pd u}{\pd s} = \frac{\pd u}{\pd x} \cdot \frac{\pd x}{\pd s} + \frac{\pd u}{\pd y} \cdot \frac{\pd y}{\pd s},$$
+    $$\frac{\pd u}{\pd t} = \frac{\pd u}{\pd x} \cdot \frac{\pd x}{\pd t} + \frac{\pd u}{\pd y} \cdot \frac{\pd y}{\pd t}.$$
+    <p>这是PDE中<strong>自变量变换</strong>（如化标准型）的基础工具。</p>
+
+    <div class="box box-example">
+      <div class="box-title">例题 0.1</div>
+      <p>设 $u(x, y) = e^x \sin y$，求 $\frac{\pd u}{\pd x}$，$\frac{\pd u}{\pd y}$，$\frac{\pd^2 u}{\pd x^2}$，$\frac{\pd^2 u}{\pd y^2}$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>$$\frac{\pd u}{\pd x} = e^x \sin y, \quad \frac{\pd u}{\pd y} = e^x \cos y,$$</p>
+          <p>$$\frac{\pd^2 u}{\pd x^2} = e^x \sin y = u, \quad \frac{\pd^2 u}{\pd y^2} = -e^x \sin y = -u.$$</p>
+          <p>因此 $u_{xx} + u_{yy} = u - u = 0$，即 $u(x,y) = e^x \sin y$ 是 Laplace 方程 $\lap u = 0$ 的解！（以后会经常见到这个例子。）</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 0.4 ==================== -->
+  <div class="section" id="s4">
+    <h2>0.4 PDE的基本术语与概念</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 0.2（阶）</div>
+      <p>PDE中出现的<strong>最高阶偏导数</strong>的阶数称为该方程的<strong>阶</strong>。</p>
+    </div>
+
+    <p>例如：$u_t = a^2 u_{xx}$ 是 <strong>二阶</strong> PDE（最高阶导数 $u_{xx}$ 是二阶）。$u_x + u_y = 0$ 是 <strong>一阶</strong> PDE。</p>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 0.3（线性、半线性、拟线性、非线性）</div>
+      <p>设二阶PDE的一般形式为 $a_{11}u_{xx} + 2a_{12}u_{xy} + a_{22}u_{yy} + \cdots = f$：</p>
+      <ul>
+        <li><strong>线性</strong>：系数 $a_{ij}$ 和 $f$ 只依赖于 $(x, y)$（不依赖于 $u$ 及其导数）；</li>
+        <li><strong>半线性</strong>：系数 $a_{ij}$ 只依赖于 $(x, y)$，但 $f$ 可依赖于 $u$ 的低阶导数；</li>
+        <li><strong>拟线性</strong>：系数 $a_{ij}$ 可依赖于 $u$ 及其一阶导数，但对最高阶导数是线性的；</li>
+        <li><strong>完全非线性</strong>：最高阶导数以非线性形式出现。</li>
+      </ul>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 0.4（齐次与非齐次）</div>
+      <p>若方程中所有包含未知函数 $u$ 及其偏导数的项都是<strong>一次</strong>的（即不含 $u$ 的零次项或非齐次源项 $f$），则称方程为<strong>齐次</strong>的。否则为<strong>非齐次</strong>的。</p>
+      <p>例如：$u_{tt} = a^2 u_{xx}$ 是齐次的；$u_{tt} = a^2 u_{xx} + \sin x$ 是非齐次的。</p>
+    </div>
+
+    <h3>定解条件</h3>
+
+    <p>仅有PDE本身通常不足以唯一确定解。正如ODE需要初始条件，PDE需要<strong>定解条件</strong>：</p>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 0.5（三类定解条件）</div>
+      <p><strong>初始条件</strong>（Cauchy条件）：指定函数在某个初始时刻的状态。例如 $u(x, 0) = \varphi(x)$。</p>
+      <p><strong>边界条件</strong>：指定函数在区域边界上的行为。常见三种：</p>
+      <ul>
+        <li><strong>Dirichlet（第一类）</strong>：$u|_{\pd\Omega} = g$ —— 给定边界上的函数值；</li>
+        <li><strong>Neumann（第二类）</strong>：$\frac{\pd u}{\pd n}\big|_{\pd\Omega} = g$ —— 给定边界上的法向导数值；</li>
+        <li><strong>Robin（第三类）</strong>：$(\alpha u + \beta \frac{\pd u}{\pd n})\big|_{\pd\Omega} = g$ —— 两者的线性组合。</li>
+      </ul>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 0.6（定解问题的三种类型）</div>
+      <p><strong>初值问题（Cauchy问题）</strong>：只有初始条件，无边界条件。适用于无界空间。</p>
+      <p><strong>边值问题</strong>：只有边界条件，无初始条件。适用于稳态问题（无时间变量）。</p>
+      <p><strong>混合问题（初边值问题）</strong>：既有初始条件又有边界条件。适用于有界区域上的随时间演化问题。这是最常见的情况。</p>
+    </div>
+
+    <div class="box box-pitfall">
+      <div class="box-title">常见误解</div>
+      <p>初学者常以为PDE的解是某个具体函数。实际上，<strong>PDE的通解通常含有任意函数</strong>（不像ODE的通解只含任意常数）。例如 $u_x = 0$ 的通解是 $u(x, y) = f(y)$，其中 $f$ 是<strong>任意函数</strong>！</p>
+      <p>这也解释了为什么PDE需要比ODE更多的定解条件来确定一个特解。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 0.5 ==================== -->
+  <div class="section" id="s5">
+    <h2>0.5 三类经典方程初览</h2>
+
+    <div class="box box-motivation">
+      <div class="box-title">在不求解的情况下先认识它们</div>
+      <p>在深入学习之前，先对三种最重要的二阶PDE有一个感性认识。它们分别对应三种完全不同的物理过程和数学行为。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">三大经典方程速览</div>
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>方程名称</th>
+            <th>标准形式</th>
+            <th>物理原型</th>
+            <th>类型</th>
+            <th>核心特征</th>
+          </tr>
+          <tr>
+            <td>波动方程</td>
+            <td>$u_{tt} = a^2 u_{xx}$</td>
+            <td>弦振动、声波</td>
+            <td>双曲型</td>
+            <td>有限传播速度；时间可逆；能量守恒</td>
+          </tr>
+          <tr>
+            <td>热传导方程</td>
+            <td>$u_t = a^2 u_{xx}$</td>
+            <td>热扩散、扩散</td>
+            <td>抛物型</td>
+            <td>无穷传播速度；时间不可逆；解即时光滑</td>
+          </tr>
+          <tr>
+            <td>Laplace方程</td>
+            <td>$u_{xx}+u_{yy}=0$</td>
+            <td>稳态位势、静电场</td>
+            <td>椭圆型</td>
+            <td>解无穷光滑；极值在边界；平均值性质</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <h3>直观理解三种方程的物理行为</h3>
+
+    <p><strong>波动方程</strong>：想象一根吉他弦。拨动它——振动以<strong>有限速度</strong>沿弦传播，波峰和波谷交替出现。信息传播需要时间，扰动可以在不衰减的情况下传播很远。</p>
+
+    <p><strong>热传导方程</strong>：想象一根铁棒一端被加热。热量<strong>瞬间</strong>在另一端产生（理论上）微小的影响，温度分布逐渐趋于均匀。任何初始的尖峰都会立即被"抹平"。这个过程是<strong>不可逆</strong>的——你不能从均匀的温度分布反推出初始的热源在哪里。</p>
+
+    <p><strong>Laplace方程</strong>：想象一张弹性薄膜被固定在弯曲的框架上。薄膜的平衡形状就是Laplace方程的解。薄膜<strong>不会在任何内部点</strong>凸起或凹陷到超出框架的范围——这就是"极值原理"的直观表达。</p>
+
+    <div class="box box-intuition">
+      <div class="box-title">先具体，后抽象</div>
+      <p>本书采用<strong>谷超豪教材的顺序</strong>：先深入学习每一种具体方程（第一至三章），充分建立物理直觉和求解技巧之后，再回头总结它们的共性分类理论（第四章）。这比先讲抽象分类再分别学习要自然得多——就像先学会骑不同的自行车，再去理解"两轮交通工具的共同原理"。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 0.6 ==================== -->
+  <div class="section" id="s6">
+    <h2>0.6 学习路线图</h2>
+
+    <div class="box box-roadmap">
+      <div class="box-title">偏微分方程学习路线（谷超豪体系）</div>
+      <div class="concept-map" style="flex-direction:column;align-items:center;gap:0.25rem;">
+        <div class="concept-node" style="font-size:1.1rem;background:var(--primary);color:#fff;border-color:var(--primary);">第零章：预备知识</div>
+        <div class="concept-arrow" style="font-size:1.3rem;">&darr;</div>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;">
+          <div class="concept-node">第一章<br>波动方程</div>
+          <div class="concept-node">第二章<br>热传导方程</div>
+          <div class="concept-node">第三章<br>调和方程</div>
+        </div>
+        <div style="font-size:0.8rem;color:var(--text-muted);">（三类经典方程：物理推导 &rarr; 求解方法 &rarr; 性质分析）</div>
+        <div class="concept-arrow" style="font-size:1.3rem;">&darr;</div>
+        <div class="concept-node" style="background:#faf5ff;color:#6b46c1;border-color:#6b46c1;">第四章：二阶方程分类与总结</div>
+        <div style="font-size:0.8rem;color:var(--text-muted);">（回头看：三类方程的统一分类框架）</div>
+        <div class="concept-arrow" style="font-size:1.3rem;">&darr;</div>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;">
+          <div class="concept-node">第五章<br>一阶双曲方程组</div>
+          <div class="concept-node">第六章<br>广义解理论</div>
+          <div class="concept-node">第七章<br>数值方法</div>
+        </div>
+        <div style="font-size:0.8rem;color:var(--text-muted);">（进阶主题：更一般的理论框架和计算方法）</div>
+      </div>
+    </div>
+
+    <h3>各章简介</h3>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin-top:1rem;">
+      <div style="background:var(--bg-white);border:1px solid var(--border);border-radius:8px;padding:1rem;">
+        <h4 style="color:var(--accent);margin-bottom:0.5rem;">第一章 波动方程</h4>
+        <p style="font-size:0.85rem;color:var(--text-light);">从弦的振动出发，学习 d'Alembert 公式、特征线法、分离变量法和能量方法。核心问题是：波的传播如何用数学描述？</p>
+      </div>
+      <div style="background:var(--bg-white);border:1px solid var(--border);border-radius:8px;padding:1rem;">
+        <h4 style="color:var(--accent);margin-bottom:0.5rem;">第二章 热传导方程</h4>
+        <p style="font-size:0.85rem;color:var(--text-light);">从Fourier热传导定律出发，学习Fourier变换法、热核、极值原理。核心问题是：热量如何在介质中扩散并趋于均匀？</p>
+      </div>
+      <div style="background:var(--bg-white);border:1px solid var(--border);border-radius:8px;padding:1rem;">
+        <h4 style="color:var(--accent);margin-bottom:0.5rem;">第三章 调和方程</h4>
+        <p style="font-size:0.85rem;color:var(--text-light);">Laplace方程与Poisson方程——稳态问题的核心。学习Green函数法、Poisson积分公式、调和函数的深刻性质。</p>
+      </div>
+    </div>
+
+    <h3>前置知识要求</h3>
+
+    <div class="box box-note">
+      <div class="box-title">你需要具备的知识</div>
+      <p>本教程是<strong>零基础</strong>的PDE入门，但假设你已经学过：</p>
+      <ul>
+        <li><strong>数学分析（微积分）</strong>：极限、连续、导数、不定积分/定积分、多元函数的偏导数；</li>
+        <li><strong>线性代数</strong>：矩阵运算、特征值与特征向量；</li>
+        <li><strong>常微分方程</strong>：一阶/二阶线性ODE的求解方法。</li>
+      </ul>
+      <p>如果你对Fourier级数和Fourier变换不熟悉，不用担心——我们会在需要的时候从零开始讲解。</p>
+      <p>最重要的不是你已经知道了多少，而是你是否愿意<strong>动手做例题</strong>。PDE是"做"会的，不是"看"会的。</p>
+    </div>
+
+    <div class="box box-intuition">
+      <div class="box-title">学习建议</div>
+      <ol>
+        <li><strong>按顺序学习</strong>：每一章的内容建立在前一章的基础上，不要跳章。</li>
+        <li><strong>先理解物理意义</strong>：每个方程都对应一个真实的物理现象，理解了物理，数学公式就有了灵魂。</li>
+        <li><strong>动手推导</strong>：阅读例题解答后，合上页面自己推导一遍。这是检验是否真正理解的唯一标准。</li>
+        <li><strong>注意联系</strong>：三类方程虽然不同，但求解方法（分离变量法、积分变换法、Green函数法）是相通的。学习时注意对比。</li>
+        <li><strong>接受"不通"</strong>：初学PDE时，不可能每个细节都完全理解。先建立整体框架，细节会在反复使用中逐渐清晰。</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="chapter-nav">
+    <a href="index.html" class="prev">课程首页</a>
+    <a href="ch1.html" class="next">第一章 · 波动方程</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>偏微分方程教程 · 基于谷超豪《数学物理方程》体系 · 零基础入门</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">&uarr;</button>
+<script src="js/main.js"></script>
+</body>
+</html>

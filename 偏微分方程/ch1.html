@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>第一章 · 绪论与一阶偏微分方程</title>
+  <title>第一章 · 波动方程</title>
   <link rel="stylesheet" href="css/style.css">
   <script>
     window.MathJax = {
@@ -22,102 +22,117 @@
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 </head>
 <body>
-
 <nav class="navbar">
-  <a href="../index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
-  <a href="index.html" class="nav-brand">偏微分方程复习</a>
-  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <a href="../index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;margin-right:12px;">&larr; 总览</a>
+  <a href="index.html" class="nav-brand">偏微分方程教程</a>
+  <button class="nav-toggle" aria-label="菜单">&equiv;</button>
   <ul class="nav-links">
     <li><a href="index.html">首页</a></li>
+    <li><a href="ch0.html">第零章</a></li>
     <li><a href="ch1.html">第一章</a></li>
     <li><a href="ch2.html">第二章</a></li>
     <li><a href="ch3.html">第三章</a></li>
     <li><a href="ch4.html">第四章</a></li>
     <li><a href="ch5.html">第五章</a></li>
     <li><a href="ch6.html">第六章</a></li>
+    <li><a href="ch7.html">第七章</a></li>
   </ul>
 </nav>
 
 <div class="main-content">
 
   <div class="chapter-header">
-    <h1>第一章 · 绪论与一阶偏微分方程</h1>
-    <p>从偏微分方程的基本概念出发，系统掌握一阶拟线性方程的特征线法和非线性方程的 Charpit 方法</p>
+    <h1>第一章 &middot; 波动方程</h1>
+    <p>描述波的传播——从琴弦振动到地震波，掌握双曲型方程的核心理论与求解方法</p>
   </div>
 
   <div class="toc">
     <h3>本章目录</h3>
     <ol>
-      <li><a href="#s1">1.1 偏微分方程的基本概念</a></li>
-      <li><a href="#s2">1.2 一阶拟线性方程</a></li>
-      <li><a href="#s3">1.3 一阶非线性方程</a></li>
-      <li><a href="#s4">1.4 一阶方程的其他问题</a></li>
+      <li><a href="#s1">1.1 物理推导：弦如何振动？</a></li>
+      <li><a href="#s2">1.2 一维初值问题：d'Alembert公式</a></li>
+      <li><a href="#s3">1.3 依赖区间、决定区域与影响区域</a></li>
+      <li><a href="#s4">1.4 半无界问题：延拓法（反射法）</a></li>
+      <li><a href="#s5">1.5 有界弦与分离变量法</a></li>
+      <li><a href="#s6">1.6 高维波动方程</a></li>
+      <li><a href="#s7">1.7 能量积分与唯一性</a></li>
     </ol>
   </div>
 
   <!-- ==================== 1.1 ==================== -->
   <div class="section" id="s1">
-    <h2>1.1 偏微分方程的基本概念</h2>
+    <h2>1.1 物理推导：弦如何振动？</h2>
 
-    <div class="box box-definition">
-      <div class="box-title">定义 1.1（偏微分方程）</div>
-      <p>含有未知函数 $u(x_1, x_2, \ldots, x_n)$ 及其偏导数的关系式</p>
-      <p>$$F\!\left(x_1, \ldots, x_n,\; u,\; \frac{\pd u}{\pd x_1}, \ldots, \frac{\pd u}{\pd x_n},\; \frac{\pd^2 u}{\pd x_1^2}, \ldots\right) = 0$$</div>
-      <p>称为<strong>偏微分方程</strong>（PDE）。其中出现的最高阶偏导数的阶数称为该方程的<strong>阶</strong>。</p>
-    </div>
-
-    <div class="box box-definition">
-      <div class="box-title">定义 1.2（解与通解）</div>
-      <p>若函数 $u = \varphi(x_1, \ldots, x_n)$ 在区域 $\Omega \subset \RR^n$ 上具有方程中出现的各阶连续偏导数，且代入方程后使之成为恒等式，则称 $\varphi$ 为方程在 $\Omega$ 上的一个<strong>经典解</strong>。</p>
-      <p>含有任意函数且任意函数的个数等于方程阶数的解称为<strong>通解</strong>。不含任意常数（或任意函数）的特定解称为<strong>特解</strong>。</p>
-    </div>
-
-    <h3>定解条件与定解问题</h3>
-
-    <p>仅有 PDE 本身通常不能唯一确定解，还需附加适当的<strong>定解条件</strong>：</p>
-
-    <div class="box box-definition">
-      <div class="box-title">定义 1.3（初始条件与边界条件）</div>
-      <p><strong>初始条件</strong>（Cauchy 条件）：描述未知函数在初始时刻 $t=0$ 的状态，如</p>
-      <p>$$u(x, 0) = \varphi(x), \quad u_t(x, 0) = \psi(x).$$</p>
-      <p><strong>边界条件</strong>：描述未知函数在区域边界 $\pd\Omega$ 上的行为，常见的有：</p>
+    <div class="box box-motivation">
+      <div class="box-title">本章动机</div>
+      <p>拨动一根吉他弦，它为什么振动？振动按什么规律传播？为什么手指按在不同的品位上会发出不同的音高？本章从物理出发，逐步建立波动方程的数学理论。学完本章后，你将能够：</p>
       <ul>
-        <li><strong>Dirichlet 条件</strong>（第一类）：$u\big|_{\pd\Omega} = g$；</li>
-        <li><strong>Neumann 条件</strong>（第二类）：$\frac{\pd u}{\pd n}\bigg|_{\pd\Omega} = g$；</li>
-        <li><strong>Robin 条件</strong>（第三类）：$\left(\alpha u + \beta \frac{\pd u}{\pd n}\right)\bigg|_{\pd\Omega} = g$。</li>
+        <li>从物理定律出发推导波动方程</li>
+        <li>用 d'Alembert 公式直接写出无限长弦上任意初始扰动的解</li>
+        <li>用分离变量法求解有界弦的振动</li>
+        <li>理解能量守恒如何保证解的唯一性</li>
       </ul>
     </div>
 
+    <h3>物理模型与基本假设</h3>
+    <p>考虑一根长度为 $l$ 的柔软均匀细弦，两端固定，在平衡位置附近做微小横振动。设 $u(x,t)$ 表示弦上坐标为 $x$ 的点在时刻 $t$ 的横向位移。</p>
+
+    <div class="box box-intuition">
+      <div class="box-title">直觉建立</div>
+      <p>想象你站在桥上，看着下方一条被拉紧的水平缆绳。你踢了它一脚——扰动以一个确定的速度沿缆绳传播。这就是<strong>波</strong>。关键问题是：位移 $u$ 如何依赖于位置 $x$ 和时间 $t$？</p>
+    </div>
+
     <div class="box box-definition">
-      <div class="box-title">定义 1.4（定解问题的类型）</div>
-      <p><strong>初值问题</strong>（Cauchy 问题）：只有初始条件，无边界条件，适用于无界区域 $-\infty < x < +\infty$。</p>
-      <p><strong>边值问题</strong>：只有边界条件，无初始条件，适用于稳态问题。</p>
-      <p><strong>混合问题</strong>（初边值问题）：既有初始条件又有边界条件，适用于有界区域上的演化问题。</p>
+      <div class="box-title">基本假设</div>
+      <ol>
+        <li>弦是<strong>完全柔软</strong>的（无抗弯刚度），张力沿切线方向；</li>
+        <li>振动是<strong>微小</strong>的：$|\pd u/\pd x| \ll 1$，从而张力的水平分量近似为常数 $T_0$；</li>
+        <li>弦是<strong>均匀</strong>的，线密度 $\rho$ 为常数；</li>
+        <li>只考虑横向振动，忽略重力和阻尼。</li>
+      </ol>
+    </div>
+
+    <h3>从牛顿定律到偏微分方程</h3>
+    <p>取弦上微元 $[x, x+\Delta x]$：</p>
+    <ul>
+      <li>在 $x$ 处，张力 $T_1$ 与水平方向夹角为 $\alpha_1$；</li>
+      <li>在 $x+\Delta x$ 处，张力 $T_2$ 与水平方向夹角为 $\alpha_2$。</li>
+    </ul>
+    <p>由<strong>水平方向力平衡</strong>：$T_2 \cos\alpha_2 = T_1 \cos\alpha_1 = T_0$（常数）。</p>
+    <p>由<strong>竖直方向 Newton 第二定律</strong>：</p>
+    $$T_2 \sin\alpha_2 - T_1 \sin\alpha_1 = \rho \Delta x \cdot \frac{\pd^2 u}{\pd t^2}.$$
+    <p>在小振动假设下 $\tan\alpha \approx \sin\alpha \approx \pd u/\pd x$，代入得</p>
+    $$T_0\left[\frac{\pd u}{\pd x}\bigg|_{x+\Delta x} - \frac{\pd u}{\pd x}\bigg|_{x}\right] = \rho \Delta x \cdot \frac{\pd^2 u}{\pd t^2}.$$
+    <p>两边除以 $\Delta x$ 并令 $\Delta x \to 0$：</p>
+
+    <div class="box box-formula">
+      <div class="box-title">一维波动方程</div>
+      $$\boxed{\frac{\pd^2 u}{\pd t^2} = a^2 \frac{\pd^2 u}{\pd x^2}}, \quad a = \sqrt{\frac{T_0}{\rho}}.$$
+      <p>其中 $a$ 为<strong>波速</strong>。张力越大、弦越轻，波速越快。</p>
+    </div>
+
+    <div class="box box-analogy">
+      <div class="box-title">物理直觉：为什么 $u_{tt} \propto u_{xx}$？</div>
+      <p>$u_{xx}$ 是弦的<strong>弯曲程度</strong>（曲率的线性近似）。弦弯曲得越厉害，张力的竖直分量差越大，产生的加速度 $u_{tt}$ 就越大。所以 $u_{tt}$ 正比于 $u_{xx}$——这就是波动方程的核心物理：<strong>弯曲驱动加速度</strong>。</p>
+    </div>
+
+    <h3>定解条件</h3>
+    <div class="box box-definition">
+      <div class="box-title">初始条件与边界条件</div>
+      <p><strong>初始条件（两个！）</strong>：因为方程含二阶时间导数，需要两个初始条件：</p>
+      $$u(x,0) = \varphi(x), \quad u_t(x,0) = \psi(x), \quad 0 \le x \le l.$$
+      <p>$\varphi(x)$ 为初始位移（弦被拨成什么形状），$\psi(x)$ 为初始速度（弦被多快地释放）。</p>
+      <p><strong>边界条件（两端固定）</strong>：$u(0,t) = 0, \quad u(l,t) = 0, \quad t \ge 0.$</p>
     </div>
 
     <div class="box box-example">
-      <div class="box-title">例 1.1</div>
-      <p>验证 $u(x, y) = e^{-y}\sin x$ 是方程 $u_{xx} + u_{yy} = 0$ 的解。</p>
+      <div class="box-title">例题 1.1.1</div>
+      <p>一根长 $l$ 的弦，初始位移 $\varphi(x) = \sin(\pi x/l)$，初始速度 $\psi(x)=0$，两端固定。写出定解问题。</p>
       <div class="collapsible">
-        <div class="collapsible-header"><span class="toggle-icon">▶</span> 详细解答</div>
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
         <div class="collapsible-body">
-          <p>计算偏导数：</p>
-          <p>$$u_x = e^{-y}\cos x, \quad u_{xx} = -e^{-y}\sin x,$$</p>
-          <p>$$u_y = -e^{-y}\sin x, \quad u_{yy} = e^{-y}\sin x.$$</p>
-          <p>因此 $u_{xx} + u_{yy} = -e^{-y}\sin x + e^{-y}\sin x = 0$，方程成立。故 $u(x,y) = e^{-y}\sin x$ 确为该方程的解。</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="box box-example">
-      <div class="box-title">例 1.2</div>
-      <p>求一阶方程 $\frac{\pd u}{\pd x} = 0$ 的通解，并说明其意义。</p>
-      <div class="collapsible">
-        <div class="collapsible-header"><span class="toggle-icon">▶</span> 详细解答</div>
-        <div class="collapsible-body">
-          <p>方程表明 $u$ 关于 $x$ 的偏导数为零，因此 $u$ 不依赖于 $x$，只与 $y$ 有关。通解为</p>
-          <p>$$u(x, y) = f(y),$$</p>
-          <p>其中 $f$ 为任意可微函数。若附加条件 $u(0, y) = y^2$，则 $f(y) = y^2$，特解为 $u(x,y) = y^2$。</p>
+          <p>$$\begin{cases} u_{tt} = a^2 u_{xx}, & 0 < x < l,\ t > 0, \\ u(0,t) = u(l,t) = 0, & t \ge 0, \\ u(x,0) = \sin\frac{\pi x}{l},\; u_t(x,0) = 0, & 0 \le x \le l. \end{cases}$$</p>
+          <p><strong>物理直觉</strong>：初始形状恰好是一个正弦半波——这是弦的"基频模态"。振动时应保持正弦形态做简谐振荡。后面用分离变量法可验证：$u(x,t) = \sin\frac{\pi x}{l}\cos\frac{\pi a t}{l}$。</p>
         </div>
       </div>
     </div>
@@ -125,69 +140,61 @@
 
   <!-- ==================== 1.2 ==================== -->
   <div class="section" id="s2">
-    <h2>1.2 一阶拟线性方程</h2>
+    <h2>1.2 一维初值问题：d'Alembert 公式</h2>
 
-    <div class="box box-definition">
-      <div class="box-title">定义 1.5（拟线性方程）</div>
-      <p>形如</p>
-      <p>$$a(x, y, u)\frac{\pd u}{\pd x} + b(x, y, u)\frac{\pd u}{\pd y} = c(x, y, u)$$</p>
-      <p>的方程称为<strong>一阶拟线性方程</strong>。其中 $a, b, c$ 是 $x, y, u$ 的已知函数，对最高阶偏导数 $u_x, u_y$ 而言是线性的。</p>
+    <p>考虑<strong>无限长</strong>弦上的波动（无边界，只有初始条件）——Cauchy问题：</p>
+    $$\begin{cases} u_{tt} = a^2 u_{xx}, & x \in \RR,\ t > 0, \\ u(x,0) = \varphi(x),\; u_t(x,0) = \psi(x), & x \in \RR. \end{cases}$$
+
+    <div class="box box-intuition">
+      <div class="box-title">核心思想：化PDE为两个ODE</div>
+      <p>如果定义新变量 $\xi = x + at$，$\eta = x - at$，波动方程 $u_{tt} = a^2 u_{xx}$ 奇迹般地变成</p>
+      $$\frac{\pd^2 u}{\pd\xi\,\pd\eta} = 0.$$
+      <p>这就好办了——对 $\xi$ 积分一次，对 $\eta$ 再积分一次，通解就出来了！</p>
     </div>
 
-    <h3>特征线法</h3>
-
-    <p>求解拟线性方程的核心方法是<strong>特征线法</strong>。将 PDE 转化为一组常微分方程（特征方程组）：</p>
+    <h3>推导过程</h3>
+    <p>引入<strong>特征变换</strong> $\xi = x + at$，$\eta = x - at$。由链式法则：</p>
+    $$\frac{\pd}{\pd x} = \frac{\pd}{\pd\xi} + \frac{\pd}{\pd\eta}, \quad \frac{\pd}{\pd t} = a\left(\frac{\pd}{\pd\xi} - \frac{\pd}{\pd\eta}\right).$$
+    <p>代入 $u_{tt} = a^2 u_{xx}$ 得 $\frac{\pd^2 u}{\pd\xi\,\pd\eta} = 0$。</p>
+    <p>逐次积分得<strong>通解</strong>：$u(x,t) = f(x+at) + g(x-at)$，其中 $f, g$ 为任意二次可微函数。</p>
+    <p>$f(x+at)$ 是<strong>左行波</strong>（以速度 $a$ 向 $-x$ 方向传播），$g(x-at)$ 是<strong>右行波</strong>（以速度 $a$ 向 $+x$ 方向传播）。任何初始扰动都会分解为左右两个行波！</p>
+    <p>代入初始条件确定 $f, g$：</p>
+    $$f(x) + g(x) = \varphi(x), \quad a f'(x) - a g'(x) = \psi(x).$$
+    <p>第二式积分得 $f(x) - g(x) = \frac{1}{a}\int_0^x \psi(s)\,\dd s + C$。联立解得：</p>
 
     <div class="box box-formula">
-      <div class="box-title">特征方程组</div>
-      <p>$$\frac{\dd x}{a(x, y, u)} = \frac{\dd y}{b(x, y, u)} = \frac{\dd u}{c(x, y, u)}.$$</p>
-      <p>等价地写成参数形式（以 $s$ 为参数）：</p>
-      <p>$$\frac{\dd x}{\dd s} = a, \quad \frac{\dd y}{\dd s} = b, \quad \frac{\dd u}{\dd s} = c.$$</p>
+      <div class="box-title">d'Alembert 公式（1747）</div>
+      $$\boxed{u(x,t) = \frac{1}{2}\big[\varphi(x+at) + \varphi(x-at)\big] + \frac{1}{2a}\int_{x-at}^{x+at}\psi(s)\,\dd s}.$$
+      <p>若 $\varphi \in C^2(\RR)$，$\psi \in C^1(\RR)$，此公式给出初值问题的唯一经典解。</p>
     </div>
 
-    <div class="box box-theorem">
-      <div class="box-title">定理 1.1（通解的结构）</div>
-      <p>若由特征方程组求得两个独立首次积分</p>
-      <p>$$\Phi_1(x, y, u) = C_1, \quad \Phi_2(x, y, u) = C_2,$$</p>
-      <p>则拟线性方程的通解由隐式关系 $\Phi_1 = F(\Phi_2)$ 或等价地 $\Phi_2 = G(\Phi_1)$ 给出，其中 $F$（或 $G$）为任意可微函数。</p>
-    </div>
+    <h3>公式的物理含义</h3>
+    <ul>
+      <li><strong>第一项</strong>：初始位移 $\varphi$ 分解为两个"半高"的波，各以速度 $a$ 向左右传播；</li>
+      <li><strong>第二项</strong>：初始速度 $\psi$ 在区间 $[x-at, x+at]$ 上的累积效应。</li>
+    </ul>
 
     <div class="box box-example">
-      <div class="box-title">例 1.3</div>
-      <p>求方程 $u\frac{\pd u}{\pd x} + \frac{\pd u}{\pd y} = 1$ 的通解。</p>
+      <div class="box-title">例题 1.2.1</div>
+      <p>求解 $u_{tt} = u_{xx}$，$u(x,0) = e^{-x^2}$，$u_t(x,0) = 0$。</p>
       <div class="collapsible">
-        <div class="collapsible-header"><span class="toggle-icon">▶</span> 详细解答</div>
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
         <div class="collapsible-body">
-          <p>这里 $a = u,\; b = 1,\; c = 1$。特征方程组为</p>
-          <p>$$\frac{\dd x}{u} = \frac{\dd y}{1} = \frac{\dd u}{1}.$$</p>
-          <p><strong>第一步</strong>：取 $\frac{\dd y}{1} = \frac{\dd u}{1}$，得 $\dd y = \dd u$，积分得第一个首次积分</p>
-          <p>$$\Phi_1 = u - y = C_1.$$</p>
-          <p><strong>第二步</strong>：取 $\frac{\dd x}{u} = \frac{\dd u}{1}$，得 $\dd x = u\,\dd u$，积分得</p>
-          <p>$$x = \frac{u^2}{2} + C_2,$$</p>
-          <p>即第二个首次积分</p>
-          <p>$$\Phi_2 = x - \frac{u^2}{2} = C_2.$$</p>
-          <p><strong>第三步</strong>：通解为 $\Phi_2 = F(\Phi_1)$，即</p>
-          <p>$$x - \frac{u^2}{2} = F(u - y),$$</p>
-          <p>其中 $F$ 为任意可微函数。</p>
+          <p>$a=1$，$\psi=0$，由 d'Alembert 公式直接得：</p>
+          $$u(x,t) = \frac{1}{2}\big[e^{-(x+t)^2} + e^{-(x-t)^2}\big].$$
+          <p>物理图像：初始的钟形"鼓包"分裂为两个高度减半的钟形波，分别以速度 $1$ 向左右传播，形状保持不变。</p>
         </div>
       </div>
     </div>
 
     <div class="box box-example">
-      <div class="box-title">例 1.4</div>
-      <p>求方程 $x\frac{\pd u}{\pd x} + y\frac{\pd u}{\pd y} = u$ 满足初始条件 $u(x, 1) = x^2$ 的特解。</p>
+      <div class="box-title">例题 1.2.2</div>
+      <p>求解 $u_{tt} = 4u_{xx}$，$u(x,0)=0$，$u_t(x,0) = \begin{cases} 1, & |x| \le 1, \\ 0, & |x| > 1. \end{cases}$</p>
       <div class="collapsible">
-        <div class="collapsible-header"><span class="toggle-icon">▶</span> 详细解答</div>
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
         <div class="collapsible-body">
-          <p>特征方程组为</p>
-          <p>$$\frac{\dd x}{x} = \frac{\dd y}{y} = \frac{\dd u}{u}.$$</p>
-          <p><strong>首次积分</strong>：由 $\frac{\dd x}{x} = \frac{\dd y}{y}$，得 $\ln|x| = \ln|y| + \text{const}$，即</p>
-          <p>$$\Phi_1 = \frac{x}{y} = C_1.$$</p>
-          <p>由 $\frac{\dd x}{x} = \frac{\dd u}{u}$，得 $\ln|x| = \ln|u| + \text{const}$，即</p>
-          <p>$$\Phi_2 = \frac{u}{x} = C_2.$$</p>
-          <p><strong>通解</strong>：$\frac{u}{x} = F\!\left(\frac{x}{y}\right)$，即 $u = x\,F\!\left(\frac{x}{y}\right)$。</p>
-          <p><strong>代入初始条件</strong>：$u(x, 1) = x^2$ 意味着 $x\,F(x) = x^2$，故 $F(x) = x$。</p>
-          <p><strong>特解</strong>：$u = x \cdot \frac{x}{y} = \frac{x^2}{y}$。</p>
+          <p>$a=2$，$\varphi=0$。由 d'Alembert 公式：$u(x,t) = \frac{1}{4}\int_{x-2t}^{x+2t}\psi(s)\,\dd s$。</p>
+          <p>在 $(x,t)$ 平面上分段讨论积分区间 $[x-2t, x+2t]$ 与 $[-1,1]$ 的交集。当 $t$ 很小时 $[x-2t, x+2t] \subset [-1,1]$，积分值为 $4t$，故 $u = t$。当 $t$ 增大时需分区域讨论，得到一个向两侧扩散的矩形脉冲。</p>
         </div>
       </div>
     </div>
@@ -195,195 +202,345 @@
 
   <!-- ==================== 1.3 ==================== -->
   <div class="section" id="s3">
-    <h2>1.3 一阶非线性方程</h2>
+    <h2>1.3 依赖区间、决定区域与影响区域</h2>
+
+    <p>d'Alembert 公式揭示了一个深刻的几何结构：<strong>信息以有限速度 $a$ 沿特征线传播</strong>。</p>
 
     <div class="box box-definition">
-      <div class="box-title">定义 1.6（完全非线性方程）</div>
-      <p>形如</p>
-      <p>$$F(x, y, u, p, q) = 0, \quad p = \frac{\pd u}{\pd x},\; q = \frac{\pd u}{\pd y}$$</p>
-      <p>且 $F$ 对 $p, q$ 为非线性的方程称为<strong>完全非线性一阶方程</strong>。</p>
+      <div class="box-title">特征线与三个核心概念</div>
+      <p><strong>特征线</strong>：$x - at = \text{const}$ 和 $x + at = \text{const}$，斜率为 $\pm 1/a$。</p>
+      <p><strong>依赖区间</strong>：点 $(x_0, t_0)$ 处的解 $u(x_0, t_0)$ 仅依赖于初始数据在区间 $[x_0 - at_0,\; x_0 + at_0]$ 上的值。</p>
+      <p><strong>决定区域</strong>：过 $(x_0, 0)$ 向上作两条特征线，围成的三角形区域——该区域内任一点的值完全由 $x_0$ 处的初始数据决定。</p>
+      <p><strong>影响区域</strong>：点 $(x_0, 0)$ 发出的两条特征线之间的区域（向右上方展开的锥形）——$(x_0, 0)$ 处初始数据的改变会影响到这个区域内的所有点。</p>
     </div>
 
-    <h3>全积分、通解与特解</h3>
-
-    <div class="box box-definition">
-      <div class="box-title">定义 1.7（全积分）</div>
-      <p>含两个独立参数 $a, b$ 的解族 $u = \varphi(x, y, a, b)$ 称为方程 $F(x, y, u, u_x, u_y) = 0$ 的<strong>全积分</strong>（完全积分）。要求 $\varphi$ 对 $a, b$ 的 Jacobi 行列式</p>
-      <p>$$\frac{\pd(\varphi_a, \varphi_b)}{\pd(x, y)} \neq 0.$$</p>
+    <div class="box box-intuition">
+      <div class="box-title">物理直觉</div>
+      <p>站在 $(x_0, 0)$ 处跺一脚产生的扰动，以速度 $a$ 向两侧传播。在时刻 $t$，这个扰动最远到达 $x_0 \pm at$。在 $(x,t)$ 平面上，这个传播过程由两条特征线 $x - x_0 = \pm at$ 界定。</p>
+      <p><strong>如果你在 $x_0$ 跺脚，位于 $(x_1, t_1)$ 的观察者能感受到你的跺脚，当且仅当 $|x_1 - x_0| \le a t_1$——即观察者在你的影响区域内。</strong></p>
     </div>
 
     <div class="box box-note">
-      <div class="box-title">注记：全积分、通解与特解的关系</div>
-      <p>由全积分 $u = \varphi(x, y, a, b)$ 出发：</p>
-      <ul>
-        <li>令 $b = F(a)$（$F$ 为任意函数），包络得到<strong>通解</strong>（含一个任意函数）；</li>
-        <li>令 $a = a_0,\; b = b_0$（常数），得到<strong>特解</strong>；</li>
-        <li>求通解的包络（奇解）可得<strong>奇异解</strong>。</li>
-      </ul>
-    </div>
-
-    <h3>Charpit 方法（特征方程组）</h3>
-
-    <div class="box box-formula">
-      <div class="box-title">Charpit 特征方程组</div>
-      <p>对于 $F(x, y, u, p, q) = 0$，其特征方程组为：</p>
-      <p>$$\frac{\dd x}{F_p} = \frac{\dd y}{F_q} = \frac{\dd u}{pF_p + qF_q} = \frac{-\dd p}{F_x + pF_u} = \frac{-\dd q}{F_y + qF_u}.$$</p>
-    </div>
-
-    <p>求解思路：由 $F = 0$ 和特征方程组联立，先求出 $p, q$（含参数 $a$），再积分 $u = \varphi(x, y, a, b)$。</p>
-
-    <div class="box box-example">
-      <div class="box-title">例 1.5</div>
-      <p>求方程 $u_x^2 + u_y^2 = 1$ 的全积分。</p>
-      <div class="collapsible">
-        <div class="collapsible-header"><span class="toggle-icon">▶</span> 详细解答</div>
-        <div class="collapsible-body">
-          <p>这里 $F = p^2 + q^2 - 1 = 0$，故 $F_p = 2p,\; F_q = 2q,\; F_x = F_y = F_u = 0$。</p>
-          <p>Charpit 方程组简化为</p>
-          <p>$$\frac{\dd x}{2p} = \frac{\dd y}{2q} = \frac{\dd u}{2p^2 + 2q^2} = \frac{\dd p}{0} = \frac{\dd q}{0}.$$</p>
-          <p>由 $\dd p = 0$ 得 $p = a$（常数）。代入 $F = 0$：$a^2 + q^2 = 1$，故 $q = \pm\sqrt{1 - a^2}$。</p>
-          <p>由 $\dd u = p\,\dd x + q\,\dd y$，积分得</p>
-          <p>$$u = ax \pm \sqrt{1 - a^2}\,y + b.$$</p>
-          <p>这就是含两个参数 $a, b$ 的<strong>全积分</strong>，其中 $|a| \le 1$。</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="box box-example">
-      <div class="box-title">例 1.6</div>
-      <p>求方程 $u_x u_y = u$ 的全积分。</p>
-      <div class="collapsible">
-        <div class="collapsible-header"><span class="toggle-icon">▶</span> 详细解答</div>
-        <div class="collapsible-body">
-          <p>$F = pq - u = 0$，故 $F_p = q,\; F_q = p,\; F_u = -1,\; F_x = F_y = 0$。</p>
-          <p>Charpit 方程组：</p>
-          <p>$$\frac{\dd x}{q} = \frac{\dd y}{p} = \frac{\dd u}{2pq} = \frac{\dd p}{p} = \frac{\dd q}{q}.$$</p>
-          <p>由 $\frac{\dd p}{p} = \frac{\dd q}{q}$ 得 $\ln|p| = \ln|q| + \text{const}$，即 $p = aq$（$a$ 为参数）。</p>
-          <p>代入 $F = 0$：$aq^2 = u$，故 $q = \sqrt{u/a}$（取正号），$p = a\sqrt{u/a} = \sqrt{au}$。</p>
-          <p>由 $\dd u = p\,\dd x + q\,\dd y$，注意到 $p = \sqrt{au}$ 为常数（$u$ 沿特征方向的积分），设 $u = b^2$（$b$ 为另一参数），则</p>
-          <p>$$\dd u = \sqrt{a}\,b\,\dd x + \frac{b}{\sqrt{a}}\,\dd y = 0 \text{ 沿特定方向}.$$</p>
-          <p>更直接地，令 $p = a$（常数），由 $F = 0$ 得 $q = u/a$，再由</p>
-          <p>$$\dd u = a\,\dd x + \frac{u}{a}\,\dd y$$</p>
-          <p>这是关于 $u$ 的一阶 ODE（视 $x$ 为参数沿 $y$ 方向），解之：固定 $x$，$\frac{\dd u}{\dd y} = \frac{u}{a}$ 得 $u = C(x)e^{y/a}$。代入 $\frac{\pd u}{\pd x} = C'(x)e^{y/a} = a$，得 $C'(x) = ae^{-y/a}$ 不合理。换方法：直接令 $p = a,\; q = b$ 代入 $F=0$，得 $ab = u$，故</p>
-          <p>$$u = ax + by + c, \quad ab = u.$$</p>
-          <p>但需 $ab = ax + by + c$ 对所有 $x, y$ 成立，故 $a = b = 0$ 不可行。正确做法：令 $p = a$（常数），则 $q = u/a$。</p>
-          <p>由 $\dd u = p\,\dd x + q\,\dd y = a\,\dd x + \frac{u}{a}\,\dd y$，这是线性 ODE（$x$ 视作固定时）：</p>
-          <p>$$\frac{\pd u}{\pd y} - \frac{u}{a} = a \implies u = Ce^{y/a} - a^2.$$</p>
-          <p>再由 $\frac{\pd u}{\pd x} = C'e^{y/a} = a$，得 $C' = ae^{-y/a}$ 不合理。</p>
-          <p>采用标准 Charpit 方法：由 $\frac{\dd p}{p} = \frac{\dd q}{q}$ 得 $p = aq$，代入 $pq = u$ 得 $aq^2 = u$。</p>
-          <p>由 $\dd u = p\,\dd x + q\,\dd y$ 和 $p = aq$，得 $\dd u = aq\,\dd x + q\,\dd y$。又 $\dd u = \dd(aq^2) = 2aq\,\dd q$，故</p>
-          <p>$$2aq\,\dd q = aq\,\dd x + q\,\dd y \implies 2a\,\dd q = a\,\dd x + \dd y.$$</p>
-          <p>积分得 $2aq = ax + y + b$，即</p>
-          <p>$$q = \frac{ax + y + b}{2a}, \quad p = aq = \frac{ax + y + b}{2}.$$</p>
-          <p>$$u = pq = \frac{(ax + y + b)^2}{4a}.$$</p>
-          <p>这就是含参数 $a, b$ 的<strong>全积分</strong>。验证：$u_x = \frac{a(ax+y+b)}{2a} = \frac{ax+y+b}{2} = p$，$u_y = \frac{ax+y+b}{2a} = q$，$u_x u_y = \frac{(ax+y+b)^2}{4a} = u$。正确。</p>
-        </div>
-      </div>
+      <div class="box-title">有限传播速度——波动方程区别于热传导方程的根本特征</div>
+      <p>波动方程的信号以<strong>有限速度 $a$</strong> 传播。而热传导方程中，一个点的温度改变会<strong>瞬间</strong>（理论上）影响到任意远处的温度。这一根本区别将在第二章中深入讨论。</p>
     </div>
   </div>
 
   <!-- ==================== 1.4 ==================== -->
   <div class="section" id="s4">
-    <h2>1.4 一阶方程的其他问题</h2>
+    <h2>1.4 半无界问题：延拓法（反射法）</h2>
 
-    <h3>Cauchy 问题的特征线法</h3>
+    <p>现在考虑半无界区域 $x \ge 0$ 上的波动——即弦有一端固定在 $x=0$ 处。</p>
 
-    <div class="box box-theorem">
-      <div class="box-title">定理 1.2（Cauchy 问题的提法）</div>
-      <p>对一阶拟线性方程 $au_x + bu_y = c$，给定初始曲线 $\Gamma$：</p>
-      <p>$$x = x_0(s), \quad y = y_0(s), \quad u = u_0(s), \quad s \in I,$$</p>
-      <p>求满足方程且在 $\Gamma$ 上取给定值的解 $u(x, y)$。</p>
+    <h3>Dirichlet 条件（固定端点）</h3>
+    <div class="box box-formula">
+      <div class="box-title">Dirichlet 半无界问题</div>
+      $$\begin{cases} u_{tt} = a^2 u_{xx}, & x > 0,\ t > 0, \\ u(x,0) = \varphi(x),\; u_t(x,0) = \psi(x), & x \ge 0, \\ u(0,t) = 0, & t \ge 0. \end{cases}$$
     </div>
 
-    <p>特征线法求解 Cauchy 问题的步骤：</p>
-    <ol>
-      <li>写出特征方程组 $\frac{\dd x}{a} = \frac{\dd y}{b} = \frac{\dd u}{c}$；</li>
-      <li>以初始曲线 $\Gamma$ 上的点 $(x_0(s), y_0(s), u_0(s))$ 为初始值，求解特征 ODE；</li>
-      <li>从解中消去参数 $s$ 和特征参数 $t$，得到 $u = u(x, y)$。</li>
-    </ol>
+    <div class="box box-intuition">
+      <div class="box-title">核心技巧：奇延拓——"想象弦的另一半"</div>
+      <p>把初始数据 $\varphi, \psi$ 奇延拓到 $x < 0$（即令 $\tilde\varphi(-x) = -\varphi(x)$），则 $x=0$ 自动是节点（$u=0$），满足Dirichlet条件。然后在全空间上用 d'Alembert 公式，再取 $x \ge 0$ 的部分即可。</p>
+      <p><strong>物理图像</strong>：一个波到达固定端点后，会以相反的相位反射回来——就像你甩动绳子的一端，波在固定端"弹回来"时上下颠倒了。</p>
+    </div>
+
+    <p><strong>奇延拓</strong>：$\tilde{\varphi}(x) = \begin{cases} \varphi(x), & x \ge 0, \\ -\varphi(-x), & x < 0, \end{cases} \quad \tilde{\psi}(x) = \begin{cases} \psi(x), & x \ge 0, \\ -\psi(-x), & x < 0. \end{cases}$</p>
+    <p>当 $x - at \ge 0$（尚未到达边界）：直接用 d'Alembert 公式；</p>
+    <p>当 $x - at < 0$（已反射）：</p>
+    $$u(x,t) = \frac{1}{2}[\varphi(x+at) - \varphi(at-x)] + \frac{1}{2a}\left[\int_0^{x+at}\psi(s)\,\dd s + \int_0^{at-x}\psi(s)\,\dd s\right].$$
+
+    <h3>Neumann 条件（自由端点）</h3>
+    <p>若 $u_x(0,t)=0$（自由端），用<strong>偶延拓</strong>：$\tilde{\varphi}(x) = \varphi(|x|)$，$\tilde{\psi}(x) = \psi(|x|)$。物理上，波在自由端反射时不发生相位翻转。</p>
 
     <div class="box box-example">
-      <div class="box-title">例 1.7</div>
-      <p>求 Cauchy 问题 $u_x + u_y = u$，初始条件 $u(x, 0) = \cos x$。</p>
+      <div class="box-title">例题 1.4.1</div>
+      <p>求解 $u_{tt} = u_{xx}$（$x>0$），$u(x,0) = 0$，$u_t(x,0) = 1$，$u(0,t) = 0$。</p>
       <div class="collapsible">
-        <div class="collapsible-header"><span class="toggle-icon">▶</span> 详细解答</div>
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
         <div class="collapsible-body">
-          <p>特征方程组：$\frac{\dd x}{1} = \frac{\dd y}{1} = \frac{\dd u}{u}$。</p>
-          <p>令 $\dd x = \dd y = \dd t$，则初始条件取为 $x(0) = s,\; y(0) = 0,\; u(0) = \cos s$。</p>
-          <p>由 $\frac{\dd x}{\dd t} = 1$ 得 $x = s + t$。</p>
-          <p>由 $\frac{\dd y}{\dd t} = 1$ 得 $y = t$。</p>
-          <p>由 $\frac{\dd u}{\dd t} = u$ 得 $u = \cos s \cdot e^t$。</p>
-          <p>消参数：$t = y$，$s = x - y$，故</p>
-          <p>$$u(x, y) = \cos(x - y)\,e^y.$$</p>
-          <p><strong>验证</strong>：$u_x = -\sin(x-y)e^y$，$u_y = \sin(x-y)e^y + \cos(x-y)e^y$，$u_x + u_y = \cos(x-y)e^y = u$。初始条件：$u(x, 0) = \cos x$。全部满足。</p>
-        </div>
-      </div>
-    </div>
-
-    <h3>特征线与解的存在性</h3>
-
-    <div class="box box-theorem">
-      <div class="box-title">定理 1.3（特征条件与解的存在性）</div>
-      <p>Cauchy 问题有唯一经典解的<strong>必要条件</strong>是初始曲线 $\Gamma$ 不是方程的特征线，即</p>
-      <p>$$\frac{\dd x_0}{\dd s} \cdot b - \frac{\dd y_0}{\dd s} \cdot a \neq 0.$$</p>
-      <p>若 $\Gamma$ 本身是特征线，则初始数据之间需满足相容性条件，否则解不存在。</p>
-    </div>
-
-    <div class="box box-note">
-      <div class="box-title">注记：横截条件的几何意义</div>
-      <p>上述条件等价于初始曲线的方向向量 $(x_0'(s), y_0'(s))$ 与特征方向 $(a, b)$ 不平行，即初始曲线与特征线<strong>横截</strong>（transversal）。几何上，解由沿初始曲线发出的特征线族"织成"；若初始曲线恰好是特征线，特征线族无法"织出"解曲面。</p>
-    </div>
-
-    <h3>Cauchy-Kovalevskaya 定理</h3>
-
-    <div class="box box-theorem">
-      <div class="box-title">定理 1.4（Cauchy-Kovalevskaya 定理，陈述）</div>
-      <p>若 PDE 可以写成对某个自变量（如 $x_n$）的最高阶导数的显式形式，且方程中的所有函数以及初始条件中的数据都是<strong>实解析</strong>的，则 Cauchy 问题在初始超平面附近存在唯一的<strong>实解析</strong>解。</p>
-      <p>具体地，对二阶方程</p>
-      <p>$$\frac{\pd^2 u}{\pd t^2} = F\!\left(t, x, u, \frac{\pd u}{\pd t}, \frac{\pd u}{\pd x}, \frac{\pd^2 u}{\pd t \pd x}, \frac{\pd^2 u}{\pd x^2}\right),$$</p>
-      <p>给定初始条件 $u|_{t=0} = \varphi(x),\; u_t|_{t=0} = \psi(x)$，若 $F, \varphi, \psi$ 均为实解析函数，则存在 $t = 0$ 附近唯一的实解析解。</p>
-    </div>
-
-    <div class="box box-note">
-      <div class="box-title">注记</div>
-      <ul>
-        <li>Cauchy-Kovalevskaya 定理是<strong>局部存在性</strong>定理，仅保证解在初始超平面附近存在。</li>
-        <li>定理要求<strong>解析性</strong>条件，这比连续可微要强得多。Hadamard 给出了反例说明连续可微条件不足以保证解的存在性。</li>
-        <li>该定理在 PDE 理论中有基础性地位，但实际求解中更常用特征线法、分离变量法等具体方法。</li>
-      </ul>
-    </div>
-
-    <div class="box box-example">
-      <div class="box-title">例 1.8</div>
-      <p>用特征线法求解 Cauchy 问题：$yu_x + xu_y = 0$，$u(0, y) = y^3$。</p>
-      <div class="collapsible">
-        <div class="collapsible-header"><span class="toggle-icon">▶</span> 详细解答</div>
-        <div class="collapsible-body">
-          <p>特征方程组：$\frac{\dd x}{y} = \frac{\dd y}{x} = \frac{\dd u}{0}$。</p>
-          <p>由 $\frac{\dd u}{0}$ 知 $u$ 沿特征线为常数。</p>
-          <p>由 $\frac{\dd x}{y} = \frac{\dd y}{x}$ 得 $x\,\dd x = y\,\dd y$，积分得 $x^2 - y^2 = C$（双曲型特征线）。</p>
-          <p>故通解为 $u = f(x^2 - y^2)$，$f$ 为任意函数。</p>
-          <p>代入初始条件：$u(0, y) = f(-y^2) = y^3$。令 $t = -y^2$，则 $y = \sqrt{-t}$（$t \le 0$），$f(t) = (-t)^{3/2} = |t|^{3/2}$。</p>
-          <p>特解为</p>
-          <p>$$u(x, y) = |x^2 - y^2|^{3/2}.$$</p>
-          <p>验证：$u_x = 3x|x^2-y^2|^{1/2}\text{sgn}(x^2-y^2)$，$u_y = -3y|x^2-y^2|^{1/2}\text{sgn}(x^2-y^2)$，$yu_x + xu_y = 3xy|x^2-y^2|^{1/2}\text{sgn}(x^2-y^2) - 3xy|x^2-y^2|^{1/2}\text{sgn}(x^2-y^2) = 0$。正确。</p>
+          <p>奇延拓：$\tilde\psi(x) = \operatorname{sgn}(x)$（$x>0$ 时 $\tilde\psi=1$，$x<0$ 时 $\tilde\psi=-1$）。</p>
+          <p>当 $x \ge t$（波前未到边界）：$u(x,t) = \frac{1}{2}\int_{x-t}^{x+t} 1\,\dd s = t$。</p>
+          <p>当 $0 < x < t$（已反射）：$u(x,t) = \frac{1}{2}[\int_0^{x+t}1\,\dd s - \int_0^{x-t}(-1)\,\dd s] = x$。</p>
+          <p>综合：$u(x,t) = \min(x, t)$。在波前 $x=t$ 到达之前位移等于 $x$，到达之后位移等于 $t$（波前沿 $x=t$ 以速度 1 向右推进）。</p>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- ==================== 1.5 ==================== -->
+  <div class="section" id="s5">
+    <h2>1.5 有界弦与分离变量法</h2>
+
+    <p>当弦的长度有限且两端固定时，d'Alembert 公式不再直接适用。这时我们需要<strong>分离变量法</strong>——这是求解有界区域上PDE最基础也最重要的方法。</p>
+
+    <div class="box box-intuition">
+      <div class="box-title">核心思想</div>
+      <p>假设解可以写成 $u(x,t) = X(x) \cdot T(t)$（位置和时间的函数分离）。代入方程后，关于 $X$ 和关于 $T$ 的项可以分开——这意味着本征模态的存在。弦的振动是所有本征模态的<strong>叠加</strong>。</p>
+    </div>
+
+    <h3>两端固定弦的自由振动</h3>
+    $$\begin{cases} u_{tt} = a^2 u_{xx}, & 0 < x < l,\ t > 0, \\ u(0,t) = u(l,t) = 0, & t \ge 0, \\ u(x,0) = \varphi(x),\; u_t(x,0) = \psi(x), & 0 \le x \le l. \end{cases}$$
+
+    <p><strong>第一步：分离变量。</strong>设 $u(x,t) = X(x)T(t)$，代入方程：</p>
+    $$X(x)T''(t) = a^2 X''(x)T(t) \implies \frac{T''(t)}{a^2 T(t)} = \frac{X''(x)}{X(x)} = -\lambda.$$
+    <p>左边只依赖于 $t$，右边只依赖于 $x$，故两者必等于同一常数 $-\lambda$。</p>
+
+    <p><strong>第二步：求解 $X$ 的本征值问题。</strong></p>
+    $$X''(x) + \lambda X(x) = 0, \quad X(0) = X(l) = 0.$$
+    <p>分析可得：只有当 $\lambda > 0$ 时才有非平凡解。令 $\lambda = \omega^2$（$\omega > 0$），$X(x) = C_1\cos\omega x + C_2\sin\omega x$。由 $X(0)=0$ 得 $C_1=0$；由 $X(l)=0$ 得 $\sin\omega l = 0$，即 $\omega l = n\pi$。</p>
+
+    <div class="box box-formula">
+      <div class="box-title">本征值与本征函数</div>
+      $$\lambda_n = \left(\frac{n\pi}{l}\right)^2, \quad X_n(x) = \sin\frac{n\pi x}{l}, \quad n = 1, 2, 3, \ldots$$
+      <p>$\lambda_n$ 就是弦的<strong>固有频率</strong>（的平方除以 $a^2$）。$n=1$ 对应<strong>基频</strong>，$n \ge 2$ 对应<strong>泛音</strong>（谐波）。</p>
+    </div>
+
+    <p><strong>第三步：求解 $T$ 的方程。</strong>$T''(t) + a^2\lambda_n T(t) = 0$，通解：</p>
+    $$T_n(t) = A_n \cos\frac{n\pi a t}{l} + B_n \sin\frac{n\pi a t}{l}.$$
+
+    <p><strong>第四步：叠加。</strong>$u(x,t) = \sum_{n=1}^{\infty} \left(A_n \cos\frac{n\pi a t}{l} + B_n \sin\frac{n\pi a t}{l}\right) \sin\frac{n\pi x}{l}.$</p>
+
+    <p><strong>第五步：由初始条件确定系数。</strong>利用正弦函数的正交性 $\int_0^l \sin\frac{m\pi x}{l}\sin\frac{n\pi x}{l}\,\dd x = \frac{l}{2}\delta_{mn}$：</p>
+    $$A_n = \frac{2}{l}\int_0^l \varphi(x)\sin\frac{n\pi x}{l}\,\dd x, \quad B_n = \frac{2}{n\pi a}\int_0^l \psi(x)\sin\frac{n\pi x}{l}\,\dd x.$$
+
+    <div class="box box-analogy">
+      <div class="box-title">音乐家的视角</div>
+      <p>分离变量法揭示：弦的振动是各种"纯音"（正弦本征模态）的叠加。钢琴、小提琴的音色差异正是由于不同谐波（泛音）的相对强度不同——即 Fourier 系数 $A_n, B_n$ 的分布不同。这就是 Fourier 分析的物理起源！</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 1.5.1</div>
+      <p>求解 $u_{tt} = u_{xx}$（$0<x<\pi$），$u(0,t)=u(\pi,t)=0$，$u(x,0)=\sin x + \frac{1}{2}\sin 3x$，$u_t(x,0)=0$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>$a=1, l=\pi$。由初始条件 $\varphi(x) = \sin x + \frac{1}{2}\sin 3x$ 直接读出 Fourier 系数：$A_1=1, A_3=\frac{1}{2}$，其余 $A_n=0$。$B_n=0$（因为 $\psi=0$）。</p>
+          <p>故 $u(x,t) = \sin x \cos t + \frac{1}{2}\sin 3x \cos 3t$。注意 $n=3$ 的模态频率是 $n=1$ 的三倍（泛音）。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS可视化 -->
+  <div class="section" id="viz-wave">
+    <h2>可视化 &middot; 波动方程的 d'Alembert 解</h2>
+    <p>观察一维波动方程 $u_{tt} = u_{xx}$ 的解随时间的演化。蓝色虚线表示左右行波分量。</p>
+    <div style="margin:1rem 0;">
+      <label>初始条件:
+        <select id="wave-ic" style="padding:0.3rem;border-radius:6px;border:1px solid var(--border);">
+          <option value="gauss">φ(x) = e^{-x²}, ψ(x) = 0</option>
+          <option value="sincos">φ(x) = sin(πx), ψ(x) = 0</option>
+          <option value="pluck">φ(x) = 0, ψ(x) = e^{-x²}</option>
+        </select>
+      </label>
+      <button id="wave-btn" style="margin-left:1rem;padding:0.4rem 1rem;border-radius:6px;border:1px solid var(--border);background:var(--bg-white);cursor:pointer;">播放 / 暂停</button>
+    </div>
+    <canvas id="canvas-wave" width="700" height="300" style="width:100%;max-width:700px;"></canvas>
+    <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.5rem;">$u(x,t) = \frac{1}{2}[\varphi(x+t) + \varphi(x-t)] + \frac{1}{2}\int_{x-t}^{x+t}\psi(s)\,ds$</p>
+    <script>
+    (function(){
+      var canvas = document.getElementById('canvas-wave');
+      if(!canvas) return;
+      var ctx = canvas.getContext('2d');
+      var W, H, dpr;
+      var XMIN=-6, XMAX=6, YMIN=-1.3, YMAX=1.3;
+      var t=0, playing=false;
+      function resize(){
+        var rect = canvas.getBoundingClientRect();
+        var cw = rect.width || 700;
+        dpr = window.devicePixelRatio || 1;
+        canvas.width = Math.round(cw*dpr);
+        canvas.height = Math.round(300*dpr);
+        canvas.style.width = cw+'px';
+        canvas.style.height = '300px';
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        W=cw; H=300;
+      }
+      function phi(x,ic){
+        if(ic==='gauss') return Math.exp(-x*x);
+        if(ic==='sincos') return Math.sin(Math.PI*x);
+        return 0;
+      }
+      function simpson(fn,a,b,n){
+        if(n%2===1) n++;
+        var h=(b-a)/n, s=fn(a)+fn(b);
+        for(var i=1;i<n;i++) s+=(i%2===0?2:4)*fn(a+i*h);
+        return s*h/3;
+      }
+      function uVal(x,tv,ic){
+        var part=0.5*(phi(x+tv,ic)+phi(x-tv,ic));
+        if(ic==='pluck') part+=0.5*simpson(function(s){return Math.exp(-s*s);},x-tv,x+tv,80);
+        return part;
+      }
+      function x2s(x){ return 50+(x-XMIN)/(XMAX-XMIN)*(W-80); }
+      function y2s(y){ return (H-30)-(y-YMIN)/(YMAX-YMIN)*(H-60); }
+      function drawAxes(){
+        ctx.save();
+        ctx.strokeStyle='#bbb'; ctx.lineWidth=1;
+        var y0=y2s(0);
+        if(y0<20) y0=20; if(y0>H-30) y0=H-30;
+        ctx.beginPath(); ctx.moveTo(50,y0); ctx.lineTo(W-30,y0); ctx.stroke();
+        var x0=x2s(0);
+        ctx.beginPath(); ctx.moveTo(x0,20); ctx.lineTo(x0,H-30); ctx.stroke();
+        ctx.fillStyle='#888'; ctx.font='11px sans-serif'; ctx.textAlign='center';
+        for(var v=-6;v<=6;v+=2) ctx.fillText(v,x2s(v),y0+14);
+        ctx.fillText('x',W-18,y0+14);
+        ctx.textAlign='right';
+        ctx.fillText('1',x0-5,y2s(1)+4); ctx.fillText('-1',x0-5,y2s(-1)+4);
+        ctx.fillText('u',x0-5,25);
+        ctx.textAlign='left'; ctx.fillStyle='#555'; ctx.font='13px sans-serif';
+        ctx.fillText('t = '+t.toFixed(2),55,38);
+        ctx.restore();
+      }
+      function drawCurve(fn,color,lw,dash){
+        ctx.save(); ctx.strokeStyle=color; ctx.lineWidth=lw;
+        if(dash) ctx.setLineDash(dash);
+        ctx.beginPath();
+        var N=500;
+        for(var i=0;i<=N;i++){
+          var x=XMIN+(XMAX-XMIN)*i/N;
+          var v=fn(x), sx=x2s(x), sy=y2s(v);
+          i===0?ctx.moveTo(sx,sy):ctx.lineTo(sx,sy);
+        }
+        ctx.stroke(); ctx.restore();
+      }
+      function draw(){
+        var ic=document.getElementById('wave-ic').value;
+        ctx.clearRect(0,0,W,H);
+        drawAxes();
+        if(ic!=='pluck'){
+          drawCurve(function(x){return 0.5*phi(x+t,ic);},'rgba(66,133,244,0.45)',1.5,[6,4]);
+          drawCurve(function(x){return 0.5*phi(x-t,ic);},'rgba(234,67,53,0.45)',1.5,[6,4]);
+        }
+        drawCurve(function(x){return uVal(x,t,ic);},'#333',2.5,null);
+        ctx.save(); ctx.font='11px sans-serif';
+        if(ic!=='pluck'){
+          ctx.fillStyle='rgba(66,133,244,0.7)'; ctx.fillText('½φ(x+t)',W-130,25);
+          ctx.fillStyle='rgba(234,67,53,0.7)'; ctx.fillText('½φ(x-t)',W-130,40);
+        }
+        ctx.fillStyle='#333'; ctx.fillText('u(x,t)',W-130,ic!=='pluck'?55:25);
+        ctx.restore();
+      }
+      function animate(){
+        if(playing){ t+=0.025; if(t>8) t=0; }
+        draw();
+        requestAnimationFrame(animate);
+      }
+      document.getElementById('wave-btn').addEventListener('click',function(){playing=!playing;});
+      document.getElementById('wave-ic').addEventListener('change',function(){t=0;});
+      window.addEventListener('resize',function(){resize();});
+      resize(); animate();
+    })();
+    </script>
+  </div>
+
+  <!-- ==================== 1.6 ==================== -->
+  <div class="section" id="s6">
+    <h2>1.6 高维波动方程</h2>
+
+    <p>$n$ 维波动方程：$u_{tt} = a^2 \lap u = a^2 \sum_{i=1}^n \frac{\pd^2 u}{\pd x_i^2}.$</p>
+
+    <h3>三维——Kirchhoff-Poisson 公式</h3>
+    <div class="box box-formula">
+      <div class="box-title">三维初值问题的解</div>
+      <p>对 $u_{tt} = a^2 \lap u$（$x \in \RR^3$），$u|_{t=0}=\varphi$，$u_t|_{t=0}=\psi$：</p>
+      $$u(x,t) = \frac{\pd}{\pd t}\big[t \cdot M_{at}[\varphi](x)\big] + t \cdot M_{at}[\psi](x),$$
+      <p>其中 $M_{r}[\varphi](x) = \frac{1}{4\pi r^2}\int_{|\xi|=r}\varphi(x+\xi)\,\dd S_\xi$ 是 $\varphi$ 在以 $x$ 为球心、$r$ 为半径的<strong>球面</strong>上的平均值。</p>
+    </div>
+
+    <div class="box box-intuition">
+      <div class="box-title">推导思路：球面平均法</div>
+      <p>定义球面平均 $M(r,t) = \frac{1}{4\pi r^2}\int_{|\xi|=r}u(x+\xi,t)\,\dd S$。可证 $rM$ 满足一维波动方程 $(rM)_{tt} = a^2(rM)_{rr}$。用 d'Alembert 公式求解 $rM$，再令 $r \to 0$ 即得 Poisson 公式。这就是"降维"的力量——高维问题化为一维！</p>
+    </div>
+
+    <h3>Huygens 原理（三维 vs 二维）</h3>
+    <div class="box box-theorem">
+      <div class="box-title">Huygens 原理</div>
+      <p><strong>三维空间</strong>：点 $(x_0, t_0)$ 处的解仅依赖于球<strong>面</strong> $|\xi| = at_0$ 上的初始数据（不是球体内部！）。扰动过后不留余波——信号传播是"干净"的。</p>
+      <p><strong>二维空间</strong>：解依赖于整个圆<strong>盘</strong> $|\xi| \le at_0$ 上的初始数据。二维波传播存在"余波"（wake），Huygens 原理不成立。</p>
+      <p><strong>物理含义</strong>：在三维世界中，你听到的声音是清晰的——声波经过后不会留下回响；如果世界是二维的，声音会一直"嗡嗡"响。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 1.6.1</div>
+      <p>三维波动方程，$a=1$，$\varphi=0$，$\psi(x)=1$（$|x|<1$），$\psi=0$（$|x|\ge 1$）。求 $u(0,t)$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>$u(0,t) = t \cdot M_t[\psi](0) = \frac{1}{4\pi t}\int_{|\xi|=t}\psi(\xi)\,\dd S_\xi$。</p>
+          <p>$t < 1$：球面完全在 $|\xi|<1$ 内，$\psi=1$，积分 $= 4\pi t^2$，故 $u(0,t) = t$。</p>
+          <p>$t > 1$：球面完全在 $|\xi|\ge 1$ 外，$\psi=0$，故 $u(0,t) = 0$。</p>
+          <p>体现了 Huygens 原理：扰动到达原点后立刻离开，不留余波。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1.7 ==================== -->
+  <div class="section" id="s7">
+    <h2>1.7 能量积分与唯一性</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">能量积分</div>
+      <p>对于波动方程 $u_{tt} = a^2 u_{xx}$，定义<strong>能量积分</strong>：</p>
+      $$E(t) = \frac{1}{2}\int_{-\infty}^{+\infty}\big[u_t^2(x,t) + a^2 u_x^2(x,t)\big]\,\dd x.$$
+      <p>第一项是<strong>动能</strong>（$\frac{1}{2}mv^2$ 的连续版本：$v = u_t$），第二项是<strong>势能</strong>（弦被拉伸储存的弹性势能，正比于 $u_x^2$）。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">能量守恒定理</div>
+      <p>若 $u$ 是波动方程的解且在无穷远处足够快地趋于零，则 $E(t) = E(0) = \text{const}.$</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明</div>
+      <p>$$\frac{\dd E}{\dd t} = \int_{-\infty}^{+\infty}(u_t u_{tt} + a^2 u_x u_{xt})\,\dd x.$$</p>
+      <p>代入 $u_{tt} = a^2 u_{xx}$：</p>
+      <p>$$\frac{\dd E}{\dd t} = a^2\int_{-\infty}^{+\infty}(u_t u_{xx} + u_x u_{xt})\,\dd x = a^2\int_{-\infty}^{+\infty}\frac{\pd}{\pd x}(u_t u_x)\,\dd x = 0.$$</p>
+    </div>
+
+    <h3>能量方法推出唯一性</h3>
+    <div class="box box-theorem">
+      <div class="box-title">唯一性定理</div>
+      <p>波动方程初值问题的经典解是<strong>唯一</strong>的。</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明</div>
+      <p>设 $u_1, u_2$ 是两个解，$w = u_1 - u_2$。则 $w$ 满足齐次方程 $w_{tt} = a^2 w_{xx}$ 和零初始条件。$w$ 的能量 $E(0) = 0$（初始位移和速度均为零），由能量守恒 $E(t) \equiv 0$，故 $w_t \equiv 0$，$w_x \equiv 0$，从而 $w \equiv 0$，即 $u_1 = u_2$。</p>
+    </div>
+
+    <div class="box box-summary">
+      <div class="box-title">本章总结：波动方程的知识结构</div>
+      <p>$$\begin{array}{c}
+        \text{物理推导（弦振动）} \\
+        \downarrow \\
+        \text{d'Alembert公式（无限弦）} \quad \longleftrightarrow \quad \text{分离变量法（有界弦）} \\
+        \downarrow \qquad \qquad \qquad \qquad \qquad \downarrow \\
+        \text{特征线·依赖/影响区域} \qquad \qquad \text{本征值·本征函数·Fourier展开} \\
+        \downarrow \qquad \qquad \qquad \qquad \qquad \downarrow \\
+        \text{延拓法（半无界）} \qquad \qquad \qquad \text{叠加原理} \\
+        \downarrow \\
+        \text{高维波动（Poisson公式·Huygens原理）} \\
+        \downarrow \\
+        \text{能量积分 → 唯一性、稳定性}
+      \end{array}$$</p>
+      <p><strong>核心方法</strong>：特征线法（d'Alembert公式）、分离变量法、延拓法、能量方法。</p>
+      <p><strong>物理直觉</strong>：波 = 两个行波的叠加，以有限速度传播，能量守恒。</p>
+    </div>
+  </div>
+
   <div class="chapter-nav">
-    <a href="index.html" class="prev">首页</a>
-    <a href="ch2.html" class="next">第二章</a>
+    <a href="ch0.html" class="prev">第零章 · 预备知识</a>
+    <a href="ch2.html" class="next">第二章 · 热传导方程</a>
   </div>
 
 </div>
 
 <footer class="footer">
-  <p>偏微分方程复习指南 · 基于陈祖墀教材 · 仅供学习参考</p>
+  <p>偏微分方程教程 · 基于谷超豪《数学物理方程》体系 · 零基础入门</p>
 </footer>
-
-<button class="back-to-top" aria-label="回到顶部">↑</button>
+<button class="back-to-top" aria-label="回到顶部">&uarr;</button>
 <script src="js/main.js"></script>
 </body>
 </html>
