@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>闯关答题 · 复变函数</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/quiz-game.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}', CC: '\\mathbb{C}', EE: '\\mathbb{E}',
+          dd: '\\mathrm{d}', Res: '\\mathrm{Res}', arg: '\\mathrm{arg}',
+          Arg: '\\mathrm{Arg}', Log: '\\mathrm{Log}', ZZ: '\\mathbb{Z}',
+          NN: '\\mathbb{N}', Re: '\\mathrm{Re}', Im: '\\mathrm{Im}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+  <a href="../index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">复变函数复习</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+    <li><a href="quiz.html" class="active" style="color:#fbbf24;">🎮 闯关答题</a></li>
+  </ul>
+</nav>
+
+<!-- 主内容 -->
+<div class="main-content">
+  <div class="quiz-container">
+
+    <!-- 顶部状态栏 -->
+    <div class="quiz-header">
+      <div class="player-info">
+        <div class="player-avatar">⚔️</div>
+        <span>复变勇者</span>
+      </div>
+      <div class="total-score" id="total-score">总分：--</div>
+      <button class="reset-btn" onclick="QuizApp.resetAll()">清除记录</button>
+    </div>
+
+    <!-- 游戏主区域 -->
+    <div id="quiz-app">
+      <p style="text-align:center;color:var(--text-muted);padding:3rem 0;">加载中...</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- 页脚 -->
+<footer class="footer">
+  <p>复变函数复习指南 · 闯关答题 · 基于钟玉泉教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+
+<script src="js/main.js"></script>
+<script src="js/quiz-questions.js"></script>
+<script src="js/quiz-game.js"></script>
+</body>
+</html>

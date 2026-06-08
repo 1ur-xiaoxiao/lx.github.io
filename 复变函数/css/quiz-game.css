@@ -1,0 +1,855 @@
+/* ============================================================
+   复变函数闯关答题 — 游戏专属样式
+   依赖 css/style.css 的 CSS 变量（--primary, --accent 等）
+   ============================================================ */
+
+/* ===== 游戏容器 ===== */
+.quiz-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  min-height: calc(100vh - var(--nav-height) - 4rem);
+}
+
+/* ===== 顶部状态栏 ===== */
+.quiz-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  padding: 1rem 1.25rem;
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+.quiz-header .player-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.quiz-header .player-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.quiz-header .total-score {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.quiz-header .reset-btn {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.8rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.quiz-header .reset-btn:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+  background: var(--danger-bg);
+}
+
+/* ===== 关卡选择画面 ===== */
+.chapter-select-title {
+  text-align: center;
+  font-size: 1.5rem;
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+}
+
+.chapter-select-subtitle {
+  text-align: center;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+
+.chapter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 900px) {
+  .chapter-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .chapter-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== 关卡卡片 ===== */
+.boss-card {
+  position: relative;
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 1.5rem 1.25rem;
+  text-align: center;
+  transition: transform 0.25s, box-shadow 0.25s;
+  overflow: hidden;
+  cursor: default;
+}
+
+.boss-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.boss-card.unlocked {
+  cursor: pointer;
+  border-top: 4px solid var(--accent);
+}
+
+.boss-card.unlocked:hover {
+  box-shadow: 0 8px 25px rgba(43, 108, 176, 0.18);
+}
+
+.boss-card.locked {
+  opacity: 0.55;
+  filter: grayscale(0.5);
+  border-top: 4px solid var(--border);
+}
+
+.boss-card.defeated {
+  border-top: 4px solid var(--success);
+}
+
+.boss-card .boss-emoji {
+  font-size: 3.5rem;
+  display: block;
+  margin-bottom: 0.5rem;
+  transition: transform 0.3s;
+}
+
+.boss-card.unlocked:hover .boss-emoji {
+  transform: scale(1.15);
+  animation: bossBounce 0.6s ease infinite;
+}
+
+@keyframes bossBounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12) translateY(-5px); }
+}
+
+.boss-card .boss-name {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 0.2rem;
+}
+
+.boss-card .boss-title {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0.6rem;
+  font-style: italic;
+}
+
+.boss-card .chapter-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.boss-card .boss-stats {
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem;
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-bottom: 0.75rem;
+}
+
+.boss-card .boss-stats span {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.boss-card .status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.boss-card .status-badge.cleared {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.boss-card .status-badge.locked-badge {
+  background: var(--border-light);
+  color: var(--text-muted);
+}
+
+.boss-card .challenge-btn {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.5rem 1.75rem;
+  border: none;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.boss-card.unlocked .challenge-btn {
+  background: var(--accent);
+  color: #fff;
+}
+
+.boss-card.unlocked .challenge-btn:hover {
+  background: var(--primary);
+  transform: scale(1.05);
+}
+
+.boss-card.locked .challenge-btn {
+  background: var(--border-light);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.boss-card.defeated .challenge-btn {
+  background: var(--success);
+  color: #fff;
+}
+
+.boss-card.defeated .challenge-btn:hover {
+  background: #1e5a3a;
+}
+
+/* ===== 战斗画面 ===== */
+.battle-screen {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* HP 条区域 */
+.hp-zone {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.hp-block {
+  flex: 1;
+  text-align: center;
+}
+
+.hp-block .hp-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  margin-bottom: 0.35rem;
+}
+
+.hp-block.player .hp-label {
+  color: var(--accent);
+}
+
+.hp-block.boss .hp-label {
+  color: var(--danger);
+}
+
+.hp-bar {
+  height: 14px;
+  background: var(--border-light);
+  border-radius: 7px;
+  overflow: hidden;
+  margin-bottom: 0.25rem;
+}
+
+.hp-bar .hp-fill {
+  height: 100%;
+  border-radius: 7px;
+  transition: width 0.4s ease;
+}
+
+.hp-bar .hp-fill.player-hp {
+  background: linear-gradient(90deg, var(--accent), #63b3ed);
+}
+
+.hp-bar .hp-fill.boss-hp {
+  background: linear-gradient(90deg, var(--danger), #fc8181);
+}
+
+.hp-block .hp-text {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.vs-divider {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* Boss 战斗形象 */
+.boss-display {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  transition: transform 0.15s;
+}
+
+.boss-display .battle-emoji {
+  font-size: 5rem;
+  display: block;
+  line-height: 1.2;
+}
+
+.boss-display .battle-boss-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* Boss 受击 */
+.boss-display.hit {
+  animation: bossHit 0.4s ease;
+}
+
+@keyframes bossHit {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-8px); }
+  30% { transform: translateX(8px); }
+  45% { transform: translateX(-6px); }
+  60% { transform: translateX(6px); }
+  75% { transform: translateX(-3px); }
+  90% { transform: translateX(3px); }
+}
+
+/* Boss 击败 */
+.boss-display.defeated-anim .battle-emoji {
+  animation: bossDefeat 0.8s ease forwards;
+}
+
+@keyframes bossDefeat {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3) rotate(10deg); opacity: 0.7; }
+  100% { transform: scale(0.2) rotate(30deg); opacity: 0; }
+}
+
+/* 题目进度 */
+.question-progress {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.question-progress .progress-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  margin: 0 3px;
+  transition: background 0.3s;
+}
+
+.question-progress .progress-dot.done-correct {
+  background: var(--success);
+}
+
+.question-progress .progress-dot.done-wrong {
+  background: var(--danger);
+}
+
+.question-progress .progress-dot.current {
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+}
+
+/* 题目卡片 */
+.question-card {
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 1.75rem;
+  margin-bottom: 1.25rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  border-left: 4px solid var(--accent);
+}
+
+.question-card.correct-flash {
+  border-left-color: var(--success);
+  box-shadow: 0 0 20px rgba(39, 103, 73, 0.3);
+}
+
+.question-card.wrong-flash {
+  border-left-color: var(--danger);
+  box-shadow: 0 0 20px rgba(155, 44, 44, 0.3);
+  animation: screenShake 0.4s ease;
+}
+
+@keyframes screenShake {
+  0%, 100% { transform: translateX(0); }
+  10% { transform: translateX(-4px); }
+  30% { transform: translateX(4px); }
+  50% { transform: translateX(-3px); }
+  70% { transform: translateX(3px); }
+  90% { transform: translateX(-1px); }
+}
+
+.question-card .q-number {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.question-card .q-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.8;
+}
+
+/* Combo 徽章 */
+.combo-badge {
+  position: fixed;
+  top: 80px;
+  right: 30px;
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  color: #fff;
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.5);
+  z-index: 100;
+  transition: transform 0.2s, opacity 0.3s;
+  animation: comboPop 0.4s ease;
+}
+
+.combo-badge.fade-out {
+  opacity: 0;
+}
+
+@keyframes comboPop {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* 分数飘出动画 */
+.score-pop {
+  position: fixed;
+  font-weight: 900;
+  font-size: 1.3rem;
+  pointer-events: none;
+  z-index: 200;
+  animation: scoreFloat 1.2s ease-out forwards;
+}
+
+.score-pop.positive {
+  color: var(--success);
+}
+
+.score-pop.negative {
+  color: var(--danger);
+}
+
+@keyframes scoreFloat {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-80px) scale(1.3); }
+}
+
+/* 选项按钮 */
+.options-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 500px) {
+  .options-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+.option-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.9rem 1.1rem;
+  background: var(--bg-white);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.option-btn:hover:not(.disabled) {
+  border-color: var(--accent);
+  background: var(--accent-light);
+  transform: translateX(3px);
+}
+
+.option-btn .opt-letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--border-light);
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.option-btn:hover:not(.disabled) .opt-letter {
+  background: var(--accent);
+  color: #fff;
+}
+
+.option-btn.correct-choice {
+  border-color: var(--success) !important;
+  background: var(--success-bg) !important;
+  animation: pulseGreen 0.5s ease;
+}
+
+.option-btn.correct-choice .opt-letter {
+  background: var(--success);
+  color: #fff;
+}
+
+.option-btn.wrong-choice {
+  border-color: var(--danger) !important;
+  background: var(--danger-bg) !important;
+}
+
+.option-btn.wrong-choice .opt-letter {
+  background: var(--danger);
+  color: #fff;
+}
+
+.option-btn.disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
+@keyframes pulseGreen {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(39, 103, 73, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(39, 103, 73, 0); }
+}
+
+/* 解析区 */
+.explanation-box {
+  background: var(--info-bg);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+  border-left: 3px solid var(--info);
+  font-size: 0.9rem;
+  color: var(--text-light);
+  line-height: 1.7;
+  display: none;
+}
+
+.explanation-box.show {
+  display: block;
+  animation: fadeSlideIn 0.3s ease;
+}
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.explanation-box .exp-label {
+  font-weight: 700;
+  color: var(--info);
+  margin-bottom: 0.25rem;
+}
+
+/* 下一题按钮 */
+.next-btn {
+  display: none;
+  margin: 0 auto;
+  padding: 0.7rem 2rem;
+  border: none;
+  border-radius: 25px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.next-btn.show {
+  display: block;
+  animation: fadeSlideIn 0.3s ease;
+}
+
+.next-btn:hover {
+  background: var(--primary);
+  transform: scale(1.05);
+}
+
+/* 得分动画区 */
+.score-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 1.1rem;
+  min-height: 2rem;
+}
+
+/* ===== 结算画面 ===== */
+.result-screen {
+  max-width: 550px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 2rem;
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  animation: fadeSlideIn 0.5s ease;
+}
+
+.result-screen.victory {
+  border-top: 5px solid var(--success);
+}
+
+.result-screen.defeat {
+  border-top: 5px solid var(--danger);
+}
+
+.result-screen .result-icon {
+  font-size: 5rem;
+  display: block;
+  margin-bottom: 0.75rem;
+  animation: resultBounce 0.6s ease;
+}
+
+@keyframes resultBounce {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.2); }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+.result-screen .result-title {
+  font-size: 1.8rem;
+  font-weight: 900;
+  margin-bottom: 0.25rem;
+}
+
+.result-screen.victory .result-title {
+  color: var(--success);
+}
+
+.result-screen.defeat .result-title {
+  color: var(--danger);
+}
+
+.result-screen .result-subtitle {
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.result-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.result-stat {
+  background: var(--bg);
+  border-radius: var(--radius);
+  padding: 0.75rem 0.5rem;
+}
+
+.result-stat .stat-value {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.result-stat .stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+}
+
+.result-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.result-actions .btn {
+  padding: 0.65rem 1.5rem;
+  border: none;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.result-actions .btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.result-actions .btn-primary:hover {
+  background: var(--primary);
+  transform: scale(1.05);
+}
+
+.result-actions .btn-secondary {
+  background: var(--border-light);
+  color: var(--text);
+}
+
+.result-actions .btn-secondary:hover {
+  background: var(--border);
+}
+
+/* 新纪录标记 */
+.new-record {
+  display: inline-block;
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  color: #fff;
+  padding: 0.2rem 0.7rem;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-top: 0.3rem;
+  animation: comboPop 0.5s ease;
+}
+
+/* ===== 游戏横幅入口（用于 index.html） ===== */
+.quiz-banner {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, #1a365d, #2b6cb0);
+  border-radius: var(--radius-lg);
+  margin: 1.5rem 0;
+  color: #fff;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.quiz-banner:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(43, 108, 176, 0.35);
+  text-decoration: none;
+  color: #fff;
+}
+
+.quiz-banner .banner-icon {
+  font-size: 2.5rem;
+  flex-shrink: 0;
+  animation: bossBounce 2s ease infinite;
+}
+
+.quiz-banner .banner-content h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.2rem;
+}
+
+.quiz-banner .banner-content p {
+  font-size: 0.85rem;
+  opacity: 0.85;
+  margin: 0;
+}
+
+/* ===== 返回按钮 ===== */
+.back-to-chapters {
+  display: inline-block;
+  margin-bottom: 1.25rem;
+  padding: 0.45rem 1rem;
+  font-size: 0.85rem;
+  color: var(--accent);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.back-to-chapters:hover {
+  background: var(--accent-light);
+  border-color: var(--accent);
+}
+
+/* ===== 响应式调整 ===== */
+@media (max-width: 768px) {
+  .quiz-container {
+    padding: 1.25rem 1rem;
+  }
+
+  .hp-zone {
+    gap: 0.75rem;
+  }
+
+  .question-card {
+    padding: 1.25rem;
+  }
+
+  .result-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .quiz-banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem;
+  }
+}
