@@ -19,6 +19,8 @@
           arg: '\\mathrm{arg}',
           Arg: '\\mathrm{Arg}',
           Log: '\\mathrm{Log}',
+          ZZ: '\\mathbb{Z}',
+          NN: '\\mathbb{N}',
           Re: '\\mathrm{Re}',
           Im: '\\mathrm{Im}'
         }
@@ -70,6 +72,54 @@
     <p>第四章通过积分的方法研究了函数的全局性质。现在换一个视角：用<strong>无穷级数</strong>来"微观解剖"函数在某点附近的行为。</p>
     <p>如果说 Cauchy 积分公式是从远处观察——知道函数在围道上的值就能推知内部所有信息——那么级数展开就是从近处观察——把函数拆解为 $(z-z_0)$ 的整数次幂的叠加。Taylor 展开告诉你在<strong>正则点</strong>（解析点）附近，函数像幂级数一样光滑。但真正的突破是 <strong>Laurent 展开</strong>——它允许负幂项，因此可以描述函数在<strong>奇点</strong>附近的行为。</p>
     <p>奇点按照 Laurent 展开中负幂项的多寡分为三类：没有负幂项（可去）、有限多项负幂项（极点）、无穷多项负幂项（本性奇点）。这个简单的分类直接决定了第六章留数的计算方法——因为留数恰好就是 $(z-z_0)^{-1}$ 的系数。</p>
+  </div>
+
+  <!-- 数学分析级数知识回顾 -->
+  <div class="section" style="margin-bottom:1.5rem;padding:1.25rem 1.5rem;background:#fef9e7;border-left:4px solid #f1c40f;">
+    <h2 style="font-size:1.15rem;margin-bottom:0.5rem;border:none;padding:0;">预备：数学分析级数知识速览</h2>
+    <p>如果你对数学分析中的级数理论已经有些生疏，别担心——这里帮你快速回顾本章需要用到的基础概念。只需要读懂这些，就能顺利进入复变函数中更精彩的级数世界。</p>
+
+    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">1. 什么是级数？</h3>
+    <p>把无穷多个数按顺序加起来，就得到一个<strong>级数</strong>：$a_1 + a_2 + a_3 + \cdots = \sum_{n=1}^{\infty} a_n$。但"无穷多项相加"这个说法本身就有问题——我们不可能真的加无穷多次。所以数学家定义：先求前 $n$ 项的部分和 $S_n = a_1 + \cdots + a_n$，然后让 $n \to \infty$。如果极限 $\lim_{n\to\infty} S_n$ 存在（且有限），就说级数<strong>收敛</strong>，这个极限值就是级数的<strong>和</strong>；否则级数<strong>发散</strong>。</p>
+    <p><strong>直观理解：</strong>每次加一项，部分和就像在数轴上走路。如果步伐越来越小、最终"停"在某处，级数收敛；如果永远在摆动或者越走越远，级数发散。</p>
+
+    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">2. 收敛的必要条件</h3>
+    <p>如果级数 $\sum a_n$ 收敛，则通项 $a_n \to 0$。这只是一个<strong>必要条件</strong>（不是充分条件），用于快速排除发散级数——如果通项不趋于零，级数一定发散。比如调和级数 $\sum \frac{1}{n}$ 的通项趋于零，但它却是发散的，这说明"通项趋于零"不足以保证收敛。</p>
+
+    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">3. 几个你必须记住的标准级数</h3>
+    <p>这些是判断其他级数收敛性的"参照物"：</p>
+    <ul>
+      <li><strong>几何级数</strong> $\sum_{n=0}^{\infty} q^n$：当 $|q| < 1$ 时收敛，和为 $\frac{1}{1-q}$；当 $|q| \ge 1$ 时发散。这是<strong>最重要</strong>的级数——复变函数中的 Taylor 展开本质上就是几何级数的推广。</li>
+      <li><strong>$p$-级数</strong> $\sum_{n=1}^{\infty} \frac{1}{n^p}$：当 $p > 1$ 时收敛；当 $p \le 1$ 时发散。特别地，$p=1$ 时的调和级数 $\sum \frac{1}{n}$ 发散，$p=2$ 时 $\sum \frac{1}{n^2} = \frac{\pi^2}{6}$ 收敛。</li>
+    </ul>
+
+    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">4. 绝对收敛 vs 条件收敛</h3>
+    <p>如果每项加了绝对值之后构成的级数 $\sum |a_n|$ 收敛，就说原级数<strong>绝对收敛</strong>。绝对收敛是比普通收敛更强的性质——绝对收敛的级数一定收敛，而且<strong>重排各项顺序后和不变</strong>。</p>
+    <p>如果级数收敛但不绝对收敛（即 $\sum a_n$ 收敛但 $\sum |a_n|$ 发散），就称为<strong>条件收敛</strong>。条件收敛的级数很"娇气"——重排各项顺序可能改变和的值，甚至让它发散。</p>
+    <p><strong>对复变函数的意义：</strong>在复数域中，我们几乎只关心<strong>绝对收敛</strong>的级数，因为绝对收敛级数可以像有限和一样自由地重新排列、逐项相乘，而解析函数的 Taylor 展开恰好是绝对收敛的幂级数。</p>
+
+    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">5. 判断收敛性的常用工具</h3>
+    <ul>
+      <li><strong>比较判别法：</strong>如果 $0 \le a_n \le b_n$（对充分大的 $n$），且 $\sum b_n$ 收敛，则 $\sum a_n$ 收敛；如果 $\sum a_n$ 发散，则 $\sum b_n$ 发散。简单说就是"比一个已知收敛的小就收敛，比一个已知发散的大就发散"。</li>
+      <li><strong>比值判别法（D'Alembert）：</strong>计算极限 $\rho = \lim_{n\to\infty} \left|\frac{a_{n+1}}{a_n}\right|$。若 $\rho < 1$，级数绝对收敛；若 $\rho > 1$，级数发散；若 $\rho = 1$，此法失效，需要用别的方法。</li>
+      <li><strong>根值判别法（Cauchy）：</strong>计算极限 $\rho = \lim_{n\to\infty} \sqrt[n]{|a_n|}$。判断规则同上。</li>
+    </ul>
+    <p><strong>为什么比值法和根值法这么重要？</strong>因为它们在复变函数中直接引出了<strong>收敛半径</strong>的概念。对幂级数 $\sum c_n z^n$，用比值法得到 $|z| < \lim |c_n/c_{n+1}|$ 时收敛，这个上界就是收敛半径 $R$。</p>
+
+    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">6. 幂级数与收敛半径</h3>
+    <p>形如 $\sum_{n=0}^{\infty} c_n (z - z_0)^n$ 的级数叫做<strong>幂级数</strong>——每一项都是 $(z-z_0)$ 的幂乘以系数。幂级数有一个极其优美的性质：存在一个<strong>收敛半径</strong> $R$（$0 \le R \le +\infty$），使得：</p>
+    <ul>
+      <li>当 $|z - z_0| < R$ 时，级数<strong>绝对收敛</strong>；</li>
+      <li>当 $|z - z_0| > R$ 时，级数<strong>发散</strong>；</li>
+      <li>在 $|z - z_0| = R$ 的圆周上，需要单独判断。</li>
+    </ul>
+    <p>复变函数中，这给出了一个完美的<strong>收敛圆盘</strong>——在复平面上，收敛区域是一个以 $z_0$ 为圆心、$R$ 为半径的圆。这与实分析中收敛区间只是一条线段形成了鲜明对比，也是复数视角带来的一种"高维美感"。</p>
+    <p>收敛半径可以通过以下公式计算（来自比值/根值判别法）：</p>
+    <p>$$R = \lim_{n\to\infty} \left|\frac{c_n}{c_{n+1}}\right| \quad \text{或} \quad R = \frac{1}{\lim_{n\to\infty} \sqrt[n]{|c_n|}}$$</p>
+
+    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">7. 从实分析到复分析的过渡要点</h3>
+    <p>好消息是，复数项级数的很多判别法<strong>直接继承</strong>自实数项级数——你把复数列的实部和虚部分开处理就行。但坏消息是，有些在实数域中无法理解的现象（比如"为什么 $\ln(1+z)$ 的展开只在 $|z|<1$ 内有效"），在复数域中豁然开朗——因为复数视角揭示了奇点是收敛半径受限的真正原因。</p>
+    <p>本章的目标就是把你在数学分析中学到的级数工具"升级"到复数域，并利用 Laurent 展开这把新钥匙，打开奇点分类和留数计算的大门。</p>
   </div>
 
   <div class="toc">
