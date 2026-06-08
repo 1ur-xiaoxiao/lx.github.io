@@ -52,6 +52,26 @@
     <p>用无穷级数表示复变函数——幂级数、Taylor 展开与 Laurent 展开构成留数理论的基础</p>
   </div>
 
+  <!-- 学习目标 -->
+  <div class="box box-definition" style="margin-bottom:1.5rem;">
+    <div class="box-title">学完本章，你将能够：</div>
+    <ol style="margin-bottom:0;">
+      <li>判断复数项级数的收敛性（绝对收敛/条件收敛），求幂级数的收敛半径</li>
+      <li>将解析函数在正则点附近展开为 Taylor 级数</li>
+      <li>将函数在圆环域内展开为 Laurent 级数（含负幂项）</li>
+      <li>根据 Laurent 展开的主要部分，给孤立奇点分类（可去/极点/本性）</li>
+      <li>理解奇点分类与极限行为之间的等价关系</li>
+    </ol>
+  </div>
+
+  <!-- 本章导读 -->
+  <div class="section" style="margin-bottom:1.5rem;padding:1.25rem 1.5rem;">
+    <h2 style="font-size:1.15rem;margin-bottom:0.5rem;border:none;padding:0;">本章导读</h2>
+    <p>第四章通过积分的方法研究了函数的全局性质。现在换一个视角：用<strong>无穷级数</strong>来"微观解剖"函数在某点附近的行为。</p>
+    <p>如果说 Cauchy 积分公式是从远处观察——知道函数在围道上的值就能推知内部所有信息——那么级数展开就是从近处观察——把函数拆解为 $(z-z_0)$ 的整数次幂的叠加。Taylor 展开告诉你在<strong>正则点</strong>（解析点）附近，函数像幂级数一样光滑。但真正的突破是 <strong>Laurent 展开</strong>——它允许负幂项，因此可以描述函数在<strong>奇点</strong>附近的行为。</p>
+    <p>奇点按照 Laurent 展开中负幂项的多寡分为三类：没有负幂项（可去）、有限多项负幂项（极点）、无穷多项负幂项（本性奇点）。这个简单的分类直接决定了第六章留数的计算方法——因为留数恰好就是 $(z-z_0)^{-1}$ 的系数。</p>
+  </div>
+
   <div class="toc">
     <h3>本章目录</h3>
     <ol>
@@ -291,6 +311,13 @@
   <div class="section" id="s4">
     <h2>5.4 Laurent 展开定理</h2>
 
+    <div class="box box-note">
+      <div class="box-title">直觉导航</div>
+      <p>Taylor 展开只能描述函数在<strong>正则点</strong>附近的光滑行为——它用非负幂次 $(z-z_0)^n$ 来逼近。但一旦函数有奇点（如 $1/z$ 在 $z=0$），Taylor 展开就失效了——你无法用多项式来逼近一个在有限点趋于无穷的函数。</p>
+      <p>Laurent 展开的创举在于<strong>允许负幂项</strong>：$f(z) = \cdots + a_{-2}/(z-z_0)^2 + a_{-1}/(z-z_0) + a_0 + a_1(z-z_0) + \cdots$。负幂项（主要部分）专门用来刻画奇点附近的"爆炸"行为——$(z-z_0)^{-1}$ 项描述一阶奇异性，$(z-z_0)^{-2}$ 描述二阶奇异性，依此类推。正则部分（非负幂）则照常描述远离奇点时的光滑行为。</p>
+      <p>一个形象的比喻：Taylor 展开像用标准相机拍照——只能拍正常（光滑）的风景。Laurent 展开像用能拍"HDR"的相机——同时捕捉极亮（奇点）和正常亮度（正则）的区域，把它们清晰地分离在两个不同的部分里。</p>
+    </div>
+
     <div class="box box-definition">
       <div class="box-title">定义 5.4（圆环域）</div>
       <p>设 $z_0 \in \CC$，$0 \le r < R \le +\infty$，则集合</p>
@@ -371,6 +398,17 @@
   <div class="section" id="s5">
     <h2>5.5 孤立奇点的分类</h2>
 
+    <div class="box box-note">
+      <div class="box-title">直觉导航</div>
+      <p>Laurent 展开中负幂项的"个数"决定了奇点的类型——这就像一个三档开关：</p>
+      <ul>
+        <li><strong>可去奇点（0档）</strong>：没有负幂项。函数在奇点附近其实是有界的，只是定义上有个"洞"。补上这个洞（重新定义函数在奇点处的值），函数就变回解析的了。典型例子：$\frac{\sin z}{z}$ 在 $z=0$（展开后没有负幂项，补定义 $f(0)=1$ 即可）。</li>
+        <li><strong>$m$ 阶极点（$m$档）</strong>：有限个负幂项，最高为 $(z-z_0)^{-m}$。函数在奇点处以 $1/|z-z_0|^m$ 的速度趋于无穷。极点是最"可控"的奇异性——留数公式直接给你答案。典型例子：$1/z^2$ 在 $z=0$ 是二阶极点。</li>
+        <li><strong>本性奇点（∞档）</strong>：无穷多个负幂项。函数在奇点附近的行为极度疯狂——根据 Weierstrass 定理，在本性奇点的任意小邻域内，函数值可以任意逼近任何复数。典型例子：$e^{1/z}$ 在 $z=0$。</li>
+      </ul>
+      <p>理解这三种分类就等于掌握了第六章留数计算的钥匙。</p>
+    </div>
+
     <div class="box box-definition">
       <div class="box-title">定义 5.6（孤立奇点）</div>
       <p>若 $f(z)$ 在 $z_0$ 的去心邻域 $0 < |z - z_0| < \delta$ 内解析，但在 $z_0$ 处不解析（或无定义），则称 $z_0$ 为 $f(z)$ 的 <strong>孤立奇点</strong>。</p>
@@ -442,6 +480,46 @@
   </div>
 
   <!-- 章节导航 -->
+  <!-- ========== 常见误区与FAQ ========== -->
+  <div class="section" id="faq">
+    <h2>常见误区与 FAQ</h2>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：Taylor 展开和 Laurent 展开的根本区别是什么？</div>
+      <p>Taylor 展开只在<strong>正则点</strong>（解析点）的邻域内有效，展开式中只有非负幂项。Laurent 展开在<strong>圆环域</strong>内有效，可以包含负幂项（主要部分），因此允许展开中心是奇点。两者都唯一。实用上说：如果 $f$ 在 $z_0$ 解析，用 Taylor；如果 $z_0$ 是奇点，用 Laurent。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：收敛半径为什么一定是圆？</div>
+      <p>因为收敛性取决于 $|z-z_0|$（到展开中心的距离），而与辐角无关。这正是幂级数在复平面上的"刚中带柔"——内部的绝对收敛是刚性的（只要距离小于 $R$ 一定收敛），而边界 $|z|=R$ 上的行为则多种多样。根本原因来自 Abel 定理：如果在某点收敛，则在所有更近的点绝对收敛。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ："可去奇点"到底怎么"去"？</div>
+      <p>操作上：在 Laurent 展开中，如果主要部分（负幂项）全部为零，那么展开实际上就是一个 Taylor 级数。你只需要在奇点处<strong>补充定义</strong> $f(z_0) = a_0$（展开的常数项），函数就在 $z_0$ 处变成解析的了。"可去"意味着奇异性不是"真实的"——它仅仅是定义域上的一个缺口，补上即可。例如 $\frac{\sin z}{z}$ 在 $z=0$ 处，展开为 $1 - z^2/3! + z^4/5! - \cdots$，补充定义 $f(0)=1$ 后函数在整个复平面上解析。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：本性奇点附近函数到底有多疯狂？</div>
+      <p>Weierstrass 定理说：在本性奇点的任意小邻域内，函数的值<strong>稠密</strong>于整个复平面。Picard 大定理更强：函数取遍所有复数值，至多有一个例外。以 $e^{1/z}$ 在 $z=0$ 为例：沿正实轴趋近原点（$z = \varepsilon$），$e^{1/\varepsilon} \to +\infty$；沿负实轴趋近（$z = -\varepsilon$），$e^{-1/\varepsilon} \to 0$；沿虚轴趋近（$z = i\varepsilon$），$e^{-i/\varepsilon}$ 在单位圆上不停旋转。三种路径，三种完全不同、互不协调的极限行为。</p>
+    </div>
+  </div>
+
+  <!-- ========== 本章小结 ========== -->
+  <div class="section" style="background:linear-gradient(135deg,#faf5ff,#ebf8ff);">
+    <h2>本章小结</h2>
+    <h3>核心要点回顾</h3>
+    <ol>
+      <li><strong>级数收敛</strong>：复数项级数收敛 $\iff$ 实部和虚部级数分别收敛。绝对收敛由 $|z_n|$ 的判别法（比值、根值）处理。</li>
+      <li><strong>幂级数</strong>：存在收敛半径 $R$（由比值法或根值法确定），收敛圆内绝对收敛、可逐项求导和积分。和函数在收敛圆内解析。</li>
+      <li><strong>Taylor 展开</strong>：解析函数在解析点附近可唯一地展开为幂级数，收敛半径等于该点到最近奇点的距离。常用函数的展开公式要熟记。</li>
+      <li><strong>Laurent 展开</strong>：在圆环域内可展开为双边级数。间接法（利用已知展开+代数技巧）是常用展开方式。</li>
+      <li><strong>奇点分类</strong>：可去奇点（负幂项=0，极限有限）→ $m$ 阶极点（负幂项最高 $m$ 次，极限 $\infty$）→ 本性奇点（无穷多负幂项，极限不存在）。</li>
+    </ol>
+    <h3>承上启下</h3>
+    <p>Laurent 展开中 $(z-z_0)^{-1}$ 的系数 $a_{-1}$ 如此特殊——回顾第四章，它是唯一在围道积分中"幸存"下来的项。这个系数就是<strong>留数</strong>。第六章将把前五章的所有武器汇聚成留数定理——用这个系数乘以 $2\pi i$ 再求和，就能算出任何闭合围道的积分。更妙的是，留数定理反向帮你计算实分析中极难处理的定积分。前五章的全部理论，都是为了第六章这最后一击。</p>
+  </div>
+
   <div class="chapter-nav">
     <a href="ch4.html" class="prev">第四章 · 复积分</a>
     <a href="ch6.html" class="next">第六章 · 留数</a>

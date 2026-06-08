@@ -52,6 +52,27 @@
     <p>留数定理将围道积分化为代数运算，是计算复杂实积分的强力工具</p>
   </div>
 
+  <!-- 学习目标 -->
+  <div class="box box-definition" style="margin-bottom:1.5rem;">
+    <div class="box-title">学完本章，你将能够：</div>
+    <ol style="margin-bottom:0;">
+      <li>计算函数在各类孤立奇点（一阶极点、$m$ 阶极点、本性奇点）处的留数</li>
+      <li>运用留数定理将围道积分化为奇点留数的代数求和</li>
+      <li>运用留数定理计算三类典型的实定积分</li>
+      <li>理解辐角原理的几何意义——围道像绕原点的圈数 = 零点数 - 极点数</li>
+      <li>运用 Rouché 定理比较两个函数的零点个数</li>
+    </ol>
+  </div>
+
+  <!-- 本章导读 -->
+  <div class="section" style="margin-bottom:1.5rem;padding:1.25rem 1.5rem;">
+    <h2 style="font-size:1.15rem;margin-bottom:0.5rem;border:none;padding:0;">本章导读</h2>
+    <p>这是复变函数课程的<strong>最后一章</strong>，也是前五章所有理论的汇合点。</p>
+    <p>回忆两个关键事实。事实一（来自第四章）：$\oint_C (z-a)^n dz$ 当 $n=-1$ 时为 $2\pi i$，其余全为零。事实二（来自第五章）：任何函数在奇点附近可以展开为 Laurent 级数，其中 $(z-a)^{-1}$ 的系数 $a_{-1}$ 被称为<strong>留数</strong>。</p>
+    <p>将两者结合，立刻得到留数定理：<strong>围道积分 = $2\pi i$ ×（围道内所有奇点留数之和）</strong>。计算积分不再需要参数化和求原函数——你只需要在奇点处展开（或套用公式），提取 $a_{-1}$，求和，乘以 $2\pi i$。这就是复分析作为一个"计算工具"的顶峰。</p>
+    <p>更令人惊喜的是，留数定理可以"反哺"实分析——通过巧妙构造围道（上半平面半圆、单位圆等），许多在实分析中极难处理的定积分（如 $\int_{-\infty}^\infty \frac{\sin x}{x}dx = \frac{\pi}{2}$）可以被优雅地算出。这种"用复数方法解决实数问题"的策略，是复变函数最闪亮的应用之一。</p>
+  </div>
+
   <div class="toc">
     <h3>本章目录</h3>
     <ol>
@@ -119,6 +140,15 @@
   <div class="section" id="s2">
     <h2>6.2 留数定理</h2>
 
+    <div class="box box-note">
+      <div class="box-title">直觉导航</div>
+      <p>留数定理是整个课程的"终极武器"。它的核心思想极其简单：</p>
+      <p><strong>第一步</strong>：函数在奇点附近的 Laurent 展开中，只有 $(z-a)^{-1}$ 这一项的围道积分不为零（$=2\pi i$），其余所有项的积分都是零。</p>
+      <p><strong>第二步</strong>：一个闭合围道包围了多个奇点，总积分 = 各奇点处积分的和（复合闭路定理）。</p>
+      <p><strong>结论</strong>：围道积分 = $2\pi i$ ×（围道内所有奇点的留数之和）。</p>
+      <p>这意味着计算围道积分时，你完全不需要关心围道的具体形状——只要围道是闭合的、正向的、包围了相同的奇点，积分值就完全由这些奇点上的 Laurent 展开中 $a_{-1}$ 系数决定。这就是为什么"留数"（residue）被称为"残留物"——在所有 Laurent 系数中，它是唯一在积分后"残留"下来的。</p>
+    </div>
+
     <div class="box box-theorem">
       <div class="box-title">定理 6.1（留数定理）</div>
       <p>设 $C$ 为正向简单闭曲线，$f(z)$ 在 $C$ 上及 $C$ 的内部除有限个孤立奇点 $z_1, z_2, \ldots, z_n$ 外解析，则</p>
@@ -169,6 +199,14 @@
   <!-- ==================== 6.3 实积分计算 ==================== -->
   <div class="section" id="s3">
     <h2>6.3 实积分计算</h2>
+
+    <div class="box box-note">
+      <div class="box-title">直觉导航</div>
+      <p>留数定理是复分析的工具，但被积函数和积分路径都是定义在复平面上的——那它怎么反过来帮我们算实积分？</p>
+      <p>关键策略是<strong>围道设计</strong>：把实数轴上的积分路径"扩展"成一个复平面上的闭合围道。典型的套路是：取实轴上的 $[-R, R]$ 作为围道的底边，上面加一个上半圆弧 $\Gamma_R$（半径为 $R$）封口。当 $R \to \infty$ 时，如果上半圆弧上的积分趋于零（这要求被积函数的分子比分母至少低一阶或两阶），那么整个闭合围道的积分就等于实轴上从 $-\infty$ 到 $+\infty$ 的积分。而闭合围道的积分又可以由留数定理算出——</p>
+      <p>$$\int_{-\infty}^{+\infty} f(x)dx = 2\pi i \sum_{\text{上半平面奇点}} \Res[f, z_k]$$</p>
+      <p>这就像在实数问题外面"套"了一个复数框架，用复数工具解决了问题，最后取实部/虚部得到实数结果。这种"复分析为实分析服务"的策略，是复变函数最实用的应用之一。</p>
+    </div>
 
     <p>留数定理的一个重要应用是计算实分析中难以处理的定积分。以下介绍三类典型应用。</p>
 
@@ -403,6 +441,49 @@
   </div>
 
   <!-- 章节导航 -->
+  <!-- ========== 常见误区与FAQ ========== -->
+  <div class="section" id="faq">
+    <h2>常见误区与 FAQ</h2>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：留数为什么叫"留数"（residue）？</div>
+      <p>这个词来自 Laurent 展开：在所有的系数 $a_n$ 中，积分 $\oint (z-a)^n dz$ 当且仅当 $n=-1$ 时才不为零。所以当你做围道积分时，所有 Laurent 系数中只有 $a_{-1}$ 这一项"残留"了下来（其余全部被积分为零）。"留数"就是"积分后唯一残留的系数"的意思。英文 residue 也是同样的含义——the coefficient that remains after integration。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">误区：可去奇点的留数一定为零，但留数为零不一定意味着是可去奇点</div>
+      <p>反例：$f(z)=1/z^2$ 在 $z=0$ 处的留数是 $0$（因为 Laurent 展开中 $a_{-1}=0$），但 $z=0$ 是二阶极点，不是可去奇点。所以留数为零不能用来判断奇点类型——你需要看整个主要部分（全部负幂项），而不仅仅是 $a_{-1}$。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：三类实积分的变量代换为什么这样设计？</div>
+      <p><strong>第一类（$0$ 到 $2\pi$）</strong>：$z=e^{i\theta}$ 将实区间 $[0,2\pi]$ 自然地映射为单位圆——因为 $e^{i\theta}$ 以 $2\pi$ 为周期，刚好绕单位圆一周。$\cos\theta$ 和 $\sin\theta$ 自然地用 $(z+z^{-1})/2$ 和 $(z-z^{-1})/(2i)$ 表达。</p>
+      <p><strong>第二类（$-\infty$ 到 $+\infty$）</strong>：上半平面半圆围道——选择上半平面而非下半平面是因为标准正向（逆时针）对应的上半圆弧参数化更方便。被积函数分母次数足够高时上半圆弧积分趋于零。</p>
+      <p><strong>第三类（含 $e^{iax}$）</strong>：Jordan 引理保证了含指数因子时上半圆弧积分仍然趋于零（即使分母只比分母高一次）。这比第二类适用范围更广。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：辐角原理的直观理解——辐角变化除以 $2\pi$ 为什么等于零点数减极点数？</div>
+      <p>把 $f(z)$ 在 $z$ 绕围道一周时的行为想象为：$f(z)$ 在 $w$ 平面上画出一条闭合曲线。$f(z)$ 的零点贡献正圈数（每经过一个 $m$ 阶零点，$f(z)$ 的辐角增加 $2\pi m$——因为 $f(z)\approx (z-z_0)^m$）；极点贡献负圈数（每经过一个 $n$ 阶极点，$f(z)\approx (z-z_0)^{-n}$，辐角减少 $2\pi n$）。总圈数 = 总的辐角变化 / $2\pi$ = 零点阶数之和 − 极点阶数之和。</p>
+    </div>
+  </div>
+
+  <!-- ========== 本章小结 ========== -->
+  <div class="section" style="background:linear-gradient(135deg,#faf5ff,#ebf8ff);">
+    <h2>本章小结 · 全课程回顾</h2>
+    <h3>核心要点回顾</h3>
+    <ol>
+      <li><strong>留数</strong>：$z_0$ 处 Laurent 展开的 $a_{-1}$ 系数。一阶极点：$\Res[f,z_0]=\lim_{z\to z_0}(z-z_0)f(z)$；$m$ 阶极点：$\Res[f,z_0]=\frac{1}{(m-1)!}\lim_{z\to z_0}\frac{d^{m-1}}{dz^{m-1}}[(z-z_0)^m f(z)]$。</li>
+      <li><strong>留数定理</strong>：$\oint_C f(z)dz = 2\pi i\sum\Res[f, z_k]$。围道积分 = $2\pi i$ ×（围道内所有奇点留数和）。</li>
+      <li><strong>三类实积分</strong>：通过变量代换或围道设计，将实积分转化为围道积分，再用留数定理求解。这是复变函数最重要的计算应用。</li>
+      <li><strong>辐角原理与 Rouché 定理</strong>：用于不直接解方程而判断零点个数——辐角变化 / $2\pi$ = $N-P$；Rouché 定理通过比较两个函数在围道上的大小来判定它们零点数相同。</li>
+    </ol>
+    <h3>六章知识脉络回顾</h3>
+    <p>回顾整门课程的逻辑链：</p>
+    <p><strong>第一章</strong>（复数）→ <strong>第二章</strong>（解析性标准：C-R 方程）→ <strong>第三章</strong>（初等函数：具体素材）→ <strong>第四章</strong>（积分理论：宏观视角，Cauchy 积分公式揭示解析函数的"全息性"）→ <strong>第五章</strong>（级数展开：微观视角，Laurent 展开分离奇点的奇异行为）→ <strong>第六章</strong>（留数：前五章所有理论的汇合点，将积分化为代数计算，并反哺实分析）</p>
+    <p>这门课的核心洞见其实只有一句话：<strong>"复可导"的苛刻条件筛选出了一类性质极好的函数（解析函数），它们满足 Cauchy 积分公式和 Laurent 展开，最终使得围道积分完全由奇点处的留数决定。</strong>只要你掌握了这条主线，你就真正理解了复变函数。</p>
+  </div>
+
   <div class="chapter-nav">
     <a href="ch5.html" class="prev">第五章 · 级数</a>
     <a href="index.html" class="next">首页</a>

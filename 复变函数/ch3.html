@@ -45,6 +45,25 @@
     <p>将实数域中熟悉的初等函数推广到复数域：指数函数获得周期性，对数函数变成多值函数，幂函数展现出全新的分支结构。理解这些推广是掌握复分析工具的关键。</p>
   </div>
 
+  <!-- 学习目标 -->
+  <div class="box box-definition" style="margin-bottom:1.5rem;">
+    <div class="box-title">学完本章，你将能够：</div>
+    <ol style="margin-bottom:0;">
+      <li>计算任意复数的指数 $e^z$，理解 $e^z$ 的 $2\pi i$ 周期性及其几何意义</li>
+      <li>计算复对数的所有值（多值函数）及其主值，理解分支和支割线的概念</li>
+      <li>计算复幂函数 $z^a$，判断它是单值、多值还是 $q$ 值函数</li>
+      <li>计算复三角函数和双曲函数的值，理解它们与实三角函数的异同（特别是有界性的丧失）</li>
+    </ol>
+  </div>
+
+  <!-- 本章导读 -->
+  <div class="section" style="margin-bottom:1.5rem;padding:1.25rem 1.5rem;">
+    <h2 style="font-size:1.15rem;margin-bottom:0.5rem;border:none;padding:0;">本章导读</h2>
+    <p>第二章给了我们判断"什么是解析函数"的工具。现在我们需要一批<strong>具体的解析函数</strong>——就像微积分中你需要熟悉 $x^n$、$\sin x$、$e^x$、$\ln x$ 一样。第三章的任务就是将实数域中这些熟悉的朋友推广到复数域。</p>
+    <p>但小心——这些老朋友在复数域中会展现出<strong>惊人的新面貌</strong>。$e^z$ 在实数中严格单调，在复数中却有了周期 $2\pi i$。对数函数 $\log z$ 在实数中天然单值，在复数中却变得有无穷多个值（因为 $e^z$ 的周期性导致反函数不唯一）。幂函数 $z^a$ ——当 $a$ 不是整数时，也变得多值。甚至看似好脾气的三角函数 $\sin z$ 和 $\cos z$，在复数域中也不再满足 $|\sin z| \le 1$ 的有界性。</p>
+    <p>这些新特性不是 bug，而是 feature。周期性、多值性、分支——它们不是麻烦，而恰恰是复分析丰富性和强大性的来源。当你理解了这些特性之后，第四章的积分理论才有用武之地。</p>
+  </div>
+
   <div class="toc">
     <h3>本章目录</h3>
     <ol>
@@ -488,6 +507,11 @@
   <div class="section" id="s2">
     <h2>3.2 对数函数</h2>
 
+    <div class="box box-note">
+      <div class="box-title">直觉导航</div>
+      <p>为什么 $\log z$ 在复数域中变成多值函数？根本原因是 $e^z$ 的周期性。实数中 $e^x$ 严格单调，所以反函数 $\ln x$ 天然单值。但在复数中，$e^z = e^{z+2\pi i}$——指数函数以 $2\pi i$ 为周期。这意味着方程 $e^w = z$ 的解不是唯一的：如果 $w$ 是一个解，那么 $w+2\pi i$、$w+4\pi i$、$w-2\pi i$……也都是解。这就像实分析中 $\arcsin x$ 也是多值的一样（$\sin(\theta)=\sin(\theta+2\pi)$），只不过 $\arcsin$ 的多值性是"每 $2\pi$ 循环一次"，而 $\log z$ 的多值性是"每 $2\pi i$ 循环一次"——在虚轴方向上。</p>
+    </div>
+
     <div class="box box-definition">
       <div class="box-title">定义 · 对数函数</div>
       <p>对 $z \neq 0$，满足 $e^w = z$ 的 $w$ 称为 $z$ 的<strong>对数</strong>，记为 $w = \log z$。</p>
@@ -630,6 +654,13 @@
   <div class="section" id="s4">
     <h2>3.4 三角函数与双曲函数</h2>
 
+    <div class="box box-note">
+      <div class="box-title">直觉导航</div>
+      <p>实三角函数的值总是在 $[-1, 1]$ 之间——这是我们最熟悉的性质之一。但复三角函数为什么突然变得无界了？</p>
+      <p>答案藏在 Euler 公式中：$\cos z = \frac{e^{iz} + e^{-iz}}{2}$。当 $z$ 是纯虚数（$z = iy$）时，$\cos(iy) = \frac{e^{-y} + e^y}{2} = \cosh y$——这是<strong>双曲余弦</strong>，它在 $y \to \pm\infty$ 时指数增长到无穷大。所以在复平面上，随着你沿虚轴方向远离原点，$\cos z$ 和 $\sin z$ 的模会爆炸式增长。</p>
+      <p>这并不"推翻"实数中的有界性——$y=0$（实轴）上，$\cos(x)$ 和 $\sin(x)$ 仍然在 $[-1,1]$ 之间。有界性的丧失只发生在脱离实轴进入虚轴方向时。理解这一点有助于你明白为什么复分析中的定理和实分析中的定理看起来如此不同。</p>
+    </div>
+
     <div class="box box-definition">
       <div class="box-title">定义 · 复三角函数</div>
       <p>由 Euler 公式 $e^{iz} = \cos z + i\sin z$，定义复三角函数为：</p>
@@ -721,6 +752,45 @@
   </div>
 
   <!-- 章节导航 -->
+  <!-- ========== 常见误区与FAQ ========== -->
+  <div class="section" id="faq">
+    <h2>常见误区与 FAQ</h2>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：为什么 $e^z$ 有周期 $2\pi i$？直观理解是什么？</div>
+      <p>记住 Euler 公式 $e^{iy} = \cos y + i\sin y$。当 $y$ 增加 $2\pi$，$\cos y$ 和 $\sin y$ 都回到了原来的值（因为它们是周期函数）。所以 $e^{z+2\pi i} = e^{x+i(y+2\pi)} = e^x(\cos(y+2\pi) + i\sin(y+2\pi)) = e^x(\cos y + i\sin y) = e^z$。$e^z$ 的周期性完全来源于实三角函数在虚轴方向的周期性。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：$\Log z$（大写）和 $\log z$（小写）有什么区别？</div>
+      <p>$\log z = \ln|z| + i\arg z$ 是<strong>多值函数</strong>，有无穷多个值（相差 $2\pi i$ 的整数倍）。$\Log z = \ln|z| + i\Arg z$（大写 L）是<strong>主值</strong>，辐角取 $(-\pi, \pi]$ 中的唯一值，是单值的。在多数考试计算题中，不加说明时通常要求计算所有值（多值），而"主值"会明确标注。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：$i^i$ 为什么是实数？这太反直觉了</div>
+      <p>$i^i = e^{i\log i} = e^{i \cdot i(\pi/2+2k\pi)} = e^{-(\pi/2+2k\pi)}$。所有值都是正实数！几何意义：$i$ 在复平面上对应 $(0,1)$（单位圆上角度 $\pi/2$）。取对数后辐角进入指数，$i \cdot i$ 产生出 $-1$ 消掉了虚数单位。这个例子完美展示了复幂函数的"出人意料"之处——$i^i$ 有很多个值，而且全都是实数。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：复三角函数无界——那它的图形长什么样？</div>
+      <p>你无法画出一个四维的图形（输入是二维，输出是二维）。但可以分别看模的等值线：$|\cos z|^2 = \cos^2 x + \sinh^2 y$。在实轴上（$y=0$），$\sinh 0 = 0$，$|\cos x| \le 1$，与实数域一致。但沿虚轴方向（$|y|$ 增大），$\sinh^2 y \approx e^{2|y|}/4$ 指数增长，$|\cos z| \approx e^{|y|}/2$ 爆炸。所以 $\cos z$ 的图像像是实轴上有起伏、向虚轴两侧不断抬升的"喇叭状"曲面。</p>
+    </div>
+  </div>
+
+  <!-- ========== 本章小结 ========== -->
+  <div class="section" style="background:linear-gradient(135deg,#faf5ff,#ebf8ff);">
+    <h2>本章小结</h2>
+    <h3>核心要点回顾</h3>
+    <ol>
+      <li><strong>$e^z$</strong>：定义为 $e^x(\cos y + i\sin y)$，在整个 $\CC$ 上解析，以 $2\pi i$ 为周期，值域为 $\CC\setminus\{0\}$。</li>
+      <li><strong>$\log z$</strong>：定义为 $e^w=z$ 的解。因为 $e^z$ 是周期函数，$\log z$ 是多值函数：$\log z = \ln|z| + i(\Arg z + 2k\pi)$。主值 $\Log z$ 取 $k=0$。理解分支和支割线是正确使用对数函数的前提。</li>
+      <li><strong>$z^a$</strong>：定义为 $e^{a\log z}$。$a$ 为整数 → 单值；$a=p/q$（互素）→ $q$ 值；$a$ 无理/虚 → 无穷多值。$i^i = e^{-\pi/2-2k\pi}$ 是经典例子。</li>
+      <li><strong>复三角函数</strong>：$\cos z = \frac{e^{iz}+e^{-iz}}{2}$，$\sin z = \frac{e^{iz}-e^{-iz}}{2i}$。保持和角公式、Pythagoras 恒等式等代数性质，但失去有界性。与双曲函数通过 $\cos(iz)=\cosh z$ 联系。</li>
+    </ol>
+    <h3>承上启下</h3>
+    <p>有了这批具体的解析函数作为武器，我们现在可以进入复分析最核心的章节——第四章的积分理论。初等函数的解析性（哪些区域解析？奇点在哪里？）直接决定了积分计算的成败。特别是对数函数的分支结构，将在积分路径的选择中反复发挥作用。</p>
+  </div>
+
   <div class="chapter-nav">
     <a href="ch2.html" class="prev">第二章 · 解析函数</a>
     <a href="ch4.html" class="next">第四章 · 复积分</a>

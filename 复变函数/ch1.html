@@ -45,6 +45,26 @@
     <p>从实数域到复数域的推广：复数的代数运算、几何表示、棣莫弗公式，复平面上的点集拓扑，复变函数的基本概念。</p>
   </div>
 
+  <!-- 学习目标 -->
+  <div class="box box-definition" style="margin-bottom:1.5rem;">
+    <div class="box-title">学完本章，你将能够：</div>
+    <ol style="margin-bottom:0;">
+      <li>熟练进行复数的四则运算，用模和共轭简化计算</li>
+      <li>把任意复数化为三角形式和指数形式，在复平面上标出它的位置</li>
+      <li>用棣莫弗公式展开三角倍角公式，求任意复数的 $n$ 次方根</li>
+      <li>判断复平面上的一个集合是区域还是闭区域，是单连通还是多连通</li>
+      <li>分离复变函数的实部和虚部，判断极限是否存在</li>
+    </ol>
+  </div>
+
+  <!-- 本章导读 -->
+  <div class="section" style="margin-bottom:1.5rem;padding:1.25rem 1.5rem;">
+    <h2 style="font-size:1.15rem;margin-bottom:0.5rem;border:none;padding:0;">本章导读</h2>
+    <p>这是整个课程的起点。你可能会觉得奇怪：我们不是已经学过实数了吗？为什么还要引入一种"新的数"？</p>
+    <p>答案很简单：实数不够用了。方程 $x^2+1=0$ 在实数中没有解——而复数通过引入 $i$（$i^2=-1$）完美地填补了这个空缺。但复数真正的力量不在代数——而在于<strong>几何</strong>。当你把复数看作平面上的点和向量时，加减法变成了向量的平移，乘法变成了旋转和伸缩的复合。这种"代数运算=几何操作"的对偶视角，将贯穿整门课程。</p>
+    <p>本章的前三节专注于复数的代数与几何（§1.1-§1.3），后两节（§1.4-§1.5）是过渡性的"基础设施"——复平面上的点集拓扑和复变函数的基本概念。这些是后续所有章节的共同语言。</p>
+  </div>
+
   <div class="toc">
     <h3>本章目录</h3>
     <ol>
@@ -140,6 +160,11 @@
   <div class="section" id="s2">
     <h2>1.2 复数的几何表示</h2>
 
+    <div class="box box-note">
+      <div class="box-title">直觉导航</div>
+      <p>把复数想象成海图上的位置。仅知道"距离灯塔多远"（这就是<strong>模</strong> $|z|$）是不够的——你还需要知道"在哪个方向"（这就是<strong>辐角</strong> $\arg(z)$）。复数 $z = x+iy$ 的两种表示——直角坐标 $(x,y)$ 和极坐标 $(r,\theta)$——恰好对应这两种互补的信息。直角坐标适合做加减法，极坐标（指数形式）适合做乘除法和幂运算。本章的核心技巧就是在两种表示之间灵活切换。</p>
+    </div>
+
     <div class="box box-definition">
       <div class="box-title">定义 1.3（复平面）</div>
       <p>建立直角坐标系：横轴为 <strong>实轴</strong>（$\Re$），纵轴为 <strong>虚轴</strong>（$\Im$）。复数 $z = x + iy$ 对应平面上的点 $(x, y)$，此平面称为<strong>复平面</strong>（$\CC$ 平面 / Argand 平面）。复数也可视为从原点到 $(x,y)$ 的向量。</p>
@@ -204,6 +229,11 @@
   <!-- ==================== 第3节 ==================== -->
   <div class="section" id="s3">
     <h2>1.3 棣莫弗公式与复数方根</h2>
+
+    <div class="box box-note">
+      <div class="box-title">直觉导航</div>
+      <p>回忆一下：两个复数相乘 = 模相乘、辐角相加。那么 $z^n$ 就是把 $z$ 的辐角乘以 $n$、模取 $n$ 次方。反过来说，求 $z$ 的 $n$ 次方根就是把辐角除以 $n$。但问题是——辐角不是唯一的（$\theta$ 和 $\theta+2\pi$ 是同一个方向），除以 $n$ 之后就会得到 $n$ 个不同的角度，均匀分布在圆周上。这就是"$n$ 次方根恰有 $n$ 个"的几何本质。</p>
+    </div>
 
     <div class="box box-theorem">
       <div class="box-title">定理 1.2（棣莫弗公式，De Moivre）</div>
@@ -413,6 +443,11 @@
   <div class="section" id="s4">
     <h2>1.4 复平面上的点集</h2>
 
+    <div class="box box-note">
+      <div class="box-title">直觉导航</div>
+      <p>为什么要研究复平面上的点集？因为后面的几乎所有定理都要预设函数的定义域是"好的"集合。比如 Cauchy 积分定理要求函数在<strong>单连通域</strong>内解析——如果你不能判断一个集合是不是单连通域，就根本用不了这个定理。这一节的概念（开集/闭集/区域/连通性）基本上是实分析中拓扑概念照搬到复平面上，你把 $(x,y)$ 当成 $\mathbb{R}^2$ 中的点来理解就对了。</p>
+    </div>
+
     <div class="box box-definition">
       <div class="box-title">定义 1.5（邻域）</div>
       <p>设 $z_0 \in \CC$，$\delta > 0$，称集合</p>
@@ -551,6 +586,46 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- ========== 常见误区与FAQ ========== -->
+  <div class="section" id="faq">
+    <h2>常见误区与 FAQ</h2>
+
+    <div class="box box-note">
+      <div class="box-title">误区：复数不能比较大小？那 $|z_1| > |z_2|$ 是什么意思？</div>
+      <p>复数之间不能比较大小——你无法说 $3+4i$ 大于还是小于 $1+2i$（这是复数域的代数事实，因为 $i$ 和 $-i$ 关于实轴对称对称，它们在代数上没有"正负"之分）。但<strong>模</strong> $|z|$ 是非负实数，当然可以比较大小。所以 $|z_1| > |z_2|$ 比较的是两者的<strong>长度</strong>，而非两个复数本身。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：辐角主值为什么不取 $[0, 2\pi)$ 而要取 $(-\pi, \pi]$？</div>
+      <p>这是为了对称性：上半平面的复数辐角为正，下半平面为负。更重要的是，取 $(-\pi, \pi]$ 使得主值在负实轴上的不连续性只发生在一处（从 $\pi$ 跳到 $-\pi$），且 $\Arg(\bar{z}) = -\Arg(z)$ 这个优美的性质恒成立。如果取 $[0, 2\pi)$，负实轴上的复数辐角为 $\pi$，但它的共轭的辐角却也在 $[0, 2\pi)$ 内，对称性就丢了。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：棣莫弗公式怎么记？有没有口诀？</div>
+      <p>不需要口诀。棣莫弗公式 $(\cos\theta + i\sin\theta)^n = \cos n\theta + i\sin n\theta$ 就是指数形式 $(e^{i\theta})^n = e^{in\theta}$ 的展开写法。你只需要记住 Euler 公式 $e^{i\theta} = \cos\theta + i\sin\theta$，棣莫弗公式就是它的自然推论。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：复数运算和向量运算完全一样吗？</div>
+      <p>加减法完全一样（分量对应相加减）。但<strong>乘法完全不同</strong>：向量有"点乘"（得标量）和"叉乘"（得向量），而复数乘法产生一个新的复数——模相乘、辐角相加。这是复数相比于向量的关键优势：你有一种自然的乘法运算（而非需要专门定义的内积/外积），它让旋转和伸缩变得极度便捷。</p>
+    </div>
+  </div>
+
+  <!-- ========== 本章小结 ========== -->
+  <div class="section" style="background:linear-gradient(135deg,#faf5ff,#ebf8ff);">
+    <h2>本章小结</h2>
+    <h3>核心要点回顾</h3>
+    <ol>
+      <li><strong>复数的两种表示</strong>：直角坐标 $z=x+iy$（适合加减）和指数形式 $z=re^{i\theta}$（适合乘除、幂、方根）。两种表示之间通过 $r=\sqrt{x^2+y^2}$ 和 $\theta=\Arg(z)$ 转换。</li>
+      <li><strong>模与共轭</strong>：$|z|^2=z\bar{z}$ 是最常用的恒等式；三角不等式 $|z_1+z_2|\le|z_1|+|z_2|$ 在证明中频繁使用。</li>
+      <li><strong>棣莫弗公式与方根</strong>：$(re^{i\theta})^n = r^n e^{in\theta}$；$z$ 的 $n$ 次方根有且仅有 $n$ 个，均匀分布在半径为 $|z|^{1/n}$ 的圆周上。</li>
+      <li><strong>区域与连通性</strong>：区域 = 开集 + 连通；单连通 = 内部无"洞"。这些是后续积分定理的前提条件。</li>
+      <li><strong>复变函数 = 两个二元实函数</strong>：$f(z)=u(x,y)+iv(x,y)$，极限和连续性可以归结为 $u,v$ 的对应性质。</li>
+    </ol>
+    <h3>承上启下</h3>
+    <p>第一章搭好了舞台——我们能在复平面上定位、运算、描述函数的极限和连续性。但复变函数的<strong>可导性</strong>远比实函数严格，这将是第二章的核心议题。你会发现：复平面上沿不同方向趋近的一致性要求，自然导出了 Cauchy-Riemann 方程——复分析区别于实分析的第一道分水岭。</p>
   </div>
 
   <div class="chapter-nav">

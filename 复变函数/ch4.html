@@ -45,6 +45,29 @@
     <p>复积分是整个复分析的基石。Cauchy 积分定理和 Cauchy 积分公式是本章的核心，由此推导出解析函数的一系列深刻性质：无穷次可微、最大模原理、Liouville 定理、代数基本定理等。本章是复分析中最重要的一章。</p>
   </div>
 
+  <!-- 学习目标 -->
+  <div class="box box-definition" style="margin-bottom:1.5rem;">
+    <div class="box-title">学完本章，你将能够：</div>
+    <ol style="margin-bottom:0;">
+      <li>用参数化方法计算复变函数沿曲线的积分</li>
+      <li>运用 Cauchy-Goursat 定理判断闭合围道积分是否为零</li>
+      <li>运用 Cauchy 积分公式和高阶导数公式计算围道积分</li>
+      <li>理解并应用 Liouville 定理、代数基本定理、最大模原理等深刻推论</li>
+      <li>理解 Cauchy 估计的思想——用边界值控制内部值和各阶导数</li>
+    </ol>
+  </div>
+
+  <!-- 本章导读 -->
+  <div class="section" style="margin-bottom:1.5rem;padding:1.25rem 1.5rem;">
+    <h2 style="font-size:1.15rem;margin-bottom:0.5rem;border:none;padding:0;">本章导读</h2>
+    <p>如果说前两章是序曲（概念与工具），第四章就是<strong>第一乐章的高潮</strong>——Cauchy 积分定理和 Cauchy 积分公式是整个复分析大厦的支柱。</p>
+    <p>解析函数的优越性在这里开始兑现。在实分析中，定积分的计算依赖于被积函数的原函数（Newton-Leibniz 公式），而且一阶可导不能保证二阶可导。但在复分析中，Cauchy 积分公式告诉你三件魔法般的事：</p>
+    <p><strong>魔法一（全息性）</strong>：解析函数在围道内部任意一点的值，完全由它在围道边界上的值决定。这就像知道了房间墙壁的温度，就能精确推算出房间中心的温度。</p>
+    <p><strong>魔法二（无穷可微）</strong>：解析函数自动无穷次可微，而且有显式的积分表达式。</p>
+    <p><strong>魔法三（刚性）</strong>：有界整函数必为常数（Liouville 定理）——"全局有界且处处解析"的函数竟然是平凡函数！这在实分析中完全不可想象。</p>
+    <p>这些结果最终汇集成代数基本定理（任意 $n$ 次多项式恰有 $n$ 个复根）——一个纯代数的结论，却通过复分析的方法被优雅地证明。</p>
+  </div>
+
   <div class="toc">
     <h3>本章目录</h3>
     <ol>
@@ -129,6 +152,13 @@
   <div class="section" id="s2">
     <h2>4.2 Cauchy-Goursat 定理</h2>
 
+    <div class="box box-note">
+      <div class="box-title">直觉导航</div>
+      <p>Cauchy 积分定理是所有魔力开始的地方：<strong>解析函数沿闭合围道的积分为零</strong>。</p>
+      <p>为什么？一个粗略的直觉：复积分 $\oint_C f(z)dz$ 本质上是在绕围道一周的路径上累积 $f(z)$ 的"复增量"。如果 $f$ 解析（即可导），那么它局部上可以很好地被线性函数逼近。而线性函数的围道积分为零（因为 $az+b$ 有原函数 $\frac{a}{2}z^2+bz$）。通过将围道无限细分，解析性保证了每个小段上的积分近似为零，总体积分为零。</p>
+      <p>Goursat 的贡献在于去掉了"$f'$ 连续"这个附加假设——仅仅"$f'$ 存在"就足以保证结论。这非常深刻，因为它意味着<strong>解析函数的导数自动连续</strong>——一个纯复分析的事实，在实分析中没有对应物。</p>
+    </div>
+
     <div class="box box-theorem">
       <div class="box-title">定理 · Cauchy 积分定理（原始形式）</div>
       <p>设 $f(z)$ 在<strong>单连通域</strong> $D$ 内解析，$C$ 是 $D$ 内任一<strong>逐段光滑闭曲线</strong>，则：</p>
@@ -187,6 +217,15 @@
   <!-- ==================== 4.3 Cauchy 积分公式 ==================== -->
   <div class="section" id="s3">
     <h2>4.3 Cauchy 积分公式</h2>
+
+    <div class="box box-note">
+      <div class="box-title">直觉导航</div>
+      <p>Cauchy 积分定理说解析函数的围道积分为零——但这是对"围道内部没有奇点"的情形。如果被积函数形如 $\frac{f(z)}{z-a}$，在 $z=a$ 处有一个一阶极点呢？</p>
+      <p>Cauchy 积分公式给出了答案：
+      $$\frac{1}{2\pi i}\oint_C \frac{f(z)}{z-a}dz = f(a)$$
+      它说：<strong>解析函数在内部任意一点的值等于其在边界上的某种加权平均</strong>。等价地，它说 $f(a)$ 完全由 $f$ 在围道 $C$ 上的值决定——这就是我前面说的"全息性"。这是一种极强的约束：你不能随意在围道内部修改解析函数的值而不影响边界，反之亦然。</p>
+      <p>这个公式还是一切高阶导数公式的源头：对参数 $a$ 求导，你就能得到任意阶导数的围道积分表达式。</p>
+    </div>
 
     <div class="box box-theorem">
       <div class="box-title">定理 · Cauchy 积分公式</div>
@@ -310,6 +349,13 @@
   <div class="section" id="s5">
     <h2>4.5 Liouville 定理与代数基本定理</h2>
 
+    <div class="box box-note">
+      <div class="box-title">直觉导航</div>
+      <p>Liouville 定理说：<strong>有界整函数必为常数</strong>。这看起来简单得不值一提——但它的证明极其优雅（用 Cauchy 估计 $|f'(a)| \le M/R$，令 $R\to\infty$ 得 $f'(a)=0$），而且它的推论威力巨大。</p>
+      <p>直觉上：一个在整个复平面上解析的函数（整函数）如果没有奇点，它的"刚性"就要求它要么无界（如 $e^z$），要么平凡（常数）。你不能构造一个处处解析的、有界的、非平凡的函数。这在实分析中完全不是这样——比如 $\sin x$ 在整条实轴上处处光滑且有界（$|\sin x| \le 1$），但 $\sin z$ 在复平面上无界。</p>
+      <p>代数基本定理（$n$ 次多项式恰有 $n$ 个复根）的证明是 Liouville 定理最著名的应用之一——用反证法，假设多项式无零点，构造有界整函数 $1/p(z)$，导出矛盾。一个纯代数的结论，通过复分析的"刚性"被优雅证明。</p>
+    </div>
+
     <div class="box box-theorem">
       <div class="box-title">定理 · Liouville 定理</div>
       <p><strong>有界整函数必为常数</strong>。</p>
@@ -390,6 +436,46 @@
   </div>
 
   <!-- 章节导航 -->
+  <!-- ========== 常见误区与FAQ ========== -->
+  <div class="section" id="faq">
+    <h2>常见误区与 FAQ</h2>
+
+    <div class="box box-note">
+      <div class="box-title">误区：Cauchy 定理说解析函数积分恒为零，但 $\oint_{|z|=1} dz/z = 2\pi i$ 不是解析吗？</div>
+      <p>$1/z$ 在 $z=0$ 处不解析（有奇点），而 $z=0$ 在围道 $|z|=1$ 的<strong>内部</strong>。Cauchy 定理要求被积函数在围道上<strong>及围道内部</strong>处处解析。$1/z$ 在 $|z|=1$ 内部有奇点 $z=0$，所以定理不适用。这也是为什么需要本章后面的 Cauchy 积分公式和留数定理来处理内部有奇点的情况。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：Cauchy 积分公式和平均值公式是什么关系？</div>
+      <p>Cauchy 积分公式在圆周上取特殊参数化就得到平均值公式：$f(a) = \frac{1}{2\pi}\int_0^{2\pi} f(a+Re^{i\theta})d\theta$。这说明解析函数在圆心的值<strong>恰好等于</strong>它在圆周上的算术平均值。这是解析函数"刚性"的又一体现——你不能在圆心处取任意值，它必须由圆周上的值唯一决定。这也是调和函数"平均值性质"在解析函数框架下的体现。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：路径无关性和保守场有什么关系？</div>
+      <p>完全一致。解析函数的围道积分为零等价于积分与路径无关（在单连通域内）。这与向量分析中"旋度为零的向量场是保守场"本质上是一回事——C-R 方程恰好就是复平面上"旋度=0 + 散度=0"的条件。所以解析函数的积分理论可以看作二维保守场理论的复解析版本。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：最大模原理的直观意义是什么？</div>
+      <p>解析函数的模 $|f(z)|$ 不能在区域内部取到严格最大值——就像一座山，山顶不能在山体内部，必须在山脊（边界）上。更形象地说：如果你在一个平面上加热一块金属板使其达到稳态温度分布（满足 Laplace 方程），最热的点和最冷的点一定出现在边界上，不会出现在板的中心。这是调和函数的极大值原理，对应到解析函数就是最大模原理。</p>
+    </div>
+  </div>
+
+  <!-- ========== 本章小结 ========== -->
+  <div class="section" style="background:linear-gradient(135deg,#faf5ff,#ebf8ff);">
+    <h2>本章小结</h2>
+    <h3>核心要点回顾</h3>
+    <ol>
+      <li><strong>参数化计算</strong>：$\int_C f(z)dz = \int_\alpha^\beta f(z(t))z'(t)dt$ 是基本计算手段。$\oint (z-a)^n dz$ 当且仅当 $n=-1$ 时为 $2\pi i$，其余全为零——这个事实是整个留数理论的原点。</li>
+      <li><strong>Cauchy-Goursat 定理</strong>：解析函数在单连通域内沿闭曲线积分为零。等价于积分与路径无关、原函数存在。</li>
+      <li><strong>Cauchy 积分公式</strong>：$f(a) = \frac{1}{2\pi i}\oint_C \frac{f(z)}{z-a}dz$。边界值决定内部值。由此推出解析函数无穷次可微。</li>
+      <li><strong>高阶导数公式</strong>：$f^{(n)}(a) = \frac{n!}{2\pi i}\oint_C \frac{f(z)}{(z-a)^{n+1}}dz$。Cauchy 估计：$|f^{(n)}(a)| \le n!M/R^n$。</li>
+      <li><strong>推论链</strong>：Cauchy 估计 → Liouville 定理（有界整函数必为常数）→ 代数基本定理（$n$ 次多项式恰有 $n$ 个复根）。最大模原理：解析函数的模在边界上取最大值。</li>
+    </ol>
+    <h3>承上启下</h3>
+    <p>第四章用积分的方法研究了全局性质。但还有一个强大的视角等待被开发：用无穷级数来局部地分解函数。如果一个函数在围道内部有奇点，积分公式的处理会变得复杂——而 Laurent 级数展开则提供了一种把奇点行为"分离出来"的系统方法。这正是第五章的主题，也是第六章留数理论的前奏。</p>
+  </div>
+
   <div class="chapter-nav">
     <a href="ch3.html" class="prev">第三章 · 初等函数</a>
     <a href="ch5.html" class="next">第五章 · 级数</a>

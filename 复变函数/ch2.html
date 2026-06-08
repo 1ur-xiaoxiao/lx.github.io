@@ -45,6 +45,27 @@
     <p>复分析的核心：可导的苛刻条件催生 Cauchy-Riemann 方程，解析性是复分析区别于实分析的关键。解析函数与调和函数的深刻联系，以及在物理中的应用。</p>
   </div>
 
+  <!-- 学习目标 -->
+  <div class="box box-definition" style="margin-bottom:1.5rem;">
+    <div class="box-title">学完本章，你将能够：</div>
+    <ol style="margin-bottom:0;">
+      <li>用导数定义判断一个复变函数是否可导，区分"在一点可导"和"在一点解析"</li>
+      <li>用 Cauchy-Riemann 方程判断函数 $f(z)=u+iv$ 的解析性</li>
+      <li>已知解析函数的实部 $u$，通过 C-R 方程求出虚部 $v$（或反过来）</li>
+      <li>判断一个二元实函数是否是调和函数，理解它与解析函数的关系</li>
+      <li>理解解析函数在平面流场和静电场中的物理意义</li>
+    </ol>
+  </div>
+
+  <!-- 本章导读 -->
+  <div class="section" style="margin-bottom:1.5rem;padding:1.25rem 1.5rem;">
+    <h2 style="font-size:1.15rem;margin-bottom:0.5rem;border:none;padding:0;">本章导读</h2>
+    <p>第一章我们认识了复数。现在来讨论复变函数的微积分。</p>
+    <p>你可能会想：既然 $f(z)=u(x,y)+iv(x,y)$ 本质上是两个二元实函数，那直接用实函数的微积分工具不就行了吗？答案是：<strong>不行</strong>——复可导的要求远远严于实可导。在实分析中，$f(x)$ 可导只需左右导数相等（两个方向）。但在复平面上，$\Delta z$ 可以沿无穷多种路径趋近于零——沿实轴、沿虚轴、沿斜线、沿螺旋线……要求所有方向上的差商极限一致，这是一个极强的约束。</p>
+    <p>但这个苛刻的条件筛选出了一类极其"好"的函数——<strong>解析函数</strong>。它们的性质好得惊人：一旦你确认一个函数在某区域内解析，它自动无穷次可微、其实虚部自动成为调和函数（满足 Laplace 方程）、其积分有路径无关性……整个复分析大厦就建立在这个看似苛刻的入门条件之上。</p>
+    <p>本章的核心就是建立<strong>解析性的判定标准</strong>（Cauchy-Riemann 方程），并揭示解析函数与调和函数的深刻联系。这是全书最重要的概念基础。</p>
+  </div>
+
   <div class="toc">
     <h3>本章目录</h3>
     <ol>
@@ -187,6 +208,13 @@
   <div class="section" id="s3">
     <h2>2.3 Cauchy-Riemann 条件</h2>
 
+    <div class="box box-note">
+      <div class="box-title">直觉导航</div>
+      <p>复可导要求 $\Delta z \to 0$ 沿<strong>所有方向</strong>的趋近极限一致。如果我们只挑其中最特殊的两个方向来检验——沿实轴（$\Delta z = \Delta x$）和沿虚轴（$\Delta z = i\Delta y$）——就已经得到了两组必须同时满足的条件。这两个方向给出的极限必须相等，比较实部和虚部，自然导出：
+      $$\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}, \quad \frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x}$$
+      这就是 C-R 方程。令人惊讶的是，这两条必要条件的反面——只要 $u,v$ 可微且满足 C-R 方程——竟然也是充分的！换句话说，<strong>检验两个特殊方向的一致性，就足以保证所有方向的一致</strong>。这是复分析最优雅的事实之一。</p>
+    </div>
+
     <div class="box box-theorem">
       <div class="box-title">定理 2.2（C-R 条件：可导的必要条件）</div>
       <p>设 $f(z) = u(x,y) + iv(x,y)$ 在 $z_0 = x_0 + iy_0$ 处可导，则 $u, v$ 在 $(x_0, y_0)$ 处满足 <strong>Cauchy-Riemann 方程</strong>：</p>
@@ -263,6 +291,12 @@
   <!-- ==================== 第4节 ==================== -->
   <div class="section" id="s4">
     <h2>2.4 调和函数</h2>
+
+    <div class="box box-note">
+      <div class="box-title">直觉导航</div>
+      <p>C-R 方程建立了解析函数的实部 $u$ 和虚部 $v$ 之间的一阶偏导关系。但复分析的美妙不止于此——对 C-R 方程再求一次偏导，交叉项恰好抵消，你得到 $\Delta u = 0$ 和 $\Delta v = 0$。这意味着 $u$ 和 $v$ 自动满足二维 Laplace 方程！</p>
+      <p>Laplace 方程在物理中无处不在——它描述稳态温度分布、静电场、不可压缩流体的流动……所以每一个解析函数都对应着一个物理上有意义的平面场。给定 $u$（比如温度分布），你甚至可以通过 C-R 方程求出 $v$（流函数/电力线），从而完整地描述整个物理系统。这种"数学结构自动对应物理现实"的巧合，是复变函数最吸引人的特点之一。</p>
+    </div>
 
     <div class="box box-definition">
       <div class="box-title">定义 2.3（调和函数）</div>
@@ -407,6 +441,46 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- ========== 常见误区与FAQ ========== -->
+  <div class="section" id="faq">
+    <h2>常见误区与 FAQ</h2>
+
+    <div class="box box-note">
+      <div class="box-title">误区：可导和解析是一回事吗？</div>
+      <p>不是。"在一点可导"只要求那一点的导数存在；"在一点解析"要求在该点的<strong>某个邻域内</strong>处处可导。举例：$f(z)=|z|^2$ 在 $z=0$ 处可导（$f'(0)=0$），但在 $z=0$ 处不解析——因为 $z=0$ 的任何邻域内都存在不可导的点（除了 $z=0$ 本身，其他点均不可导）。考试常见陷阱：让你判断"在一点是否解析"，必须先检查该点邻域内是否处处可导。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：C-R 方程是充要条件吗？</div>
+      <p>C-R 方程只是<strong>必要条件</strong>。光满足 C-R 方程不能保证可导——还需要 $u, v$ 作为二元实函数<strong>可微</strong>（偏导数连续即可保可微）。只满足 C-R 但 $u$ 或 $v$ 不可微的反例是存在的（比如在原点有定义但偏导数不存在的那种病态情况）。<strong>实用判据</strong>：偏导数连续 + C-R 方程 $\iff$ 解析。考试中绝大多数函数都满足偏导数连续，所以通常只需验证 C-R 方程就够了。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：为什么 $f(z)=\bar{z}$ 处处不可导？这个函数明明很"光滑"</div>
+      <p>看一眼 C-R 方程就明白了：$f(z)=x-iy$，$u=x$, $v=-y$。$\partial u/\partial x = 1$，但 $\partial v/\partial y = -1$，两者不相等。C-R 第一式就不成立，所以处处不可导。几何上，$\bar{z}$ 是"关于实轴的反射"——它保持实部不变但翻转虚部，这个操作在复分析的意义下是"反向"的（它不保角），所以不是解析函数。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：共轭调和函数中 $u$ 和 $v$ 的角色不对称是怎么回事？</div>
+      <p>C-R 方程 $\partial u/\partial x = \partial v/\partial y$ 和 $\partial u/\partial y = -\partial v/\partial x$ 关于 $u$ 和 $v$ 不是对称的——第二个式子有一个负号。如果 $v$ 是 $u$ 的共轭调和函数，那么 $u$ 和 $v$ 满足 C-R。但交换角色后，$u$ 和 $v$ 不再满足 C-R——需要把 $v$ 作为"实部"时取 $u$ 的相反数（$-u$）才能继续满足。这就是为什么说"$v$ 是 $u$ 的共轭调和函数"，但 "$u$ 是 $-v$ 的共轭调和函数"。</p>
+    </div>
+  </div>
+
+  <!-- ========== 本章小结 ========== -->
+  <div class="section" style="background:linear-gradient(135deg,#faf5ff,#ebf8ff);">
+    <h2>本章小结</h2>
+    <h3>核心要点回顾</h3>
+    <ol>
+      <li><strong>复可导 vs 实可导</strong>：复可导要求沿<strong>所有方向</strong>的趋近极限一致，条件远比实可导严苛。可导必连续。</li>
+      <li><strong>解析的层次</strong>：点可导 → 点解析（邻域内处处可导）→ 区域解析。$f(z)=|z|^2$ 在 $z=0$ 可导但不解析，是经典反例。</li>
+      <li><strong>C-R 方程</strong>：$\partial u/\partial x = \partial v/\partial y$，$\partial u/\partial y = -\partial v/\partial x$。偏导数连续 + C-R 方程 = 解析的实用判据。</li>
+      <li><strong>调和函数</strong>：解析函数的实部和虚部自动满足 Laplace 方程 $\Delta u = \Delta v = 0$。已知调和函数 $u$，可通过 C-R 方程积分求出其共轭调和函数 $v$。</li>
+      <li><strong>物理意义</strong>：解析函数的实部和虚部分别对应平面流场/静电场的势函数和流函数（电力线），两者正交。</li>
+    </ol>
+    <h3>承上启下</h3>
+    <p>第二章教会了我们如何判断一个函数是否解析。但到目前为止，我们手上还没有几个具体的解析函数例子——多项式、有理函数之外还有什么？第三章将把实数域中熟悉的初等函数（指数、对数、三角）系统地推广到复数域，你会看到这些"老朋友"展现出惊人的新面貌。这些初等函数将是我们后续研究积分和级数的具体素材。</p>
   </div>
 
   <div class="chapter-nav">
