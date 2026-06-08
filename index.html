@@ -161,6 +161,7 @@ body::before {
 .course-card:nth-child(9) { animation-delay: 0.74s; }
 .course-card:nth-child(10) { animation-delay: 0.82s; }
 .course-card:nth-child(11) { animation-delay: 0.90s; }
+.course-card:nth-child(12) { animation-delay: 0.98s; }
 
 .course-card::before {
   content: '';
@@ -213,6 +214,10 @@ body::before {
 
 .course-card.prog::before {
   background: linear-gradient(90deg, #00b894, #0984e3);
+}
+
+.course-card.ss::before {
+  background: linear-gradient(90deg, #e17055, #6c5ce7);
 }
 
 .course-card:hover {
@@ -445,7 +450,7 @@ body::before {
 <section class="category-section">
   <div class="category-header">
     <h2 class="category-title">其他专业课程</h2>
-    <p class="category-subtitle">程序设计、思想政治等通识与专业基础课程</p>
+    <p class="category-subtitle">程序设计、信号与系统、思想政治等通识与专业基础课程</p>
   </div>
 
   <div class="cards">
@@ -457,6 +462,18 @@ body::before {
         <span class="tag">4 个章节</span>
         <span class="tag">Python</span>
         <span class="tag">算法实践</span>
+      </div>
+      <div class="card-enter">进入课程 <span class="arrow">→</span></div>
+    </a>
+
+    <a href="信号与系统/index.html" class="course-card ss">
+      <span class="card-icon">〰️</span>
+      <div class="card-title">信号与系统</div>
+      <div class="card-subtitle">基于郑君里教材（第三版）· 零基础到完全掌握<br>傅里叶变换、拉普拉斯变换、Z 变换与两周85+学习计划</div>
+      <div class="card-meta">
+        <span class="tag">8 个章节</span>
+        <span class="tag">变换域分析</span>
+        <span class="tag">公式速查</span>
       </div>
       <div class="card-enter">进入课程 <span class="arrow">→</span></div>
     </a>
@@ -476,7 +493,7 @@ body::before {
 </section>
 
 <div class="footer">
-  十一门课程 · 在线复习平台
+  十二门课程 · 在线复习平台
 </div>
 
 </body>

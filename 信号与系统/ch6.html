@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第六章 · 离散时间系统的时域分析 · 信号与系统</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          CC: '\\mathbb{C}',
+          NN: '\\mathbb{N}',
+          ZZ: '\\mathbb{Z}',
+          FF: '\\mathcal{F}',
+          LL: '\\mathcal{L}',
+          ZT: '\\mathcal{Z}',
+          dd: '\\mathrm{d}',
+          sinc: '\\mathrm{sinc}',
+          rect: '\\mathrm{rect}',
+          tri: '\\mathrm{tri}',
+          sgn: '\\mathrm{sgn}',
+          u: '\\mathrm{u}',
+          deltafn: '\\delta'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../index.html" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">信号与系统</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+    <li><a href="ch7.html">第七章</a></li>
+    <li><a href="ch8.html">第八章</a></li>
+    <li><a href="appendix.html">附录</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第六章 · 离散时间系统的时域分析</h1>
+    <p>从连续到离散：本章将第二章的时域分析框架平移到离散时间系统。核心是"翻译"——微分变差分、积分变求和、$h(t)$ 变 $h[n]$。掌握了前五章的思维，离散部分将事半功倍。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">离散时间信号（序列）</a></li>
+      <li><a href="#s2">差分方程描述离散系统</a></li>
+      <li><a href="#s3">单位样值响应 $h[n]$</a></li>
+      <li><a href="#s4">卷积和</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 6.1 离散时间信号 ==================== -->
+  <div class="section" id="s1">
+    <h2>6.1 离散时间信号（序列）</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 离散时间信号</div>
+      <p>离散时间信号（序列）$x[n]$ 是定义在整数 $n \in \ZZ$ 上的函数。$x[n]$ 的取值称为序列的第 $n$ 个<strong>样值</strong>。</p>
+      <p>序列可以通过对连续信号的等间隔抽样得到：$x[n] = x_c(nT_s)$，也可直接由离散系统产生。</p>
+    </div>
+
+    <h3>基本序列</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">基本序列一览</div>
+      <table>
+        <tr><th>名称</th><th>定义</th><th>类比</th></tr>
+        <tr><td>单位样值 $\delta[n]$</td><td>$\delta[n] = \begin{cases} 1, & n = 0 \\ 0, & n \neq 0 \end{cases}$</td><td>$\delta(t)$（但 $\delta[n]$ 是普通函数！）</td></tr>
+        <tr><td>单位阶跃 $u[n]$</td><td>$u[n] = \begin{cases} 1, & n \geq 0 \\ 0, & n < 0 \end{cases}$</td><td>$u(t)$</td></tr>
+        <tr><td>单位矩形 $R_N[n]$</td><td>$R_N[n] = \begin{cases} 1, & 0 \leq n \leq N-1 \\ 0, & \text{其他} \end{cases}$</td><td>$\rect(t)$</td></tr>
+        <tr><td>实指数序列</td><td>$x[n] = a^n u[n]$</td><td>$e^{\alpha t}u(t)$</td></tr>
+        <tr><td>正弦序列</td><td>$x[n] = \sin(\Omega n)$ 或 $\cos(\Omega n)$</td><td>$\sin(\omega t)$</td></tr>
+        <tr><td>复指数序列</td><td>$x[n] = e^{j\Omega n}$</td><td>$e^{j\omega t}$</td></tr>
+      </table>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">$\delta[n]$ vs $\delta(t)$：关键区别</div>
+      <p>连续时间的 $\delta(t)$ 是广义函数（无穷大、零宽度、单位面积），需要狄拉克分布理论。</p>
+      <p>离散时间的 $\delta[n]$ 是<strong>普通函数</strong>：在 $n=0$ 处取值为 1，其余为 0。它简单得多，不涉及任何广义函数的复杂性。</p>
+      <p>但二者在各自领域扮演的角色相同：<strong>卷积的单位元</strong>（$x * \delta = x$），<strong>采样/筛选</strong>功能。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">离散正弦的周期性条件</div>
+      <p>$\sin(\Omega n)$ 是周期为 $N$ 的序列当且仅当 $\Omega N = 2\pi k$（$k$ 为整数），即 $\frac{\Omega}{2\pi} = \frac{k}{N}$ 为有理数。</p>
+      <p>这与连续时间不同——连续正弦对所有 $\omega$ 都是周期信号，但离散正弦只有当数字频率 $\Omega$ 是 $2\pi$ 的有理数倍时才具有周期性。例如 $\sin(n)$ 不是周期序列！</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">离散信号的能量与功率</div>
+      <p>序列 $x[n]$ 的能量：$E = \sum_{n=-\infty}^{\infty} |x[n]|^2$</p>
+      <p>平均功率：$P = \lim_{N \to \infty} \frac{1}{2N+1} \sum_{n=-N}^{N} |x[n]|^2$</p>
+    </div>
+  </div>
+
+  <!-- ==================== 6.2 差分方程 ==================== -->
+  <div class="section" id="s2">
+    <h2>6.2 差分方程描述离散系统</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">线性常系数差分方程</div>
+      <p>$N$ 阶 LTI 离散系统的差分方程：</p>
+      <div class="formula-highlight">
+        $$\sum_{k=0}^{N} a_k y[n-k] = \sum_{k=0}^{M} b_k x[n-k]$$
+      </div>
+      <p>这是微分方程 $\sum a_k y^{(k)}(t) = \sum b_k x^{(k)}(t)$ 的离散类比：导数 $\frac{\dd}{\dd t}$ 被延迟算子（$n \to n-1$）替代。</p>
+    </div>
+
+    <h3>经典解法</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">齐次解 + 特解</div>
+      <p><strong>齐次解</strong>：令输入为零，设 $y[n] = C\lambda^n$，代入齐次方程得特征方程 $\sum_{k=0}^N a_k \lambda^{N-k} = 0$。$N$ 个特征根 $\lambda_1, \ldots, \lambda_N$，齐次解为 $\sum_{i=1}^N C_i \lambda_i^n$（设单根）。</p>
+      <p><strong>特解</strong>：根据输入 $x[n]$ 的形式设定，代入方程确定系数。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">特征根与响应类型</div>
+      <table>
+        <tr><th>特征根 $\lambda$</th><th>齐次解分量</th><th>行为</th></tr>
+        <tr><td>$|\lambda| < 1$</td><td>$C\lambda^n$</td><td>衰减（稳定）</td></tr>
+        <tr><td>$|\lambda| = 1$</td><td>$C e^{j\Omega n}$ 或常数</td><td>等幅振荡或常数（临界）</td></tr>
+        <tr><td>$|\lambda| > 1$</td><td>$C\lambda^n$</td><td>增长（不稳定）</td></tr>
+        <tr><td>共轭复根 $re^{\pm j\theta}$</td><td>$Cr^n \cos(n\theta + \phi)$</td><td>$r<1$衰减振荡，$r=1$等幅振荡</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ==================== 6.3 单位样值响应 ==================== -->
+  <div class="section" id="s3">
+    <h2>6.3 单位样值响应 $h[n]$</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 单位样值响应</div>
+      <p><strong>单位样值响应 $h[n]$</strong>是系统在初始状态为零的条件下，输入为单位样值 $\delta[n]$ 时的零状态响应：</p>
+      <div class="formula-highlight">
+        $$h[n] = \mathcal{T}\{\delta[n]\} \quad \text{（零初始状态）}$$
+      </div>
+      <p>$h[n]$ 完全表征了 LTI 离散系统的特性——知道 $h[n]$，任意输入下的输出通过卷积和求得。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 · 求一阶系统的 $h[n]$</div>
+      <p><strong>题目</strong>：$y[n] - ay[n-1] = x[n]$，求 $h[n]$。</p>
+      <p><strong>解</strong>：令 $x[n] = \delta[n]$，初始零状态（$n < 0$ 时 $y[n] = 0$）。</p>
+      <p>$n = 0$：$h[0] - a \cdot 0 = 1 \Rightarrow h[0] = 1$</p>
+      <p>$n = 1$：$h[1] - ah[0] = 0 \Rightarrow h[1] = a$</p>
+      <p>$n = 2$：$h[2] = a^2$，以此类推，$h[n] = a^n u[n]$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">离散 LTI 系统的 BIBO 稳定性</div>
+      <p>因果离散 LTI 系统 BIBO 稳定 $\Longleftrightarrow$ $\sum_{n=0}^{\infty} |h[n]| < \infty$。</p>
+      <p>等价条件：$H(z)$ 的<strong>所有极点都在单位圆内</strong>（$|p_i| < 1$）。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 6.4 卷积和 ==================== -->
+  <div class="section" id="s4">
+    <h2>6.4 卷积和</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 卷积和</div>
+      <p>两序列 $x[n]$ 与 $h[n]$ 的<strong>卷积和</strong>定义为：</p>
+      <div class="formula-highlight">
+        $$y[n] = x[n] * h[n] = \sum_{k=-\infty}^{\infty} x[k] \, h[n - k]$$
+      </div>
+      <p>对于因果系统和因果输入（$x[n]=0, h[n]=0$ 当 $n<0$）：</p>
+      <div class="formula-highlight">
+        $$y[n] = \sum_{k=0}^{n} x[k] \, h[n - k]$$
+      </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">卷积和的计算步骤</div>
+      <ol>
+        <li><strong>反褶</strong>：将 $h[k]$ 反褶为 $h[-k]$</li>
+        <li><strong>平移</strong>：平移 $n$ 得到 $h[n-k]$</li>
+        <li><strong>相乘求和</strong>：计算 $\sum_k x[k]h[n-k]$</li>
+      </ol>
+      <p>计算卷积和有多种方法：直接代入求和、列表法（不进位乘法）、图解法。对于有限长序列，<strong>不进位乘法</strong>是最有效的计算方式。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">不进位乘法（有限长序列卷积）</div>
+      <p>例：$x[n] = \{1, 2, 3\}$（$n=0,1,2$），$h[n] = \{1, 1\}$（$n=0,1$）</p>
+      <p>列式（不进位乘）：$$\begin{array}{rrrr} & 1 & 2 & 3 \\ \times & 1 & 1 & \\ \hline & 1 & 2 & 3 \\ + & & 1 & 2 & 3 \\ \hline & 1 & 3 & 5 & 3 \end{array}$$</p>
+      <p>$y[n] = \{1, 3, 5, 3\}$（起始于 $n=0$）。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">卷积和的性质（与卷积积分完全对偶）</div>
+      <table>
+        <tr><th>性质</th><th>表达式</th></tr>
+        <tr><td>交换律</td><td>$x[n] * h[n] = h[n] * x[n]$</td></tr>
+        <tr><td>结合律</td><td>$(x * h_1) * h_2 = x * (h_1 * h_2)$</td></tr>
+        <tr><td>分配律</td><td>$x * (h_1 + h_2) = x * h_1 + x * h_2$</td></tr>
+        <tr><td>单位元</td><td>$x[n] * \delta[n] = x[n]$</td></tr>
+        <tr><td>时移</td><td>$x[n] * \delta[n-n_0] = x[n-n_0]$</td></tr>
+        <tr><td>差分</td><td>$\nabla(x * h) = (\nabla x) * h = x * (\nabla h)$，其中 $\nabla f[n] = f[n] - f[n-1]$</td></tr>
+        <tr><td>累和</td><td>$\sum_{k=-\infty}^n (x*h)[k] = (\sum_{k=-\infty}^n x[k]) * h[n] = x[n] * (\sum_{k=-\infty}^n h[k])$</td></tr>
+      </table>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">本章总结：连续与离散的完美对偶</div>
+      <table>
+        <tr><th></th><th>连续时间</th><th>离散时间</th></tr>
+        <tr><td>基本方程</td><td>微分方程</td><td>差分方程</td></tr>
+        <tr><td>特征函数</td><td>$e^{st}$</td><td>$z^n$</td></tr>
+        <tr><td>基本响应</td><td>$h(t)$（冲激响应）</td><td>$h[n]$（单位样值响应）</td></tr>
+        <tr><td>叠加运算</td><td>卷积积分 $\int x(\tau)h(t-\tau)\dd\tau$</td><td>卷积和 $\sum_k x[k]h[n-k]$</td></tr>
+        <tr><td>稳定性</td><td>$\int |h(t)|\dd t < \infty$</td><td>$\sum |h[n]| < \infty$</td></tr>
+        <tr><td>变换域</td><td>拉普拉斯变换</td><td>Z 变换</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="chapter-nav">
+    <a class="prev" href="ch5.html">第五章 · 傅里叶变换的应用</a>
+    <a class="next" href="ch7.html">第七章 · Z 变换与 z 域分析</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>信号与系统复习指南 · 基于郑君里教材（第三版）· 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

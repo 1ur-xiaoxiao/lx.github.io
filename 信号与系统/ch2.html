@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第二章 · 连续时间系统的时域分析 · 信号与系统</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          CC: '\\mathbb{C}',
+          NN: '\\mathbb{N}',
+          ZZ: '\\mathbb{Z}',
+          FF: '\\mathcal{F}',
+          LL: '\\mathcal{L}',
+          ZT: '\\mathcal{Z}',
+          dd: '\\mathrm{d}',
+          sinc: '\\mathrm{sinc}',
+          rect: '\\mathrm{rect}',
+          tri: '\\mathrm{tri}',
+          sgn: '\\mathrm{sgn}',
+          u: '\\mathrm{u}',
+          deltafn: '\\delta'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../index.html" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">信号与系统</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+    <li><a href="ch7.html">第七章</a></li>
+    <li><a href="ch8.html">第八章</a></li>
+    <li><a href="appendix.html">附录</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第二章 · 连续时间系统的时域分析</h1>
+    <p>核心问题：给定输入 $x(t)$ 和系统的微分方程描述，如何求出输出 $y(t)$？解法有两类——经典法（齐次解 + 特解）和卷积法（零输入 + 零状态）。后者的分解思想是现代信号处理的基础。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">微分方程描述与经典解法</a></li>
+      <li><a href="#s2">零输入响应与零状态响应</a></li>
+      <li><a href="#s3">冲激响应 $h(t)$</a></li>
+      <li><a href="#s4">卷积积分</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 2.1 微分方程描述 ==================== -->
+  <div class="section" id="s1">
+    <h2>2.1 微分方程描述与经典解法</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 连续LTI系统的微分方程</div>
+      <p>$n$ 阶 LTI 系统的一般微分方程为：</p>
+      <div class="formula-highlight">
+        $$\sum_{k=0}^{n} a_k \frac{\dd^k y(t)}{\dd t^k} = \sum_{k=0}^{m} b_k \frac{\dd^k x(t)}{\dd t^k}$$
+      </div>
+      <p>其中 $a_k, b_k$ 为常系数（时不变性保证）。通常 $n \geq m$（物理可实现系统）。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">方程解读</div>
+      <p>左边是输出的各阶导数的线性组合，右边是输入的各阶导数的线性组合。系数的常值性由"时不变"保证，线性组合的形式由"线性"保证。</p>
+      <p>对于电路系统，微分方程可由基尔霍夫定律和元件 V-I 关系（$v_L = L\frac{\dd i}{\dd t}$、$i_C = C\frac{\dd v}{\dd t}$）导出。</p>
+    </div>
+
+    <h3>经典解法：齐次解 + 特解</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">经典解的构成</div>
+      <p>全解 = <strong>齐次解</strong>（自由响应）+ <strong>特解</strong>（受迫响应）</p>
+      <ul>
+        <li><strong>齐次解 $y_h(t)$</strong>：令输入为零（$x(t) \equiv 0$），解齐次方程。形式为 $\sum_{i=1}^n C_i e^{\lambda_i t}$，其中 $\lambda_i$ 是特征根。</li>
+        <li><strong>特解 $y_p(t)$</strong>：根据输入 $x(t)$ 的函数形式设定特解形式，代入原方程确定系数。</li>
+        <li><strong>待定系数</strong>：$C_i$ 由初始条件 $y(0^+), y'(0^+), \ldots$ 确定。</li>
+      </ul>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">特征方程与特征根</div>
+      <p>对 $n$ 阶系统 $\sum_{k=0}^{n} a_k y^{(k)}(t) = x(t)$（为简便设右端只有 $x(t)$），特征方程为：</p>
+      <div class="formula-highlight">
+        $$a_n \lambda^n + a_{n-1} \lambda^{n-1} + \cdots + a_1 \lambda + a_0 = 0$$
+      </div>
+      <p>$n$ 个特征根 $\lambda_1, \lambda_2, \ldots, \lambda_n$ 决定了系统的<strong>固有响应模式</strong>。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">特征根与响应类型的对应</div>
+      <table>
+        <tr><th>特征根类型</th><th>齐次解形式</th><th>物理含义</th></tr>
+        <tr><td>单实根 $\lambda < 0$</td><td>$Ce^{\lambda t}$</td><td>指数衰减（稳定）</td></tr>
+        <tr><td>单实根 $\lambda > 0$</td><td>$Ce^{\lambda t}$</td><td>指数增长（不稳定）</td></tr>
+        <tr><td>单实根 $\lambda = 0$</td><td>$C$</td><td>常数（临界）</td></tr>
+        <tr><td>$k$ 重实根 $\lambda$</td><td>$(C_1 + C_2 t + \cdots + C_k t^{k-1})e^{\lambda t}$</td><td>多项式 $\times$ 指数</td></tr>
+        <tr><td>共轭复根 $\sigma \pm j\omega$</td><td>$e^{\sigma t}(A\cos\omega t + B\sin\omega t)$</td><td>衰减/增长振荡</td></tr>
+      </table>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">特解的设定方法（待定系数法）</div>
+      <table>
+        <tr><th>输入 $x(t)$ 形式</th><th>特解 $y_p(t)$ 形式</th></tr>
+        <tr><td>常数 $K$</td><td>常数 $C$</td></tr>
+        <tr><td>$t^m$</td><td>$C_m t^m + C_{m-1} t^{m-1} + \cdots + C_0$</td></tr>
+        <tr><td>$e^{\alpha t}$</td><td>$Ce^{\alpha t}$（若 $\alpha$ 不是特征根）</td></tr>
+        <tr><td>$e^{\alpha t}$（$\alpha$ 是 $k$ 重特征根）</td><td>$Ct^k e^{\alpha t}$</td></tr>
+        <tr><td>$\sin(\omega t)$ 或 $\cos(\omega t)$</td><td>$A\cos\omega t + B\sin\omega t$</td></tr>
+        <tr><td>$t^m e^{\alpha t}\sin(\omega t)$</td><td>相应形式的组合 + 可能的 $t^k$ 乘子</td></tr>
+      </table>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 经典法求解</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：系统的微分方程为 $y''(t) + 5y'(t) + 6y(t) = e^{-t}$，初始条件 $y(0) = 0$，$y'(0) = 1$，求全响应。</p>
+        <p><strong>解</strong>：</p>
+        <p>(1) 齐次解：特征方程 $\lambda^2 + 5\lambda + 6 = 0$，$\lambda_1 = -2$，$\lambda_2 = -3$。齐次解 $y_h(t) = C_1 e^{-2t} + C_2 e^{-3t}$。</p>
+        <p>(2) 特解：设 $y_p(t) = Ae^{-t}$，代入：$Ae^{-t} - 5Ae^{-t} + 6Ae^{-t} = e^{-t}$，$2A = 1$，$A = \frac{1}{2}$。特解 $y_p(t) = \frac{1}{2}e^{-t}$。</p>
+        <p>(3) 全解：$y(t) = C_1 e^{-2t} + C_2 e^{-3t} + \frac{1}{2}e^{-t}$。</p>
+        <p>(4) 用初始条件定 $C_1, C_2$：</p>
+        <p>$y(0) = C_1 + C_2 + \frac{1}{2} = 0 \Rightarrow C_1 + C_2 = -\frac{1}{2}$</p>
+        <p>$y'(t) = -2C_1 e^{-2t} - 3C_2 e^{-3t} - \frac{1}{2}e^{-t}$，$y'(0) = -2C_1 - 3C_2 - \frac{1}{2} = 1$</p>
+        <p>解得 $C_1 = 1$，$C_2 = -\frac{3}{2}$。</p>
+        <p>全解：$y(t) = e^{-2t} - \frac{3}{2}e^{-3t} + \frac{1}{2}e^{-t}$。</p>
+      </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">经典法的局限性</div>
+      <p>经典法虽然直接，但有两个缺陷：(1) 输入改变时需要重新设定特解形式并重新计算；(2) 不能自然地分离由初始状态引起的响应和由输入引起的响应。这引出了下节更具洞察力的分解方法。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 2.2 零输入与零状态 ==================== -->
+  <div class="section" id="s2">
+    <h2>2.2 零输入响应与零状态响应</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">两种响应的分解</div>
+      <p>将全响应 $y(t)$ 分解为两部分之和：</p>
+      <div class="formula-highlight">
+        $$y(t) = \underbrace{y_{zi}(t)}_{\text{零输入响应}} + \underbrace{y_{zs}(t)}_{\text{零状态响应}}$$
+      </div>
+      <ul>
+        <li><strong>零输入响应 $y_{zi}(t)$</strong>：输入 $x(t) \equiv 0$，仅由系统初始状态（初始储能）产生的响应。满足齐次方程。</li>
+        <li><strong>零状态响应 $y_{zs}(t)$</strong>：初始状态为零，仅由输入 $x(t)$ 产生的响应。</li>
+      </ul>
+      <p>这种分解是<strong>线性系统叠加原理</strong>的直接结果。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">与经典法分解的区别</div>
+      <p>注意：$y_{zi}$ ≠ 经典法的齐次解，$y_{zs}$ ≠ 特解。</p>
+      <ul>
+        <li>齐次解/特解是按方程结构分的（齐次方程 vs 非齐次方程）</li>
+        <li>零输入/零状态是按<strong>物理因果</strong>分的（初始储能 vs 外部激励）</li>
+        <li>$y_{zs}$ 中通常既包含齐次解分量（由输入激发的固有模式），也包含特解分量</li>
+      </ul>
+      <p>零状态响应的齐次分量部分常称为<strong>受迫响应的固有分量</strong>——输入将系统"踢"起来后，系统以固有模式振荡的部分。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">$0^-$ 与 $0^+$ 的跳变</div>
+      <p>初始状态通常给在 $t = 0^-$（激励接入之前）。当输入包含 $\deltafn(t)$ 或其导数时，系统状态可能在 $t = 0$ 处发生<strong>跳变</strong>。此时需用冲激函数匹配法从 $y(0^-)$ 求 $y(0^+)$，再用 $y(0^+)$ 确定零输入响应中的待定系数。</p>
+      <p><strong>关键规则</strong>：如果微分方程右端含有 $\deltafn(t)$ 的 $k$ 阶导数，则最高阶导数项 $y^{(n)}(t)$ 将包含 $\deltafn(t)$ 的 $k$ 阶导数，$y^{(n-1)}(t)$ 将包含 $k-1$ 阶导数……$y^{(n-k-1)}(t)$ 将包含跳变。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 2.3 冲激响应 ==================== -->
+  <div class="section" id="s3">
+    <h2>2.3 冲激响应 $h(t)$</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 冲激响应</div>
+      <p><strong>冲激响应 $h(t)$</strong>是系统在初始状态为零的条件下，输入为单位冲激函数 $\deltafn(t)$ 时的零状态响应：</p>
+      <div class="formula-highlight">
+        $$h(t) = \mathcal{T}\{\deltafn(t)\} \quad \text{（初始状态为零）}$$
+      </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">为什么 $h(t)$ 如此重要？</div>
+      <p>$h(t)$ 是 LTI 系统的"身份证"——知道了 $h(t)$，就完全知道了系统对<strong>任意输入</strong>的零状态响应（通过卷积）。原因：任意信号 $x(t)$ 可以表示为无穷多个加权冲激的积分（$\deltafn(t)$ 的筛分性质），而线性+时不变性保证系统对每个加权冲激的响应都是加权时移的 $h(t)$，总响应就是这些响应的叠加——即卷积积分。</p>
+    </div>
+
+    <h3>冲激响应的求解</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">方法：齐次解 + 冲激函数匹配</div>
+      <p>对于 $n$ 阶系统，当输入为 $\deltafn(t)$ 时：</p>
+      <ol>
+        <li>$t > 0$ 时 $\deltafn(t) = 0$，故 $h(t)$ 在 $t > 0$ 时满足齐次方程，形式为 $\sum_{i=1}^n C_i e^{\lambda_i t}\u(t)$。</li>
+        <li>$t = 0$ 处 $\deltafn(t)$ 引起初始条件的跳变——需用冲激函数匹配法确定 $h(0^+), h'(0^+), \ldots, h^{(n-1)}(0^+)$。</li>
+        <li>用这些 $0^+$ 条件确定 $C_i$，得到 $h(t)$。</li>
+      </ol>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 · 求一阶系统的冲激响应</div>
+      <p><strong>题目</strong>：一阶系统 $y'(t) + ay(t) = x(t)$，求 $h(t)$。</p>
+      <p><strong>解</strong>：令 $x(t) = \deltafn(t)$，初始状态为零。</p>
+      <p>$t > 0$ 时 $\deltafn(t) = 0$，$h(t)$ 满足 $h'(t) + ah(t) = 0$，故 $h(t) = Ce^{-at}$。</p>
+      <p>对 $y'(t) + ay(t) = \deltafn(t)$ 在 $[0^-, 0^+]$ 上积分：</p>
+      <p>$\int_{0^-}^{0^+} h'(t)\dd t + a\int_{0^-}^{0^+} h(t)\dd t = \int_{0^-}^{0^+} \deltafn(t)\dd t = 1$</p>
+      <p>左边第一项 $= h(0^+) - h(0^-) = h(0^+)$（因为 $h(0^-) = 0$，初始零状态）</p>
+      <p>左边第二项 $\approx 0$（$h(t)$ 在无穷小区间上的积分趋于 0，只要 $h$ 没有 $\deltafn$ 分量）</p>
+      <p>故 $h(0^+) = 1$，$C = 1$。冲激响应：$h(t) = e^{-at}\u(t)$。</p>
+    </div>
+
+    <h3>阶跃响应 $g(t)$</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 阶跃响应</div>
+      <p>系统在零状态下对单位阶跃信号 $\u(t)$ 的响应：$g(t) = \mathcal{T}\{\u(t)\}$。</p>
+      <p>由 LTI 系统的微积分性质：</p>
+      <div class="formula-highlight">
+        $$h(t) = \frac{\dd}{\dd t}g(t), \qquad g(t) = \int_{-\infty}^t h(\tau) \dd\tau$$
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2.4 卷积积分 ==================== -->
+  <div class="section" id="s4">
+    <h2>2.4 卷积积分</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 卷积积分</div>
+      <p>两函数 $x(t)$ 与 $h(t)$ 的<strong>卷积积分</strong>定义为：</p>
+      <div class="formula-highlight">
+        $$y(t) = x(t) * h(t) = \int_{-\infty}^{\infty} x(\tau)\,h(t - \tau) \dd\tau$$
+      </div>
+      <p>对因果系统（$h(t) = 0, \forall t < 0$）和因果输入（$x(t) = 0, \forall t < 0$）：</p>
+      <div class="formula-highlight">
+        $$y(t) = \int_{0}^{t} x(\tau)\,h(t - \tau) \dd\tau$$
+      </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">卷积的物理直觉</div>
+      <p>理解卷积的关键在于：$h(t - \tau)$ 是系统对发生在时刻 $\tau$ 的单位冲激的响应，在时刻 $t$ 的取值。$x(\tau)\dd\tau$ 是输入在时刻 $\tau$ 的"强度"。将所有这些加权响应叠加（积分）起来，就得到时刻 $t$ 的总输出。</p>
+      <p>卷积积分的三个步骤（图解法）：</p>
+      <ol>
+        <li><strong>反褶</strong>：将 $h(\tau)$ 反褶为 $h(-\tau)$</li>
+        <li><strong>平移</strong>：将 $h(-\tau)$ 平移 $t$ 得到 $h(t - \tau)$</li>
+        <li><strong>相乘积分</strong>：计算 $x(\tau) \cdot h(t - \tau)$ 的积分面积</li>
+      </ol>
+    </div>
+
+    <h3>卷积积分的关键性质</h3>
+
+    <div class="box box-theorem">
+      <div class="box-title">卷积的代数性质</div>
+      <table>
+        <tr><th>性质</th><th>表达式</th></tr>
+        <tr><td>交换律</td><td>$x(t) * h(t) = h(t) * x(t)$</td></tr>
+        <tr><td>分配律</td><td>$x(t) * [h_1(t) + h_2(t)] = x(t) * h_1(t) + x(t) * h_2(t)$</td></tr>
+        <tr><td>结合律</td><td>$[x(t) * h_1(t)] * h_2(t) = x(t) * [h_1(t) * h_2(t)]$</td></tr>
+      </table>
+      <p>结合律的物理含义：两个系统级联后的冲激响应等于各自冲激响应的卷积，且级联顺序可交换。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">卷积的微积分性质</div>
+      <p>设 $y(t) = x(t) * h(t)$，则：</p>
+      <div class="formula-highlight">
+        $$\frac{\dd}{\dd t}[x(t) * h(t)] = \frac{\dd x(t)}{\dd t} * h(t) = x(t) * \frac{\dd h(t)}{\dd t}$$
+      </div>
+      <div class="formula-highlight">
+        $$\int_{-\infty}^t [x(\tau) * h(\tau)] \dd\tau = \left[\int_{-\infty}^t x(\tau)\dd\tau\right] * h(t) = x(t) * \left[\int_{-\infty}^t h(\tau)\dd\tau\right]$$
+      </div>
+      <p><strong>重要推论</strong>：$x(t) * \deltafn(t) = x(t)$；$x(t) * \deltafn(t-t_0) = x(t-t_0)$；$x(t) * \u(t) = \int_{-\infty}^t x(\tau)\dd\tau$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">卷积的时移性质</div>
+      <p>若 $y(t) = x(t) * h(t)$，则：</p>
+      <div class="formula-highlight">
+        $$x(t - t_1) * h(t - t_2) = y(t - t_1 - t_2)$$
+      </div>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">与 $\deltafn(t)$ 的卷积</div>
+      <p>$\deltafn(t)$ 是卷积的<strong>单位元</strong>：</p>
+      <div class="formula-highlight">
+        $$x(t) * \deltafn(t) = x(t)$$
+      </div>
+      <p>一般形式：$x(t) * \deltafn^{(n)}(t - t_0) = x^{(n)}(t - t_0)$（$\deltafn$ 的 $n$ 阶导数与信号卷积 = 信号的 $n$ 阶导数并延时）。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 图解法求卷积</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：$x(t) = \u(t) - \u(t-2)$（宽度为 2 的矩形脉冲），$h(t) = e^{-t}\u(t)$。求 $y(t) = x(t) * h(t)$。</p>
+        <p><strong>解</strong>：用图解法分段计算。</p>
+        <p>$t < 0$：两函数没有重叠，$y(t) = 0$。</p>
+        <p>$0 \leq t < 2$：$y(t) = \int_0^t 1 \cdot e^{-(t-\tau)} \dd\tau = e^{-t} \int_0^t e^{\tau} \dd\tau = e^{-t}(e^t - 1) = 1 - e^{-t}$。</p>
+        <p>$t \geq 2$：$y(t) = \int_0^2 1 \cdot e^{-(t-\tau)} \dd\tau = e^{-t}(e^2 - 1) = (e^2 - 1)e^{-t}$。</p>
+        <p>物理含义：矩形脉冲通过 RC 低通电路——输出先以指数形式上升，脉冲结束后再以指数形式衰减。</p>
+      </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">本章总结：时域分析的核心逻辑</div>
+      <p>连续时间系统时域分析的核心链条是：</p>
+      <p style="text-align:center;"><strong>微分方程 → 零输入/零状态分解 → 冲激响应 $h(t)$ → 卷积积分 → 任意输入下的零状态响应</strong></p>
+      <p>这个链条在离散时间系统中将被完整复制：<strong>差分方程 → 零输入/零状态分解 → 单位样值响应 $h[n]$ → 卷积和</strong>。掌握好本章的思维框架，第六章将事半功倍。</p>
+    </div>
+  </div>
+
+  <div class="chapter-nav">
+    <a class="prev" href="ch1.html">第一章 · 信号与系统的基本概念</a>
+    <a class="next" href="ch3.html">第三章 · 傅里叶变换</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>信号与系统复习指南 · 基于郑君里教材（第三版）· 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

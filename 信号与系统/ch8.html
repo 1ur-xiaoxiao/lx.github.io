@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第八章 · 进阶专题 · 信号与系统</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          CC: '\\mathbb{C}',
+          NN: '\\mathbb{N}',
+          ZZ: '\\mathbb{Z}',
+          FF: '\\mathcal{F}',
+          LL: '\\mathcal{L}',
+          ZT: '\\mathcal{Z}',
+          dd: '\\mathrm{d}',
+          sinc: '\\mathrm{sinc}',
+          rect: '\\mathrm{rect}',
+          tri: '\\mathrm{tri}',
+          sgn: '\\mathrm{sgn}',
+          u: '\\mathrm{u}',
+          deltafn: '\\delta'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../index.html" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">信号与系统</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+    <li><a href="ch7.html">第七章</a></li>
+    <li><a href="ch8.html">第八章</a></li>
+    <li><a href="appendix.html">附录</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第八章 · 进阶专题</h1>
+    <p>拓展视野：覆盖教材第6章（信号矢量空间分析）和第9–12章的核心概念——DFT、滤波器设计、反馈系统与状态变量分析。本章以概念理解为主，适合考前快速建立知识框架。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">信号的矢量空间分析</a></li>
+      <li><a href="#s2">离散傅里叶变换（DFT）</a></li>
+      <li><a href="#s3">模拟与数字滤波器概要</a></li>
+      <li><a href="#s4">反馈系统</a></li>
+      <li><a href="#s5">状态变量分析</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 8.1 信号矢量空间 ==================== -->
+  <div class="section" id="s1">
+    <h2>8.1 信号的矢量空间分析</h2>
+
+    <div class="box box-note">
+      <div class="box-title">核心思想：把信号看作向量</div>
+      <p>将信号视为<strong>函数空间中的向量</strong>，把线性代数中的内积、正交、投影等概念推广到连续时间函数。这一视角统一了傅里叶分析、相关分析、匹配滤波等诸多主题——它们本质上都是在做"向量的内积"。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">信号的内积</div>
+      <p>在区间 $[t_1, t_2]$ 上，两个实信号 $f_1(t)$ 和 $f_2(t)$ 的内积定义为：</p>
+      <div class="formula-highlight">
+        $$\langle f_1, f_2 \rangle = \int_{t_1}^{t_2} f_1(t) f_2(t) \dd t$$
+      </div>
+      <p>若 $\langle f_1, f_2 \rangle = 0$，称两信号<strong>正交</strong>。</p>
+      <p><strong>关键理解</strong>：傅里叶级数中的系数计算 $a_n = \frac{2}{T}\int_T f(t)\cos(n\omega_0 t)\dd t$，本质上就是 $f(t)$ 与基函数 $\cos(n\omega_0 t)$ 的内积。傅里叶分析就是在做"向正交基上的投影"。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 相关函数</div>
+      <p>两个能量信号的<strong>互相关函数</strong>：</p>
+      $$R_{12}(\tau) = \int_{-\infty}^{\infty} f_1(t) f_2(t - \tau) \dd t$$
+      <p><strong>自相关函数</strong>：</p>
+      $$R(\tau) = \int_{-\infty}^{\infty} f(t) f(t - \tau) \dd t$$
+      <p>互相关与卷积的关系：$R_{12}(\tau) = f_1(\tau) * f_2(-\tau)$。</p>
+      <p><strong>物理含义</strong>：自相关衡量信号与其自身时移版本的"相似度"。$R(0) = E$（信号能量）；$R(\tau) \leq R(0)$（零时延处自相关最大）。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">相关与卷积的关系</div>
+      <p>卷积：$f_1(t) * f_2(t) = \int f_1(\tau)f_2(t-\tau)\dd\tau$（反褶 + 平移 + 积分）</p>
+      <p>相关：$R_{12}(\tau) = \int f_1(t)f_2(t-\tau)\dd t$（不反褶 + 平移 + 积分）</p>
+      <p>唯一的区别是<strong>是否反褶</strong>。当信号为偶函数时二者等价。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">Wiener-Khinchin 定理简版</div>
+      <p>能量信号的自相关函数与能量谱密度互为傅里叶变换对：</p>
+      <div class="formula-highlight">
+        $$\FF\{R(\tau)\} = |F(\omega)|^2 = \mathcal{E}(\omega)$$
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 8.2 DFT ==================== -->
+  <div class="section" id="s2">
+    <h2>8.2 离散傅里叶变换（DFT）</h2>
+
+    <div class="box box-note">
+      <div class="box-title">为什么需要 DFT？</div>
+      <p>计算机只能处理有限长的离散数据。DFT 是唯一可以在计算机上精确计算的傅里叶变换形式。它与连续傅里叶变换的关系链条是：</p>
+      <p style="text-align:center;"><strong>连续 FT → 时域抽样 → DTFT → 频域抽样（时域周期延拓）→ DFT</strong></p>
+      <p>DFT 本质上是离散傅里叶级数（DFS）取主值区间得到的。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · $N$ 点 DFT</div>
+      <p>对长度为 $N$ 的序列 $x[n]$（$n = 0, 1, \ldots, N-1$）：</p>
+      <div class="formula-highlight">
+        $$X[k] = \sum_{n=0}^{N-1} x[n] \, e^{-j\frac{2\pi}{N}kn}, \quad k = 0, 1, \ldots, N-1$$
+      </div>
+      <p>逆变换（IDFT）：</p>
+      <div class="formula-highlight">
+        $$x[n] = \frac{1}{N} \sum_{k=0}^{N-1} X[k] \, e^{j\frac{2\pi}{N}kn}, \quad n = 0, 1, \ldots, N-1$$
+      </div>
+      <p>记 $W_N = e^{-j2\pi/N}$（旋转因子），DFT 和 IDFT 可简洁地表示为 $X = W \cdot x$ 和 $x = \frac{1}{N}W^* \cdot X$。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">DFT 的隐含周期性</div>
+      <p>$X[k]$ 和 $x[n]$ 在定义区间外都是<strong>隐含周期延拓</strong>的：$X[k+N] = X[k]$，$x[n+N] = x[n]$。这是 DFT 来自 DFS 的先天特性，许多 DFT 性质（如循环卷积）都源于此。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">快速傅里叶变换（FFT）的思想</div>
+      <p>直接计算 $N$ 点 DFT 需要 $O(N^2)$ 次复数乘法。Cooley-Tukey FFT 算法利用旋转因子 $W_N$ 的周期性和对称性，将计算分解为两个 $N/2$ 点的 DFT，递归下去得到 $O(N\log N)$ 的复杂度。这是 20 世纪最重要的算法之一，使实时频谱分析成为可能。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 8.3 滤波器 ==================== -->
+  <div class="section" id="s3">
+    <h2>8.3 模拟与数字滤波器概要</h2>
+
+    <h3>模拟滤波器</h3>
+
+    <div class="box box-note">
+      <div class="box-title">从理想到可实现</div>
+      <p>理想滤波器（矩形幅频）物理不可实现。实际滤波器设计的目标是用有理传递函数（物理可实现）来逼近理想幅度特性。三大经典逼近方式：</p>
+      <table>
+        <tr><th>类型</th><th>特点</th><th>适用场景</th></tr>
+        <tr><td>Butterworth</td><td>通带最平坦、无波纹；过渡带较宽</td><td>对通带平坦度要求高的场合</td></tr>
+        <tr><td>Chebyshev I 型</td><td>通带有等波纹、过渡带比 BW 窄</td><td>对截止特性要求高、允许通带波动</td></tr>
+        <tr><td>Chebyshev II 型 / 椭圆</td><td>通带和阻带均有波纹、过渡带最窄</td><td>对截止陡度要求最高的场合</td></tr>
+      </table>
+      <p>这些滤波器通过频带变换（低通→高通/带通/带阻）可以产生各种类型的滤波器。</p>
+    </div>
+
+    <h3>数字滤波器</h3>
+
+    <div class="box box-note">
+      <div class="box-title">IIR 与 FIR：数字滤波器的两大流派</div>
+      <table>
+        <tr><th></th><th>IIR（无限冲激响应）</th><th>FIR（有限冲激响应）</th></tr>
+        <tr><td>差分方程</td><td>$y[n] = \sum b_k x[n-k] - \sum a_k y[n-k]$<br/>（有反馈，含 $y[n-k]$ 项）</td><td>$y[n] = \sum b_k x[n-k]$<br/>（无反馈，纯前馈）</td></tr>
+        <tr><td>极点</td><td>有极点（可能不稳定）</td><td>无极点（除 $z=0$ 外，始终稳定）</td></tr>
+        <tr><td>相位</td><td>通常非线性</td><td>可做到严格线性相位</td></tr>
+        <tr><td>效率</td><td>低阶即可实现陡峭截止</td><td>需要较高阶数</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ==================== 8.4 反馈系统 ==================== -->
+  <div class="section" id="s4">
+    <h2>8.4 反馈系统</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">反馈系统的基本结构</div>
+      <p>将系统输出的一部分（或全部）反馈回输入端，与输入信号叠加后再进入前向通路。基本方程为：</p>
+      <div class="formula-highlight">
+        $$Y(s) = H_1(s)[X(s) - H_2(s)Y(s)]$$
+      </div>
+      <p>其中 $H_1(s)$ 是前向通路传递函数，$H_2(s)$ 是反馈通路传递函数。</p>
+      <p>闭环传递函数：</p>
+      <div class="formula-highlight">
+        $$H(s) = \frac{Y(s)}{X(s)} = \frac{H_1(s)}{1 + H_1(s)H_2(s)}$$
+      </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">反馈的好处与代价</div>
+      <p><strong>好处</strong>：提高稳定性（对参数变化不敏感）、改善频率响应、降低输出阻抗（对负载不敏感）。几乎所有高性能放大器和控制系统都使用负反馈。</p>
+      <p><strong>代价</strong>：增益降低（负反馈以牺牲增益换取稳定性）、可能产生自激振荡（当回路增益 $H_1(s)H_2(s)$ 在某些频率处满足 Barkhausen 条件：$|H_1 H_2| \geq 1$ 且 $\angle (H_1 H_2) = 180^\circ$）。</p>
+      <p><strong>稳定性判据</strong>：通过考察 $1 + H_1(s)H_2(s)$ 的零点分布（即特征方程的根），判断闭环系统是否稳定。Nyquist 判据和根轨迹法是主要工具。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 8.5 状态变量分析 ==================== -->
+  <div class="section" id="s5">
+    <h2>8.5 状态变量分析</h2>
+
+    <div class="box box-note">
+      <div class="box-title">状态变量法的动机</div>
+      <p>传统的输入-输出描述（微分方程、传递函数）只刻画外部行为，不反映系统<strong>内部</strong>状态。状态变量法引入一组内部变量（状态变量），用一阶微分方程组来描述系统——这特别适合多输入多输出（MIMO）系统，也是现代控制理论的基础。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">状态方程与输出方程</div>
+      <p>对连续时间系统：</p>
+      <div class="formula-highlight">
+        $$\begin{aligned} \dot{\mathbf{x}}(t) &= \mathbf{A}\mathbf{x}(t) + \mathbf{B}\mathbf{u}(t) \\ \mathbf{y}(t) &= \mathbf{C}\mathbf{x}(t) + \mathbf{D}\mathbf{u}(t) \end{aligned}$$
+      </div>
+      <p>其中 $\mathbf{x}(t)$ 是状态向量，$\mathbf{u}(t)$ 是输入向量，$\mathbf{y}(t)$ 是输出向量。</p>
+      <p>$\mathbf{A}$：系统矩阵（决定固有动态特性，其特征值 = 系统极点）。$\mathbf{B}$：输入矩阵。$\mathbf{C}$：输出矩阵。$\mathbf{D}$：直通矩阵。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">与传递函数的关系</div>
+      <p>系统函数与状态空间描述的关系：$H(s) = \mathbf{C}(s\mathbf{I} - \mathbf{A})^{-1}\mathbf{B} + \mathbf{D}$。</p>
+      <p>$H(s)$ 的极点 = $\mathbf{A}$ 的特征值。状态变量描述不是唯一的——同一系统的不同状态变量选择对应不同的 $(\mathbf{A}, \mathbf{B}, \mathbf{C}, \mathbf{D})$ 实现（相似变换）。</p>
+      <p>对离散系统，状态方程变为 $\mathbf{x}[n+1] = \mathbf{A}\mathbf{x}[n] + \mathbf{B}\mathbf{u}[n]$，其余不变。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">本章总结</div>
+      <p>本章覆盖了教材后半部分的五个专题。在两周速成计划中，重点关注信号矢量空间分析（内积、正交、相关函数）和 DFT 的基本概念——这些是选择题和概念题的常考内容。滤波器设计、反馈系统和状态变量分析的复杂计算题可适当放低优先级，但要理解核心思想。</p>
+    </div>
+  </div>
+
+  <div class="chapter-nav">
+    <a class="prev" href="ch7.html">第七章 · Z 变换与 z 域分析</a>
+    <a class="next" href="appendix.html">附录 · 公式速查与学习计划</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>信号与系统复习指南 · 基于郑君里教材（第三版）· 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

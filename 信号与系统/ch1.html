@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第一章 · 信号与系统的基本概念 · 信号与系统</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          CC: '\\mathbb{C}',
+          NN: '\\mathbb{N}',
+          ZZ: '\\mathbb{Z}',
+          FF: '\\mathcal{F}',
+          LL: '\\mathcal{L}',
+          ZT: '\\mathcal{Z}',
+          dd: '\\mathrm{d}',
+          sinc: '\\mathrm{sinc}',
+          rect: '\\mathrm{rect}',
+          tri: '\\mathrm{tri}',
+          sgn: '\\mathrm{sgn}',
+          u: '\\mathrm{u}',
+          deltafn: '\\delta'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../index.html" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">信号与系统</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+    <li><a href="ch7.html">第七章</a></li>
+    <li><a href="ch8.html">第八章</a></li>
+    <li><a href="appendix.html">附录</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第一章 · 信号与系统的基本概念</h1>
+    <p>入门的基石：信号是信息的载体，系统是对信号的处理。本章建立描述信号与系统的共同语言——信号的分类、典型信号的数学表示、系统的六大分类方法，以及 LTI 系统为何成为全课程的核心研究对象。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">信号的描述与分类</a></li>
+      <li><a href="#s2">典型信号及其性质</a></li>
+      <li><a href="#s3">冲激函数 $\deltafn(t)$</a></li>
+      <li><a href="#s4">系统的描述与分类</a></li>
+      <li><a href="#s5">线性时不变（LTI）系统</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 1.1 信号的描述与分类 ==================== -->
+  <div class="section" id="s1">
+    <h2>1.1 信号的描述与分类</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 信号</div>
+      <p><strong>信号</strong>是信息的一种物理表示，数学上用一元或多元函数来描述。在本课程中，信号通常表示为时间的函数 $f(t)$（连续）或序列 $f[n]$（离散）。</p>
+    </div>
+
+    <h3>按自变量取值方式分类</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">连续时间信号与离散时间信号</div>
+      <ul>
+        <li><strong>连续时间信号</strong>：自变量 $t$ 在某个区间内连续取值。记为 $f(t)$。</li>
+        <li><strong>离散时间信号</strong>：自变量仅在整数点上取值。记为 $f[n]$，$n \in \ZZ$。也常称为<strong>序列</strong>。</li>
+      </ul>
+    </div>
+
+    <h3>按信号取值是否可预测分类</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">确定信号与随机信号</div>
+      <ul>
+        <li><strong>确定信号</strong>：每个时刻的取值完全确定，可用明确的数学表达式描述。如 $f(t) = A\sin(\omega t)$。</li>
+        <li><strong>随机信号</strong>：取值具有不确定性，只能用概率统计方法描述。如噪声信号。</li>
+      </ul>
+      <p>本课程主要研究<strong>确定信号</strong>通过<strong>确定系统</strong>的行为。</p>
+    </div>
+
+    <h3>周期信号与非周期信号</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 周期信号</div>
+      <p>若存在正数 $T$，使对所有 $t$ 有 $f(t+T) = f(t)$，则称 $f(t)$ 为<strong>周期信号</strong>，满足此关系的最小正数 $T$ 称为<strong>基波周期</strong>。</p>
+      <p>对离散信号：若存在正整数 $N$ 使 $f[n+N] = f[n]$ 对所有 $n$ 成立，则 $f[n]$ 为周期序列，最小正周期记为 $N$。</p>
+    </div>
+
+    <h3>能量信号与功率信号</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 能量与功率</div>
+      <p>信号 $f(t)$ 的<strong>归一化能量</strong>（在单位电阻 $1\Omega$ 上消耗的能量）定义为：</p>
+      <div class="formula-highlight">
+        $$E = \int_{-\infty}^{\infty} |f(t)|^2 \dd t$$
+      </div>
+      <p><strong>归一化平均功率</strong>为：</p>
+      <div class="formula-highlight">
+        $$P = \lim_{T \to \infty} \frac{1}{T} \int_{-T/2}^{T/2} |f(t)|^2 \dd t$$
+      </div>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">能量信号与功率信号的分类</div>
+      <ul>
+        <li><strong>能量信号</strong>：$0 < E < \infty$，此时必有 $P = 0$。如单个矩形脉冲、指数衰减信号。</li>
+        <li><strong>功率信号</strong>：$0 < P < \infty$，此时必有 $E = \infty$。如周期信号、直流信号。</li>
+        <li>既非能量信号也非功率信号：如 $f(t) = e^t$（能量与功率均无限）。</li>
+      </ul>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">直觉理解</div>
+      <p>能量信号是"有限能量但平均功率为零"的信号——它们在时间轴上的总贡献是有限的。功率信号则是"永不衰竭但功率有限"的信号——周期信号就是典型代表，它们永远振荡下去，总能量无限，但每个周期的平均功率是有限的。</p>
+      <p><strong>为什么分类重要？</strong>能量信号的傅里叶变换存在（平方可积），而功率信号需要用傅里叶级数或广义傅里叶变换（引入冲激函数）来处理。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 1.2 典型信号 ==================== -->
+  <div class="section" id="s2">
+    <h2>1.2 典型信号及其性质</h2>
+
+    <h3>单位阶跃信号 $u(t)$</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 单位阶跃信号</div>
+      <div class="formula-highlight">
+        $$\u(t) = \begin{cases} 0, & t < 0 \\ 1, & t > 0 \end{cases}$$
+      </div>
+      <p>$t=0$ 处的值通常取 $1/2$（Dirichlet 条件）或不予定义，在积分运算中不影响结果。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">$\u(t)$ 的物理意义</div>
+      <p>$\u(t)$ 描述的是理想化的"开关"动作：在 $t=0$ 瞬间从 0 跳变到 1。任何信号乘以 $\u(t)$ 等价于"从 $t=0$ 开始截取该信号"。例如 $f(t)\u(t)$ 表示 $t<0$ 时信号为零（因果信号）。</p>
+    </div>
+
+    <h3>单位斜坡信号 $r(t)$</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 单位斜坡信号</div>
+      <div class="formula-highlight">
+        $$r(t) = t \cdot \u(t) = \begin{cases} 0, & t < 0 \\ t, & t \geq 0 \end{cases}$$
+      </div>
+      <p>$r(t)$ 是 $\u(t)$ 的积分：$r(t) = \int_{-\infty}^t \u(\tau) \dd\tau$。</p>
+    </div>
+
+    <h3>符号函数 $\sgn(t)$</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 符号函数</div>
+      <div class="formula-highlight">
+        $$\sgn(t) = \begin{cases} -1, & t < 0 \\ 0, & t = 0 \\ 1, & t > 0 \end{cases}$$
+      </div>
+      <p>与阶跃信号的关系：$\sgn(t) = 2\u(t) - 1$。</p>
+    </div>
+
+    <h3>矩形脉冲信号</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 矩形脉冲（门函数）</div>
+      <div class="formula-highlight">
+        $$\rect(t) = \begin{cases} 1, & |t| < \frac{1}{2} \\ 0, & |t| > \frac{1}{2} \end{cases}$$
+      </div>
+      <p>或用阶跃函数表示：$\rect(t) = \u(t+\frac{1}{2}) - \u(t-\frac{1}{2})$。</p>
+      <p>一般形式：$A \cdot \rect\left(\frac{t-t_0}{\tau}\right)$ 表示幅度 $A$、中心 $t_0$、宽度 $\tau$ 的矩形脉冲。</p>
+    </div>
+
+    <h3>复指数信号 $e^{st}$</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 复指数信号</div>
+      <p>设 $s = \sigma + j\omega$ 为复数，则：</p>
+      <div class="formula-highlight">
+        $$e^{st} = e^{(\sigma + j\omega)t} = e^{\sigma t}(\cos \omega t + j\sin \omega t)$$
+      </div>
+      <p>实部 $\sigma$ 控制幅度的指数增长/衰减，虚部 $\omega$ 控制角频率。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">为什么 $e^{st}$ 是信号与系统的"第一公民"</div>
+      <p>$e^{st}$ 是整个课程最重要的信号，没有之一。原因是：</p>
+      <ul>
+        <li>它是 LTI 系统的<strong>特征函数</strong>：输入 $e^{st}$，输出是 $H(s)e^{st}$（仅幅度改变，频率不变）；</li>
+        <li>$\sigma=0$ 时退化为正弦信号 $e^{j\omega t}$，是傅里叶分析的基函数；</li>
+        <li>$\sigma \neq 0$ 时引出拉普拉斯变换，是 s 域分析的起点。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ==================== 1.3 冲激函数 ==================== -->
+  <div class="section" id="s3">
+    <h2>1.3 冲激函数 $\deltafn(t)$</h2>
+
+    <p>$\deltafn(t)$ 是整个课程中最特殊、也最容易让初学者困惑的"函数"。它不是通常意义上的函数，而是<strong>广义函数</strong>（或<strong>分布</strong>），其严格的数学基础是泛函分析中的分布理论。但在工程层面，我们采用操作性的定义——理解它能"做什么"比理解它"是什么"更重要。</p>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · $\deltafn(t)$（Dirac 冲激函数）</div>
+      <p>$\deltafn(t)$ 由以下两个条件定义：</p>
+      <ol>
+        <li>$\deltafn(t) = 0, \quad \forall t \neq 0$</li>
+        <li>$\displaystyle\int_{-\infty}^{\infty} \deltafn(t) \dd t = 1$</li>
+      </ol>
+      <p>第一条说它在 $t=0$ 以外处处为零；第二条说它的总"面积"为 1。结合起来，$\deltafn(t)$ 在 $t=0$ 处必须是"无穷大"——它不是一个常规函数，而是具有单位面积的"极限情况"。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">直觉理解：$\deltafn(t)$ 作为极限</div>
+      <p>把 $\deltafn(t)$ 理解为一系列越来越窄、越来越高、但面积始终为 1 的矩形脉冲的极限：</p>
+      $$\deltafn(t) = \lim_{\tau \to 0} \frac{1}{\tau}\rect\left(\frac{t}{\tau}\right)$$
+      <p>随着 $\tau \to 0$，矩形宽度趋于零、高度趋于无穷，但面积始终为 1。这就是 $\deltafn(t)$ 的直观图像：<strong>发生在 $t=0$ 瞬间、强度为 1 的理想化冲激</strong>。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">核心性质（一）· 筛分性质（Sampling Property）</div>
+      <p>若 $f(t)$ 在 $t=0$ 处连续，则：</p>
+      <div class="formula-highlight">
+        $$\int_{-\infty}^{\infty} f(t)\,\deltafn(t) \dd t = f(0)$$
+      </div>
+      <p>更一般地，对任意 $t_0$：</p>
+      <div class="formula-highlight">
+        $$\int_{-\infty}^{\infty} f(t)\,\deltafn(t-t_0) \dd t = f(t_0)$$
+      </div>
+      <p><strong>这是 $\deltafn(t)$ 最重要的性质。</strong>它意味着 $\deltafn(t)$ 与任何连续函数相乘再积分，"提取"出该函数在冲激发生时刻的值。这个性质是理解卷积和抽样定理的基础。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">核心性质（二）· 尺度变换</div>
+      <div class="formula-highlight">
+        $$\deltafn(at) = \frac{1}{|a|}\deltafn(t), \quad a \neq 0$$
+      </div>
+      <p><strong>推论</strong>：$\deltafn(-t) = \deltafn(t)$，即 $\deltafn(t)$ 是偶函数。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">核心性质（三）· 与阶跃函数的关系</div>
+      <p>$\deltafn(t)$ 和 $\u(t)$ 互为微积分关系：</p>
+      <div class="formula-highlight">
+        $$\deltafn(t) = \frac{\dd}{\dd t}\u(t), \qquad \u(t) = \int_{-\infty}^t \deltafn(\tau) \dd\tau$$
+      </div>
+      <p><strong>直觉</strong>：$\u(t)$ 在 $t=0$ 处有一个从 0 到 1 的跳变，其导数在 $t=0$ 处必须是无穷大（瞬间完成跳变），在其他地方导数为 0——这正是 $\deltafn(t)$。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 利用筛分性质计算积分</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：计算下列积分</p>
+        <p>(a) $\displaystyle\int_{-\infty}^{\infty} (t^2 + 3t + 1)\,\deltafn(t-2) \dd t$</p>
+        <p>(b) $\displaystyle\int_{-\infty}^{\infty} \sin(\pi t)\,\deltafn(2t-3) \dd t$</p>
+        <p><strong>解</strong>：</p>
+        <p>(a) 直接应用筛分性质：$\int_{-\infty}^{\infty} (t^2 + 3t + 1)\,\deltafn(t-2) \dd t = 2^2 + 3 \times 2 + 1 = 4 + 6 + 1 = 11$</p>
+        <p>(b) 先化简 $\deltafn(2t-3) = \frac{1}{2}\deltafn\!\left(t - \frac{3}{2}\right)$（利用尺度变换和时移性质），再应用筛分性质：</p>
+        <p>$\int_{-\infty}^{\infty} \sin(\pi t)\,\frac{1}{2}\deltafn(t-\frac{3}{2}) \dd t = \frac{1}{2}\sin\!\left(\pi \cdot \frac{3}{2}\right) = \frac{1}{2}\sin\!\left(\frac{3\pi}{2}\right) = -\frac{1}{2}$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1.4 系统的描述与分类 ==================== -->
+  <div class="section" id="s4">
+    <h2>1.4 系统的描述与分类</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 系统</div>
+      <p><strong>系统</strong>是对输入信号进行某种处理（变换）以产生输出信号的物理装置或数学模型。记为：</p>
+      <div class="formula-highlight">
+        $$y(t) = \mathcal{T}\{x(t)\} \quad \text{或} \quad y[n] = \mathcal{T}\{x[n]\}$$
+      </div>
+      <p>其中 $x$ 为输入（激励），$y$ 为输出（响应），$\mathcal{T}$ 为变换算子。</p>
+    </div>
+
+    <h3>六大分类体系</h3>
+    <p>系统的分类不是无聊的"贴标签"——每一种分类都对应着特定的数学处理方法和物理含义。下面按重要性排列。</p>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 线性系统</div>
+      <p>系统 $\mathcal{T}$ 满足<strong>叠加原理</strong>（可加性 + 齐次性）：</p>
+      <div class="formula-highlight">
+        $$\mathcal{T}\{a_1 x_1(t) + a_2 x_2(t)\} = a_1 \mathcal{T}\{x_1(t)\} + a_2 \mathcal{T}\{x_2(t)\}$$
+      </div>
+      <p>对所有输入 $x_1, x_2$ 和常数 $a_1, a_2$ 成立。线性是 LTI 系统中 "L" 的含义。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">判定线性系统的关键：零输入必零输出</div>
+      <p>线性系统必须满足：若输入为零，则输出也为零（$\mathcal{T}\{0\} = 0$）。这是因为可加性要求 $\mathcal{T}\{0\} = \mathcal{T}\{0+0\} = 2\mathcal{T}\{0\}$，推出 $\mathcal{T}\{0\} = 0$。因此，形如 $y(t) = 2x(t) + 3$ 的系统<strong>不是线性的</strong>（含常数项 3）。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 时不变系统</div>
+      <p>若输入信号的时延引起输出信号的相同时延：</p>
+      <div class="formula-highlight">
+        $$y(t - t_0) = \mathcal{T}\{x(t - t_0)\}, \quad \forall t_0$$
+      </div>
+      <p>则系统是<strong>时不变</strong>的。时不变意味着系统的特性不随时间变化。这是 LTI 中 "TI" 的含义。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 · 判断 $y(t) = x(2t)$ 是否时不变</div>
+      <p>设 $y_1(t) = \mathcal{T}\{x(t)\} = x(2t)$。</p>
+      <p>$\mathcal{T}\{x(t-t_0)\} = x(2t - t_0)$</p>
+      <p>$y_1(t-t_0) = x(2(t-t_0)) = x(2t - 2t_0)$</p>
+      <p>因为 $x(2t - t_0) \neq x(2t - 2t_0)$，所以 $y(t) = x(2t)$ <strong>是时变系统</strong>。</p>
+      <p><strong>直觉</strong>：时间压缩（$t \to 2t$）操作本身依赖于时间原点——压缩发生在 $t=0$ 附近，所以系统行为与时间有关。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 因果系统</div>
+      <p>输出 $y(t_0)$ 只依赖于当前及过去的输入 $x(t), t \leq t_0$，而不依赖未来的输入。</p>
+      <p><strong>物理可实现性</strong>：所有物理上可实现的系统都是因果系统。非因果系统只能在离线处理（如信号的后处理）中存在。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">因果性判断示例</div>
+      <ul>
+        <li>$y(t) = x(t-1)$：<strong>因果</strong>（输出只依赖于 1 秒前的输入）</li>
+        <li>$y(t) = x(t+1)$：<strong>非因果</strong>（输出依赖于 1 秒后的输入，$t=0$ 时输出取决于 $t=1$ 的输入）</li>
+        <li>$y(t) = x(-t)$：<strong>非因果</strong>（$t=-1$ 时输出取决于 $t=1$ 时的输入，即未来）</li>
+      </ul>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 稳定系统（BIBO 稳定）</div>
+      <p>对任意<strong>有界输入</strong>产生<strong>有界输出</strong>（Bounded-Input Bounded-Output）。</p>
+      <p>若 $|x(t)| \leq M_x < \infty$ 对所有 $t$ 成立，则存在 $M_y < \infty$ 使得 $|y(t)| \leq M_y$ 对所有 $t$ 成立。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 可逆系统</div>
+      <p>若能从输出 $y(t)$ 唯一地恢复输入 $x(t)$，则系统是可逆的。与之相对的是不可逆系统，即不同输入可能产生相同输出——信息在系统中丢失。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 有无记忆</div>
+      <ul>
+        <li><strong>无记忆系统</strong>：$y(t_0)$ 仅取决于 $x(t_0)$，如 $y(t) = 2x(t)$。</li>
+        <li><strong>有记忆系统</strong>：$y(t_0)$ 依赖于 $x(t)$ 在其他时刻的值，如 $y(t) = x(t-1)$、$y(t) = \int_{-\infty}^t x(\tau)\dd\tau$。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ==================== 1.5 线性时不变系统 ==================== -->
+  <div class="section" id="s5">
+    <h2>1.5 线性时不变（LTI）系统</h2>
+
+    <div class="box box-note">
+      <div class="box-title">为什么 LTI 系统是"核心研究对象"</div>
+      <p>将"线性"和"时不变"两个条件组合，我们得到 LTI 系统。它的重要性来自：</p>
+      <ol>
+        <li><strong>可解析分析</strong>：LTI 系统可以用冲激响应 $h(t)$ 或系统函数 $H(s)$ 完全描述，有精确的数学工具。</li>
+        <li><strong>工程实用性</strong>：大量实际系统在正常工作范围内可以近似为 LTI 系统（电子线路、滤波器、通信信道等）。</li>
+        <li><strong>理论基础</strong>：傅里叶变换、拉普拉斯变换、Z 变换等——所有这些变换方法都建立在 LTI 系统的<strong>特征函数</strong>性质之上。</li>
+      </ol>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">LTI 系统的特征函数性质</div>
+      <p>复指数信号 $e^{st}$（$s \in \CC$）是连续时间 LTI 系统的<strong>特征函数</strong>：</p>
+      <div class="formula-highlight">
+        $$\mathcal{T}\{e^{st}\} = H(s)\,e^{st}$$
+      </div>
+      <p>其中 $H(s)$ 称为<strong>系统函数</strong>（或特征值），由系统本身决定。</p>
+      <p><strong>解读</strong>：输入复指数信号，LTI 系统的输出是<strong>同一个频率</strong>的复指数信号，只是幅度和相位被 $H(s)$ 修正。系统<strong>不会产生新的频率分量</strong>——这是线性 + 时不变性的深刻推论。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">本章总结：信号与系统的"思维地图"</div>
+      <p>我们可以用以下框架来组织整个课程：</p>
+      <table>
+        <tr><th></th><th>时域分析</th><th>频域/变换域分析</th></tr>
+        <tr><td><strong>连续时间</strong></td><td>第2章（微分方程 + 卷积积分）</td><td>第3–5章（FT + Laplace）</td></tr>
+        <tr><td><strong>离散时间</strong></td><td>第6章（差分方程 + 卷积和）</td><td>第7章（Z 变换）</td></tr>
+      </table>
+      <p>这个 $2 \times 2$ 的矩阵覆盖了信号与系统 80% 以上的核心内容。其余进阶章节（信号空间、DFT、滤波器、反馈系统、状态变量）都可以看作这个框架的拓展和应用。</p>
+    </div>
+  </div>
+
+  <!-- 章节间导航 -->
+  <div class="chapter-nav">
+    <span></span>
+    <a class="next" href="ch2.html">第二章 · 连续时间系统的时域分析</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>信号与系统复习指南 · 基于郑君里教材（第三版）· 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

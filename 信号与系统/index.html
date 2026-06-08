@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>信号与系统 · 复习指南</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          CC: '\\mathbb{C}',
+          NN: '\\mathbb{N}',
+          ZZ: '\\mathbb{Z}',
+          FF: '\\mathcal{F}',
+          LL: '\\mathcal{L}',
+          ZT: '\\mathcal{Z}',
+          dd: '\\mathrm{d}',
+          sinc: '\\mathrm{sinc}',
+          rect: '\\mathrm{rect}',
+          tri: '\\mathrm{tri}',
+          sgn: '\\mathrm{sgn}',
+          u: '\\mathrm{u}',
+          deltafn: '\\delta'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+  <a href="../index.html" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">信号与系统</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+    <li><a href="ch7.html">第七章</a></li>
+    <li><a href="ch8.html">第八章</a></li>
+    <li><a href="appendix.html">附录</a></li>
+  </ul>
+</nav>
+
+<!-- 主内容 -->
+<div class="main-content">
+
+  <!-- 英雄区 -->
+  <div class="hero">
+    <h1>信号与系统</h1>
+    <p>基于郑君里《信号与系统》(第三版) · 零基础到完全掌握 · 从基本概念到时域与变换域分析 · 建立深刻物理直觉</p>
+  </div>
+
+  <!-- 章节总览卡片 -->
+  <div class="chapter-cards">
+
+    <div class="chapter-card">
+      <span class="card-number">1</span>
+      <h3>信号与系统的基本概念</h3>
+      <p>入门的基石：什么是信号？什么是系统？掌握信号的分类、典型信号的定义与性质、系统的线性/时不变/因果/稳定性判定，这些都是后续所有章节的共同语言。</p>
+      <ul>
+        <li>信号的分类：连续/离散、周期/非周期、能量/功率</li>
+        <li>典型信号：$\u(t)$、$\deltafn(t)$、$e^{st}$、$\sgn(t)$</li>
+        <li>冲激函数 $\deltafn(t)$ 的严格定义与筛分性质</li>
+        <li>系统的六大分类与 LTI 系统的核心地位</li>
+      </ul>
+      <a href="ch1.html" class="card-link">进入第一章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">2</span>
+      <h3>连续时间系统的时域分析</h3>
+      <p>核心工具：微分方程描述 → 零输入/零状态分解 → 冲激响应 → 卷积积分。这一章搭建起"系统分析"的基本框架。</p>
+      <ul>
+        <li>微分方程的经典解法（齐次解 + 特解）</li>
+        <li>零输入响应与零状态响应的物理解释</li>
+        <li>冲激响应 $h(t)$ 与阶跃响应 $g(t)$</li>
+        <li>卷积积分：定义、图解、微积分性质</li>
+      </ul>
+      <a href="ch2.html" class="card-link">进入第二章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">3</span>
+      <h3>傅里叶变换</h3>
+      <p>信号分析的"显微镜"：从傅里叶级数的物理直觉出发，逐步过渡到傅里叶变换。掌握典型变换对和性质是解题的基础。</p>
+      <ul>
+        <li>周期信号的傅里叶级数（三角/指数形式）</li>
+        <li>傅里叶变换定义、存在条件（Dirichlet）</li>
+        <li>典型变换对（$\deltafn$、矩形脉冲、$e^{-\alpha t}\u(t)$ 等）</li>
+        <li>傅里叶变换性质：线性、时移、频移、对称、卷积</li>
+      </ul>
+      <a href="ch3.html" class="card-link">进入第三章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">4</span>
+      <h3>拉普拉斯变换与 s 域分析</h3>
+      <p>傅里叶变换的推广：引入衰减因子 $e^{-\sigma t}$ 使更多信号的变换收敛。s 域分析是求解微分方程和系统分析的利器。</p>
+      <ul>
+        <li>从傅里叶到拉普拉斯：收敛域的含义</li>
+        <li>典型信号的拉普拉斯变换对</li>
+        <li>部分分式展开法求逆变换</li>
+        <li>系统函数 $H(s)$、零极点图与稳定性判据</li>
+      </ul>
+      <a href="ch4.html" class="card-link">进入第四章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">5</span>
+      <h3>傅里叶变换的应用</h3>
+      <p>从理论走向工程：无失真传输、滤波器、调制解调和抽样定理。这章揭示傅里叶变换如何支撑整个通信系统。</p>
+      <ul>
+        <li>无失真传输的幅频/相频条件</li>
+        <li>理想低通、带通滤波器的冲激响应</li>
+        <li>幅度调制（AM）与同步解调</li>
+        <li>奈奎斯特-香农抽样定理与频谱混叠</li>
+      </ul>
+      <a href="ch5.html" class="card-link">进入第五章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">6</span>
+      <h3>离散时间系统的时域分析</h3>
+      <p>从连续到离散：将第二章的思维迁移到离散时间。差分方程替代微分方程，卷积和替代卷积积分，但本质逻辑完全一致。</p>
+      <ul>
+        <li>离散时间信号的描述与典型序列</li>
+        <li>差分方程描述离散系统</li>
+        <li>单位样值响应 $h[n]$</li>
+        <li>卷积和：定义、计算与性质</li>
+      </ul>
+      <a href="ch6.html" class="card-link">进入第六章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">7</span>
+      <h3>Z 变换与 z 域分析</h3>
+      <p>离散时间的"拉普拉斯变换"：Z 变换之于差分方程，正如拉普拉斯变换之于微分方程。收敛域是 Z 变换区别于拉普拉斯变换的关键。</p>
+      <ul>
+        <li>Z 变换的定义与收敛域（ROC）</li>
+        <li>典型序列的 Z 变换对</li>
+        <li>逆 Z 变换：幂级数法、部分分式展开法</li>
+        <li>系统函数 $H(z)$、零极点与离散系统稳定性</li>
+      </ul>
+      <a href="ch7.html" class="card-link">进入第七章 →</a>
+    </div>
+
+    <div class="chapter-card">
+      <span class="card-number">8</span>
+      <h3>进阶专题</h3>
+      <p>拓展视野：覆盖教材第6章、第9–12章的核心概念——信号空间分析、DFT、滤波器设计、反馈系统与状态变量分析。</p>
+      <ul>
+        <li>信号矢量空间：正交、相关、Parseval 能量定理</li>
+        <li>离散傅里叶变换（DFT）与 FFT 思想</li>
+        <li>模拟与数字滤波器设计概要</li>
+        <li>反馈系统与状态变量分析</li>
+      </ul>
+      <a href="ch8.html" class="card-link">进入第八章 →</a>
+    </div>
+
+  </div>
+
+  <!-- 学习建议 -->
+  <div class="section" style="margin-top: 2rem;">
+    <h2>学习路线建议</h2>
+    <ol>
+      <li><strong>第一章</strong>是整个课程的共同语言。务必掌握 $\deltafn(t)$ 的定义与筛分性质、系统线性/时不变/因果/稳定性的判定方法。这一章理解不透，后面寸步难行。</li>
+      <li><strong>第二章</strong>建立时域分析框架。重点掌握零输入/零状态响应的分解（叠加原理的体现）、卷积积分的图解法和微积分性质。时域法虽然计算繁琐，但物理意义最直观——它是理解变换域方法的"锚点"。</li>
+      <li><strong>第三章</strong>是信号与系统的灵魂。傅里叶变换把信号从时域映射到频域，"频谱"的概念将贯穿全课程。重点：典型变换对要能默写（$\deltafn(t)$、矩形脉冲、$e^{-\alpha t}\u(t)$、$\sgn(t)$），性质要能灵活运用（对称性尤其容易出难题）。</li>
+      <li><strong>第四章</strong>在傅里叶变换基础上引入拉普拉斯变换。收敛域是新增的核心概念——同一个 $H(s)$ 表达式，不同收敛域对应不同信号。部分分式展开法求逆变换是必考题。</li>
+      <li><strong>第五章</strong>是傅里叶理论的高光时刻。抽样定理是整个数字信号处理的基石，调制解调是通信原理的前置知识。务必理解"时域抽样 ↔ 频域周期延拓"的对偶关系。</li>
+      <li><strong>第六章</strong>和<strong>第七章</strong>是连续时间方法的离散化类比。掌握了前五章，这两章的核心是"翻译"——把微分换成差分、把积分换成求和、把拉普拉斯换成 Z 变换。关注收敛域在 Z 变换中的特殊地位（圆环 vs 带状）。</li>
+      <li><strong>第八章</strong>以概念梳理为主，适合考前快速过一遍搭建知识框架。重点理解信号空间的正交性与 DFT 的基本思想。</li>
+    </ol>
+    <p style="margin-top: 1rem; color: var(--text-light);">每章包含严格的定义、定理（含证明）、公式推导和典型例题，配有直觉解释和常见题型总结。<strong>附录</strong>页提供公式速查手册和<strong>两周85+学习计划</strong>。</p>
+  </div>
+
+</div>
+
+<!-- 页脚 -->
+<footer class="footer">
+  <p>信号与系统复习指南 · 基于郑君里教材（第三版）· 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

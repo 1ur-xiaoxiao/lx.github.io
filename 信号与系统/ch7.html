@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第七章 · Z 变换与 z 域分析 · 信号与系统</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          CC: '\\mathbb{C}',
+          NN: '\\mathbb{N}',
+          ZZ: '\\mathbb{Z}',
+          FF: '\\mathcal{F}',
+          LL: '\\mathcal{L}',
+          ZT: '\\mathcal{Z}',
+          dd: '\\mathrm{d}',
+          sinc: '\\mathrm{sinc}',
+          rect: '\\mathrm{rect}',
+          tri: '\\mathrm{tri}',
+          sgn: '\\mathrm{sgn}',
+          u: '\\mathrm{u}',
+          deltafn: '\\delta',
+          ROC: '\\mathrm{ROC}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../index.html" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">信号与系统</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+    <li><a href="ch7.html">第七章</a></li>
+    <li><a href="ch8.html">第八章</a></li>
+    <li><a href="appendix.html">附录</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第七章 · Z 变换与 z 域分析</h1>
+    <p>离散时间的"拉普拉斯变换"：Z 变换之于差分方程，正如拉普拉斯变换之于微分方程。它把卷积和变为多项式乘法，把差分方程变为代数方程，把稳定性分析变为极点在单位圆内外的几何判断。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">Z 变换的定义与收敛域</a></li>
+      <li><a href="#s2">典型序列的 Z 变换对</a></li>
+      <li><a href="#s3">Z 变换的性质</a></li>
+      <li><a href="#s4">逆 Z 变换</a></li>
+      <li><a href="#s5">z 域系统分析</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 7.1 定义与收敛域 ==================== -->
+  <div class="section" id="s1">
+    <h2>7.1 Z 变换的定义与收敛域</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · Z 变换</div>
+      <p>序列 $x[n]$ 的<strong>双边 Z 变换</strong>定义为：</p>
+      <div class="formula-highlight">
+        $$X(z) = \ZT\{x[n]\} = \sum_{n=-\infty}^{\infty} x[n] \, z^{-n}$$
+      </div>
+      <p>其中 $z = re^{j\Omega}$ 是复变量。使级数收敛的 $z$ 的取值范围称为<strong>收敛域（ROC）</strong>。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">单边 Z 变换</div>
+      <p>对因果序列（$n < 0$ 时 $x[n] = 0$），单边 Z 变换为：</p>
+      <div class="formula-highlight">
+        $$X(z) = \sum_{n=0}^{\infty} x[n] \, z^{-n}$$
+      </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">从拉普拉斯变换到 Z 变换</div>
+      <p>Z 变换可以从拉普拉斯变换推导出来：对连续信号 $x(t)$ 做理想抽样得 $x_s(t) = \sum_n x(nT)\delta(t-nT)$，其拉普拉斯变换为 $\sum_n x(nT)e^{-snT}$。令 $z = e^{sT}$，即得 Z 变换。</p>
+      <p><strong>关键映射</strong>：$z = e^{sT}$。s 平面的虚轴（$s=j\omega$）映射到 z 平面的<strong>单位圆</strong>（$|z|=1$）。s 左半平面映射到 z 平面<strong>单位圆内部</strong>。这解释了为什么离散系统稳定性由"极点是否在单位圆内"来决定。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">ROC：Z 变换的"身份证"</div>
+      <p>与拉普拉斯变换完全类似：$X(z)$ 的代数表达式必须伴随 ROC 才有完整意义。同一个 $X(z)$ 表达式，不同 ROC 对应不同序列。</p>
+      <p>ROC 的形式：</p>
+      <ul>
+        <li>右边序列：ROC 是 $|z| > r_0$（某个圆的外部）</li>
+        <li>左边序列：ROC 是 $|z| < r_0$（某个圆的内部）</li>
+        <li>双边序列：ROC 是圆环 $r_1 < |z| < r_2$</li>
+        <li>有限长序列：ROC 是整个 z 平面（可能除去 $z=0$ 或 $|z|=\infty$）</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ==================== 7.2 典型变换对 ==================== -->
+  <div class="section" id="s2">
+    <h2>7.2 典型序列的 Z 变换对</h2>
+
+    <div class="box box-formula">
+      <div class="box-title">基本 Z 变换对（右边序列，$n \geq 0$）</div>
+      <table>
+        <tr><th>$x[n]$</th><th>$X(z)$</th><th>ROC</th></tr>
+        <tr><td>$\delta[n]$</td><td>$1$</td><td>整个 z 平面</td></tr>
+        <tr><td>$u[n]$</td><td>$\frac{z}{z-1} = \frac{1}{1-z^{-1}}$</td><td>$|z| > 1$</td></tr>
+        <tr><td>$a^n u[n]$</td><td>$\frac{z}{z-a} = \frac{1}{1-az^{-1}}$</td><td>$|z| > |a|$</td></tr>
+        <tr><td>$n a^n u[n]$</td><td>$\frac{az}{(z-a)^2}$</td><td>$|z| > |a|$</td></tr>
+        <tr><td>$n u[n]$</td><td>$\frac{z}{(z-1)^2}$</td><td>$|z| > 1$</td></tr>
+        <tr><td>$\cos(\Omega_0 n) u[n]$</td><td>$\frac{z(z-\cos\Omega_0)}{z^2 - 2z\cos\Omega_0 + 1}$</td><td>$|z| > 1$</td></tr>
+        <tr><td>$\sin(\Omega_0 n) u[n]$</td><td>$\frac{z\sin\Omega_0}{z^2 - 2z\cos\Omega_0 + 1}$</td><td>$|z| > 1$</td></tr>
+        <tr><td>$r^n \cos(\Omega_0 n) u[n]$</td><td>$\frac{z(z - r\cos\Omega_0)}{z^2 - 2rz\cos\Omega_0 + r^2}$</td><td>$|z| > r$</td></tr>
+      </table>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">$z^{-1}$ 形式的表达</div>
+      <p>Z 变换常写成 $z^{-1}$ 的有理分式形式，这在系统实现（如数字滤波器的直接形式结构）中更为方便。例如 $u[n] \leftrightarrow \frac{1}{1-z^{-1}}$（$|z|>1$）。两种形式是等价的，注意 ROC 的一致性即可。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 7.3 Z 变换的性质 ==================== -->
+  <div class="section" id="s3">
+    <h2>7.3 Z 变换的性质</h2>
+
+    <div class="box box-formula">
+      <div class="box-title">Z 变换性质一览</div>
+      <table>
+        <tr><th>性质</th><th>时域</th><th>z 域</th></tr>
+        <tr><td>线性</td><td>$a_1 x_1[n] + a_2 x_2[n]$</td><td>$a_1 X_1(z) + a_2 X_2(z)$（ROC 至少为交集）</td></tr>
+        <tr><td>时移</td><td>$x[n-n_0]u[n-n_0]$</td><td>$z^{-n_0} X(z)$</td></tr>
+        <tr><td>z 域尺度</td><td>$a^n x[n]$</td><td>$X(z/a)$</td></tr>
+        <tr><td>z 域微分</td><td>$n x[n]$</td><td>$-z\frac{\dd X(z)}{\dd z}$</td></tr>
+        <tr><td>时域卷积</td><td>$x_1[n] * x_2[n]$</td><td>$X_1(z) \cdot X_2(z)$</td></tr>
+        <tr><td>初值定理</td><td>$x[0] = \lim_{z\to\infty} X(z)$</td><td>（因果序列）</td></tr>
+        <tr><td>终值定理</td><td>$\lim_{n\to\infty} x[n] = \lim_{z\to 1} (z-1)X(z)$</td><td>（极点在单位圆内，最多 $z=1$ 处一阶）</td></tr>
+      </table>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">最重要的性质：时移</div>
+      <p>时移性质 $x[n-1] \leftrightarrow z^{-1}X(z)$ 是 Z 变换解决差分方程的核心。$z^{-1}$ 就是离散时间系统中的"单位延迟算子"——这正是数字滤波器实现的基础。每一个 $z^{-1}$ 对应一个寄存器/存储单元。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 7.4 逆变换 ==================== -->
+  <div class="section" id="s4">
+    <h2>7.4 逆 Z 变换</h2>
+
+    <div class="box box-formula">
+      <div class="box-title">方法一 · 幂级数展开法（长除法）</div>
+      <p>将 $X(z)$ 展开为 $z^{-1}$ 的幂级数（在收敛域内），系数序列即为 $x[n]$。</p>
+      <p>对右边序列（$|z| > r$），按 $z^{-1}$ 的升幂排列做长除。对左边序列（$|z| < r$），按 $z$ 的升幂排列做长除。</p>
+      <p>此法适合求前几项值，不适合求封闭表达式。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">方法二 · 部分分式展开法（最常用）</div>
+      <p>与拉普拉斯逆变换几乎完全对偶。将 $X(z)$ 写成以 $z$ 为变量的有理分式，做部分分式展开后查表：</p>
+      <p><strong>单极点</strong>：$\frac{A}{z-p} \to$ 对应项。常用形式：</p>
+      $$\frac{X(z)}{z} = \sum_i \frac{A_i}{z - p_i}$$
+      <p>乘回 $z$：$X(z) = \sum_i \frac{A_i z}{z - p_i}$，每项逆变换 $A_i p_i^n u[n]$（对右边序列）。</p>
+      <p><strong>重极点</strong>：$\frac{z}{(z-p)^k}$ 对应 $\frac{1}{(k-1)!} \frac{(n+k-2)!}{(n-1)!} p^n u[n]$ 等形式。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 部分分式展开法</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：求 $X(z) = \frac{z}{(z-2)(z-3)}$（$|z| > 3$，右边序列）的逆变换。</p>
+        <p><strong>解</strong>：</p>
+        <p>$\frac{X(z)}{z} = \frac{1}{(z-2)(z-3)} = \frac{A}{z-2} + \frac{B}{z-3}$</p>
+        <p>$A = \frac{1}{z-3}|_{z=2} = \frac{1}{-1} = -1$，$B = \frac{1}{z-2}|_{z=3} = 1$</p>
+        <p>$X(z) = \frac{-z}{z-2} + \frac{z}{z-3}$</p>
+        <p>$x[n] = -2^n u[n] + 3^n u[n] = (3^n - 2^n)u[n]$。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 7.5 z 域系统分析 ==================== -->
+  <div class="section" id="s5">
+    <h2>7.5 z 域系统分析</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 系统函数 $H(z)$</div>
+      <div class="formula-highlight">
+        $$H(z) = \ZT\{h[n]\} = \frac{Y(z)}{X(z)}$$
+      </div>
+      <p>$H(z)$ 是单位样值响应的 Z 变换。对于由差分方程 $\sum_{k=0}^N a_k y[n-k] = \sum_{k=0}^M b_k x[n-k]$ 描述的系统：</p>
+      <div class="formula-highlight">
+        $$H(z) = \frac{\sum_{k=0}^M b_k z^{-k}}{\sum_{k=0}^N a_k z^{-k}}$$
+      </div>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">离散系统的稳定性判据</div>
+      <p>因果 LTI 离散系统 BIBO 稳定 $\Longleftrightarrow$ $H(z)$ 的<strong>所有极点都在单位圆内</strong>（$|p_i| < 1$）。</p>
+      <p>等价表述：ROC 包含单位圆。</p>
+      <p><strong>类比</strong>：连续系统"所有极点在左半平面" ↔ 离散系统"所有极点在单位圆内"。这来自映射 $z = e^{sT}$：s 左半平面 → $|z| = |e^{(\sigma+j\omega)T}| = e^{\sigma T} < 1$。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">频率响应（DTFT）</div>
+      <p>若 ROC 包含单位圆，则系统频率响应为 $H(e^{j\Omega}) = H(z)|_{z=e^{j\Omega}}$。</p>
+      <p>$H(e^{j\Omega})$ 是以 $2\pi$ 为周期的周期函数——这是离散时间系统独有的特性。离散时间信号的频谱总是周期性的（抽样 → 频域周期延拓）。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">本章总结：连续与离散变换方法的对比</div>
+      <table>
+        <tr><th></th><th>拉普拉斯变换</th><th>Z 变换</th></tr>
+        <tr><td>变换变量</td><td>$s = \sigma + j\omega$</td><td>$z = re^{j\Omega}$</td></tr>
+        <tr><td>ROC 形状</td><td>垂直带状区域</td><td>圆环区域</td></tr>
+        <tr><td>稳定条件</td><td>极点全在左半平面</td><td>极点全在单位圆内</td></tr>
+        <tr><td>频率响应</td><td>$H(j\omega)$（虚轴）</td><td>$H(e^{j\Omega})$（单位圆）</td></tr>
+        <tr><td>系统函数</td><td>$H(s)$（s 的有理分式）</td><td>$H(z)$（$z^{-1}$ 的有理分式）</td></tr>
+        <tr><td>核心应用</td><td>模拟滤波器、控制系统设计</td><td>数字滤波器、离散控制系统设计</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="chapter-nav">
+    <a class="prev" href="ch6.html">第六章 · 离散时间系统的时域分析</a>
+    <a class="next" href="ch8.html">第八章 · 进阶专题</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>信号与系统复习指南 · 基于郑君里教材（第三版）· 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

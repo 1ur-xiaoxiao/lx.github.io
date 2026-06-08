@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>附录 · 公式速查与学习计划 · 信号与系统</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          CC: '\\mathbb{C}',
+          NN: '\\mathbb{N}',
+          ZZ: '\\mathbb{Z}',
+          FF: '\\mathcal{F}',
+          LL: '\\mathcal{L}',
+          ZT: '\\mathcal{Z}',
+          dd: '\\mathrm{d}',
+          sinc: '\\mathrm{sinc}',
+          rect: '\\mathrm{rect}',
+          tri: '\\mathrm{tri}',
+          sgn: '\\mathrm{sgn}',
+          u: '\\mathrm{u}',
+          deltafn: '\\delta',
+          ROC: '\\mathrm{ROC}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../index.html" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">信号与系统</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+    <li><a href="ch7.html">第七章</a></li>
+    <li><a href="ch8.html">第八章</a></li>
+    <li><a href="appendix.html">附录</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>附录 · 公式速查与两周85+学习计划</h1>
+    <p>考前必备：常用傅里叶变换对、拉普拉斯变换对、Z 变换对、核心性质速查表。以及基于郑君里教材的十四天系统复习方案。</p>
+  </div>
+
+  <!-- ==================== 公式速查 ==================== -->
+  <div class="section">
+    <h2>一、常用傅里叶变换对</h2>
+    <div class="table-wrapper">
+    <table>
+      <tr><th>$f(t)$</th><th>$F(\omega)$</th></tr>
+      <tr><td>$\deltafn(t)$</td><td>$1$</td></tr>
+      <tr><td>$1$</td><td>$2\pi\deltafn(\omega)$</td></tr>
+      <tr><td>$\u(t)$</td><td>$\pi\deltafn(\omega) + \frac{1}{j\omega}$</td></tr>
+      <tr><td>$\sgn(t)$</td><td>$\frac{2}{j\omega}$</td></tr>
+      <tr><td>$e^{-\alpha t}\u(t), \alpha>0$</td><td>$\frac{1}{\alpha + j\omega}$</td></tr>
+      <tr><td>$e^{-\alpha|t|}, \alpha>0$</td><td>$\frac{2\alpha}{\alpha^2 + \omega^2}$</td></tr>
+      <tr><td>$\rect(t/\tau)$</td><td>$\tau\,\sinc(\omega\tau/2)$</td></tr>
+      <tr><td>$\cos(\omega_0 t)$</td><td>$\pi[\deltafn(\omega-\omega_0) + \deltafn(\omega+\omega_0)]$</td></tr>
+      <tr><td>$\sin(\omega_0 t)$</td><td>$j\pi[\deltafn(\omega+\omega_0) - \deltafn(\omega-\omega_0)]$</td></tr>
+      <tr><td>$\sum_{k}\deltafn(t-kT)$</td><td>$\frac{2\pi}{T}\sum_n \deltafn(\omega - n\frac{2\pi}{T})$</td></tr>
+      <tr><td>$e^{j\omega_0 t}$</td><td>$2\pi\deltafn(\omega - \omega_0)$</td></tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>二、傅里叶变换核心性质</h2>
+    <div class="table-wrapper">
+    <table>
+      <tr><th>性质</th><th>$f(t)$</th><th>$F(\omega)$</th></tr>
+      <tr><td>线性</td><td>$a_1f_1 + a_2f_2$</td><td>$a_1F_1 + a_2F_2$</td></tr>
+      <tr><td>时移</td><td>$f(t-t_0)$</td><td>$F(\omega)e^{-j\omega t_0}$</td></tr>
+      <tr><td>频移</td><td>$f(t)e^{j\omega_0 t}$</td><td>$F(\omega-\omega_0)$</td></tr>
+      <tr><td>尺度</td><td>$f(at)$</td><td>$\frac{1}{|a|}F(\frac{\omega}{a})$</td></tr>
+      <tr><td>对称</td><td>$F(t)$</td><td>$2\pi f(-\omega)$</td></tr>
+      <tr><td>时域微分</td><td>$f^{(n)}(t)$</td><td>$(j\omega)^n F(\omega)$</td></tr>
+      <tr><td>频域微分</td><td>$(-jt)^n f(t)$</td><td>$F^{(n)}(\omega)$</td></tr>
+      <tr><td>时域积分</td><td>$\int_{-\infty}^t f(\tau)\dd\tau$</td><td>$\frac{F(\omega)}{j\omega} + \pi F(0)\deltafn(\omega)$</td></tr>
+      <tr><td>时域卷积</td><td>$f_1(t) * f_2(t)$</td><td>$F_1(\omega) \cdot F_2(\omega)$</td></tr>
+      <tr><td>频域卷积</td><td>$f_1(t) \cdot f_2(t)$</td><td>$\frac{1}{2\pi}F_1(\omega) * F_2(\omega)$</td></tr>
+      <tr><td>Parseval</td><td>$\int |f(t)|^2\dd t$</td><td>$\frac{1}{2\pi}\int |F(\omega)|^2\dd\omega$</td></tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>三、常用拉普拉斯变换对（单边）</h2>
+    <div class="table-wrapper">
+    <table>
+      <tr><th>$f(t)$ ($t \geq 0^-$)</th><th>$F(s)$</th></tr>
+      <tr><td>$\deltafn(t)$</td><td>$1$</td></tr>
+      <tr><td>$\deltafn^{(n)}(t)$</td><td>$s^n$</td></tr>
+      <tr><td>$\u(t)$</td><td>$\frac{1}{s}$</td></tr>
+      <tr><td>$t^n \u(t)$</td><td>$\frac{n!}{s^{n+1}}$</td></tr>
+      <tr><td>$e^{-\alpha t}\u(t)$</td><td>$\frac{1}{s+\alpha}$</td></tr>
+      <tr><td>$t^n e^{-\alpha t}\u(t)$</td><td>$\frac{n!}{(s+\alpha)^{n+1}}$</td></tr>
+      <tr><td>$\cos(\omega_0 t)\u(t)$</td><td>$\frac{s}{s^2 + \omega_0^2}$</td></tr>
+      <tr><td>$\sin(\omega_0 t)\u(t)$</td><td>$\frac{\omega_0}{s^2 + \omega_0^2}$</td></tr>
+      <tr><td>$e^{-\alpha t}\cos(\omega_0 t)\u(t)$</td><td>$\frac{s+\alpha}{(s+\alpha)^2 + \omega_0^2}$</td></tr>
+      <tr><td>$e^{-\alpha t}\sin(\omega_0 t)\u(t)$</td><td>$\frac{\omega_0}{(s+\alpha)^2 + \omega_0^2}$</td></tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>四、拉普拉斯变换核心性质</h2>
+    <div class="table-wrapper">
+    <table>
+      <tr><th>性质</th><th>$f(t)$</th><th>$F(s)$</th></tr>
+      <tr><td>时移</td><td>$f(t-t_0)\u(t-t_0)$</td><td>$F(s)e^{-st_0}$</td></tr>
+      <tr><td>s 域平移</td><td>$e^{-s_0 t}f(t)$</td><td>$F(s+s_0)$</td></tr>
+      <tr><td>时域微分</td><td>$f'(t)$</td><td>$sF(s) - f(0^-)$</td></tr>
+      <tr><td>时域积分</td><td>$\int_{0^-}^t f(\tau)\dd\tau$</td><td>$\frac{F(s)}{s}$</td></tr>
+      <tr><td>s 域微分</td><td>$(-t)f(t)$</td><td>$F'(s)$</td></tr>
+      <tr><td>时域卷积</td><td>$f_1(t) * f_2(t)$</td><td>$F_1(s)F_2(s)$</td></tr>
+      <tr><td>初值定理</td><td>$f(0^+)$</td><td>$\lim_{s\to\infty}sF(s)$</td></tr>
+      <tr><td>终值定理</td><td>$f(\infty)$</td><td>$\lim_{s\to 0}sF(s)$</td></tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>五、常用 Z 变换对（$n \geq 0$）</h2>
+    <div class="table-wrapper">
+    <table>
+      <tr><th>$x[n]$</th><th>$X(z)$</th><th>ROC</th></tr>
+      <tr><td>$\delta[n]$</td><td>$1$</td><td>全平面</td></tr>
+      <tr><td>$u[n]$</td><td>$\frac{z}{z-1}$</td><td>$|z| > 1$</td></tr>
+      <tr><td>$a^n u[n]$</td><td>$\frac{z}{z-a}$</td><td>$|z| > |a|$</td></tr>
+      <tr><td>$n a^n u[n]$</td><td>$\frac{az}{(z-a)^2}$</td><td>$|z| > |a|$</td></tr>
+      <tr><td>$n u[n]$</td><td>$\frac{z}{(z-1)^2}$</td><td>$|z| > 1$</td></tr>
+      <tr><td>$\cos(\Omega_0 n)u[n]$</td><td>$\frac{z(z-\cos\Omega_0)}{z^2-2z\cos\Omega_0+1}$</td><td>$|z| > 1$</td></tr>
+      <tr><td>$\sin(\Omega_0 n)u[n]$</td><td>$\frac{z\sin\Omega_0}{z^2-2z\cos\Omega_0+1}$</td><td>$|z| > 1$</td></tr>
+      <tr><td>$r^n\cos(\Omega_0 n)u[n]$</td><td>$\frac{z(z-r\cos\Omega_0)}{z^2-2rz\cos\Omega_0+r^2}$</td><td>$|z| > r$</td></tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>六、连续与离散关键对照</h2>
+    <div class="table-wrapper">
+    <table>
+      <tr><th></th><th>连续时间</th><th>离散时间</th></tr>
+      <tr><td>基本方程</td><td>微分方程</td><td>差分方程</td></tr>
+      <tr><td>核心信号</td><td>$\deltafn(t)$（冲激函数）</td><td>$\delta[n]$（单位样值）</td></tr>
+      <tr><td>核心响应</td><td>$h(t)$（冲激响应）</td><td>$h[n]$（单位样值响应）</td></tr>
+      <tr><td>叠加运算</td><td>$\int x(\tau)h(t-\tau)\dd\tau$</td><td>$\sum_k x[k]h[n-k]$</td></tr>
+      <tr><td>变换域工具</td><td>FT + Laplace 变换</td><td>DTFT + Z 变换</td></tr>
+      <tr><td>稳定条件</td><td>极点在 s 左半平面</td><td>极点在单位圆内</td></tr>
+      <tr><td>系统函数</td><td>$H(s) = \frac{Y(s)}{X(s)}$</td><td>$H(z) = \frac{Y(z)}{X(z)}$</td></tr>
+      <tr><td>频率响应</td><td>$H(j\omega)$（虚轴）</td><td>$H(e^{j\Omega})$（单位圆）</td></tr>
+    </table>
+    </div>
+  </div>
+
+  <!-- ==================== 两周学习计划 ==================== -->
+  <div class="section" style="margin-top: 2rem;">
+    <h2>七、两周85+学习计划</h2>
+
+    <div class="box box-note">
+      <div class="box-title">计划说明</div>
+      <ul>
+        <li><strong>目标</strong>：期末考试 85 分以上</li>
+        <li><strong>教材</strong>：郑君里《信号与系统》(第三版)</li>
+        <li><strong>每日投入</strong>：约 5–6 小时有效学习时间</li>
+        <li><strong>策略</strong>：概念理解 → 公式推导 → 典型例题 → 真题训练四步法</li>
+        <li><strong>重点章节</strong>：第1–5章（连续时间 + FT + Laplace）占考试 60–70%</li>
+      </ul>
+    </div>
+
+    <h3>第一周：连续时间主线（最核心）</h3>
+
+    <div class="distribution-card">
+      <h3>Day 1 · 第一章：基本概念（4–5h）</h3>
+      <p><strong>上午（2.5h）</strong>：信号的分类（连续/离散、周期/非周期、能量/功率）、典型信号的表达式和图像。重点理解 $\deltafn(t)$ 的筛分性质——多做积分练习彻底搞懂。</p>
+      <p><strong>下午（2.5h）</strong>：系统的六大分类（线性、时不变、因果、稳定、可逆、记忆）。做 5 道判断题训练分类能力——这是考试第一题的常客。理解 LTI 系统的特征函数性质。</p>
+      <p><strong>晚上</strong>：整理笔记，默写 $\deltafn(t)$ 的三个核心性质和常见信号表达式。</p>
+      <p style="color:var(--danger);"><strong>难点</strong>：$\deltafn(t)$ 的尺度变换 $\deltafn(at) = \deltafn(t)/|a|$；系统时不变性的判定。</p>
+    </div>
+
+    <div class="distribution-card">
+      <h3>Day 2 · 第二章上部：微分方程与经典解法（4–5h）</h3>
+      <p><strong>上午（2.5h）</strong>：微分方程的建立和经典解法（齐次解+特解）。重点记忆特征根与齐次解形式的对应表，以及特解的设定方法。</p>
+      <p><strong>下午（2.5h）</strong>：零输入响应与零状态响应的分解。理解 $0^-$ 与 $0^+$ 状态的区别。做 3 道微分方程求解的完整题目。</p>
+      <p style="color:var(--danger);"><strong>难点</strong>：$0^- \to 0^+$ 跳变的冲激函数匹配法。</p>
+    </div>
+
+    <div class="distribution-card">
+      <h3>Day 3 · 第二章下部：冲激响应与卷积（5–6h）</h3>
+      <p><strong>上午（3h）</strong>：冲激响应 $h(t)$ 的求解方法。牢记：$t>0$ 时 $h(t)$ 满足齐次方程，初始条件由 $\deltafn(t)$ 匹配确定。</p>
+      <p><strong>下午（3h）</strong>：卷积积分的定义、图解法和微积分性质。重点训练图解法（反褶→平移→相乘积分）和利用性质简化计算（与 $\deltafn$ 卷积、卷积的微积分性质）。做 4–5 道卷积题。</p>
+      <p style="color:var(--danger);"><strong>难点</strong>：图解法分段讨论、利用卷积性质简化复杂卷积。</p>
+    </div>
+
+    <div class="distribution-card">
+      <h3>Day 4 · 第三章上部：傅里叶级数（4–5h）</h3>
+      <p><strong>上午（2.5h）</strong>：三角形式和指数形式的傅里叶级数定义、系数计算。利用奇偶/奇谐/偶谐性质简化计算——考题中几乎必考。</p>
+      <p><strong>下午（2.5h）</strong>：Gibbs 现象、Dirichlet 条件、频谱图（幅度谱和相位谱）。做 3 道周期信号傅里叶级数展开题。</p>
+      <p style="color:var(--danger);"><strong>难点</strong>：利用奇偶对称性简化系数计算。</p>
+    </div>
+
+    <div class="distribution-card">
+      <h3>Day 5 · 第三章下部：傅里叶变换（5–6h）</h3>
+      <p><strong>上午（3h）</strong>：傅里叶变换定义、典型变换对（$\deltafn(t)$、矩形脉冲、$e^{-\alpha t}\u(t)$、$\sgn(t)$ 的 FT 必须能默写）。</p>
+      <p><strong>下午（3h）</strong>：傅里叶变换的十大性质。重点是卷积定理和对称性——对称性可以让你用已知变换对推导出新变换对。做 5 道利用性质求 FT 的题目。</p>
+      <p style="color:var(--danger);"><strong>难点</strong>：对称性的灵活运用、$\sgn(t)$ 和 $\u(t)$ 变换的推导。</p>
+    </div>
+
+    <div class="distribution-card">
+      <h3>Day 6 · 第四章：拉普拉斯变换与 s 域分析（5–6h）</h3>
+      <p><strong>上午（3h）</strong>：拉普拉斯变换定义、收敛域（ROC）概念、典型变换对。重点理解"同一个 $F(s)$ 表达式，不同 ROC 对应不同 $f(t)$"。</p>
+      <p><strong>下午（3h）</strong>：部分分式展开法求逆变换（单实极点、重极点、共轭复极点三种情况，每种必做 2 道题）。系统函数 $H(s)$、零极点图、稳定性判据（所有极点在左半平面）。</p>
+      <p style="color:var(--danger);"><strong>难点</strong>：重极点和共轭复极点的部分分式展开、从零极点图判断系统行为。</p>
+    </div>
+
+    <div class="distribution-card">
+      <h3>Day 7 · 第五章 + 第一周回顾（5–6h）</h3>
+      <p><strong>上午（3h）</strong>：无失真传输的幅频/相频条件、理想低通滤波器（理解其非因果性）、AM 调制与同步解调（理解频谱搬移的物理过程）、奈奎斯特抽样定理（$\omega_s \geq 2\omega_m$ 必考）。</p>
+      <p><strong>下午（3h）</strong>：系统回顾第1–5章。做一套完整的期中/期末模拟卷，标记错题和薄弱点。重点查漏：傅里叶变换性质的综合运用、部分分式展开、卷积积分计算。</p>
+      <p style="color:var(--danger);"><strong>难点</strong>：抽样定理的频域理解（时域抽样 → 频域周期延拓）、调制解调的频谱分析。</p>
+    </div>
+
+    <h3>第二周：离散时间 + 进阶 + 总复习</h3>
+
+    <div class="distribution-card">
+      <h3>Day 8 · 第六章：离散时间系统时域分析（5–6h）</h3>
+      <p><strong>上午（3h）</strong>：离散信号（序列）的概念、典型序列（$\delta[n]$、$u[n]$、$a^n$、正弦）。差分方程描述、经典解法。</p>
+      <p><strong>下午（3h）</strong>：单位样值响应 $h[n]$ 求解（递推法）、卷积和的定义和计算（不进位乘法、直接求和法）。重点练习 3–4 道卷积和题目。</p>
+      <p><strong>学习技巧</strong>：本章与第二章高度对偶，对照着学能大幅提高效率。每学一个概念就问自己：这在连续时间中对应什么？</p>
+      <p style="color:var(--danger);"><strong>难点</strong>：卷积和的分段讨论、不进位乘法的步骤。</p>
+    </div>
+
+    <div class="distribution-card">
+      <h3>Day 9 · 第七章：Z 变换与 z 域分析（5–6h）</h3>
+      <p><strong>上午（3h）</strong>：Z 变换定义、收敛域（ROC：圆环 vs 带状）、典型变换对。重点理解 $z = e^{sT}$ 映射关系（s 左半平面 → 单位圆内）。</p>
+      <p><strong>下午（3h）</strong>：逆 Z 变换（部分分式展开法必须熟练掌握）、系统函数 $H(z)$、稳定性判据（所有极点在单位圆内 $|p_i| < 1$）。做 4–5 道逆变换题。</p>
+      <p><strong>与拉普拉斯对比</strong>：每学一个 Z 变换性质，对应回顾拉普拉斯变换的类似性质——找共性和差异。</p>
+      <p style="color:var(--danger);"><strong>难点</strong>：$\frac{X(z)}{z}$ 展开法的步骤、从 ROC 确定序列是左边还是右边。</p>
+    </div>
+
+    <div class="distribution-card">
+      <h3>Day 10 · 第八章：进阶专题（4–5h）</h3>
+      <p><strong>上午（2.5h）</strong>：信号矢量空间分析（内积、正交、相关函数、Wiener-Khinchin 定理）。理解"傅里叶系数 = 信号与基函数的内积"。</p>
+      <p><strong>下午（2.5h）</strong>：DFT/FFT 概念、滤波器分类（Butterworth/Chebyshev/椭圆、IIR/FIR）、反馈系统概念、状态变量法框架。这一天的目标是<strong>理解概念和框架</strong>，不追求计算细节。</p>
+      <p style="color:var(--danger);"><strong>重点</strong>：DFT 的隐含周期性、IIR vs FIR 的本质区别（有无反馈）、$H(s) = C(sI-A)^{-1}B + D$。</p>
+    </div>
+
+    <div class="distribution-card">
+      <h3>Day 11 · 综合解题训练（6h）</h3>
+      <p><strong>全天</strong>：重点训练综合题——涉及多个章节知识点的题目。</p>
+      <ul>
+        <li>给定 $H(s)$ 或 $H(z)$，画零极点图 → 判断稳定性 → 求 $h(t)/h[n]$ → 求频率响应 → 求阶跃响应</li>
+        <li>给定系统框图/信号流图，写出传递函数 → 分析稳定性</li>
+        <li>给定微分/差分方程，求 $H(s)/H(z)$ → 求 $h(t)/h[n]$ → 求对给定输入的零状态响应</li>
+      </ul>
+      <p>做 3–4 道完整的综合大题，限时训练。</p>
+    </div>
+
+    <div class="distribution-card">
+      <h3>Day 12 · 真题模拟（5–6h）</h3>
+      <p><strong>上午（3h）</strong>：完整做一套往年期末考试真题，严格限时（2–2.5h）。做完后立即对答案，算出分数，记录每个错误的类型（概念不清/计算失误/方法不对/时间不够）。</p>
+      <p><strong>下午（2–3h）</strong>：针对错题归类复习，翻回对应章节查漏补缺。特别注意反复出错的题型——这往往是真正的薄弱点。</p>
+    </div>
+
+    <div class="distribution-card">
+      <h3>Day 13 · 薄弱环节攻坚 + 第二套真题（5–6h）</h3>
+      <p><strong>上午（3h）</strong>：做第二套真题，再次限时。与第一套对比，检查之前薄弱点是否已经补上。新发现的薄弱点重点攻克。</p>
+      <p><strong>下午（2–3h）</strong>：攻克最高频考点中的难点。通常来说，以下内容最值得花时间：</p>
+      <ol>
+        <li>卷积积分/卷积和的分段计算（图解法）</li>
+        <li>利用傅里叶变换性质（特别是对称性、卷积定理）解题</li>
+        <li>部分分式展开求逆变换（重极点和共轭极点）</li>
+        <li>零极点图分析系统稳定性</li>
+        <li>抽样定理计算（给出频谱图判断是否混叠）</li>
+      </ol>
+    </div>
+
+    <div class="distribution-card">
+      <h3>Day 14 · 考前总复习（5–6h）</h3>
+      <p><strong>上午（2.5h）</strong>：快速过一遍全部八章的笔记和错题集。重点关注：</p>
+      <ol>
+        <li>三大变换（FT、Laplace、Z）的典型变换对和性质——考前半小时默写</li>
+        <li>卷积积分和卷积和的计算步骤</li>
+        <li>稳定性判据（连续：左半平面；离散：单位圆内）</li>
+        <li>抽样定理：$f_s \geq 2f_m$</li>
+      </ol>
+      <p><strong>下午（2.5h）</strong>：回顾本附录的公式速查表，确保每个变换对都能从时域默写到频域/复频域，反之亦然。把解题中容易犯的错误（如忘记 $u(t)$、ROC 声明、$0^-$ 条件等）写在一个小卡片上，考前再看一眼。</p>
+      <p><strong>晚上</strong>：早睡，保持好状态。</p>
+    </div>
+
+    <div class="box box-note" style="margin-top: 2rem;">
+      <div class="box-title">考前 Tips</div>
+      <ol>
+        <li><strong>卷面策略</strong>：先做会的题，确保基础分拿到手。计算量大的题留在后面。</li>
+        <li><strong>检查重点</strong>：卷积的分段是否正确、积分上下限、$u(t)$ 或 $u[n]$ 是否忘记乘、ROC 是否声明、稳定条件是否写对。</li>
+        <li><strong>常用技巧</strong>：能利用性质就不要直接从定义做积分/求和；能用部分分式展开就不要用围道积分。</li>
+        <li><strong>心态</strong>：信号与系统是一门逻辑高度自洽的课程——掌握了连续和离散的对偶关系，你其实只需要学懂一半的内容，另一半是"翻译"。</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="chapter-nav">
+    <a class="prev" href="ch8.html">第八章 · 进阶专题</a>
+    <span></span>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>信号与系统复习指南 · 基于郑君里教材（第三版）· 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>
