@@ -91,6 +91,7 @@ const QuizState = {
     this.score = 0;
     this.playerHP = 5;
     this.bossHP = 7;
+    this.battleEnded = false;
     this.combo = 0;
     this.maxCombo = 0;
     this.correctCount = 0;
@@ -328,7 +329,7 @@ const QuizRenderer = {
 
     // 显示下一题按钮
     const nextBtn = document.getElementById('next-btn');
-    if (QuizState.isLastQuestion() || QuizState.playerHP <= 0) {
+    if (QuizState.isLastQuestion() || QuizState.playerHP <= 0 || QuizState.bossHP <= 0) {
       nextBtn.textContent = '查看结果 →';
     }
     nextBtn.classList.add('show');
@@ -491,6 +492,8 @@ const QuizBattle = {
   },
 
   endBattle() {
+    if (QuizState.battleEnded) return;
+    QuizState.battleEnded = true;
     if (QuizState.isVictory()) {
       QuizRenderer.showBossDefeat();
     }
