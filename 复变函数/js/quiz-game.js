@@ -97,6 +97,7 @@ const QuizState = {
     this.correctCount = 0;
     this.currentIndex = 0;
     this.isAnswering = false;
+    this.results = [];
 
     // 从题库随机抽取 10 题
     const pool = QUIZ_QUESTIONS[chapter] || [];
@@ -120,6 +121,7 @@ const QuizState = {
   },
 
   answerCorrect() {
+    this.results.push(true);
     this.correctCount++;
     this.bossHP = Math.max(0, this.bossHP - 1);
     this.combo++;
@@ -131,6 +133,7 @@ const QuizState = {
   },
 
   answerWrong() {
+    this.results.push(false);
     this.combo = 0;
     this.playerHP = Math.max(0, this.playerHP - 1);
   },
@@ -243,7 +246,10 @@ const QuizRenderer = {
     if (!q) return;
 
     const progressDots = QuizState.questions.map((_, i) => {
-      if (i < QuizState.currentIndex) return '<span class="progress-dot done-correct"></span>';
+      if (i < QuizState.currentIndex) {
+        const cls = QuizState.results[i] ? 'done-correct' : 'done-wrong';
+        return `<span class="progress-dot ${cls}"></span>`;
+      }
       if (i === QuizState.currentIndex) return '<span class="progress-dot current"></span>';
       return '<span class="progress-dot"></span>';
     }).join('');
@@ -558,11 +564,8 @@ function shuffleArray(arr) {
 
 // ==================== 启动 ====================
 document.addEventListener('DOMContentLoaded', () => {
-  // 初始化现有功能（导航切换等）
-  if (typeof initNavToggle === 'function') initNavToggle();
-  if (typeof initCollapsibles === 'function') initCollapsibles();
-  if (typeof initBackToTop === 'function') initBackToTop();
-  if (typeof initActiveNav === 'function') initActiveNav();
+  // 注意：initNavToggle, initCollapsibles, initBackToTop, initActiveNav
+  // 已在 main.js 的 DOMContentLoaded 中注册，这里不需要重复调用。
 
   // 启动游戏
   QuizApp.init();
