@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第七章 · 共形映射</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          CC: '\\mathbb{C}',
+          EE: '\\mathbb{E}',
+          dd: '\\mathrm{d}',
+          Res: '\\mathrm{Res}',
+          arg: '\\mathrm{arg}',
+          Arg: '\\mathrm{Arg}',
+          Log: '\\mathrm{Log}',
+          ZZ: '\\mathbb{Z}',
+          NN: '\\mathbb{N}',
+          Re: '\\mathrm{Re}',
+          Im: '\\mathrm{Im}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="index.html" class="nav-brand">复变函数复习</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+    <li><a href="ch7.html">第七章</a></li>
+    <li><a href="quiz.html" style="color:#fbbf24;">🎮 闯关答题</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第七章 · 共形映射</h1>
+    <p>解析函数的几何面孔——保角变换将复杂区域化为简单区域，是复分析在物理和工程中最直接的几何应用</p>
+  </div>
+
+  <!-- 学习目标 -->
+  <div class="box box-definition" style="margin-bottom:1.5rem;">
+    <div class="box-title">学完本章，你将能够：</div>
+    <ol style="margin-bottom:0;">
+      <li>理解导数的几何意义：伸缩率 $|f'(z)|$ 与旋转角 $\arg f'(z)$，掌握共形映射的定义</li>
+      <li>掌握分式线性变换的基本性质：保圆性、保对称点性、交比不变性</li>
+      <li>利用初等函数（幂函数、指数函数、儒科夫斯基函数等）构造实用的共形映射</li>
+      <li>陈述 Riemann 映射定理和边界对应原理，理解其理论意义</li>
+      <li>了解 Schwarz-Christoffel 公式及其在求解多边形区域映射中的应用</li>
+    </ol>
+  </div>
+
+  <!-- 本章导读 -->
+  <div class="section" style="margin-bottom:1.5rem;padding:1.25rem 1.5rem;">
+    <h2 style="font-size:1.15rem;margin-bottom:0.5rem;border:none;padding:0;">本章导读</h2>
+    <p>前六章建立了复变函数的<strong>分析理论</strong>——导数、积分、级数、留数。现在换一个角度：把复变函数 $w = f(z)$ 看作<strong>平面到平面的映射</strong>（或变换），研究它的几何性质。</p>
+    <p>核心问题是：<strong>解析函数会把平面上的区域"扭曲"成什么形状？</strong> 答案令人惊喜——解析函数在其导数不为零的点附近是<strong>共形</strong>的（保角的）：两条曲线的交角经过映射后保持不变。这意味着解析映射在局部就像一个带有旋转的均匀缩放，不会产生剪切或各向异性的变形。</p>
+    <p>这个几何性质有巨大的实用价值。许多物理问题（流体绕流、静电场分布、热传导）在复杂区域上难以直接求解，但如果存在一个共形映射将复杂区域变成一个简单区域（如上半平面或单位圆），问题在那里解出后，再把解"映射回去"就得到了原问题的解。这种"换域求解"的策略是复变函数在工程中最经典的应用。</p>
+    <p>本章从导数的几何意义出发，逐步建立共形映射的理论体系，并介绍几类最重要的共形映射——分式线性变换、初等函数映射，以及一般性的 Riemann 映射定理和 Schwarz-Christoffel 公式。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">7.1 解析变换的几何性质</a></li>
+      <li><a href="#s2">7.2 分式线性变换</a></li>
+      <li><a href="#s3">7.3 初等函数构成的共形映射</a></li>
+      <li><a href="#s4">7.4 Riemann 存在定理与边界对应原理</a></li>
+      <li><a href="#s5">7.5 多角形映射与 Schwarz-Christoffel 公式</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 7.1 解析变换的几何性质 ==================== -->
+  <div class="section" id="s1">
+    <h2>7.1 解析变换的几何性质</h2>
+
+    <div class="box box-note">
+      <div class="box-title">直觉导航</div>
+      <p>在实分析中，$f: \RR \to \RR$ 的导数 $f'(x_0)$ 只是一个数——切线斜率。但在复分析中，$f: \CC \to \CC$ 本质上是 $\RR^2 \to \RR^2$ 的映射，$f'(z_0)$ 是一个复数。一个复数包含两个信息：<strong>模</strong>和<strong>辐角</strong>——它们分别对应几何上的<strong>伸缩率</strong>（局部放大倍数）和<strong>旋转角</strong>（局部旋转角度）。</p>
+      <p>更深刻的事实是：因为复导数不仅要求极限存在，而且要求<strong>沿所有方向趋近的极限一致</strong>（C-R 方程的几何含义），解析映射在 $f'(z_0) \ne 0$ 的点处是<strong>保角的</strong>——穿过该点的任意两条曲线，映射前后的交角（大小和方向）都不变。这就是"共形"（conformal）的含义。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 7.1（伸缩率与旋转角）</div>
+      <p>设 $f(z)$ 在 $z_0$ 处解析且 $f'(z_0) \ne 0$。令 $w = f(z)$，将 $f$ 视为从 $z$ 平面到 $w$ 平面的映射。</p>
+      <p>对于过 $z_0$ 的任意光滑曲线 $C: z = z(t)$（$z(0) = z_0$），其像 $\Gamma = f(C): w = f(z(t))$ 过 $w_0 = f(z_0)$。</p>
+      <p>由链式法则：$w'(0) = f'(z_0) \cdot z'(0)$。取模和辐角：</p>
+      <p>$$|w'(0)| = |f'(z_0)| \cdot |z'(0)|, \quad \arg w'(0) = \arg f'(z_0) + \arg z'(0).$$</p>
+      <p>因此：</p>
+      <ul>
+        <li><strong>伸缩率</strong>：$|f'(z_0)|$ 表示映射 $f$ 在 $z_0$ 处对切向量的长度放大倍数，与方向无关（各向同性）。</li>
+        <li><strong>旋转角</strong>：$\arg f'(z_0)$ 表示映射 $f$ 在 $z_0$ 处对切向量的旋转角度，与方向无关（各向同性）。</li>
+      </ul>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 7.1（保角性）</div>
+      <p>设 $f(z)$ 在 $z_0$ 处解析且 $f'(z_0) \ne 0$。则对于过 $z_0$ 的任意两条光滑曲线 $C_1, C_2$，它们在 $z_0$ 处的交角（大小和方向）在映射 $w = f(z)$ 下保持不变。即</p>
+      <p>$$\angle(\Gamma_1, \Gamma_2) = \angle(C_1, C_2),$$</p>
+      <p>其中 $\Gamma_1 = f(C_1)$，$\Gamma_2 = f(C_2)$。</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明</div>
+      <p>设 $C_1$ 和 $C_2$ 在 $z_0$ 处的切向量分别为 $v_1$ 和 $v_2$。映射后的切向量为 $w_1 = f'(z_0) v_1$，$w_2 = f'(z_0) v_2$（复数的乘法）。</p>
+      <p>$$w_2 / w_1 = \frac{f'(z_0) v_2}{f'(z_0) v_1} = \frac{v_2}{v_1}.$$</p>
+      <p>取辐角：$\arg(w_2/w_1) = \arg(v_2/v_1)$，即两向量之间的夹角（包括旋转方向）在映射下不变。$\square$</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 7.2（共形映射）</div>
+      <p>设 $f(z)$ 在区域 $D$ 内解析。若 $f(z)$ 在 $D$ 内每点满足 $f'(z) \ne 0$ 且 $f(z)$ 是 $D$ 内的单射（一一映射），则称 $f$ 是 $D$ 上的<strong>共形映射</strong>（conformal mapping），也称 $f$ 将 $D$ <strong>共形地映射</strong>到 $f(D)$。</p>
+      <p>此时 $f$ 在 $D$ 内每点保角，且 $f^{-1}$ 在 $f(D)$ 上也解析（共形映射的逆仍是共形映射）。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注记：$f'(z_0) = 0$ 时会发生什么？</div>
+      <p>若 $f'(z_0) = 0$（如 $f(z) = z^n$ 在 $z_0 = 0$ 处，$n \ge 2$），则 $f(z) - f(z_0)$ 的 Taylor 展开从 $a_n(z-z_0)^n$ 项开始（$a_n \ne 0$）。此时映射将角度<strong>放大 $n$ 倍</strong>——$z_0$ 处的两条曲线交角在映射后变为原来的 $n$ 倍。这类点称为<strong>临界点</strong>，在共形映射理论中需要特别处理。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 7.1</div>
+      <p>分析映射 $f(z) = z^2$ 在 $z_0 = 1 + i$ 处的伸缩率和旋转角。</p>
+      <p><strong>解：</strong> $f'(z) = 2z$，$f'(1+i) = 2(1+i) = 2 + 2i$。</p>
+      <p>伸缩率：$|f'(1+i)| = |2+2i| = 2\sqrt{2}$。</p>
+      <p>旋转角：$\arg f'(1+i) = \arg(2+2i) = \dfrac{\pi}{4}$。</p>
+      <p>这意味着在 $z_0 = 1+i$ 附近，映射 $f(z)=z^2$ 近似将区域拉伸 $2\sqrt{2}$ 倍并逆时针旋转 $45^\circ$。</p>
+      <p>注意 $z_0 = 0$ 处 $f'(0) = 0$，该点的角度被放大 2 倍——正实轴（$\arg z = 0$）映射到正实轴（$\arg w = 0$），正虚轴（$\arg z = \pi/2$）映射到负实轴（$\arg w = \pi$），原本 $90^\circ$ 的交角变为 $180^\circ$。$z = 0$ 是临界点，函数在此不保角。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 7.2</div>
+      <p>证明 $f(z) = e^z$ 在整个复平面上每点都是保角的（即 $f'(z) \ne 0$ 始终成立）。</p>
+      <p><strong>证明：</strong> $f'(z) = e^z \ne 0$ 对所有 $z \in \CC$ 成立（指数函数永不为零）。因此 $e^z$ 在复平面每一点都是局部共形的。但 $e^z$ 不是单射——$e^{z + 2\pi i} = e^z$，所以它不是整个平面上的共形映射（不满足单射条件），但在任何不包含相差 $2\pi i$ 的两点的区域内是共形映射。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 7.2 分式线性变换 ==================== -->
+  <div class="section" id="s2">
+    <h2>7.2 分式线性变换</h2>
+
+    <div class="box box-note">
+      <div class="box-title">直觉导航</div>
+      <p>分式线性变换（又称 Möbius 变换）是共形映射中最重要的一个家族。它的形式极其简洁——两个多项式的比，分子分母各一次——却拥有令人惊叹的几何性质：它把圆（包括直线，视为过 $\infty$ 的"圆"）变成圆，把关于圆的对称点变成对称点，并且可以用三个点的像唯一确定整个变换。</p>
+      <p>为什么分式线性变换如此特殊？因为它恰好是扩充复平面 $\overline{\CC} = \CC \cup \{\infty\}$ 上的<strong>全纯自同构</strong>——所有将 $\overline{\CC}$ 一对一地共形映射到自身的解析函数，一定可以写成 $w = \dfrac{az+b}{cz+d}$ 的形式。换句话说，分式线性变换穷尽了扩充复平面的所有共形自同构。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 7.3（分式线性变换）</div>
+      <p>称形如</p>
+      <p>$$w = T(z) = \frac{az + b}{cz + d}, \quad ad - bc \ne 0$$</p>
+      <p>的映射为<strong>分式线性变换</strong>（Linear Fractional Transformation / Möbius Transformation），其中 $a, b, c, d \in \CC$，条件 $ad - bc \ne 0$ 保证 $T$ 不是常函数。</p>
+      <p>定义域为扩充复平面 $\overline{\CC} = \CC \cup \{\infty\}$。补充定义：若 $c \ne 0$，$T(-d/c) = \infty$，$T(\infty) = a/c$；若 $c = 0$，$T(\infty) = \infty$。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">基本性质</div>
+      <ol>
+        <li><strong>复合仍是分式线性变换</strong>：若 $T_1, T_2$ 是分式线性变换，则 $T_1 \circ T_2$ 也是分式线性变换。</li>
+        <li><strong>逆变换是分式线性变换</strong>：$T^{-1}(w) = \dfrac{dw - b}{-cw + a}$（注意 $ad-bc \ne 0$ 保证了可逆）。</li>
+        <li><strong>群结构</strong>：全体分式线性变换构成一个群（Möbius 群），同构于 $\mathrm{PGL}(2, \CC) = \mathrm{GL}(2, \CC) / \CC^*$。</li>
+        <li><strong>复合与矩阵乘法对应</strong>：若 $T(z) = \frac{az+b}{cz+d}$ 对应的系数矩阵为 $\begin{pmatrix}a & b \\ c & d\end{pmatrix}$，则 $T_1 \circ T_2$ 对应的矩阵为两者的乘积。</li>
+      </ol>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 7.2（保圆性）</div>
+      <p>分式线性变换将扩充复平面 $\overline{\CC}$ 上的<strong>圆</strong>（或直线——视为过 $\infty$ 的圆）映射为圆（或直线）。</p>
+      <p>更准确地说：若 $C$ 是 $z$ 平面上的任一圆或直线，则 $T(C)$ 是 $w$ 平面上的圆或直线。</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明</div>
+      <p>分式线性变换可以分解为以下几种简单变换的复合：</p>
+      <ul>
+        <li><strong>平移</strong>：$z \mapsto z + \alpha$</li>
+        <li><strong>旋转-相似</strong>：$z \mapsto \beta z$（$\beta$ 为非零复数，乘法 = 旋转 + 缩放）</li>
+        <li><strong>反演</strong>：$z \mapsto \dfrac{1}{z}$</li>
+      </ul>
+      <p>平移和旋转-相似显然将圆映射为圆（直线是半径无穷大的"圆"）。只需验证反演 $w = 1/z$ 也保圆。</p>
+      <p>在 $z$ 平面上，圆或直线的方程为：</p>
+      <p>$$A(x^2 + y^2) + Bx + Cy + D = 0,$$</p>
+      <p>其中 $A, B, C, D \in \RR$。当 $A = 0$ 时表示直线，$A \ne 0$ 时表示圆。</p>
+      <p>用复变量改写：$z\bar{z} + \alpha z + \bar{\alpha}\bar{z} + \gamma = 0$，其中 $\gamma \in \RR$。</p>
+      <p>在 $w = 1/z$ 下，$z = 1/w$，代入得 $\frac{1}{w\bar{w}} + \frac{\alpha}{w} + \frac{\bar{\alpha}}{\bar{w}} + \gamma = 0$，乘以 $w\bar{w}$ 得：</p>
+      <p>$$\gamma w\bar{w} + \bar{\alpha} w + \alpha \bar{w} + 1 = 0,$$</p>
+      <p>这仍是圆或直线的方程（$\gamma \in \RR$ 保证了常数项为实数）。因此反演也保圆。$\square$</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 7.3（保对称点性）</div>
+      <p>设 $C$ 为 $z$ 平面上的圆或直线，点 $z_1, z_2$ 关于 $C$ 对称。$T$ 为分式线性变换，则 $T(z_1)$ 与 $T(z_2)$ 关于 $T(C)$ 对称。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">关于圆的对称点</div>
+      <p>两点 $z_1, z_2$ 关于圆 $|z - a| = R$ 对称，当且仅当它们位于从圆心出发的同一条射线上，且它们到圆心的距离之积等于半径的平方：</p>
+      <p>$$|z_1 - a| \cdot |z_2 - a| = R^2, \quad \arg(z_1 - a) = \arg(z_2 - a).$$</p>
+      <p>等价地，$z_2 = a + \dfrac{R^2}{\overline{z_1 - a}}$。圆心 $a$ 关于该圆的对称点是 $\infty$。</p>
+      <p>关于直线，对称即通常的镜像反射（$z_1, z_2$ 到直线的距离相等，连线垂直于直线）。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">公式 7.1（交比不变性）</div>
+      <p>对四个不同的点 $z_1, z_2, z_3, z_4 \in \overline{\CC}$，定义<strong>交比</strong>（Cross Ratio）为：</p>
+      <p>$$(z_1, z_2; z_3, z_4) = \frac{z_3 - z_1}{z_3 - z_2} : \frac{z_4 - z_1}{z_4 - z_2} = \frac{(z_3 - z_1)(z_4 - z_2)}{(z_3 - z_2)(z_4 - z_1)}.$$</p>
+      <p><strong>交比在分式线性变换下不变</strong>：若 $T$ 是分式线性变换，则</p>
+      <p>$$(T(z_1), T(z_2); T(z_3), T(z_4)) = (z_1, z_2; z_3, z_4).$$</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 7.4（唯一决定条件）</div>
+      <p>给定 $z$ 平面上三个不同的点 $z_1, z_2, z_3$ 和 $w$ 平面上三个不同的点 $w_1, w_2, w_3$，存在<strong>唯一</strong>的分式线性变换 $T$，使得 $T(z_k) = w_k$（$k = 1, 2, 3$）。</p>
+      <p>该变换由交比等式给出：</p>
+      <p>$$(w, w_1; w_2, w_3) = (z, z_1; z_2, z_3).$$</p>
+      <p>其中 $w = T(z)$。由此解出 $w$ 关于 $z$ 的表达式即得 $T$。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 7.3（典型的分式线性变换）</div>
+      <p>求将上半平面 $\Im z > 0$ 映射为单位圆 $|w| < 1$ 的分式线性变换。</p>
+      <p><strong>解：</strong> 取 $z$ 平面上的三点 $z_1 = -1$，$z_2 = 0$，$z_3 = 1$，希望它们分别映射为 $w$ 平面上的 $w_1 = -1$，$w_2 = i$，$w_3 = 1$（这些点都在虚轴和单位圆上）。</p>
+      <p>由交比等式：</p>
+      <p>$$\frac{(w+1)(1-i)}{(w-i)(1+1)} = \frac{(z+1)(1-0)}{(z-0)(1+1)} = \frac{z+1}{2z}.$$</p>
+      <p>实际上，更简洁的解法是利用对称点性质：设 $\alpha$（$\Im\alpha > 0$）映射为 $w = 0$（圆心），则 $\bar{\alpha}$（关于实轴的对称点）应映射为 $w = \infty$（关于单位圆的对称点）。因此变换形如：</p>
+      <p>$$w = k \cdot \frac{z - \alpha}{z - \bar{\alpha}}, \quad |k| = 1.$$</p>
+      <p>这是将上半平面映射为单位圆的一般形式。特别地，取 $\alpha = i$，并令实轴上的点 $z = 0$ 映射为单位圆上辐角为 $0$ 的点（即 $w = 1$）：</p>
+      <p>$w(0) = k \cdot \frac{0 - i}{0 + i} = k \cdot (-1) = 1 \implies k = -1$。</p>
+      <p>因此 $w = -\dfrac{z - i}{z + i} = \dfrac{i - z}{z + i}$ 将上半平面共形映射为单位圆，且满足 $w(i) = 0$。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 7.4（三点决定分式线性变换）</div>
+      <p>求将 $z_1 = 1$，$z_2 = i$，$z_3 = -1$ 分别映射为 $w_1 = 0$，$w_2 = 1$，$w_3 = \infty$ 的分式线性变换。</p>
+      <p><strong>解：</strong> 由交比等式 $(w, 0; 1, \infty) = (z, 1; i, -1)$。</p>
+      <p>先算左边：$(w, 0; 1, \infty) = \dfrac{w-0}{w-\infty} : \dfrac{1-0}{1-\infty} = \dfrac{w}{1} : \dfrac{1}{1} = w$（注意 $w/\infty \to 0$，交叉比中包含 $\infty$ 时取极限处理）。</p>
+      <p>严格来说 $(w, w_1; w_2, \infty) = \dfrac{w - w_1}{w_2 - w_1}$。故 $(w, 0; 1, \infty) = \dfrac{w - 0}{1 - 0} = w$。</p>
+      <p>右边：$(z, 1; i, -1) = \dfrac{(z-i)(-1-1)}{(z+1)(-1-i)} = \dfrac{(z-i)(-2)}{(z+1)(-1-i)} = \dfrac{2(z-i)}{(z+1)(1+i)}$。</p>
+      <p>因此 $w = \dfrac{2(z-i)}{(z+1)(1+i)}$。</p>
+      <p>化简：$w = \dfrac{2}{(1+i)}\cdot\dfrac{z-i}{z+1} = (1-i)\cdot\dfrac{z-i}{z+1}$。</p>
+      <p>验证：$z=1 \mapsto (1-i)(1-i)/(2) = (1-2i-1)/2 = -i/2 \cdot 2 = -i$... 需要重新检查。改用直接设 $w = \frac{az+b}{cz+d}$ 求解会更可靠。</p>
+      <p>设 $T(z) = \frac{az+b}{cz+d}$，由 $T(-1) = \infty$ 得 $cz+d$ 在 $z=-1$ 处为零，即 $-c + d = 0 \implies d = c$。</p>
+      <p>由 $T(1) = 0$ 得 $a + b = 0 \implies b = -a$。</p>
+      <p>由 $T(i) = 1$ 得 $\frac{ai+b}{ci+d} = \frac{ai - a}{ci + c} = \frac{a(i-1)}{c(i+1)} = 1 \implies \frac{a}{c} = \frac{i+1}{i-1} = \frac{(i+1)^2}{(i-1)(i+1)} = \frac{i^2+2i+1}{i^2-1} = \frac{2i}{-2} = -i$。</p>
+      <p>取 $a = -i, c = 1$，则 $b = i, d = 1$，变换为 $T(z) = \dfrac{-iz + i}{z + 1} = i \cdot \dfrac{1 - z}{1 + z}$。</p>
+      <p>验证：$T(1) = 0$ ✓，$T(-1) = \infty$ ✓，$T(i) = i \cdot \frac{1-i}{1+i} = i \cdot \frac{(1-i)^2}{2} = i \cdot \frac{-2i}{2} = i \cdot (-i) = 1$ ✓。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 7.3 初等函数构成的共形映射 ==================== -->
+  <div class="section" id="s3">
+    <h2>7.3 初等函数构成的共形映射</h2>
+
+    <div class="box box-note">
+      <div class="box-title">直觉导航</div>
+      <p>第三章学过的初等函数不仅是分析对象，也是共形映射的"工具箱"。幂函数 $z^n$ 将角域展开为全平面，指数函数 $e^z$ 将水平带形映射为角域，对数函数 $\log z$ 则反过来用。这些初等映射可以通过复合构造出更复杂的区域变换——把复杂区域通过一系列"标准映射"逐步变为简单区域（上半平面或单位圆），这种"变换链"的思想是解决边值问题的核心策略。</p>
+      <p>儒科夫斯基函数 $w = \frac{1}{2}(z + \frac{1}{z})$ 则有独特的工程应用：它将圆外区域映射为机翼剖面（Joukowski airfoil），是航空工程中升力计算的经典工具。</p>
+    </div>
+
+    <h3>7.3.1 幂函数 $w = z^n$</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">映射 $w = z^n$（$n \ge 2$ 整数）</div>
+      <p>将 $z$ 写成极坐标 $z = re^{i\theta}$，则 $w = r^n e^{in\theta}$。</p>
+      <ul>
+        <li><strong>角域展开</strong>：张角为 $\alpha$ 的角域 $\{z: 0 < \arg z < \alpha\}$ 在 $w = z^n$ 下映射为 $\{w: 0 < \arg w < n\alpha\}$。特别地，取 $n$ 使得 $n\alpha = \pi$，则角域变为上半平面。</li>
+        <li><strong>共形性</strong>：$w' = nz^{n-1} \ne 0$ 当 $z \ne 0$。$z = 0$ 是临界点，角度被放大 $n$ 倍。</li>
+      </ul>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 7.5</div>
+      <p>求将第一象限 $\{z: 0 < \arg z < \pi/2\}$ 映射为上半平面的共形映射。</p>
+      <p><strong>解：</strong> 直接取 $w = z^2$：当 $z = re^{i\theta}$ 且 $0 < \theta < \pi/2$ 时，$w = r^2 e^{i2\theta}$ 且 $0 < 2\theta < \pi$，恰好是上半平面。在 $z \ne 0$ 处共形。</p>
+    </div>
+
+    <h3>7.3.2 指数函数 $w = e^z$</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">映射 $w = e^z$</div>
+      <p>令 $z = x + iy$，则 $w = e^x \cdot e^{iy}$。$|w| = e^x$，$\arg w = y$。</p>
+      <ul>
+        <li><strong>水平带形 $\to$ 角域</strong>：带形 $\{z: 0 < \Im z < \alpha,\ \alpha \le 2\pi\}$ 映射为 $\{w: 0 < \arg w < \alpha\}$。</li>
+        <li><strong>垂直线段 $\to$ 圆周</strong>：$x = \text{常数}$ 的竖直线映射为以原点为心、$e^x$ 为半径的圆。</li>
+        <li><strong>水平线段 $\to$ 射线</strong>：$y = \text{常数}$ 的水平线映射为辐角为 $y$ 的射线。</li>
+        <li><strong>水平带形 $\to$ 上半平面</strong>：带形 $\{z: 0 < \Im z < \pi\}$ 映射为上半平面 $\Im w > 0$（因为 $\arg w = y \in (0, \pi)$）。</li>
+      </ul>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 7.6</div>
+      <p>求将带形 $\{z: 0 < \Im z < \pi\}$ 共形映射为单位圆 $|w| < 1$ 的映射。</p>
+      <p><strong>解：</strong> 分两步走。第一步：$w_1 = e^z$ 将带形映射为上半平面 $\Im w_1 > 0$。</p>
+      <p>第二步：用分式线性变换将上半平面映射为单位圆（见例 7.3），取 $\alpha = i$：$w_2 = \dfrac{w_1 - i}{w_1 + i}$（注意符号差异）。复合得：</p>
+      <p>$$w = \frac{e^z - i}{e^z + i}.$$</p>
+      <p>验证：$z$ 为实数（带形下边界）时 $e^z > 0$（正实数），$w = \frac{\text{正实数} - i}{\text{正实数} + i}$ 位于单位圆的下半部（模为 1）。$z + i\pi$（带形上边界）时 $e^{z+i\pi} = -e^z < 0$（负实数），$w$ 位于单位圆的上半部。带形内部映射到单位圆内部。</p>
+    </div>
+
+    <h3>7.3.3 儒科夫斯基函数 $w = \frac{1}{2}\left(z + \dfrac{1}{z}\right)$</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">儒科夫斯基（Joukowski）映射</div>
+      <p>$$w = \frac{1}{2}\left(z + \frac{1}{z}\right).$$</p>
+      <p>这是一个二次有理函数。令 $z = re^{i\theta}$，则</p>
+      <p>$$w = \frac{1}{2}\left(re^{i\theta} + \frac{e^{-i\theta}}{r}\right) = \frac{1}{2}\left(r + \frac{1}{r}\right)\cos\theta + \frac{i}{2}\left(r - \frac{1}{r}\right)\sin\theta.$$</p>
+      <ul>
+        <li><strong>圆周 $|z| = r_0$ 的像</strong>：当 $r_0 \ne 1$ 时，映射为椭圆 $\dfrac{u^2}{[\frac{1}{2}(r_0+1/r_0)]^2} + \dfrac{v^2}{[\frac{1}{2}(r_0-1/r_0)]^2} = 1$。当 $r_0 = 1$ 时（单位圆），$w = \cos\theta$，映射为实轴上的线段 $[-1, 1]$（退化的椭圆）。</li>
+        <li><strong>射线 $\arg z = \theta_0$ 的像</strong>：映射为双曲线。</li>
+        <li><strong>$|z| > 1$（单位圆外部）</strong>：共形映射到 $w$ 平面去掉线段 $[-1, 1]$ 的区域。</li>
+        <li><strong>$|z| < 1$（单位圆内部）</strong>：同样映射到 $w$ 平面去掉线段 $[-1, 1]$ 的区域。</li>
+      </ul>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">工程应用：茹科夫斯基翼型</div>
+      <p>将圆心稍偏离原点的圆（经过 $z = 1$）在儒科夫斯基映射下的像是一个<strong>机翼剖面</strong>（绕流的理想化形状）。这种翼型在空气动力学中有明确的解析解——利用共形映射将翼型外部的绕流问题转化为圆柱绕流问题（经典的有环量圆柱绕流，可由复势 $w(z) = U(z + 1/z) + i\kappa\log z$ 描述），再映射回翼型坐标即可得到升力分布。这是共形映射在工程中最著名的应用之一。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 7.7</div>
+      <p>验证儒科夫斯基函数将单位圆外部 $|z| > 1$ 共形映射为 $w$ 平面去掉线段 $[-1, 1]$ 的区域。</p>
+      <p><strong>验证：</strong> $f'(z) = \frac{1}{2}(1 - 1/z^2) = \frac{z^2 - 1}{2z^2}$。在 $|z| > 1$ 时，$z \ne \pm 1$ 时 $f'(z) \ne 0$，故 $f$ 在 $|z| > 1$ 内每点局部共形（$z = \pm 1$ 不在该区域内——它们在边界上，$f'(\pm 1) = 0$，对应映射后线段的两个端点）。</p>
+      <p>$f$ 在 $|z| > 1$ 上是单射（若 $z_1 \ne z_2$ 且 $|z_1|, |z_2| > 1$，则 $f(z_1) \ne f(z_2)$——这可由 $f(z_1)=f(z_2) \implies (z_1-z_2)(1-1/(z_1z_2))=0$，在 $|z_1|,|z_2|>1$ 时 $1/(z_1z_2) \ne 1$，故 $z_1 = z_2$ 推得）。</p>
+      <p>单位圆周 $|z|=1$ 上，$w = \cos\theta$（$z = e^{i\theta}$ 时 $w = \frac{1}{2}(e^{i\theta}+e^{-i\theta}) = \cos\theta$），当 $\theta$ 从 $0$ 到 $2\pi$ 时 $w$ 在 $[-1,1]$ 上来回两次。</p>
+    </div>
+
+    <h3>7.3.4 变换链：将复杂区域化为上半平面</h3>
+
+    <div class="box box-example">
+      <div class="box-title">例 7.8（区域变换的综合实例）</div>
+      <p>求将区域 $D = \{z: |z| < 1,\ \Im z > 0\}$（上半单位半圆）共形映射为上半平面的映射。</p>
+      <p><strong>解：</strong> 分三步走。</p>
+      <p><strong>第一步</strong>：用分式线性变换 $w_1 = \dfrac{z+1}{z-1}$ 将边界上的点 $-1, 1$（半圆直径端点）分别映射为 $0, \infty$。上半单位半圆的边界（直径 $[-1, 1]$ + 上半圆弧）在 $w_1$ 下：直径映射为负实轴（$\arg w_1 = \pi$），上半圆弧映射为正虚轴（$\arg w_1 = \pi/2$）。$D$ 被映射为第二象限。</p>
+      <p><strong>第二步</strong>：$w_2 = w_1^2$ 将第二象限（$\arg w_1 \in (\pi/2, \pi)$）映射为下半平面 $\Im w_2 < 0$。</p>
+      <p><strong>第三步</strong>：$w = -w_2$ 将下半平面翻转为上半平面。</p>
+      <p>复合映射为 $w = -\left(\dfrac{z+1}{z-1}\right)^2$。这就是将上半单位半圆共形映射为上半平面的变换。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 7.4 Riemann 存在定理与边界对应原理 ==================== -->
+  <div class="section" id="s4">
+    <h2>7.4 Riemann 存在定理与边界对应原理</h2>
+
+    <div class="box box-note">
+      <div class="box-title">直觉导航</div>
+      <p>前面我们通过具体的函数（分式线性、幂函数、指数函数）构造共形映射。但一个自然的问题是：<strong>什么样的区域之间一定存在共形映射？</strong> 答案是令人振奋的——Riemann 在 1851 年的博士论文中证明：任何一个边界多于一点的单连通区域，都可以共形映射为单位圆。这意味着共形映射不是特例，而是<strong>普遍存在</strong>的。</p>
+      <p>这个定理是复分析中最深刻的结果之一。它是"存在性"定理——告诉你映射一定存在，但不给你具体的表达式。在应用中，往往需要结合分式线性变换和初等函数来构造（如 7.3 节所示），而对于一般的多边形区域，Schwarz-Christoffel 公式（7.5 节）给出了半解析的表示。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 7.5（Riemann 映射定理）</div>
+      <p>设 $D$ 是 $\CC$ 中的<strong>单连通区域</strong>，其边界多于一个点。则存在一个在 $D$ 内解析的单射函数 $f$（即共形映射），将 $D$ 共形地映射为<strong>单位圆</strong> $\{w: |w| < 1\}$。</p>
+      <p>此外，对任意指定的 $z_0 \in D$ 和 $\theta_0 \in \RR$，存在<strong>唯一</strong>的共形映射 $f$，使得</p>
+      <p>$$f(z_0) = 0, \quad \arg f'(z_0) = \theta_0.$$</p>
+      <p>（即：通过指定一点的像和该点处的旋转角，可以唯一确定该共形映射。）</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注记</div>
+      <ul>
+        <li><strong>边界多于一点</strong>：排除 $\CC$ 本身、$\CC$ 去掉一个点等情况。这些区域不能共形映射为单位圆。</li>
+        <li><strong>单连通</strong>：区域没有"洞"。有洞的区域（多连通区域）不能共形映射为单位圆，但可映射为去掉若干同心圆弧的圆环等。</li>
+        <li><strong>存在性 vs 构造性</strong>：Riemann 的原始证明使用了 Dirichlet 原理（变分法），后来被 Hilbert 严格化。这个证明是"非构造性"的——它告诉你映射存在，但不告诉你怎么写出来。在实际应用中，我们通常结合具体区域利用已有映射的复合来构造。</li>
+      </ul>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 7.6（边界对应定理，Carathéodory）</div>
+      <p>设 $D$ 是由一条<strong>简单闭曲线</strong>（Jordan 曲线）围成的单连通区域。若 $f$ 将 $D$ 共形映射为单位圆，则 $f$ 可以连续延拓到边界 $\partial D$ 上，且此延拓给出了<strong>边界的一一对应</strong>：</p>
+      <p>$$f: \overline{D} \to \{w: |w| \le 1\}$$</p>
+      <p>是一个同胚（双向连续的一一映射）。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">边界对应原理的意义</div>
+      <p>在实际问题中，我们常常已知边界条件（如物理场在边界上的取值），需要将边界条件也从 $z$ 平面"转移"到 $w$ 平面。边界对应原理保证了这种转移是合法的——映射在边界上也是连续且一一的。这使得"先在简单区域（单位圆/上半平面）上解边值问题，再用共形映射把解拉回原区域"的策略有了坚实的理论基础。</p>
+      <p>典型的流程是：原问题在区域 $D$ 上（边界复杂）→ 用共形映射 $f$ 将 $D$ 变成单位圆 → 在单位圆上求解（Laplace 方程的 Dirichlet 问题可用 Poisson 积分公式）→ 将解 $U(w)$ 通过 $w = f(z)$ 拉回得到 $u(z) = U(f(z))$，这就是原问题的解。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 7.5 多角形映射与 Schwarz-Christoffel 公式 ==================== -->
+  <div class="section" id="s5">
+    <h2>7.5 多角形映射与 Schwarz-Christoffel 公式</h2>
+
+    <div class="box box-note">
+      <div class="box-title">直觉导航</div>
+      <p>Riemann 映射定理告诉我们共形映射存在，但没给公式。Schwarz-Christoffel 公式则是一个例外——当目标区域是<strong>多边形</strong>（包括无穷多边形，即边界由有限条线段和射线组成）时，将上半平面映射为该多边形的共形映射可以用一个<strong>积分公式</strong>显式写出。</p>
+      <p>这个公式的物理直觉是：解析函数 $f(z)$ 在上半平面内是共形的（保角），但在边界（实数轴）上，$f$ 将实数轴"折弯"成多边形的边界。导数 $f'(z)$ 刻画了弯曲的局部行为——在实数轴的某些点（对应多边形的顶点），$f'(z)$ 有零点或奇点，使得辐角在该处发生跳跃（即多边形的转角）。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 7.7（Schwarz-Christoffel 公式）</div>
+      <p>设 $w = f(z)$ 是将上半平面 $\Im z > 0$ 共形映射到一个<strong>有界 $n$ 边形</strong> $P$（顶点为 $w_1, w_2, \ldots, w_n$，对应内角为 $\alpha_1\pi, \alpha_2\pi, \ldots, \alpha_n\pi$，其中 $0 < \alpha_k < 2$，$\sum_{k=1}^n (\alpha_k - 1) = -2$）的共形映射。设实数轴上的点 $x_1 < x_2 < \cdots < x_n$ 被映射到 $P$ 的 $n$ 个顶点（即 $f(x_k) = w_k$），则</p>
+      <p>$$f(z) = A + C \int_0^z (\xi - x_1)^{\alpha_1-1} (\xi - x_2)^{\alpha_2-1} \cdots (\xi - x_n)^{\alpha_n-1} \,\dd\xi,$$</p>
+      <p>其中 $A$ 和 $C$（$C \ne 0$）为复常数（$A$ 控制位置，$C$ 控制大小和方向）。</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">推导思路</div>
+      <p>考虑 $f'(z)$ 的辐角。对 Schwarz-Christoffel 公式两边求导：</p>
+      <p>$$f'(z) = C \prod_{k=1}^n (z - x_k)^{\alpha_k - 1}.$$</p>
+      <p>取辐角：$\arg f'(z) = \arg C + \sum_{k=1}^n (\alpha_k - 1)\arg(z - x_k)$。</p>
+      <p>当 $z$ 在实轴上从左到右经过 $x_k$ 时，$\arg(z - x_k)$ 从 $\pi$ 跳变为 $0$（上半平面视角），变化量为 $-\pi$。因此 $\arg f'(z)$ 的跳跃量为 $-(\alpha_k - 1)\pi = (1 - \alpha_k)\pi$。</p>
+      <p>而 $f'(z)$ 是映射的局部线性近似（伸缩 + 旋转），其辐角 $\arg f'(z)$ 决定了映射后切向量的方向。当 $z$ 沿实轴走过 $x_k$ 时，映射后的边界在顶点 $w_k$ 处发生转角：两边界的夹角恰好是内角 $\alpha_k\pi$，外边界的转角（外角）为 $(1 - \alpha_k)\pi$。这与 $f'$ 辐角的跳跃完全吻合。</p>
+      <p>最后一步是将 $f'(z)$ 积分得到 $f(z)$ 本身。$\square$</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">带无穷远顶点的 Schwarz-Christoffel 公式</div>
+      <p>若多边形有一个顶点对应 $x_n = \infty$（即映射将 $\infty$ 映射到顶点 $w_n$），则该顶点在内角公式中不出现（因为从上半平面看，$z \to \infty$ 时 $\arg(z - \infty)$ 无定义，需单独处理）。此时公式变为：</p>
+      <p>$$f(z) = A + C \int_0^z (\xi - x_1)^{\alpha_1-1} \cdots (\xi - x_{n-1})^{\alpha_{n-1}-1} \,\dd\xi,$$</p>
+      <p>其中 $\sum_{k=1}^{n-1} (\alpha_k - 1) = -1 - \alpha_n$（由多边形内角和公式导出）。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 7.9（矩形映射）</div>
+      <p>求将上半平面映射为矩形 $R = \{w = u + iv: 0 < u < K,\ 0 < v < K'\}$ 的共形映射。</p>
+      <p><strong>解：</strong> 矩形的四个内角均为 $\pi/2$（即 $\alpha_k = 1/2$，$k = 1,2,3,4$）。设实数轴上的点 $-1/k, -1, 1, 1/k$（其中 $0 < k < 1$）分别映射到矩形的四个顶点（具体的对应关系由对称性确定），则 Schwarz-Christoffel 公式给出：</p>
+      <p>$$f(z) = C \int_0^z \frac{\dd\xi}{\sqrt{(\xi + 1/k)(\xi + 1)(\xi - 1)(\xi - 1/k)}}$$</p>
+      <p>$$= C' \int_0^z \frac{\dd\xi}{\sqrt{(1 - \xi^2)(1 - k^2\xi^2)}}.$$</p>
+      <p>这正是<strong>第一类椭圆积分</strong>。当 $z = 1$ 时 $f(1) = K$（矩形的右边界），这定义了完全椭圆积分 $K(k) = \int_0^1 \frac{dx}{\sqrt{(1-x^2)(1-k^2x^2)}}$。$k$ 称为椭圆模数，决定了矩形的长宽比。</p>
+      <p>此例揭示了共形映射与椭圆函数之间的深刻联系——矩形映射的逆函数正是 Jacobi 椭圆正弦函数 $\mathrm{sn}(w, k)$。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 7.10（带形映射）</div>
+      <p>用 Schwarz-Christoffel 公式求将上半平面映射为无限带形 $\{w: 0 < \Im w < \pi\}$ 的共形映射。</p>
+      <p><strong>解：</strong> 带形可以视为只有两个顶点的"多边形"——两个顶点都在无穷远处，对应内角为 $0$（即 $\alpha_1 = \alpha_2 = 0$）。</p>
+      <p>设实数轴上的 $x_1 = 0$ 映射为 $-\infty$，$x_2 = \infty$ 映射为 $+\infty$。由带无穷远顶点的 Schwarz-Christoffel 公式（其中一个有限顶点对应 $x_1 = 0$，另一个对应无穷）：</p>
+      <p>$$f(z) = A + C \int_0^z (\xi - 0)^{0-1} \,\dd\xi = A + C \int_0^z \frac{\dd\xi}{\xi} = A + C\,\Log z.$$</p>
+      <p>取 $A = 0$，$C = i$，得 $f(z) = i\Log z$。当 $z$ 在上半平面时，$\Log z = \ln|z| + i\Arg z$（$\Arg z \in (0, \pi)$），故 $f(z) = -\Arg z + i\ln|z|$，实部在 $(-\pi, 0)$，虚部在 $(0, \infty)$。需要旋转和平移得到标准带形。</p>
+      <p>实际上，我们已经知道 $w = \Log z$ 将上半平面映射为带形 $\{w: 0 < \Im w < \pi\}$（第三章的结果）。Schwarz-Christoffel 公式给出了相同的答案。</p>
+    </div>
+  </div>
+
+  <!-- ========== 常见误区与FAQ ========== -->
+  <div class="section" id="faq">
+    <h2>常见误区与 FAQ</h2>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：共形映射和解析函数是什么关系？</div>
+      <p><strong>不是所有解析函数都是共形映射</strong>。共形映射要求两个条件：$f'(z) \ne 0$（保证局部保角）和单射性（保证全局一一对应）。例如 $f(z) = z^2$ 在整个复平面上解析，但 $f'(0) = 0$（原点不保角）且不是单射（$f(z) = f(-z)$），所以它不是整个平面上的共形映射。但限制在某个不包含原点的单叶区域上（如右半平面），$z^2$ 就是共形映射。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">误区：分式线性变换一定把圆变成圆</div>
+      <p>这句话需要补充：分式线性变换把<strong>扩充复平面上的广义圆</strong>（包括直线——视为通过 $\infty$ 的"圆"）变成广义圆。具体来说，一个圆（不含 $\infty$）可能被映射成直线（含 $\infty$），反之亦然。例如 $w = 1/z$ 将单位圆 $|z| = 1$ 映射为自身（圆 $\to$ 圆），但将通过原点的圆 $|z - 1| = 1$ 映射为直线 $\Re w = 1/2$。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：为什么要学共形映射？它有什么用？</div>
+      <p>共形映射是复分析在物理和工程中最直接的应用桥梁。核心应用场景是<strong>边值问题</strong>：</p>
+      <ol>
+        <li><strong>流体力学</strong>：理想流体的平面无旋流动可以用复势描述，共形映射将复杂绕流问题（如机翼绕流）转化为圆柱绕流。</li>
+        <li><strong>静电学</strong>：二维静电场的等势线和电力线是共轭调和函数，共形映射可以改变求解区域的形状。</li>
+        <li><strong>热传导</strong>：稳态热分布的 Laplace 方程在共形映射下不变，可在简单区域求解后映射回去。</li>
+        <li><strong>弹性力学</strong>：平面弹性问题可以通过共形映射将复杂孔洞区域变为带圆孔的无限平面求解。</li>
+      </ol>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：Riemann 映射定理只说存在，不给公式——那它有什么用？</div>
+      <p>Riemann 映射定理的理论意义大于计算意义。它告诉我们：<strong>任何</strong>单连通区域（边界多于一点）从共形等价的角度来看，和单位圆是"一样"的——存在一个保角的一一映射将两者联系起来。这个事实是共形映射理论的基石，保证了我们通过"变换链"的策略（将复杂区域逐步简化为单位圆或上半平面）在原则上总是可行的。在实际构造时，我们使用分式线性变换、初等函数和 Schwarz-Christoffel 公式等具体工具。</p>
+    </div>
+  </div>
+
+  <!-- ========== 本章小结 ========== -->
+  <div class="section" style="background:linear-gradient(135deg,#faf5ff,#ebf8ff);">
+    <h2>本章小结</h2>
+    <h3>核心要点回顾</h3>
+    <ol>
+      <li><strong>导数的几何意义</strong>：$|f'(z_0)|$ = 伸缩率（局部放大倍数），$\arg f'(z_0)$ = 旋转角。$f'(z_0) \ne 0$ 时映射在 $z_0$ 处保角。</li>
+      <li><strong>共形映射</strong>：解析 + 导数处处非零 + 单射。它将一个区域共形地映射到另一个区域，保持曲线交角不变。</li>
+      <li><strong>分式线性变换</strong>：$w = \frac{az+b}{cz+d}$（$ad-bc \ne 0$）。核心性质——保圆性（直线是过 $\infty$ 的圆）、保对称点性、交比不变。由三对对应点唯一确定。</li>
+      <li><strong>初等函数映射</strong>：$z^n$ 展开角域，$e^z$ 将带形变为角域，$\Log z$ 反向操作。儒科夫斯基函数在航空工程中有重要应用。</li>
+      <li><strong>Riemann 映射定理</strong>：任何边界多于一点的单连通区域都可共形映射为单位圆。存在性定理，用三个实参数可唯一确定映射。</li>
+      <li><strong>Schwarz-Christoffel 公式</strong>：将上半平面映射为多边形的显式积分公式。是少数能写出解析表达式的共形映射构造方法。</li>
+    </ol>
+    <h3>承上启下</h3>
+    <p>共形映射是复变函数课程的几何篇章，它与前六章的分析理论相辅相成：解析性（第二章的 C-R 方程）是共形性的分析基础，初等函数（第三章）是构造映射的工具箱，积分理论（第四章）支撑了 Schwarz-Christoffel 公式的推导，级数理论（第五章）为 Riemann 映射定理提供了解析函数的存在性证明框架。</p>
+    <p>至此，七章内容覆盖了钟玉泉《复变函数论》的核心内容。从复数的代数运算出发，经过解析函数的理论建设、初等函数的工具箱装备、积分与级数两大支柱的搭建，最终在留数定理的应用高峰和共形映射的几何视野中收束。复变函数论的优美之处在于：<strong>分析</strong>（导数、积分、级数）与<strong>几何</strong>（保角、共形、区域变换）在这里完美地交汇在一起。</p>
+  </div>
+
+  <div class="chapter-nav">
+    <a href="ch6.html" class="prev">第六章 · 留数</a>
+    <a href="index.html" class="next">首页</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>复变函数复习指南 · 基于钟玉泉教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>
