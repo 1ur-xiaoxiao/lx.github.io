@@ -211,9 +211,17 @@
   color: var(--text-muted);
 }
 
+/* 挑战按钮容器（双按钮：普通 + 困难） */
+.boss-card .challenge-btns {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
 .boss-card .challenge-btn {
   display: inline-block;
-  margin-top: 0.5rem;
   padding: 0.5rem 1.75rem;
   border: none;
   border-radius: 25px;
@@ -246,6 +254,71 @@
 
 .boss-card.defeated .challenge-btn:hover {
   background: #1e5a3a;
+}
+
+/* 困难模式按钮 */
+.hard-btn {
+  font-size: 0.85rem !important;
+  padding: 0.45rem 1.5rem !important;
+}
+
+.hard-btn.hard-unlocked {
+  background: linear-gradient(135deg, #dc2626, #b91c1c) !important;
+  color: #fff !important;
+  border: 2px solid #fbbf24 !important;
+  animation: hardGlow 2s ease-in-out infinite;
+}
+
+.hard-btn.hard-unlocked:hover {
+  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+  transform: scale(1.08) !important;
+  box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
+}
+
+.hard-btn.hard-defeated {
+  background: linear-gradient(135deg, #b91c1c, #7f1d1d) !important;
+  color: #fbbf24 !important;
+  border: 2px solid #fbbf24 !important;
+}
+
+.hard-btn.hard-defeated:hover {
+  background: linear-gradient(135deg, #dc2626, #b91c1c) !important;
+  transform: scale(1.05) !important;
+}
+
+.hard-btn.hard-locked {
+  background: var(--border-light) !important;
+  color: var(--text-muted) !important;
+  cursor: not-allowed !important;
+}
+
+@keyframes hardGlow {
+  0%, 100% { box-shadow: 0 0 8px rgba(251, 191, 36, 0.4); }
+  50% { box-shadow: 0 0 18px rgba(251, 191, 36, 0.7); }
+}
+
+/* 难度标签 */
+.difficulty-badge {
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 0.35rem 1rem;
+  border-radius: 20px;
+  margin: 0 auto 1rem;
+  width: fit-content;
+}
+
+.difficulty-badge.normal {
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.difficulty-badge.hard {
+  background: linear-gradient(135deg, #450a0a, #7f1d1d);
+  color: #fbbf24;
+  border: 1px solid #fbbf24;
+  animation: hardGlow 2s ease-in-out infinite;
 }
 
 /* ===== 战斗画面 ===== */

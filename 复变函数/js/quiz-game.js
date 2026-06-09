@@ -14,7 +14,13 @@ const QuizStorage = {
         bossDefeated: false,
         highScore: 0,
         bestAccuracy: 0,
-        attempts: 0
+        attempts: 0,
+        // 困难模式字段
+        hardUnlocked: false,
+        hardBossDefeated: false,
+        hardHighScore: 0,
+        hardBestAccuracy: 0,
+        hardAttempts: 0
       };
     });
     return {
@@ -77,20 +83,22 @@ const QuizState = {
   score: 0,
   playerHP: 5,
   bossHP: 10,
+  maxPlayerHP: 5,
+  maxBossHP: 7,
   combo: 0,
   maxCombo: 0,
   correctCount: 0,
-  isAnswering: false, // 防止快速重复点击
+  isAnswering: false,
+  difficulty: 'normal', // 'normal' | 'hard'
 
   init() {
     this.data = QuizStorage.load();
   },
 
-  startBattle(chapter) {
+  startBattle(chapter, difficulty) {
     this.currentChapter = chapter;
+    this.difficulty = difficulty || 'normal';
     this.score = 0;
-    this.playerHP = 5;
-    this.bossHP = 7;
     this.battleEnded = false;
     this.combo = 0;
     this.maxCombo = 0;
@@ -99,9 +107,26 @@ const QuizState = {
     this.isAnswering = false;
     this.results = [];
 
-    // 从题库随机抽取 10 题
-    const pool = QUIZ_QUESTIONS[chapter] || [];
-    this.questions = shuffleArray([...pool]).slice(0, 10);
+    const isHard = this.difficulty === 'hard';
+    if (isHard) {
+      this.questionCount = 15;
+      this.playerHP = 3;
+      this.bossHP = 10;
+      this.maxPlayerHP = 3;
+      this.maxBossHP = 10;
+      // 合并普通题库和困难题库
+      const poolNormal = QUIZ_QUESTIONS[chapter] || [];
+      const poolHard = QUIZ_QUESTIONS_HARD[chapter] || [];
+      this.questions = shuffleArray([...poolNormal, ...poolHard]).slice(0, this.questionCount);
+    } else {
+      this.questionCount = 10;
+      this.playerHP = 5;
+      this.bossHP = 7;
+      this.maxPlayerHP = 5;
+      this.maxBossHP = 7;
+      const pool = QUIZ_QUESTIONS[chapter] || [];
+      this.questions = shuffleArray([...pool]).slice(0, this.questionCount);
+    }
   },
 
   currentQuestion() {
@@ -127,7 +152,8 @@ const QuizState = {
     this.combo++;
     if (this.combo > this.maxCombo) this.maxCombo = this.combo;
     const comboMultiplier = this.combo >= 5 ? 3 : this.combo >= 3 ? 2 : this.combo >= 2 ? 1.5 : 1;
-    const earned = Math.round(10 * comboMultiplier);
+    const difficultyMultiplier = this.difficulty === 'hard' ? 1.5 : 1;
+    const earned = Math.round(10 * comboMultiplier * difficultyMultiplier);
     this.score += earned;
     return earned;
   },
@@ -151,22 +177,37 @@ const QuizState = {
 
   saveProgress() {
     const ch = this.data.chapters[this.currentChapter];
-    ch.attempts++;
-    if (this.score > ch.highScore) ch.highScore = this.score;
-    const acc = this.accuracy();
-    if (acc > ch.bestAccuracy) ch.bestAccuracy = acc;
-    if (this.isVictory()) {
-      ch.bossDefeated = true;
-      // 解锁下一章
-      const chapters = ['ch1','ch2','ch3','ch4','ch5','ch6'];
-      const idx = chapters.indexOf(this.currentChapter);
-      if (idx >= 0 && idx < chapters.length - 1) {
-        this.data.chapters[chapters[idx + 1]].unlocked = true;
+    const isHard = this.difficulty === 'hard';
+
+    if (isHard) {
+      ch.hardAttempts++;
+      if (this.score > ch.hardHighScore) ch.hardHighScore = this.score;
+      const acc = this.accuracy();
+      if (acc > ch.hardBestAccuracy) ch.hardBestAccuracy = acc;
+      if (this.isVictory()) {
+        ch.hardBossDefeated = true;
+      }
+    } else {
+      ch.attempts++;
+      if (this.score > ch.highScore) ch.highScore = this.score;
+      const acc = this.accuracy();
+      if (acc > ch.bestAccuracy) ch.bestAccuracy = acc;
+      if (this.isVictory()) {
+        ch.bossDefeated = true;
+        // 解锁下一章的普通模式 + 当前章的困难模式
+        ch.hardUnlocked = true;
+        const chapters = ['ch1','ch2','ch3','ch4','ch5','ch6'];
+        const idx = chapters.indexOf(this.currentChapter);
+        if (idx >= 0 && idx < chapters.length - 1) {
+          this.data.chapters[chapters[idx + 1]].unlocked = true;
+        }
       }
     }
     // 更新总分
     this.data.totalScore = 0;
-    Object.values(this.data.chapters).forEach(c => { this.data.totalScore += c.highScore; });
+    Object.values(this.data.chapters).forEach(c => {
+      this.data.totalScore += c.highScore + c.hardHighScore;
+    });
     QuizStorage.save(this.data);
   }
 };
@@ -213,12 +254,32 @@ const QuizRenderer = {
       if (defeated) stateClass = 'defeated';
       else if (unlocked) stateClass = 'unlocked';
 
+      const hardDefeated = save.hardBossDefeated;
+      const hardUnlocked = save.hardUnlocked;
+
       const statusBadge = defeated
         ? '<span class="status-badge cleared">✓ 已通关</span>'
         : (!unlocked ? '<span class="status-badge locked-badge">🔒 未解锁</span>' : '');
 
-      const btnText = defeated ? '🔄 再战' : (unlocked ? '⚔️ 挑战' : '🔒 锁定');
-      const btnDisabled = !unlocked ? 'disabled' : '';
+      // 普通模式按钮
+      const normalBtnText = defeated ? '🔄 再战' : (unlocked ? '⚔️ 挑战' : '🔒 锁定');
+      const normalBtnDisabled = !unlocked ? 'disabled' : '';
+
+      // 困难模式按钮
+      let hardBtnText, hardBtnDisabled, hardBtnClass;
+      if (hardDefeated) {
+        hardBtnText = '🔥 再战';
+        hardBtnDisabled = '';
+        hardBtnClass = 'hard-defeated';
+      } else if (hardUnlocked) {
+        hardBtnText = '🔥 困难';
+        hardBtnDisabled = '';
+        hardBtnClass = 'hard-unlocked';
+      } else {
+        hardBtnText = '🔒 困难';
+        hardBtnDisabled = 'disabled';
+        hardBtnClass = 'hard-locked';
+      }
 
       cardsHTML += `
         <div class="boss-card ${stateClass}" data-chapter="${ch.key}">
@@ -232,7 +293,10 @@ const QuizRenderer = {
             <span>💪 ${save.attempts}次</span>
           </div>
           ${statusBadge}
-          <button class="challenge-btn" ${btnDisabled} onclick="QuizApp.startBattle('${ch.key}')">${btnText}</button>
+          <div class="challenge-btns">
+            <button class="challenge-btn normal-btn" ${normalBtnDisabled} onclick="QuizApp.startBattle('${ch.key}','normal')">${normalBtnText}</button>
+            <button class="challenge-btn hard-btn ${hardBtnClass}" ${hardBtnDisabled} onclick="QuizApp.startBattle('${ch.key}','hard')">${hardBtnText}</button>
+          </div>
         </div>
       `;
     });
@@ -249,6 +313,7 @@ const QuizRenderer = {
     const q = QuizState.currentQuestion();
     if (!q) return;
 
+    const isHard = QuizState.difficulty === 'hard';
     const progressDots = QuizState.questions.map((_, i) => {
       if (i < QuizState.currentIndex) {
         const cls = QuizState.results[i] ? 'done-correct' : 'done-wrong';
@@ -260,6 +325,8 @@ const QuizRenderer = {
 
     const boss = BOSS_INFO[QuizState.currentChapter];
     const letters = ['A', 'B', 'C', 'D'];
+    const maxPHP = QuizState.maxPlayerHP;
+    const maxBHP = QuizState.maxBossHP;
 
     const optionsHTML = q.options.map((opt, i) => `
       <button class="option-btn" data-index="${i}" onclick="QuizApp.selectAnswer(${i}, this)">
@@ -271,17 +338,18 @@ const QuizRenderer = {
     this.container.innerHTML = `
       <button class="back-to-chapters" onclick="QuizApp.showChapterSelect()">← 返回关卡选择</button>
       <div class="battle-screen">
+        <div class="difficulty-badge ${isHard ? 'hard' : 'normal'}">${isHard ? '🔥 困难模式' : '📘 普通模式'}</div>
         <div class="hp-zone">
           <div class="hp-block player">
             <div class="hp-label">🧑 勇者</div>
-            <div class="hp-bar"><div class="hp-fill player-hp" style="width:${(QuizState.playerHP / 5) * 100}%"></div></div>
-            <div class="hp-text">${'❤️'.repeat(QuizState.playerHP)}${'🖤'.repeat(5 - QuizState.playerHP)}</div>
+            <div class="hp-bar"><div class="hp-fill player-hp" style="width:${(QuizState.playerHP / maxPHP) * 100}%"></div></div>
+            <div class="hp-text">${'❤️'.repeat(QuizState.playerHP)}${'🖤'.repeat(maxPHP - QuizState.playerHP)}</div>
           </div>
           <div class="vs-divider">VS</div>
           <div class="hp-block boss">
             <div class="hp-label">${boss.emoji} ${boss.name}</div>
-            <div class="hp-bar"><div class="hp-fill boss-hp" id="boss-hp-fill" style="width:${(QuizState.bossHP / 7) * 100}%"></div></div>
-            <div class="hp-text" id="boss-hp-text">${QuizState.bossHP}/7</div>
+            <div class="hp-bar"><div class="hp-fill boss-hp" id="boss-hp-fill" style="width:${(QuizState.bossHP / maxBHP) * 100}%"></div></div>
+            <div class="hp-text" id="boss-hp-text">${QuizState.bossHP}/${maxBHP}</div>
           </div>
         </div>
 
@@ -355,8 +423,9 @@ const QuizRenderer = {
   updateBossHP() {
     const fill = document.getElementById('boss-hp-fill');
     const text = document.getElementById('boss-hp-text');
-    if (fill) fill.style.width = `${(QuizState.bossHP / 7) * 100}%`;
-    if (text) text.textContent = `${QuizState.bossHP}/7`;
+    const maxBHP = QuizState.maxBossHP;
+    if (fill) fill.style.width = `${(QuizState.bossHP / maxBHP) * 100}%`;
+    if (text) text.textContent = `${QuizState.bossHP}/${maxBHP}`;
 
     // Boss 受击动画
     const display = document.getElementById('boss-display');
@@ -370,8 +439,9 @@ const QuizRenderer = {
   updatePlayerHP() {
     const hpBar = document.querySelector('.hp-fill.player-hp');
     const hpText = document.querySelector('.hp-block.player .hp-text');
-    if (hpBar) hpBar.style.width = `${(QuizState.playerHP / 5) * 100}%`;
-    if (hpText) hpText.innerHTML = `${'❤️'.repeat(QuizState.playerHP)}${'🖤'.repeat(5 - QuizState.playerHP)}`;
+    const maxPHP = QuizState.maxPlayerHP;
+    if (hpBar) hpBar.style.width = `${(QuizState.playerHP / maxPHP) * 100}%`;
+    if (hpText) hpText.innerHTML = `${'❤️'.repeat(QuizState.playerHP)}${'🖤'.repeat(maxPHP - QuizState.playerHP)}`;
   },
 
   // ---------- 更新得分显示 ----------
@@ -395,10 +465,12 @@ const QuizRenderer = {
   // ---------- 得分飘出动画 ----------
   showScorePop(btn, combo) {
     const rect = btn.getBoundingClientRect();
+    const diffMul = QuizState.difficulty === 'hard' ? 1.5 : 1;
     let points = 10;
     if (combo >= 5) points *= 3;
     else if (combo >= 3) points *= 2;
     else if (combo >= 2) points = Math.round(points * 1.5);
+    points = Math.round(points * diffMul);
 
     const pop = document.createElement('div');
     pop.className = 'score-pop positive';
@@ -420,17 +492,21 @@ const QuizRenderer = {
   // ---------- 结算画面 ----------
   renderResult() {
     const isWin = QuizState.isVictory();
+    const isHard = QuizState.difficulty === 'hard';
     const boss = BOSS_INFO[QuizState.currentChapter];
     const chData = QuizState.data.chapters[QuizState.currentChapter];
-    const isNewRecord = QuizState.score >= chData.highScore && chData.highScore > 0;
+    const bestScore = isHard ? chData.hardHighScore : chData.highScore;
+    const isNewRecord = QuizState.score >= bestScore && bestScore > 0;
+    const difficultyLabel = isHard ? '🔥 困难模式' : '📘 普通模式';
 
     this.container.innerHTML = `
       <div class="result-screen ${isWin ? 'victory' : 'defeat'}">
         <span class="result-icon">${isWin ? '🎉' : '💔'}</span>
         <div class="result-title">${isWin ? '挑战成功！' : '挑战失败'}</div>
+        <div class="difficulty-badge ${isHard ? 'hard' : 'normal'}" style="display:inline-block;margin-bottom:0.5rem;">${difficultyLabel}</div>
         <div class="result-subtitle">
           ${isWin
-            ? `你击败了<strong>${boss.name}</strong>！${QuizState.currentChapter === 'ch6' ? '恭喜你征服了复变函数所有关卡！' : '下一章已解锁。'}`
+            ? `你击败了<strong>${boss.name}</strong>！${isHard ? '困难模式的挑战被你征服！' : (QuizState.currentChapter === 'ch6' ? '恭喜你征服了复变函数所有关卡！' : '下一章已解锁。')}`
             : `你被<strong>${boss.name}</strong>击败了……不要气馁，复习一下再来挑战吧。`}
         </div>
         <div class="result-stats">
@@ -535,10 +611,13 @@ const QuizApp = {
     QuizRenderer.renderChapterSelect();
   },
 
-  startBattle(chapter) {
+  startBattle(chapter, difficulty) {
     const ch = QuizState.data.chapters[chapter];
-    if (!ch || !ch.unlocked) return;
-    QuizState.startBattle(chapter);
+    if (!ch) return;
+    const diff = difficulty || 'normal';
+    if (diff === 'hard' && !ch.hardUnlocked) return; // 困难模式未解锁
+    if (diff === 'normal' && !ch.unlocked) return;   // 普通模式未解锁
+    QuizState.startBattle(chapter, diff);
     QuizRenderer.renderBattle();
   },
 
@@ -552,7 +631,8 @@ const QuizApp = {
 
   retryBattle() {
     const ch = QuizState.currentChapter;
-    QuizState.startBattle(ch);
+    const diff = QuizState.difficulty;
+    QuizState.startBattle(ch, diff);
     QuizRenderer.renderBattle();
   },
 
