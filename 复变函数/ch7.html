@@ -45,6 +45,7 @@
     <li><a href="ch5.html">第五章</a></li>
     <li><a href="ch6.html">第六章</a></li>
     <li><a href="ch7.html">第七章</a></li>
+    <li><a href="appendix.html" style="color:#fbbf24;">📋 附录</a></li>
     <li><a href="quiz.html" style="color:#fbbf24;">🎮 闯关答题</a></li>
   </ul>
 </nav>
@@ -224,6 +225,11 @@
       <p>$$(z_1, z_2; z_3, z_4) = \frac{z_3 - z_1}{z_3 - z_2} : \frac{z_4 - z_1}{z_4 - z_2} = \frac{(z_3 - z_1)(z_4 - z_2)}{(z_3 - z_2)(z_4 - z_1)}.$$</p>
       <p><strong>交比在分式线性变换下不变</strong>：若 $T$ 是分式线性变换，则</p>
       <p>$$(T(z_1), T(z_2); T(z_3), T(z_4)) = (z_1, z_2; z_3, z_4).$$</p>
+      <p><strong>证明</strong>：设 $T(z) = \frac{az+b}{cz+d}$（$ad-bc \ne 0$）。先证一个辅助恒等式：</p>
+      $$T(u) - T(v) = \frac{au+b}{cu+d} - \frac{av+b}{cv+d} = \frac{(ad-bc)(u-v)}{(cu+d)(cv+d)}$$
+      <p>因此：$\dfrac{T(z_3)-T(z_1)}{T(z_3)-T(z_2)} = \dfrac{(ad-bc)(z_3-z_1)}{(cz_3+d)(cz_1+d)} \cdot \dfrac{(cz_3+d)(cz_2+d)}{(ad-bc)(z_3-z_2)} = \dfrac{z_3-z_1}{z_3-z_2} \cdot \dfrac{cz_2+d}{cz_1+d}$。</p>
+      <p>同理：$\dfrac{T(z_4)-T(z_1)}{T(z_4)-T(z_2)} = \dfrac{z_4-z_1}{z_4-z_2} \cdot \dfrac{cz_2+d}{cz_1+d}$。</p>
+      <p>两式相除，因子 $\frac{cz_2+d}{cz_1+d}$ 恰好消去，得 $(T(z_1),T(z_2);T(z_3),T(z_4)) = (z_1,z_2;z_3,z_4)$。$\square$</p>
     </div>
 
     <div class="box box-theorem">
@@ -262,6 +268,14 @@
       <p>由 $T(i) = 1$ 得 $\frac{ai+b}{ci+d} = \frac{ai - a}{ci + c} = \frac{a(i-1)}{c(i+1)} = 1 \implies \frac{a}{c} = \frac{i+1}{i-1} = \frac{(i+1)^2}{(i-1)(i+1)} = \frac{i^2+2i+1}{i^2-1} = \frac{2i}{-2} = -i$。</p>
       <p>取 $a = -i, c = 1$，则 $b = i, d = 1$，变换为 $T(z) = \dfrac{-iz + i}{z + 1} = i \cdot \dfrac{1 - z}{1 + z}$。</p>
       <p>验证：$T(1) = 0$ ✓，$T(-1) = \infty$ ✓，$T(i) = i \cdot \frac{1-i}{1+i} = i \cdot \frac{(1-i)^2}{2} = i \cdot \frac{-2i}{2} = i \cdot (-i) = 1$ ✓。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 7.4b（分式线性变换的标准形式）</div>
+      <p>求将单位圆 $|z| < 1$ 映射为自身、且将 $z_0 = \frac{1}{2}$ 映射为原点的分式线性变换。</p>
+      <p><strong>解</strong>：此类变换的标准形式为 $T(z) = e^{i\theta}\dfrac{z - a}{1 - \bar{a}z}$（$|a| < 1$），它将单位圆映为单位圆且 $T(a) = 0$。</p>
+      <p>此处 $a = \frac{1}{2}$，故 $T(z) = e^{i\theta}\dfrac{z - \frac{1}{2}}{1 - \frac{1}{2}z} = e^{i\theta}\dfrac{2z - 1}{2 - z}$。由于未给定旋转角，$\theta$ 可以是任意实数——有无穷多个满足条件的分式线性变换（差一个绕原点的旋转），这反映了映射的不唯一性。</p>
+      <p><strong>注</strong>：形式 $T(z) = e^{i\theta}\frac{z-a}{1-\bar{a}z}$ 是将单位圆映为单位轮的最一般形式。关键性质是 $|z|=1 \implies |T(z)|=1$（保持边界），且 $T(a)=0$。</p>
     </div>
   </div>
 
@@ -312,6 +326,16 @@
       <p>第二步：用分式线性变换将上半平面映射为单位圆（见例 7.3），取 $\alpha = i$：$w_2 = \dfrac{w_1 - i}{w_1 + i}$（注意符号差异）。复合得：</p>
       <p>$$w = \frac{e^z - i}{e^z + i}.$$</p>
       <p>验证：$z$ 为实数（带形下边界）时 $e^z > 0$（正实数），$w = \frac{\text{正实数} - i}{\text{正实数} + i}$ 位于单位圆的下半部（模为 1）。$z + i\pi$（带形上边界）时 $e^{z+i\pi} = -e^z < 0$（负实数），$w$ 位于单位圆的上半部。带形内部映射到单位圆内部。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 7.6b（角形区域的多步复合映射）</div>
+      <p>求将角域 $\{z: 0 < \arg z < \frac{\pi}{4}\}$ 共形映射为单位圆 $|w| < 1$ 的映射。</p>
+      <p><strong>解（变换链策略）</strong>：</p>
+      <p><strong>第一步</strong>：$w_1 = z^4$ 将张角 $\pi/4$ 的角域展开为上半平面 $\Im w_1 > 0$（因为 $0 < \arg z < \pi/4 \implies 0 < \arg w_1 < \pi$）。</p>
+      <p><strong>第二步</strong>：$w_2 = \dfrac{w_1 - i}{w_1 + i}$ 将上半平面映为单位圆 $|w_2| < 1$（标准 Möbius 变换）。</p>
+      <p><strong>复合结果</strong>：$w = \dfrac{z^4 - i}{z^4 + i}$。该映射在角域内处处共形（$w_1'(z) = 4z^3 \ne 0$ 当 $z \ne 0$，原点处需单独处理——$z=0$ 映射到 $w=-1$，位于单位圓边界上）。</p>
+      <p><strong>一般规律</strong>：将张角 $\alpha$ 的角域映为单位圆的通用公式为 $w = \dfrac{z^{\pi/\alpha} - i}{z^{\pi/\alpha} + i}$（取适当分支）。</p>
     </div>
 
     <h3>7.3.3 儒科夫斯基函数 $w = \frac{1}{2}\left(z + \dfrac{1}{z}\right)$</h3>
@@ -448,6 +472,16 @@
       <p>$$f(z) = A + C \int_0^z (\xi - 0)^{0-1} \,\dd\xi = A + C \int_0^z \frac{\dd\xi}{\xi} = A + C\,\Log z.$$</p>
       <p>取 $A = 0$，$C = i$，得 $f(z) = i\Log z$。当 $z$ 在上半平面时，$\Log z = \ln|z| + i\Arg z$（$\Arg z \in (0, \pi)$），故 $f(z) = -\Arg z + i\ln|z|$，实部在 $(-\pi, 0)$，虚部在 $(0, \infty)$。需要旋转和平移得到标准带形。</p>
       <p>实际上，我们已经知道 $w = \Log z$ 将上半平面映射为带形 $\{w: 0 < \Im w < \pi\}$（第三章的结果）。Schwarz-Christoffel 公式给出了相同的答案。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 7.11（正三角形映射）</div>
+      <p>用 Schwarz-Christoffel 公式将上半平面映射为正三角形区域。</p>
+      <p><strong>解</strong>：正三角形的三个内角均为 $\pi/3$，即 $\alpha_1 = \alpha_2 = \alpha_3 = 1/3$。</p>
+      <p>设三个顶点在实数轴上的对应点为 $x_1 = 0$，$x_2 = 1$，$x_3 = \infty$（顶点在无穷远），则由带无穷远顶点的 S-C 公式：</p>
+      $$f(z) = A + C\int_0^z (\xi-0)^{1/3-1}(\xi-1)^{1/3-1}d\xi = A + C\int_0^z \xi^{-2/3}(1-\xi)^{-2/3}d\xi$$
+      <p>这个积分不能用初等函数表示，它与 Beta 函数有关：$f(z) = A + C \cdot B(z; 1/3, 1/3)$（不完全 Beta 函数）。选择合适的 $A$ 和 $C$ 可使三角形的边长和位置符合要求。</p>
+      <p><strong>一般结论</strong>：Schwarz-Christoffel 公式将上半平面映射为多边形的能力是理论上的——大多数情况下，积分 $\int \prod (z-x_k)^{\alpha_k-1}dz$ 不能用初等函数表示，需要数值积分或借助于特殊函数。分析中可求解的只有少数对称情形（矩形→椭圆积分；带形→对数；正三角形→Beta 函数等）。</p>
     </div>
   </div>
 

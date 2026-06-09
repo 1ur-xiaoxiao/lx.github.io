@@ -36,6 +36,7 @@
     <li><a href="ch5.html">第五章</a></li>
     <li><a href="ch6.html">第六章</a></li>
     <li><a href="ch7.html">第七章</a></li>
+    <li><a href="appendix.html" style="color:#fbbf24;">📋 附录</a></li>
     <li><a href="quiz.html" style="color:#fbbf24;">🎮 闯关答题</a></li>
   </ul>
 </nav>
@@ -119,8 +120,10 @@
       <div class="box-title">证明 · 周期性、解析性与无零点</div>
       <p><strong>周期性：</strong>由加法定理和 Euler 公式：</p>
       $$e^{z+2\pi i} = e^z \cdot e^{2\pi i} = e^z \cdot (\cos 2\pi + i\sin 2\pi) = e^z \cdot (1 + 0) = e^z$$
-      <p>因此 $2\pi i$ 是 $e^z$ 的一个周期。更进一步可以证明 $2\pi i$ 是<strong>基本周期</strong>：若 $e^{z+T}=e^z$ 对所有 $z$ 成立，则 $e^T=1$，即 $e^{\Re T}(\cos(\Im T)+i\sin(\Im T))=1$。比较模得 $\Re T=0$，比较辐角得 $\Im T = 2k\pi$（$k \in \ZZ$），故基本周期为 $2\pi i$。</p>
-      <p><strong>解析性：</strong>$u(x,y)=e^x\cos y$，$v(x,y)=e^x\sin y$。验证 C-R 方程：</p>
+      <p>因此 $2\pi i$ 是 $e^z$ 的一个周期。更进一步可以证明 $2\pi i$ 是<strong>基本周期</strong>：若 $e^{z+T}=e^z$ 对所有 $z$ 成立，令 $z=0$ 得 $e^T=1$，即 $e^{\Re T}(\cos(\Im T)+i\sin(\Im T))=1$。</p>
+      <p><strong>第一步（取模）</strong>：$|e^{\Re T}(\cos(\Im T)+i\sin(\Im T))| = e^{\Re T} \cdot |\cos(\Im T)+i\sin(\Im T)| = e^{\Re T} \cdot 1 = e^{\Re T}$。又 $|1| = 1$，故 $e^{\Re T} = 1$，即 $\Re T = 0$。</p>
+      <p><strong>第二步（代回比较实虚部）</strong>：代入 $\Re T = 0$ 得 $\cos(\Im T)+i\sin(\Im T) = 1$。比较实部和虚部：$\cos(\Im T) = 1$ 且 $\sin(\Im T) = 0$，解得 $\Im T = 2k\pi$（$k \in \ZZ$）。</p>
+      <p>因此 $T = \Re T + i\Im T = 2k\pi i$，且 $k = \pm 1$ 给出最小非零周期 $2\pi i$，故基本周期为 $2\pi i$。</p>      <p><strong>解析性：</strong>$u(x,y)=e^x\cos y$，$v(x,y)=e^x\sin y$。验证 C-R 方程：</p>
       $$\frac{\partial u}{\partial x} = e^x\cos y = \frac{\partial v}{\partial y}, \qquad \frac{\partial u}{\partial y} = -e^x\sin y = -\frac{\partial v}{\partial x}$$
       <p>C-R 方程处处成立，偏导数连续（可微），故 $e^z$ 在全平面解析。由 C-R 条件下的导数公式：</p>
       $$\frac{\dd}{\dd z}e^z = \frac{\partial u}{\partial x} + i\frac{\partial v}{\partial x} = e^x\cos y + ie^x\sin y = e^z$$
@@ -144,6 +147,12 @@
         <li>水平线 $y = c$（$c$ 为常数）映为射线 $\arg w = c$；</li>
         <li>竖直线 $x = c$ 映为圆周 $|w| = e^c$；</li>
         <li>宽度为 $2\pi$ 的水平带域恰好覆盖 $w$ 平面一次。</li>
+      </ul>
+      <p><strong>为什么？</strong>设 $z = x + iy$，则 $|w| = |e^z| = e^x$，$\arg w = \arg(e^z) = y$（模 $2\pi$）。</p>
+      <ul>
+        <li>当 $x$ 固定（竖直线），$|w| = e^x$ 为常数 → 圆周。</li>
+        <li>当 $y$ 固定（水平线），$\arg w = y$ 为常数 → 射线。</li>
+        <li>当 $y$ 跑遍一个长度为 $2\pi$ 的区间（如 $(-\pi, \pi]$），$\arg w$ 恰好跑遍 $(-\pi, \pi]$，覆盖除原点外的整个 $w$ 平面（原点永不被 $e^z$ 取到）。若带域宽度超过 $2\pi$，则不同的 $z$ 会映射到同一个 $w$（因为 $e^z$ 有周期 $2\pi i$），不再是单射。</li>
       </ul>
     </div>
 
@@ -556,7 +565,9 @@
         <li><strong>辐角范围</strong>：指定 $\arg z$ 的取值范围，如 $(\alpha, \alpha + 2\pi]$。</li>
       </ol>
       <p>最常见的选择是沿负实轴做支割线，取 $\Arg z \in (-\pi, \pi]$，得到主值分支 $\Log z$。</p>
-      <p>每个单值连续分支都是解析函数，解析区域为割开的复平面。</p>
+      <p><strong>为什么需要支割线？</strong>考虑 $z$ 从上半平面（$\Arg z \approx -\pi+\varepsilon$，接近 $-\pi$ 的上方）沿小圆弧绕原点一周到达下半平面（实质上是：取 $z$ 在负实轴上方，$\Arg z \to \pi$；然后 $z$ 在负实轴下方，$\Arg z \to -\pi$）。虽然 $z$ 的两个位置在几何上可以非常接近（跨越负实轴的两侧），但 $\Arg z$ 的值却从接近 $\pi$ 跳变到接近 $-\pi$——差了 $2\pi$。这意味着 $\Log z = \ln|z| + i\Arg z$ 在负实轴的两侧极限值不同：从上方趋近得 $\ln|z| + i\pi$，从下方趋近得 $\ln|z| - i\pi$。因此 $\Log z$ 在负实轴上不连续。</p>
+      <p>支割线的作用就是"割断"负实轴，禁止自变量跨过它——这样 $\Log z$ 在剩余的连通区域内就能保持连续（从而解析）。</p>
+      <p>每个单值连续分支在其定义域内都是解析函数（可利用反函数定理或直接验证 C-R 方程证明），解析区域为割开的复平面。</p>
     </div>
 
     <div class="box box-theorem">
@@ -567,6 +578,7 @@
         <li>$\log\dfrac{z_1}{z_2} = \log z_1 - \log z_2$（多值意义下）</li>
       </ol>
       <p><strong>注意</strong>：对主值 $\Log$，上述等式不一定成立，可能相差 $2\pi i$ 的整数倍。</p>
+      <p><strong>例</strong>：$\Log(-1 \cdot -1) = \Log(1) = 0$，但 $\Log(-1) + \Log(-1) = \pi i + \pi i = 2\pi i \neq 0$。这里多出的 $2\pi i$ 来自两个 $-1$ 的辐角相加后超过了 $(-\pi, \pi]$ 的范围，需要减去 $2\pi$ 来回到主值区间。$\Log(z_1 z_2) = \Log z_1 + \Log z_2 \pm 2\pi i$（其中 $\pm$ 取决于 $\Arg z_1 + \Arg z_2$ 是否超出 $(-\pi, \pi]$）。</p>
     </div>
 
     <div class="box box-example">
@@ -638,7 +650,13 @@
       <p>$e^{2k\pi i p/q} = e^{2\pi i \cdot kp/q}$。由于 $p$ 和 $q$ 互素，当 $k = 0, 1, \ldots, q-1$ 时，$kp \bmod q$ 取遍 $0, 1, \ldots, q-1$ 的所有值（这是数论中互素的基本性质）。</p>
       <p>当 $k = q$ 时，$e^{2\pi i \cdot qp/q} = e^{2\pi i p} = 1$，与 $k = 0$ 相同。因此恰有 $q$ 个不同的值。</p>
       <p><strong>情形3：$a$ 为无理数或非实数。</strong></p>
-      <p>若 $a \notin \QQ$（包括无理实数和所有虚/复数），则 $e^{2k\pi ia}$ 对不同的整数 $k$ 给出不同的值——因为若 $e^{2k_1\pi ia} = e^{2k_2\pi ia}$，则 $e^{2(k_1-k_2)\pi ia} = 1$，这意味着 $2(k_1-k_2)\pi a$ 是 $2\pi$ 的整数倍，即 $(k_1-k_2)a \in \ZZ$。当 $a$ 非有理数时，这只有在 $k_1 = k_2$ 时才成立。因此不同的 $k$ 给出不同的值——有无穷多个值。$\square$</p>
+      <p><strong>3a. $a$ 为无理实数。</strong>若 $e^{2k_1\pi ia} = e^{2k_2\pi ia}$，则 $e^{2(k_1-k_2)\pi ia} = 1$，这意味着 $2(k_1-k_2)\pi a = 2m\pi$（$m \in \ZZ$），即 $(k_1-k_2)a = m$。若 $a$ 为无理数，则 $(k_1-k_2)a$ 只有在 $k_1=k_2$ 时才是整数（否则 $(k_1-k_2)a$ 仍为无理数，不能是整数）。因此不同 $k$ 给出不同值——有无穷多个值。</p>
+      <p><strong>3b. $a = p + iq$（$q \neq 0$，即 $a$ 有非零虚部）。</strong>设 $a = p + iq$，则因子为：</p>
+      $$e^{2k\pi i(p+iq)} = e^{2k\pi i p} \cdot e^{-2k\pi q}$$
+      <p>其中 $e^{2k\pi i p}$ 是模为 $1$ 的复因子（取决于 $p$ 是否整数），而 $e^{-2k\pi q}$ 是实的指数因子。对于不同的 $k_1 \neq k_2$：</p>
+      $$|e^{2k_1\pi i a}| = e^{-2k_1\pi q} \neq e^{-2k_2\pi q} = |e^{2k_2\pi i a}| \quad (\text{因为 } q \neq 0)$$
+      <p>因子的模就不同，值当然不同。因此当 $a$ 的虚部非零时，不同 $k$ 一定给出不同值——有无穷多个值。</p>
+      <p><strong>总结</strong>：仅当 $a$ 为有理实数时才有有限个分支（且仅当 $a$ 为整数时单值）；所有其他情况（无理实数或任何复数）都产生无穷多个值。$\square$</p>
     </div>
 
     <div class="box box-example">
@@ -758,12 +776,45 @@
       <p>故 $\cos(1+2i) \approx 0.5403 \times 3.7622 - i \times 0.8415 \times 3.6269 \approx 2.0327 - 3.0518i$。</p>
     </div>
 
+    <div class="box box-example">
+      <div class="box-title">例6 · 计算 $\sin(1+2i)$</div>
+      <p>用实虚部分离公式：$\sin(x+iy) = \sin x \cosh y + i\cos x \sinh y$。代入 $x=1,y=2$：</p>
+      <p>$\sin 1 \approx 0.8415$，$\cos 1 \approx 0.5403$，$\cosh 2 \approx 3.7622$，$\sinh 2 \approx 3.6269$。</p>
+      <p>实部：$\sin 1 \cdot \cosh 2 \approx 0.8415 \times 3.7622 \approx 3.1659$</p>
+      <p>虚部：$\cos 1 \cdot \sinh 2 \approx 0.5403 \times 3.6269 \approx 1.9596$</p>
+      <p>故 $\sin(1+2i) \approx 3.1659 + 1.9596i$。注意 $|\sin(1+2i)| \approx 3.72 > 1$，体现了复三角函数的无界性。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例7 · 计算 $\tan(1+i)$</div>
+      <p>由 $\tan z = \dfrac{\sin z}{\cos z}$。先用公式计算 $\sin(1+i)$ 和 $\cos(1+i)$：</p>
+      $$\sin(1+i) = \sin 1 \cosh 1 + i\cos 1 \sinh 1$$
+      $$\cos(1+i) = \cos 1 \cosh 1 - i\sin 1 \sinh 1$$
+      <p>$\cosh 1 \approx 1.5431$，$\sinh 1 \approx 1.1752$。</p>
+      <p>$\sin(1+i) \approx 0.8415 \times 1.5431 + i \times 0.5403 \times 1.1752 \approx 1.2985 + 0.6350i$</p>
+      <p>$\cos(1+i) \approx 0.5403 \times 1.5431 - i \times 0.8415 \times 1.1752 \approx 0.8337 - 0.9889i$</p>
+      <p>$\tan(1+i) = \dfrac{1.2985 + 0.6350i}{0.8337 - 0.9889i}$。分子分母同乘分母的共轭：</p>
+      $$= \frac{(1.2985+0.6350i)(0.8337+0.9889i)}{0.8337^2+0.9889^2} = \frac{0.4545 + 1.8130i}{1.6729} \approx 0.2718 + 1.0839i$$
+      <p><strong>技巧提示</strong>：使用公式 $\tan(x+iy) = \dfrac{\sin 2x + i\sinh 2y}{\cos 2x + \cosh 2y}$ 可以直接算出 $\tan(1+i)$，验证以上结果。</p>
+    </div>
+
     <div class="collapsible">
       <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 求 $\sin z$ 的所有零点</div>
       <div class="collapsible-body">
         <p><strong>解</strong>：$\sin z = 0 \Leftrightarrow \dfrac{e^{iz} - e^{-iz}}{2i} = 0 \Leftrightarrow e^{iz} = e^{-iz} \Leftrightarrow e^{2iz} = 1$。</p>
         <p>设 $2iz = 2k\pi i$（$k \in \ZZ$），即 $z = k\pi$，$k \in \ZZ$。</p>
         <p><strong>结论</strong>：$\sin z$ 的零点与实数域完全相同，都是 $z = k\pi$（$k \in \ZZ$）。这验证了 $\sin z$ 是实函数 $\sin x$ 的真正解析延拓。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 求 $\cos z$ 的所有零点</div>
+      <div class="collapsible-body">
+        <p><strong>解</strong>：$\cos z = 0 \Leftrightarrow \dfrac{e^{iz} + e^{-iz}}{2} = 0 \Leftrightarrow e^{iz} + e^{-iz} = 0 \Leftrightarrow e^{iz} = -e^{-iz}$。</p>
+        <p>同乘 $e^{iz}$：$e^{2iz} = -1$。$e^{2iz} = e^{\pi i}$（因为 $e^{\pi i} = \cos\pi + i\sin\pi = -1$）。</p>
+        <p>由 $e^w = e^{\pi i} \Rightarrow w = \pi i + 2k\pi i$（利用 $e^z$ 的周期性，$e^a = e^b \Leftrightarrow a-b = 2k\pi i$），得：</p>
+        $$2iz = \pi i + 2k\pi i \implies z = \frac{\pi}{2} + k\pi, \quad k \in \ZZ$$
+        <p><strong>结论</strong>：$\cos z$ 的零点与实数域完全相同，都是 $z = \dfrac{\pi}{2} + k\pi$（$k \in \ZZ$）。与 $\sin z$ 一样，$\cos z$ 在复数域中没有新的零点。</p>
       </div>
     </div>
 

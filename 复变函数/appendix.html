@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>附录 · 公式速查与备考指南</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}', CC: '\\mathbb{C}', EE: '\\mathbb{E}',
+          dd: '\\mathrm{d}', Res: '\\mathrm{Res}', arg: '\\mathrm{arg}',
+          Arg: '\\mathrm{Arg}', Log: '\\mathrm{Log}', ZZ: '\\mathbb{Z}', NN: '\\mathbb{N}', Re: '\\mathrm{Re}', Im: '\\mathrm{Im}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;margin-right:12px;">&#8592; 总览</a>
+  <a href="index.html" class="nav-brand">复变函数复习</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+    <li><a href="ch7.html">第七章</a></li>
+    <li><a href="quiz.html" style="color:#fbbf24;">🎮 闯关答题</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>附录 · 公式速查与备考指南</h1>
+    <p>汇集全课程核心公式，对照考前快速回顾；附9天学习计划和考场策略建议。</p>
+  </div>
+
+  <!-- 快速跳转 -->
+  <div class="toc">
+    <h3>本附录目录</h3>
+    <ol>
+      <li><a href="#formulas">第一部分：核心公式速查（Ch1–Ch7 §7.3）</a></li>
+      <li><a href="#plan">第二部分：9天学习计划</a></li>
+      <li><a href="#exam-tips">第三部分：备考建议</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 第一部分：核心公式 ==================== -->
+  <div class="section" id="formulas">
+    <h2>第一部分：核心公式速查</h2>
+    <p style="color:var(--text-muted);">以下仅列考试中出现频率最高、需要熟练记忆和使用的公式。推导过程见对应章节正文。</p>
+
+    <!-- Ch1 -->
+    <h3>第一章 · 复数与复变函数</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>公式</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>$|z|^2 = z\bar{z}$</td><td>模与共轭的核心恒等式（去分母、证不等式的基础）</td></tr>
+          <tr><td>$|z_1 z_2| = |z_1|\,|z_2|$</td><td>模的乘积性质</td></tr>
+          <tr><td>$|z_1 + z_2| \le |z_1| + |z_2|$</td><td>三角不等式（证明中频繁使用）</td></tr>
+          <tr><td>$z = re^{i\theta} = r(\cos\theta + i\sin\theta)$</td><td>指数形式 / 三角形式</td></tr>
+          <tr><td>$\Arg(z) = \begin{cases} \arctan\frac{y}{x}, & x>0 \\ \arctan\frac{y}{x}+\pi, & x<0, y\ge 0 \\ \arctan\frac{y}{x}-\pi, & x<0, y<0 \end{cases}$</td><td>辐角主值（$x=0$时直接几何判断）</td></tr>
+          <tr><td>$(\cos\theta + i\sin\theta)^n = \cos n\theta + i\sin n\theta$</td><td>棣莫弗公式（$n\in\ZZ$）</td></tr>
+          <tr><td>$z_k = \rho^{1/n} e^{i(\varphi + 2k\pi)/n},\; k=0,1,\ldots,n-1$</td><td>$n$次方根：$n$个根均匀分布</td></tr>
+          <tr><td>$\lim_{z\to z_0}f(z)=w_0 \iff \begin{cases} u(x,y)\to u_0 \\ v(x,y)\to v_0 \end{cases}$</td><td>极限归结为实部、虚部的二元极限</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Ch2 -->
+    <h3>第二章 · 解析函数</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>公式</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>$\displaystyle f'(z_0) = \lim_{\Delta z\to 0}\frac{f(z_0+\Delta z)-f(z_0)}{\Delta z}$</td><td>复导数定义：所有方向极限一致</td></tr>
+          <tr><td>$\dfrac{\partial u}{\partial x} = \dfrac{\partial v}{\partial y},\quad \dfrac{\partial u}{\partial y} = -\dfrac{\partial v}{\partial x}$</td><td><strong>★ Cauchy-Riemann 方程</strong>（全书最重要的方程）</td></tr>
+          <tr><td>$f'(z) = u_x + iv_x = v_y - iu_y$</td><td>C-R条件满足时的导数公式</td></tr>
+          <tr><td>可导 $\xLeftarrow{\text{C-R+可微}}$ 解析</td><td>在一点可导 ≠ 在一点解析（后者需邻域内处处可导）</td></tr>
+          <tr><td>$\Delta u = u_{xx} + u_{yy} = 0$</td><td>Laplace方程（解析函数的实部、虚部均为调和函数）</td></tr>
+          <tr><td>$v(x,y) = \int u_x\,dy + g(x),\quad g'(x) = -u_y - \frac{\partial}{\partial x}\!\int u_x\,dy$</td><td>由实部 $u$ 求共轭调和函数 $v$ 的方法</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Ch3 -->
+    <h3>第三章 · 初等函数</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>公式</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>$e^z = e^x(\cos y + i\sin y)$</td><td>复指数函数：模由实部定，辐角由虚部定</td></tr>
+          <tr><td>$e^{z+2\pi i} = e^z$</td><td>$2\pi i$ 是基本周期（最关键的性质）</td></tr>
+          <tr><td>$\log z = \ln|z| + i\arg z$</td><td>多值对数；$\Log z = \ln|z| + i\Arg z$（主值，$\Arg z\in(-\pi,\pi]$）</td></tr>
+          <tr><td>$z^a = e^{a\log z}$</td><td>幂函数：整数$a$→单值；有理数$a=p/q$→$q$值；其他→无穷多值</td></tr>
+          <tr><td>$\sin z = \dfrac{e^{iz}-e^{-iz}}{2i},\quad \cos z = \dfrac{e^{iz}+e^{-iz}}{2}$</td><td>复三角函数（定义）</td></tr>
+          <tr><td>$\sin(x+iy) = \sin x\cosh y + i\cos x\sinh y$</td><td>正弦的实虚部分离（$\cos$同理）</td></tr>
+          <tr><td>$\cosh z = \dfrac{e^z+e^{-z}}{2},\quad \sinh z = \dfrac{e^z-e^{-z}}{2}$</td><td>双曲函数</td></tr>
+          <tr><td>$\sin z = 0 \Leftrightarrow z = k\pi$</td><td>复三角函数零点与实数域完全相同</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Ch4 -->
+    <h3>第四章 · 复积分 ★★★（分值最重）</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>公式</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>$\displaystyle\int_C f(z)dz = \int_\alpha^\beta f(z(t))z'(t)dt$</td><td>参数化计算公式</td></tr>
+          <tr><td>$\displaystyle\oint_{|z-a|=r} (z-a)^n dz = \begin{cases} 2\pi i, & n=-1 \\ 0, & n\neq -1 \end{cases}$</td><td><strong>★ 基础公式</strong>：整个留数理论的出发点</td></tr>
+          <tr><td>$\left|\int_C f(z)dz\right| \le M\cdot L$</td><td>积分模的估计（$M$为$|f|$上界，$L$为弧长）</td></tr>
+          <tr><td>若$f$在单连通域$D$内解析, 则$\oint_C f(z)dz = 0$</td><td><strong>★ Cauchy 积分定理</strong></td></tr>
+          <tr><td>$\displaystyle f(a) = \frac{1}{2\pi i}\oint_C \frac{f(z)}{z-a}dz$</td><td><strong>★ Cauchy 积分公式</strong>（边界值决定内部值）</td></tr>
+          <tr><td>$\displaystyle f^{(n)}(a) = \frac{n!}{2\pi i}\oint_C \frac{f(z)}{(z-a)^{n+1}}dz$</td><td><strong>★ 高阶导数公式</strong></td></tr>
+          <tr><td>$|f^{(n)}(a)| \le \dfrac{n! M}{R^n}$</td><td>Cauchy 估计（推导 Liouville 定理）</td></tr>
+          <tr><td>有界整函数必为常数</td><td>Liouville 定理</td></tr>
+          <tr><td>$n$次多项式恰有$n$个复根（计重数）</td><td>代数基本定理</td></tr>
+          <tr><td>解析函数$|f|$的最大值在边界上取到</td><td>最大模原理</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Ch5 -->
+    <h3>第五章 · 级数</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>公式</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>$\displaystyle R = \lim_{n\to\infty}\left|\frac{a_n}{a_{n+1}}\right| = \frac{1}{\limsup\sqrt[n]{|a_n|}}$</td><td>幂级数收敛半径</td></tr>
+          <tr><td>$\displaystyle f(z) = \sum_{n=0}^\infty \frac{f^{(n)}(z_0)}{n!}(z-z_0)^n$</td><td><strong>Taylor 展开</strong>（收敛半径 = 到最近奇点的距离）</td></tr>
+          <tr><td>$\displaystyle f(z) = \sum_{n=-\infty}^\infty a_n(z-z_0)^n$</td><td><strong>★ Laurent 展开</strong>（圆环域内，含负幂项）</td></tr>
+          <tr><td>$\displaystyle a_n = \frac{1}{2\pi i}\oint_C \frac{f(\zeta)}{(\zeta-z_0)^{n+1}}d\zeta$</td><td>Laurent 系数公式（$n$可为负）</td></tr>
+          <tr><td>常用展开：$\frac{1}{1-z}=\sum_{n=0}^\infty z^n\;(|z|<1)$</td><td>几何级数——所有间接展开的基础</td></tr>
+          <tr><td>可去奇点：无负幂项，$\lim f(z)$有限</td><td rowspan="3"><strong>孤立奇点三分法</strong>（根据 Laurent 展开的主要部分）</td></tr>
+          <tr><td>$m$阶极点：最高负幂为$(z-z_0)^{-m}$，$\lim f(z)=\infty$</td></tr>
+          <tr><td>本性奇点：无穷多负幂项，$\lim f(z)$不存在</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Ch6 -->
+    <h3>第六章 · 留数 ★★★（计算积分的主力章节）</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>公式</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>$\Res[f, z_0] = a_{-1}$（Laurent 展开中 $(z-z_0)^{-1}$ 的系数）</td><td>留数定义</td></tr>
+          <tr><td>一阶极点：$\Res[f, z_0] = \lim_{z\to z_0}(z-z_0)f(z)$</td><td>一阶极点留数公式</td></tr>
+          <tr><td>$f=\frac{p}{q}$且$p(z_0)\neq0, q(z_0)=0, q'(z_0)\neq0$：$\Res=\frac{p(z_0)}{q'(z_0)}$</td><td>有理函数一阶极点留数（最常用）</td></tr>
+          <tr><td>$m$阶极点：$\Res = \frac{1}{(m-1)!}\lim_{z\to z_0}\frac{d^{m-1}}{dz^{m-1}}[(z-z_0)^m f(z)]$</td><td>$m$阶极点留数公式</td></tr>
+          <tr><td>$\displaystyle\oint_C f(z)dz = 2\pi i\sum_{k=1}^n \Res[f, z_k]$</td><td><strong>★ 留数定理</strong></td></tr>
+          <tr><td>类型一：$\int_0^{2\pi}R(\cos\theta,\sin\theta)d\theta$</td><td>令 $z=e^{i\theta}$，化为单位圆周积分</td></tr>
+          <tr><td>类型二：$\int_{-\infty}^\infty \frac{p(x)}{q(x)}dx$（$\deg q \ge \deg p + 2$）</td><td>上半平面半圆围道，$q$在实轴上无零点</td></tr>
+          <tr><td>类型三：$\int_{-\infty}^\infty f(x)e^{iax}dx$（$a>0$）</td><td>Jordan引理 + 上半平面围道</td></tr>
+          <tr><td>$\frac{1}{2\pi i}\oint_C\frac{f'(z)}{f(z)}dz = N - P$</td><td>辐角原理（零点数 $-$ 极点数）</td></tr>
+          <tr><td>若在 $C$ 上 $|f(z)-g(z)| < |g(z)|$，则 $f$ 与 $g$ 在 $C$ 内零点数相同</td><td>Rouché 定理</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Ch7 §§1-3 -->
+    <h3>第七章 · 共形映射（§7.1 – §7.3）</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>公式</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>伸缩率 $|f'(z_0)|$，旋转角 $\arg f'(z_0)$</td><td>导数的几何意义</td></tr>
+          <tr><td>若 $f'(z_0)\neq 0$ 且 $f$ 为单射，则 $f$ 是共形映射</td><td>共形映射的充分条件</td></tr>
+          <tr><td>$\displaystyle w = \frac{az+b}{cz+d},\; ad-bc\neq 0$</td><td><strong>分式线性变换</strong>（Möbius变换）</td></tr>
+          <tr><td>保圆性、保对称点性、交比不变</td><td>Möbius变换的三大核心性质</td></tr>
+          <tr><td>$\displaystyle (z_1,z_2;z_3,z_4) = \frac{(z_3-z_1)(z_4-z_2)}{(z_3-z_2)(z_4-z_1)}$</td><td>交比定义（Möbius变换下不变）</td></tr>
+          <tr><td>$w = z^n$：将角域 $\{0<\arg z<\alpha\}$ 映为 $\{0<\arg w<n\alpha\}$</td><td>幂函数映射（展开/压缩角度）</td></tr>
+          <tr><td>$w = e^z$：将水平带形映为角域；$|w|=e^x$，$\arg w = y$</td><td>指数函数映射</td></tr>
+          <tr><td>$w = \frac{1}{2}(z+\frac{1}{z})$：将 $|z|>1$ 映为 $\CC\setminus[-1,1]$</td><td>儒科夫斯基变换（机翼剖面）</td></tr>
+          <tr><td>上半平面 → 单位圆：$w = e^{i\theta}\frac{z-\alpha}{z-\bar{\alpha}}$（$\Im\alpha>0$）</td><td>最重要的标准映射之一</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ==================== 第二部分：9天学习计划 ==================== -->
+  <div class="section" id="plan">
+    <h2>第二部分：9天学习计划</h2>
+    <p style="color:var(--text-muted);">每天建议 4–6 小时有效学习时间。标注 ★ 的为重点日。</p>
+
+    <div class="box box-note">
+      <div class="box-title">计划设计原则</div>
+      <ul>
+        <li>前三章是基础工具，需要熟练掌握运算方法（而非死记硬背）。</li>
+        <li>第四章是理论核心和考试重点，分配两天。</li>
+        <li>第五、六章是计算工具（留数计算实积分是必考题），分配两天。</li>
+        <li>第七章只考前3节，分配一天。</li>
+        <li>最后两天用于综合复习和真题/模拟训练。</li>
+      </ul>
+    </div>
+
+    <h3>第1天：第一章 复数与复变函数</h3>
+    <div class="box box-note">
+      <div class="box-title">学习目标</div>
+      <ul>
+        <li>熟练掌握复数的四则运算、模和共轭的性质</li>
+        <li>能在直角坐标和指数形式之间灵活转换</li>
+        <li>掌握棣莫弗公式和$n$次方根的计算</li>
+        <li>理解区域、闭区域、单连通/多连通的概念</li>
+      </ul>
+    </div>
+    <p><strong>重点练习</strong>：用指数形式做乘除和幂运算；利用 $|z|^2=z\bar{z}$ 简化表达式；三角不等式的应用；判断点集的类型和连通性。</p>
+    <p><strong>自查</strong>：能否在30秒内将 $1+\sqrt{3}i$ 化为指数形式？能否求出 $(1+i)^8$ 而不展开二项式？</p>
+
+    <h3>★ 第2天：第二章 解析函数</h3>
+    <div class="box box-note">
+      <div class="box-title">学习目标</div>
+      <ul>
+        <li>理解复可导与实可导的本质区别（所有方向极限一致）</li>
+        <li>牢记 C-R 方程并熟练用于判断解析性</li>
+        <li>掌握由实部求虚部的方法（C-R方程积分）</li>
+        <li>理解调和函数和共轭调和函数的概念</li>
+      </ul>
+    </div>
+    <p><strong>重点练习</strong>：用C-R方程判断函数是否解析；给定$u$求$v$（和反过来）；验证调和性。</p>
+    <p><strong>易错点</strong>：可导$\neq$解析（解析需要邻域内处处可导，$|z|^2$在$z=0$可导但不解析是经典反例）。C-R方程只是必要条件，需配合可微性才是充分条件。</p>
+
+    <h3>第3天：第三章 初等函数</h3>
+    <div class="box box-note">
+      <div class="box-title">学习目标</div>
+      <ul>
+        <li>掌握 $e^z$ 的周期性和映射性质</li>
+        <li>理解对数函数的多值性和主值分支</li>
+        <li>判断幂函数 $z^a$ 的分支数量</li>
+        <li>会计算复三角函数的值并理解其无界性</li>
+      </ul>
+    </div>
+    <p><strong>重点练习</strong>：计算$\Log z$、$z^a$的具体值；判断$z^a$是几值函数；解含指数/对数的方程（如$e^z=1+i$）。</p>
+    <p><strong>易错点</strong>：$\Log(z_1z_2) \neq \Log z_1 + \Log z_2$（可能差$2\pi i$）；$|\sin z|$可以大于1。</p>
+
+    <h3>★★ 第4天：第四章 复积分（上）—— 基础与Cauchy积分公式</h3>
+    <div class="box box-note">
+      <div class="box-title">学习目标</div>
+      <ul>
+        <li>掌握参数化计算复积分的方法</li>
+        <li>牢记 $\oint (z-a)^n dz$ 的结果（$n=-1$是唯一例外）</li>
+        <li>理解Cauchy积分定理的条件和结论</li>
+        <li>熟练运用Cauchy积分公式计算围道积分</li>
+      </ul>
+    </div>
+    <p><strong>重点练习</strong>：参数化法计算简单积分；用Cauchy积分公式计算 $\oint \frac{f(z)}{z-a}dz$ 型积分（确认$a$在围道内部）。</p>
+    <p><strong>自我检测</strong>：$\oint_{|z|=2}\frac{e^z}{z-1}dz = ?$（答案：$2\pi i e$）</p>
+
+    <h3>★★ 第5天：第四章 复积分（下）—— 高阶导数与深刻推论</h3>
+    <div class="box box-note">
+      <div class="box-title">学习目标</div>
+      <ul>
+        <li>熟练运用高阶导数公式</li>
+        <li>理解Cauchy估计 → Liouville定理 → 代数基本定理的逻辑链</li>
+        <li>掌握最大模原理及其应用</li>
+      </ul>
+    </div>
+    <p><strong>重点练习</strong>：高阶导数公式计算含$(z-a)^{-n}$（$n\ge 2$）的积分；用最大模原理证明不等式。</p>
+    <p><strong>自我检测</strong>：$\oint_{|z|=3}\frac{\cos z}{(z-\pi)^3}dz = ?$（答案：$\pi i \sin\pi = 0$，注意$\cos\pi = -1$的导数为$\sin\pi = 0$）</p>
+
+    <h3>★ 第6天：第五章 级数</h3>
+    <div class="box box-note">
+      <div class="box-title">学习目标</div>
+      <ul>
+        <li>掌握幂级数收敛半径的求法</li>
+        <li>能对解析函数做 Taylor 展开（直接法和间接法）</li>
+        <li>能在圆环域内做 Laurent 展开（间接法为主）</li>
+        <li>能根据 Laurent 展开判断奇点类型</li>
+      </ul>
+    </div>
+    <p><strong>重点练习</strong>：用几何级数 $\frac{1}{1-z}=\sum z^n$ 做间接展开；在不同圆环域内展开同一函数；判断奇点类型（数负幂项个数是最直接的方法）。</p>
+    <p><strong>易错点</strong>：Laurent展开依赖圆环域——同一个函数在不同区域展开结果不同。展开前先明确$z_0$和收敛域。</p>
+
+    <h3>★★ 第7天：第六章 留数</h3>
+    <div class="box box-note">
+      <div class="box-title">学习目标</div>
+      <ul>
+        <li>熟练计算各类奇点的留数（一阶极点、$m$阶极点、本性奇点）</li>
+        <li>用留数定理计算围道积分</li>
+        <li><strong>（必考）</strong>用留数定理计算三类实积分</li>
+        <li>理解辐角原理和 Rouché 定理的思想</li>
+      </ul>
+    </div>
+    <p><strong>重点练习</strong>：一阶极点留数的快速计算（有理函数优先用 $p/q'$ 公式）；三类实积分各做至少2道完整例题；总结围道选择策略。</p>
+    <p><strong>实积分围道速查</strong>：$\int_0^{2\pi} R(\cos\theta,\sin\theta)d\theta$ → 单位圆；$\int_{-\infty}^\infty$ 有理函数 → 上半平面半圆；$\int_{-\infty}^\infty f(x)e^{iax}dx$ → 同上 + Jordan引理。</p>
+
+    <h3>第8天：第七章（§7.1–§7.3）</h3>
+    <div class="box box-note">
+      <div class="box-title">学习目标</div>
+      <ul>
+        <li>理解导数的几何意义（伸缩率 + 旋转角）</li>
+        <li>掌握分式线性变换的三大性质和交比公式</li>
+        <li>能用初等函数（$z^n$, $e^z$, $\frac{1}{2}(z+1/z)$）构造简单共形映射</li>
+      </ul>
+    </div>
+    <p><strong>重点练习</strong>：用交比公式求Möbius变换；用幂函数/指数函数构造将给定区域映为单位圆或上半平面的映射。</p>
+    <p><strong>不必花大力气</strong>：Riemann映射定理（了解结论即可）；Schwarz-Christoffel公式（掌握思路，具体积分一般不考）。</p>
+
+    <h3>★★ 第9天：综合复习与模拟训练</h3>
+    <div class="box box-note">
+      <div class="box-title">学习目标</div>
+      <ul>
+        <li>用公式速查表快速过一遍全课程公式</li>
+        <li>重做各章经典例题（特别是积分和级数计算题）</li>
+        <li>做1–2套往年真题或模拟题，严格计时</li>
+        <li>整理错题和易混淆概念</li>
+      </ul>
+    </div>
+    <p><strong>推荐复习顺序</strong>：先过公式表 → 各章FAQ/误区 → 翻看自己做错的题 → 再掐时间做一套完整的模拟卷。</p>
+  </div>
+
+  <!-- ==================== 第三部分：备考建议 ==================== -->
+  <div class="section" id="exam-tips">
+    <h2>第三部分：备考建议</h2>
+
+    <h3>一、考试题型与分值分布（典型估计）</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>题型</th><th>分值</th><th>主要覆盖章节</th></tr></thead>
+        <tbody>
+          <tr><td>填空/选择题</td><td>20–30%</td><td>Ch1–Ch3 基础概念和计算</td></tr>
+          <tr><td>计算题</td><td>40–50%</td><td>Ch4（积分计算）、Ch6（留数 + 实积分）</td></tr>
+          <tr><td>证明题</td><td>15–25%</td><td>Ch2（C-R方程）、Ch4（Cauchy相关推论）</td></tr>
+          <tr><td>综合/应用题</td><td>10–15%</td><td>Ch5（展开与奇点分类）、Ch7（映射构造）</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>二、各章节的考试权重与策略</h3>
+    <div class="box box-note">
+      <div class="box-title">按考试重要性排序</div>
+      <ol>
+        <li><strong>Ch4 + Ch6（★★★★★）</strong>：积分计算是绝对核心。Cauchy积分公式、高阶导数公式、留数定理、三类实积分——这些是计算题的"常规武器"。两道大题至少有一道来自这里。</li>
+        <li><strong>Ch5（★★★★）</strong>：Taylor/Laurent展开和奇点分类既是独立考点也是Ch6留数计算的前提。间接展开法（利用已知展开）是最实用的技能。</li>
+        <li><strong>Ch2（★★★★）</strong>：C-R方程是证明题的高频考点。典型考法：给定$u$或$v$，用C-R求另一个并构造$f(z)$；或判断函数在何处解析。</li>
+        <li><strong>Ch3（★★★）</strong>：初等函数的计算和性质（周期性、多值性）出现在填空/选择中概率高。$e^z$和$\Log z$是最常考的两个。</li>
+        <li><strong>Ch1（★★）</strong>：基础运算。不会单独出大题，但所有题目都依赖这些技能。</li>
+        <li><strong>Ch7 §§1-3（★★）</strong>：Möbius变换和初等函数映射。通常出一道小题或大题的起始步骤。</li>
+      </ol>
+    </div>
+
+    <h3>三、考场策略</h3>
+    <div class="box box-note">
+      <div class="box-title">时间分配建议（以120分钟为例）</div>
+      <ul>
+        <li><strong>0–25分钟</strong>：快速完成填空/选择题。不会的果断跳过，不要在一道小题上纠结超过3分钟。</li>
+        <li><strong>25–85分钟</strong>：主攻计算题（通常2–3道）。留数计算实积分是最"稳"的得分点——只要你正确识别类型、选对围道、算对留数，就能拿满分。</li>
+        <li><strong>85–110分钟</strong>：完成证明题和综合题。C-R相关证明优先做（套路固定）。</li>
+        <li><strong>110–120分钟</strong>：回头检查。重点检查：留数计算有无漏奇点、实积分的围道选择是否正确、分式线性变换的条件$ad-bc\neq0$。</li>
+      </ul>
+    </div>
+
+    <h3>四、高频易错点清单</h3>
+    <div class="box box-note">
+      <div class="box-title">考前必查</div>
+      <ol>
+        <li><strong>C-R方程是必要非充分</strong>——偏导数连续 + C-R 才是充要条件。</li>
+        <li><strong>可导 ≠ 解析</strong>——解析要求在邻域内处处可导。</li>
+        <li><strong>$\Log(z_1z_2) \neq \Log z_1 + \Log z_2$</strong>——主值的运算可能差 $2\pi i$。</li>
+        <li><strong>Cauchy积分定理要求被积函数在围道内处处解析</strong>——内部有奇点时定理不适用，需要用Cauchy积分公式或留数定理。</li>
+        <li><strong>高阶导数公式的分母是 $(z-a)^{n+1}$，系数是 $n!/2\pi i$</strong>——注意 $n$ 和指数 $n+1$ 的对应关系。</li>
+        <li><strong>Laurent展开依赖圆环域</strong>——同一个函数在不同区域展开结果不同。</li>
+        <li><strong>留数计算时别忘了因子 $2\pi i$</strong>——围道积分 = $2\pi i\times\sum$留数（不是简单的留数之和）。</li>
+        <li><strong>实积分围道：确认上半平面内的所有奇点</strong>——只计入围道内部的奇点，围道外的奇点不参与求和。</li>
+        <li><strong>判断奇点类型时注意"可去"和"极点"的区别</strong>——$\sin z/z$ 在 $z=0$ 是可去（不是极点！），$\lim_{z\to 0}\sin z/z = 1$。</li>
+        <li><strong>Möbius变换：$ad-bc \neq 0$ 是必须的条件</strong>——如果忘了验证这一点可能被判错。</li>
+      </ol>
+    </div>
+
+    <h3>五、最后叮嘱</h3>
+    <div class="box box-note">
+      <div class="box-title">考前24小时做什么</div>
+      <ol>
+        <li>不要再学新内容。把本附录的公式速查表过一遍。</li>
+        <li>重做之前做错的2–3道题（而不是大量刷新题）。</li>
+        <li>确认自己能用留数定理从零开始完整计算 $\int_{-\infty}^\infty \frac{dx}{x^2+1} = \pi$（这道题基本涵盖了留数计算实积分的全套流程）。</li>
+        <li>检查计算器、铅笔、准考证等物品。</li>
+        <li>保证充足睡眠——复变函数考试需要的清醒头脑比多记一个公式更重要。</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="chapter-nav">
+    <a href="ch7.html" class="prev">← 第七章 · 共形映射</a>
+    <a href="quiz.html" class="next">🎮 闯关答题</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>复变函数复习指南 · 基于钟玉泉教材 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

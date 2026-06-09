@@ -36,6 +36,7 @@
     <li><a href="ch5.html">第五章</a></li>
     <li><a href="ch6.html">第六章</a></li>
     <li><a href="ch7.html">第七章</a></li>
+    <li><a href="appendix.html" style="color:#fbbf24;">📋 附录</a></li>
     <li><a href="quiz.html" style="color:#fbbf24;">🎮 闯关答题</a></li>
   </ul>
 </nav>
@@ -284,6 +285,7 @@
       <div class="box-title">定理 2.4（可导的充要条件）</div>
       <p>$f(z) = u + iv$ 在 $z_0$ 处可导 $\iff$ $u, v$ 在 $(x_0, y_0)$ 可微且满足 C-R 方程。</p>
       <p>$f(z)$ 在区域 $D$ 内解析 $\iff$ $u, v$ 在 $D$ 内可微且在 $D$ 内处处满足 C-R 方程。</p>
+      <p><strong>说明</strong>：这个定理将定理 2.2（必要性）和定理 2.3（充分性）合并为一个等价命题。必要性只需沿实轴和虚轴两个方向求极限即可导出（见上文定理 2.2 的证明）；充分性则需要利用 $u,v$ 的可微性，借助 C-R 方程将 $\Delta f$ 重组为仅依赖 $\Delta z$ 的表达式（见上文定理 2.3 的证明，这是复分析中最关键的论证之一）。若 $u,v$ 具有连续一阶偏导数，则自动满足可微条件，此时 C-R 方程成为可导的充要条件。</p>
     </div>
 
     <div class="box box-note">
@@ -499,6 +501,22 @@
           <p><strong>复势</strong>：</p>
           $$f(z) = (2x - 3y) + i(3x + 2y) = 2(x+iy) + 3i(x+iy) = (2 + 3i)z$$
           <p><strong>流速</strong>：$f'(z) = 2 + 3i$，由 $f'(z) = v_x - iv_y$ 得 $v_x = 2$，$v_y = -3$。这是一个均匀流场。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 2.11（静电场应用）</div>
+      <p>平面静电场中，两无限长平行导线（垂直于复平面）位于 $z = \pm 1$ 处，分别带有线电荷密度 $+\lambda$ 和 $-\lambda$。已知复势为 $f(z) = \dfrac{\lambda}{2\pi\varepsilon_0}\Log\dfrac{z-1}{z+1}$（取主值分支）。求等位线方程和电力线方程。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-body">
+          <p>令 $w = \dfrac{z-1}{z+1}$，则 $f(z) = \dfrac{\lambda}{2\pi\varepsilon_0}\Log w = \dfrac{\lambda}{2\pi\varepsilon_0}(\ln|w| + i\Arg w)$。</p>
+          <p>因此：</p>
+          $$\varphi = \frac{\lambda}{2\pi\varepsilon_0}\ln\left|\frac{z-1}{z+1}\right|,\quad \psi = \frac{\lambda}{2\pi\varepsilon_0}\Arg\left(\frac{z-1}{z+1}\right)$$
+          <p><strong>等位线</strong>（$\varphi = C$）：$\left|\dfrac{z-1}{z+1}\right| = \text{常数}$。这是 Apollonius 圆族——到两点 $z=1$ 和 $z=-1$ 距离之比为常数的点的轨迹，圆心在实轴上。</p>
+          <p><strong>电力线</strong>（$\psi = C$）：$\Arg\dfrac{z-1}{z+1} = \text{常数}$。这是过 $z=\pm 1$ 两点的圆弧族——从 $z=1$ 到 $z=-1$ 的张角为常数的点的轨迹。电力线与等位线正交，这验证了复势函数 $f(z)$ 的解析性。</p>
+          <p><strong>验证</strong>：由于对数函数的主值分支在负实轴上有割线，$f(z)$ 在该割线之外解析。$\varphi$ 和 $\psi$ 分别满足 Laplace 方程且满足 C-R 方程，互为共轭调和函数。</p>
         </div>
       </div>
     </div>

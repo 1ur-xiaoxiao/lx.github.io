@@ -36,6 +36,7 @@
     <li><a href="ch5.html">第五章</a></li>
     <li><a href="ch6.html">第六章</a></li>
     <li><a href="ch7.html">第七章</a></li>
+    <li><a href="appendix.html" style="color:#fbbf24;">📋 附录</a></li>
     <li><a href="quiz.html" style="color:#fbbf24;">🎮 闯关答题</a></li>
   </ul>
 </nav>
@@ -196,6 +197,14 @@
       <p>辐角的<strong>主值</strong> $\Arg(z)$ 通常取 $(-\pi, \pi]$ 中的唯一值，即：</p>
       $$\Arg(z) = \begin{cases} \arctan\dfrac{y}{x}, & x > 0 \\[6pt] \arctan\dfrac{y}{x} + \pi, & x < 0,\, y \ge 0 \\[6pt] \arctan\dfrac{y}{x} - \pi, & x < 0,\, y < 0 \\[6pt] \dfrac{\pi}{2}, & x = 0,\, y > 0 \\[6pt] -\dfrac{\pi}{2}, & x = 0,\, y < 0 \end{cases}$$
       <p>辐角的任意值满足 $\arg(z) = \Arg(z) + 2k\pi$，$k \in \mathbb{Z}$。</p>
+      <p><strong>各情况的几何含义：</strong></p>
+      <ul>
+        <li>$x > 0$（第一、四象限）：直接用反正切公式，$\Arg(z) \in (-\frac{\pi}{2}, \frac{\pi}{2})$。</li>
+        <li>$x < 0, y \ge 0$（第二象限）：反正切给出负值（$-\frac{\pi}{2}$到$0$），需加 $\pi$，使 $\Arg(z) \in (\frac{\pi}{2}, \pi]$。</li>
+        <li>$x < 0, y < 0$（第三象限）：反正切给出正值（$0$到$\frac{\pi}{2}$），需减 $\pi$，使 $\Arg(z) \in (-\pi, -\frac{\pi}{2})$。</li>
+        <li>$x = 0$（虚轴上）：无法用反正切，直接从几何判断——上半虚轴为 $\frac{\pi}{2}$，下半虚轴为 $-\frac{\pi}{2}$。</li>
+      </ul>
+      <p><strong>记忆技巧</strong>：主值范围 $(-\pi, \pi]$ 把上半平面分配给正辐角、下半平面分配给负辐角，负实轴为 $\pi$（而非 $-\pi$），左右对称。</p>
     </div>
 
     <div class="box box-formula">
@@ -632,6 +641,23 @@
             <li>沿虚轴（$x = 0$）：$f(iy) = \dfrac{-y^2}{y^2} = -1 \to -1$</li>
           </ul>
           <p>两路径极限不同，故 $\lim_{z \to 0} f(z)$ 不存在。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 1.12（$\varepsilon$-$\delta$ 证明极限）</div>
+      <p>用 $\varepsilon$-$\delta$ 定义证明 $\displaystyle\lim_{z \to 0} \frac{z^2}{|z|} = 0$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-body">
+          <p>目标：对任意 $\varepsilon > 0$，找 $\delta > 0$，使得当 $0 < |z-0| < \delta$ 时，$\left|\dfrac{z^2}{|z|} - 0\right| < \varepsilon$。</p>
+          <p>估计：</p>
+          $$\left|\frac{z^2}{|z|}\right| = \frac{|z^2|}{|z|} = \frac{|z|^2}{|z|} = |z|$$
+          <p>因此只需取 $\delta = \varepsilon$，当 $0 < |z| < \delta = \varepsilon$ 时：</p>
+          $$\left|\frac{z^2}{|z|} - 0\right| = |z| < \varepsilon$$
+          <p>这就验证了极限为 $0$。</p>
+          <p><strong>注</strong>：这个例子展示了复变函数极限计算的一个重要技巧——利用 $|z|$ 进行缩放。注意 $z^2/|z|$ 在 $z=0$ 处无定义，但极限存在（恰如一元函数中的可去间断点）。</p>
         </div>
       </div>
     </div>

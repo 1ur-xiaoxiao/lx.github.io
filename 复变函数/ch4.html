@@ -36,6 +36,7 @@
     <li><a href="ch5.html">第五章</a></li>
     <li><a href="ch6.html">第六章</a></li>
     <li><a href="ch7.html">第七章</a></li>
+    <li><a href="appendix.html" style="color:#fbbf24;">📋 附录</a></li>
     <li><a href="quiz.html" style="color:#fbbf24;">🎮 闯关答题</a></li>
   </ul>
 </nav>
@@ -131,6 +132,7 @@
       <p>设 $C: z = z(t)$，$t \in [\alpha, \beta]$，则：</p>
       $$\int_C f(z)\,\dd z = \int_\alpha^\beta f(z(t))\,z'(t)\,\dd t$$
       <p>这是计算复积分最实用的公式：将复积分转化为关于参数 $t$ 的定积分。</p>
+      <p><strong>推导思路</strong>：从 Riemann 和定义出发，$\int_C f(z)dz = \lim_{\max|\Delta z_k|\to 0}\sum_{k=1}^n f(\zeta_k)\Delta z_k$。将曲线参数化后，$\Delta z_k = z(t_k)-z(t_{k-1})$。由微分中值定理的近似 $z(t_k)-z(t_{k-1}) \approx z'(t_k^*)\Delta t_k$（当分割足够细时），代入得 $\sum f(z(t_k^*))z'(t_k^*)\Delta t_k$。当 $\max\Delta t_k \to 0$ 时，这个 Riemann 和的极限正是实函数的定积分 $\int_\alpha^\beta f(z(t))z'(t)dt$。</p>
     </div>
 
     <div class="box box-theorem">
@@ -169,6 +171,7 @@
         <p><strong>总结</strong>：</p>
         $$\oint_{|z-a|=r} (z-a)^n\,\dd z = \begin{cases} 2\pi i, & n = -1 \\ 0, & n \neq -1 \end{cases}$$
         <p>这是留数理论的基础公式。</p>
+        <p><strong>为什么 $n=-1$ 是唯一的例外？</strong>关键在于原函数的性质。当 $n \ne -1$ 时，$(z-a)^n$ 有单值原函数 $\frac{(z-a)^{n+1}}{n+1}$，它是 $\CC\setminus\{a\}$ 上的解析函数，因此绕 $a$ 一周的积分由 Newton-Leibniz 公式为零（起点和终点函数值相同）。但当 $n=-1$ 时，原函数为 $\log(z-a)$，这是一个多值函数——绕 $a$ 顺时针一周，$\log(z-a)$ 的辐角增加 $2\pi i$，原函数不回到原值，因此积分不为零。这个简单的区别是整个留数理论的核心：只有 $(z-a)^{-1}$ 项对围道积分有贡献，其余项的积分全部为零。</p>
       </div>
     </div>
   </div>
@@ -225,8 +228,9 @@
     <div class="box box-theorem">
       <div class="box-title">Cauchy 定理的推广形式</div>
       <p><strong>复合闭路定理</strong>（多连通域的情形）：</p>
-      <p>设 $f(z)$ 在闭曲线 $C$ 内部解析，$C_1, C_2, \ldots, C_n$ 是 $C$ 内部的互不相交的闭曲线，且它们都在 $C$ 的内部，则：</p>
+      <p>设 $f(z)$ 在由闭曲线 $C$ 和 $C_1, C_2, \ldots, C_n$ 所围成的多连通域上解析，$C_1, \ldots, C_n$ 是 $C$ 内部互不相交的闭曲线。约定：<strong>$C$ 取正向（逆时针），$C_k$ 取反向（顺时针）</strong>，使得区域始终在行进方向的左侧，则：</p>
       $$\oint_C f(z)\,\dd z = \sum_{k=1}^{n} \oint_{C_k} f(z)\,\dd z$$
+      <p><strong>定向说明</strong>：若所有曲线都取正向（逆时针），则等式右边需加负号。标准约定是外围 $C$ 逆时针、内部 $C_k$ 顺时针，以保证等式简洁。实际计算中，通常将所有积分统一为逆时针方向再求和。</p>
       <p>直观理解：内部"孔洞"周围的积分之和等于外围曲线的积分。这允许我们在有奇点的情况下，通过选择合适的围道将积分转化为更易计算的形式。</p>
     </div>
 
@@ -235,6 +239,11 @@
       <p>若 $f(z)$ 在单连通域 $D$ 内解析，则对 $D$ 内任意两点 $z_0, z_1$，积分 $\int_{z_0}^{z_1} f(z)\,\dd z$ 的值与路径无关（只要路径在 $D$ 内）。</p>
       <p>由此可定义原函数 $F(z) = \int_{z_0}^{z} f(\zeta)\,\dd\zeta$，满足 $F'(z) = f(z)$，且：</p>
       $$\int_{z_0}^{z_1} f(z)\,\dd z = F(z_1) - F(z_0)$$
+      <p><strong>证明</strong>（$F'(z)=f(z)$）：设 $z \in D$，$\Delta z$ 充分小使 $z+\Delta z \in D$。则：
+      $$F(z+\Delta z)-F(z) = \int_{z}^{z+\Delta z} f(\zeta)d\zeta$$
+      由积分路径无关性，可取直线段。于是：
+      $$\frac{F(z+\Delta z)-F(z)}{\Delta z} - f(z) = \frac{1}{\Delta z}\int_z^{z+\Delta z}[f(\zeta)-f(z)]d\zeta$$
+      由 $f$ 的连续性，$\forall\varepsilon>0$，$\exists\delta>0$ 使 $|\zeta-z|<\delta$ 时 $|f(\zeta)-f(z)|<\varepsilon$。取 $|\Delta z|<\delta$，则 $\left|\frac{1}{\Delta z}\int_z^{z+\Delta z}[f(\zeta)-f(z)]d\zeta\right| \le \frac{1}{|\Delta z|}\cdot\varepsilon\cdot|\Delta z|=\varepsilon$。故差商极限为 $f(z)$，即 $F'(z)=f(z)$。$\square$</p>
     </div>
 
     <div class="box box-note">
@@ -278,7 +287,8 @@
       $$\oint_{C_r} \frac{f(z)}{z-a}\,\dd z = \int_0^{2\pi} \frac{f(a+re^{i\theta})}{re^{i\theta}} \cdot ire^{i\theta}\,\dd\theta = i\int_0^{2\pi} f(a+re^{i\theta})\,\dd\theta$$
       <p><strong>第四步</strong>：比较此积分与 $2\pi i f(a) = i\int_0^{2\pi} f(a)\,\dd\theta$：</p>
       $$\left|\oint_{C_r} \frac{f(z)}{z-a}\,\dd z - 2\pi i f(a)\right| = \left|i\int_0^{2\pi}[f(a+re^{i\theta}) - f(a)]\,\dd\theta\right| \leq \int_0^{2\pi}|f(a+re^{i\theta}) - f(a)|\,\dd\theta$$
-      <p>由于 $f$ 在 $a$ 处连续，当 $r \to 0$ 时 $f(a+re^{i\theta}) \to f(a)$ 对 $\theta$ 一致成立，故上式趋于 $0$。</p>
+      <p>由于 $f$ 在 $a$ 处解析，故 $f$ 在 $a$ 的某邻域内连续。事实上，$f$ 在闭圆盘 $|z-a| \le r_0$ 上一致连续（紧致集上的连续函数必一致连续）。因此对给定的 $\varepsilon > 0$，存在 $r_0 > 0$，当 $r < r_0$ 时，对所有 $\theta \in [0, 2\pi]$ 一致有 $|f(a+re^{i\theta}) - f(a)| < \varepsilon$。</p>
+      <p>这里的关键是"<strong>一致</strong>"收敛：不仅每个方向的 $f(a+re^{i\theta})$ 都趋近于 $f(a)$，而且趋近的"速度"对所有 $\theta$ 是一致的。如果只有逐点收敛（每个 $\theta$ 单独趋近），我们不能将极限移入积分号内；但由于解析函数自动具有一致连续性质（在紧致邻域上），一致收敛得以保证，从而极限和积分可以交换。当 $r \to 0$ 时上式趋于 $0$。</p>
       <p>但由第二步，左端与 $r$ 无关，故必须恒为零，即：</p>
       $$\oint_C \frac{f(z)}{z-a}\,\dd z = 2\pi i f(a)$$
     </div>
@@ -345,6 +355,10 @@
       <p>当 $h \to 0$ 时，被积函数在 $C$ 上一致收敛到 $\dfrac{f(z)}{(z-a)^2}$，从而：</p>
       $$f'(a) = \lim_{h\to 0}\frac{f(a+h)-f(a)}{h} = \frac{1}{2\pi i}\oint_C \frac{f(z)}{(z-a)^2}\,\dd z$$
       <p>对一般的 $n$，用数学归纳法即可。</p>
+      <p><strong>归纳步骤（$n \to n+1$）</strong>：假设公式对 $n$ 成立，即 $f^{(n)}(a) = \frac{n!}{2\pi i}\oint_C \frac{f(z)}{(z-a)^{n+1}}dz$。计算 $f^{(n+1)}(a)$ 的差商：</p>
+      $$\frac{f^{(n)}(a+h)-f^{(n)}(a)}{h} = \frac{n!}{2\pi i h}\left[\oint_C \frac{f(z)}{(z-a-h)^{n+1}}dz - \oint_C \frac{f(z)}{(z-a)^{n+1}}dz\right]$$
+      $$= \frac{n!}{2\pi i}\oint_C f(z)\cdot\frac{1}{h}\left[\frac{1}{(z-a-h)^{n+1}}-\frac{1}{(z-a)^{n+1}}\right]dz$$
+      <p>利用代数恒等式 $\frac{A^{n+1}-B^{n+1}}{A-B}=A^n+A^{n-1}B+\cdots+B^n$（令 $A=z-a$，$B=z-a-h$），差项当 $h\to 0$ 时趋于 $(n+1)(z-a)^n/(z-a)^{2n+2} = (n+1)/(z-a)^{n+2}$。代入得 $f^{(n+1)}(a) = \frac{(n+1)!}{2\pi i}\oint_C \frac{f(z)}{(z-a)^{n+2}}dz$。关键仍在于验证导数与积分的交换，这由被积函数在 $C$ 上的一致收敛性保证（$f$ 在 $C$ 上有界，分母在 $C$ 上远离零）。$\square$</p>
     </div>
 
     <div class="box box-formula">
@@ -352,6 +366,10 @@
       <p>设 $|f(z)| \leq M$ 在 $C$ 上成立，$C$ 为以 $a$ 为圆心、$R$ 为半径的圆周，则：</p>
       $$|f^{(n)}(a)| \leq \frac{n! \cdot M}{R^n}$$
       <p>这称为<strong>Cauchy 估计</strong>，是推导 Liouville 定理和最大模原理的关键工具。</p>
+      <p><strong>推导</strong>：由高阶导数公式，取 $C: |z-a|=R$（正方向）：</p>
+      $$|f^{(n)}(a)| = \left|\frac{n!}{2\pi i}\oint_C \frac{f(z)}{(z-a)^{n+1}}dz\right| \le \frac{n!}{2\pi}\oint_C \frac{|f(z)|}{|z-a|^{n+1}}|dz|$$
+      $$\le \frac{n!}{2\pi}\oint_C \frac{M}{R^{n+1}}|dz| = \frac{n!}{2\pi}\cdot\frac{M}{R^{n+1}}\cdot 2\pi R = \frac{n!M}{R^n}$$
+      <p>最后一步使用了圆周 $C$ 的弧长 $L = 2\pi R$。这个估计式的美妙之处在于：它将内部的导数大小用边界上的模和半径控制住了——距离边界越远、半径越大、导数被压制得越厉害。</p>
     </div>
 
     <div class="box box-example">
@@ -437,7 +455,9 @@
       $$f(z_0) = \frac{1}{2\pi}\int_0^{2\pi} f(z_0 + re^{i\theta})\,\dd\theta$$
       <p>取模并用三角不等式：</p>
       $$M = |f(z_0)| \leq \frac{1}{2\pi}\int_0^{2\pi}|f(z_0+re^{i\theta})|\,\dd\theta \leq \frac{1}{2\pi}\int_0^{2\pi} M\,\dd\theta = M$$
-      <p>等号成立要求 $|f(z_0+re^{i\theta})| = M$ 对所有 $\theta$ 成立。这说明 $|f(z)|$ 在 $z_0$ 的邻域内恒为 $M$。由连通性，$|f(z)| \equiv M$ 在整个 $D$ 上成立，从而 $f(z)$ 为常数。</p>
+      <p>等号成立要求 $|f(z_0+re^{i\theta})| = M$ 对所有 $\theta$ 成立。这说明 $|f(z)|$ 在 $z_0$ 的邻域内恒为 $M$。由连通性，$|f(z)| \equiv M$ 在整个 $D$ 上成立。</p>
+      <p><strong>为什么 $|f|$ 恒为常数蕴含 $f$ 为常数？</strong>设 $f = u+iv$，$|f|^2 = u^2+v^2 \equiv M^2$。对 $x$ 和 $y$ 分别求偏导：$2uu_x+2vv_x=0$，$2uu_y+2vv_y=0$。利用 C-R 方程 $u_x=v_y$、$u_y=-v_x$，代入得 $uu_x-vu_y=0$ 和 $uu_y+vu_x=0$。将此二式视为关于 $u_x,u_y$ 的线性方程组，其系数行列式为 $u^2+v^2=|f|^2=M^2$。若 $M \neq 0$，则方程组仅有零解 $u_x=u_y=0$，从而 $u$ 为常数，再由 C-R 得 $v$ 也为常数，故 $f$ 为常数。若 $M=0$，则 $f \equiv 0$，平凡地是常数。$\square$</p>
+      <p><strong>推论（实用形式）的推导</strong>：设 $f$ 在 $\bar{D}$ 上连续，$D$ 是有界区域。由连续函数在紧致集上取最大值的性质，$|f|$ 必在 $\bar{D}$ 上某点 $z_0$ 处取到最大值。若 $z_0 \in D$（最大值在内部），则最大模原理蕴含 $f$ 在 $D$ 内为常数，此时最大值也出现在边界上（边界上所有点都取相同的值）。若 $f$ 不为常数，则最大值只能在 $\partial D$ 上取到。因此：$|f|$ 在 $\bar{D}$ 上的最大值必出现在边界上。</p>
     </div>
 
     <div class="box box-note">
@@ -454,6 +474,17 @@
         $$|g(z)| = \frac{|f(z)-f(0)|}{|z|} \leq \frac{|f(z)|+|f(0)|}{|z|} \leq A + \frac{|f(0)|}{|z|}$$
         <p>故 $g(z)$ 是有界整函数，由 Liouville 定理，$g(z) \equiv c$（常数）。</p>
         <p>从而 $f(z) - f(0) = cz$，即 $f(z) = cz + f(0)$。令 $a = c$，$b = f(0)$，得证。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 证明有界整函数必为常数的一个推广</div>
+      <div class="collapsible-body">
+        <p><strong>命题</strong>：若 $f$ 是整函数且满足 $|f(z)| \le A|z|^n + B$（对充分大的 $|z|$），则 $f(z)$ 是次数不超过 $n$ 的多项式。</p>
+        <p><strong>证明</strong>：对 $f$ 在 $|z|=R$ 上用 Cauchy 估计：$|f^{(k)}(0)| \le \frac{k!}{R^k}\max_{|z|=R}|f(z)| \le \frac{k!}{R^k}(A R^n + B)$。</p>
+        <p>当 $k > n$ 时，令 $R \to \infty$，右侧 $\to 0$（因为 $R^{n-k} \to 0$）。故 $f^{(k)}(0) = 0$ 对所有 $k > n$ 成立。</p>
+        <p>由 Taylor 展开定理（整函数在整个平面上的 Taylor 展开收敛），$f(z) = \sum_{k=0}^n \frac{f^{(k)}(0)}{k!}z^k$ 是次数不超过 $n$ 的多项式。$\square$</p>
+        <p><strong>特例</strong>：$n=0$ 时即 Liouville 定理（$f$ 有界 ⇒ $f$ 为常数）。$n=1$ 时得到 $|f(z)| \leq A|z|$ 蕴含 $f$ 为一次多项式，恰为上例的推广。</p>
       </div>
     </div>
 
