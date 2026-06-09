@@ -536,14 +536,14 @@
     <div class="box box-definition">
       <div class="box-title">定义 · 对数的主值</div>
       <p>取 $k = 0$（即辐角取主值 $\Arg z \in (-\pi, \pi]$），定义<strong>对数的主值</strong>为：</p>
-      $$\log z = \ln|z| + i\Arg z$$
-      <p>注意：主值 $\log z$ 是一个单值函数，但它在负实轴上不连续（辐角在负实轴上有跳跃）。</p>
+      $$\Log z = \ln|z| + i\Arg z$$
+      <p>注意：主值 $\Log z$ 是一个单值函数，但它在负实轴上不连续（辐角在负实轴上有跳跃）。</p>
     </div>
 
     <div class="box box-formula">
       <div class="box-title">多值性的具体表现</div>
       <p>对数函数 $\log z$ 的所有值为：</p>
-      $$\log z = \log z + 2k\pi i, \quad k \in \ZZ$$
+      $$\log z = \Log z + 2k\pi i, \quad k \in \ZZ$$
       <p>相邻两个值之间相差 $2\pi i$。这也说明 $\log z$ 与 $e^z$ 的关系：$\log z$ 是 $e^z$ 的"反函数"，但因为 $e^z$ 是周期函数，所以反函数是多值的。</p>
     </div>
 
@@ -554,7 +554,7 @@
         <li><strong>支割线</strong>（branch cut）：从原点出发沿某方向画一条射线，禁止自变量跨越此线；</li>
         <li><strong>辐角范围</strong>：指定 $\arg z$ 的取值范围，如 $(\alpha, \alpha + 2\pi]$。</li>
       </ol>
-      <p>最常见的选择是沿负实轴做支割线，取 $\Arg z \in (-\pi, \pi]$，得到主值分支 $\log z$。</p>
+      <p>最常见的选择是沿负实轴做支割线，取 $\Arg z \in (-\pi, \pi]$，得到主值分支 $\Log z$。</p>
       <p>每个单值连续分支都是解析函数，解析区域为割开的复平面。</p>
     </div>
 
@@ -565,15 +565,15 @@
         <li>$\log(z_1 z_2) = \log z_1 + \log z_2$（在多值意义下成立，即两边的值集合相等）</li>
         <li>$\log\dfrac{z_1}{z_2} = \log z_1 - \log z_2$（多值意义下）</li>
       </ol>
-      <p><strong>注意</strong>：对主值 $\log$，上述等式不一定成立，可能相差 $2\pi i$ 的整数倍。</p>
+      <p><strong>注意</strong>：对主值 $\Log$，上述等式不一定成立，可能相差 $2\pi i$ 的整数倍。</p>
     </div>
 
     <div class="box box-example">
       <div class="box-title">例2 · 计算 $\log(-1)$ 和 $\log i$</div>
       <p>$\log(-1)$：$|-1| = 1$，$\arg(-1) = \pi + 2k\pi$，所以 $\log(-1) = i(\pi + 2k\pi) = (2k+1)\pi i$。</p>
-      <p>主值 $\log(-1) = \pi i$。</p>
+      <p>主值 $\Log(-1) = \pi i$。</p>
       <p>$\log i$：$|i| = 1$，$\arg(i) = \dfrac{\pi}{2} + 2k\pi$，所以 $\log i = i\left(\dfrac{\pi}{2} + 2k\pi\right)$。</p>
-      <p>主值 $\log i = \dfrac{\pi}{2}i$。</p>
+      <p>主值 $\Log i = \dfrac{\pi}{2}i$。</p>
     </div>
 
     <div class="collapsible">
@@ -581,16 +581,16 @@
       <div class="collapsible-body">
         <p><strong>解</strong>：$1+i = \sqrt{2} \cdot e^{i\pi/4}$，故</p>
         $$\log(1+i) = \ln\sqrt{2} + i\left(\frac{\pi}{4} + 2k\pi\right) = \frac{1}{2}\ln 2 + i\left(\frac{\pi}{4} + 2k\pi\right), \quad k \in \ZZ$$
-        <p>主值为 $\log(1+i) = \dfrac{1}{2}\ln 2 + \dfrac{\pi}{4}i$。</p>
+        <p>主值为 $\Log(1+i) = \dfrac{1}{2}\ln 2 + \dfrac{\pi}{4}i$。</p>
         <p><strong>注意</strong>：$\ln 2$ 表示实对数，是唯一的实数值。</p>
       </div>
     </div>
 
     <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 验证 $\log(-i) = -\dfrac{\pi}{2}i$</div>
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 验证 $\Log(-i) = -\dfrac{\pi}{2}i$</div>
       <div class="collapsible-body">
         <p><strong>解</strong>：$|-i| = 1$，$\Arg(-i) = -\dfrac{\pi}{2}$（因为 $-i$ 在负虚轴上，主值辐角取 $-\pi/2$）。</p>
-        <p>故 $\log(-i) = \ln 1 + i\left(-\dfrac{\pi}{2}\right) = -\dfrac{\pi}{2}i$。</p>
+        <p>故 $\Log(-i) = \ln 1 + i\left(-\dfrac{\pi}{2}\right) = -\dfrac{\pi}{2}i$。</p>
         <p>验证：$e^{-\pi i/2} = \cos\left(-\dfrac{\pi}{2}\right) + i\sin\left(-\dfrac{\pi}{2}\right) = 0 + i(-1) = -i$。正确。</p>
       </div>
     </div>
@@ -668,7 +668,7 @@
       <div class="collapsible-body">
         <p><strong>解</strong>：$(1+i)^{1+i} = e^{(1+i)\log(1+i)}$。</p>
         <p>先求 $\log(1+i) = \dfrac{1}{2}\ln 2 + i\left(\dfrac{\pi}{4} + 2k\pi\right)$。</p>
-        <p>取主值 $k=0$：$\log(1+i) = \dfrac{1}{2}\ln 2 + \dfrac{\pi}{4}i$。</p>
+        <p>取主值 $k=0$：$\Log(1+i) = \dfrac{1}{2}\ln 2 + \dfrac{\pi}{4}i$。</p>
         <p>则 $(1+i)\log(1+i) = (1+i)\left(\dfrac{1}{2}\ln 2 + \dfrac{\pi}{4}i\right)$</p>
         $$= \frac{1}{2}\ln 2 + \frac{\pi}{4}i + \frac{i}{2}\ln 2 + \frac{\pi}{4}i^2 = \left(\frac{1}{2}\ln 2 - \frac{\pi}{4}\right) + i\left(\frac{\pi}{4} + \frac{1}{2}\ln 2\right)$$
         <p>所以 $(1+i)^{1+i} = e^{\frac{1}{2}\ln 2 - \frac{\pi}{4}} \cdot e^{i(\frac{\pi}{4} + \frac{1}{2}\ln 2)}$</p>
