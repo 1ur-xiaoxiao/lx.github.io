@@ -186,7 +186,16 @@
       $$f(z) = f(\zeta) + f'(\zeta)(z-\zeta) + \varepsilon(z)(z-\zeta)$$
       <p>其中 $\varepsilon(z) \to 0$（$z \to \zeta$）。由于 $f(\zeta) + f'(\zeta)(z-\zeta)$ 是整函数，沿闭曲线积分为零，故：</p>
       $$\oint_{\triangle^{(n)}} f(z)\,\dd z = \oint_{\triangle^{(n)}} \varepsilon(z)(z-\zeta)\,\dd z$$
-      <p>利用模的估计可以证明右边趋于 $0$，从而 $\left|\oint_\triangle f(z)\,\dd z\right| = 0$。</p>
+      <p>现在进行模的精细估计。设 $\triangle^{(n)}$ 的周长为 $L_n$，直径为 $d_n$。由相似分割知 $L_n = L/2^n$，$d_n = d/2^n$（$L, d$ 为原三角形的周长和直径）。</p>
+      <p>对 $z \in \triangle^{(n)}$，有 $|z - \zeta| \le d_n$。由 $f$ 在 $\zeta$ 的可导性，$\forall\,\eta > 0$，当 $n$ 充分大时 $|\varepsilon(z)| < \eta$ 对所有 $z \in \triangle^{(n)}$ 成立。因此：</p>
+      $$\left|\oint_{\triangle^{(n)}} f(z)\,\dd z\right| = \left|\oint_{\triangle^{(n)}} \varepsilon(z)(z-\zeta)\,\dd z\right| \le \oint_{\triangle^{(n)}} |\varepsilon(z)| \cdot |z-\zeta| \cdot |\dd z|$$
+      $$\le \eta \cdot d_n \cdot L_n = \eta \cdot \frac{d}{2^n} \cdot \frac{L}{2^n} = \eta \cdot \frac{dL}{4^n}$$
+      <p>另一方面，由第三步的选取规则：</p>
+      $$\left|\oint_{\triangle^{(n)}} f(z)\,\dd z\right| \ge \frac{1}{4^n}\left|\oint_\triangle f(z)\,\dd z\right|$$
+      <p>结合两式：$\dfrac{1}{4^n}\left|\oint_\triangle f(z)\,\dd z\right| \le \eta \cdot \dfrac{dL}{4^n}$，即：</p>
+      $$\left|\oint_\triangle f(z)\,\dd z\right| \le \eta \cdot dL$$
+      <p>由于 $\eta > 0$ 可以任意小，必有 $\left|\oint_\triangle f(z)\,\dd z\right| = 0$。</p>
+      <p>至此证明了三角形围道上的积分为零。对任意逐段光滑闭曲线 $C$，可通过三角形剖分逼近得到一般结论。$\square$</p>
     </div>
 
     <div class="box box-theorem">

@@ -120,6 +120,20 @@
       <p>$$\Res[f, z_0] = \frac{1}{(m-1)!} \lim_{z \to z_0} \frac{\dd^{m-1}}{\dd z^{m-1}} \left[(z - z_0)^m f(z)\right].$$</p>
     </div>
 
+    <div class="box box-proof">
+      <div class="box-title">推导 · $m$ 阶极点留数公式</div>
+      <p>设 $z_0$ 是 $f(z)$ 的 $m$ 阶极点，则 $f$ 在 $z_0$ 附近的 Laurent 展开为：</p>
+      $$f(z) = \frac{a_{-m}}{(z-z_0)^m} + \cdots + \frac{a_{-1}}{z-z_0} + a_0 + a_1(z-z_0) + \cdots$$
+      <p>将两边乘以 $(z-z_0)^m$：</p>
+      $$(z-z_0)^m f(z) = a_{-m} + a_{-(m-1)}(z-z_0) + \cdots + a_{-1}(z-z_0)^{m-1} + a_0(z-z_0)^m + \cdots$$
+      <p>现在 $g(z) = (z-z_0)^m f(z)$ 在 $z_0$ 处解析（补充定义 $g(z_0) = a_{-m}$）。我们对 $g(z)$ 求 $(m-1)$ 阶导数：</p>
+      <p>对右侧逐项求导，$a_{-m}$ 到 $a_{-2}$ 的项（次数低于 $m-1$）被消去，$a_{-1}(z-z_0)^{m-1}$ 项求导后成为常数 $(m-1)!\,a_{-1}$，所有更高次项至少含一个 $(z-z_0)$ 因子，在 $z \to z_0$ 时趋于零。即：</p>
+      $$\frac{\dd^{m-1}}{\dd z^{m-1}}[(z-z_0)^m f(z)]\bigg|_{z \to z_0} = (m-1)!\,a_{-1}$$
+      <p>因此留数为：</p>
+      $$\Res[f, z_0] = a_{-1} = \frac{1}{(m-1)!} \lim_{z \to z_0} \frac{\dd^{m-1}}{\dd z^{m-1}} \left[(z - z_0)^m f(z)\right]$$
+      <p>这就是 $m$ 阶极点留数的实用公式——避免了直接做 Laurent 展开。$\square$</p>
+    </div>
+
     <div class="box box-example">
       <div class="box-title">例 6.1</div>
       <p>求 $f(z) = \dfrac{1}{z(z-1)^2}$ 在各孤立奇点处的留数。</p>
@@ -196,6 +210,23 @@
       <p>其中 $\Res[f, \infty] = -a_{-1}$（$a_{-1}$ 为 $f(z)$ 在 $z = \infty$ 处 Laurent 展开中 $z^{-1}$ 的系数），等价地</p>
       <p>$$\Res[f, \infty] = -\frac{1}{2\pi i}\oint_{C^-} f(z)\,\dd z,$$</p>
       <p>$C^-$ 取顺时针方向（即面向无穷远点的正方向）。</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">推导 · 无穷远点留数公式</div>
+      <p>无穷远点的留数通过变换 $w = 1/z$ 转化为原点处的留数来理解和计算。</p>
+      <p>设 $f(z)$ 在 $|z| > R$ 内有 Laurent 展开 $f(z) = \sum_{n=-\infty}^{+\infty} a_n z^n$（注意：以 $z=0$ 为中心展开，正幂为主要部分，非正幂为正则部分——与有限点相反！）。</p>
+      <p>令 $z = 1/w$，则 $\dd z = -\dd w/w^2$。考虑顺时针方向的大圆周 $C$（对 $\infty$ 而言的正方向）：</p>
+      $$\Res[f, \infty] = \frac{1}{2\pi i}\oint_{C} f(z)\,\dd z \quad (C \text{ 顺时针})$$
+      <p>作变量代换：当 $z$ 沿 $C$ 顺时针绕行一周时，$w = 1/z$ 沿小圆周 $\gamma$ 逆时针绕原点一周。故：</p>
+      $$\frac{1}{2\pi i}\oint_{C} f(z)\,\dd z = \frac{1}{2\pi i}\oint_{\gamma} f\!\left(\frac{1}{w}\right)\left(-\frac{\dd w}{w^2}\right) = -\frac{1}{2\pi i}\oint_{\gamma} \frac{f(1/w)}{w^2}\,\dd w$$
+      <p>$f(1/w)/w^2$ 在 $w=0$ 处的留数正是其 Laurent 展开中 $w^{-1}$ 的系数。将 $f(z) = \sum a_n z^n$ 代入：</p>
+      $$\frac{f(1/w)}{w^2} = \frac{1}{w^2}\sum_{n=-\infty}^{\infty} a_n w^{-n} = \sum_{n=-\infty}^{\infty} a_n w^{-n-2}$$
+      <p>$w^{-1}$ 项对应 $-n-2 = -1$，即 $n = -1$。因此该项系数为 $a_{-1}$。</p>
+      <p>由留数定理（$\gamma$ 为正向小圆周）：</p>
+      $$\frac{1}{2\pi i}\oint_{\gamma} \frac{f(1/w)}{w^2}\,\dd w = a_{-1}$$
+      <p>因此 $\Res[f, \infty] = -a_{-1}$——即 $f$ 在原点的 Laurent 展开中 $z^{-1}$ 系数的<strong>相反数</strong>。</p>
+      <p><strong>注：</strong>由于所有有限奇点的留数均在 $\Res[f, \infty]$ 中"抵消"，公式 $\sum \Res[f, z_k] + \Res[f, \infty] = 0$ 提供了一个方便的计算捷径——有时直接计算 $\Res[f, \infty]$ 比逐个计算所有有限奇点的留数更高效。$\square$</p>
     </div>
   </div>
 
@@ -292,6 +323,23 @@
       <p>$$\int_{-\infty}^{+\infty} f(x)\cos(ax)\,\dd x \quad \text{和} \quad \int_{-\infty}^{+\infty} f(x)\sin(ax)\,\dd x.$$</p>
     </div>
 
+    <div class="box box-proof">
+      <div class="box-title">证明 · Jordan 引理</div>
+      <p>设 $\Gamma_R: z = R e^{i\theta}$，$0 \le \theta \le \pi$。需证 $\int_{\Gamma_R} f(z) e^{iaz}\,\dd z \to 0$（$R \to \infty$）。</p>
+      <p>参数化：$\dd z = iR e^{i\theta}\dd\theta$，故：</p>
+      $$\left|\int_{\Gamma_R} f(z) e^{iaz}\,\dd z\right| = \left|\int_0^\pi f(R e^{i\theta}) e^{iaR e^{i\theta}} \cdot iR e^{i\theta}\,\dd\theta\right|$$
+      $$\le R \int_0^\pi |f(R e^{i\theta})| \cdot |e^{iaR(\cos\theta + i\sin\theta)}|\,\dd\theta$$
+      <p>关键：$|e^{iaR\cos\theta}| = 1$（模为 $1$），$|e^{-aR\sin\theta}| = e^{-aR\sin\theta}$。故：</p>
+      $$\le R \int_0^\pi |f(R e^{i\theta})| \cdot e^{-aR\sin\theta}\,\dd\theta$$
+      <p>由于 $\deg q \ge \deg p + 1$，当 $R$ 充分大时 $|f(R e^{i\theta})| \le M/R$（$M$ 为常数）。因此：</p>
+      $$\le M \int_0^\pi e^{-aR\sin\theta}\,\dd\theta = 2M \int_0^{\pi/2} e^{-aR\sin\theta}\,\dd\theta$$
+      <p><strong>关键不等式：</strong>对 $\theta \in [0, \pi/2]$，有 $\sin\theta \ge \dfrac{2}{\pi}\theta$（$\sin\theta$ 的凸性，几何上 $\sin\theta$ 的曲线在其弦 $\frac{2}{\pi}\theta$ 之上）。故：</p>
+      $$\int_0^{\pi/2} e^{-aR\sin\theta}\,\dd\theta \le \int_0^{\pi/2} e^{-aR \cdot 2\theta/\pi}\,\dd\theta = \left[-\frac{\pi}{2aR}e^{-2aR\theta/\pi}\right]_0^{\pi/2} = \frac{\pi}{2aR}(1 - e^{-aR})$$
+      <p>因此：</p>
+      $$\left|\int_{\Gamma_R} f(z) e^{iaz}\,\dd z\right| \le 2M \cdot \frac{\pi}{2aR}(1 - e^{-aR}) \le \frac{M\pi}{aR} \to 0 \quad (R \to \infty)$$
+      <p>这完成了 Jordan 引理的证明。当 $a < 0$ 时，应使用下半平面半圆围道（此时 $\sin\theta < 0$，$e^{-aR\sin\theta}$ 仍为指数衰减）。$\square$</p>
+    </div>
+
     <div class="collapsible">
       <div class="collapsible-header"><span class="toggle-icon">▶</span> 例 6.6（第三类详细计算）</div>
       <div class="collapsible-body">
@@ -383,10 +431,18 @@
     </div>
 
     <div class="box box-proof">
-      <div class="box-title">证明思路</div>
-      <p>若 $z_0$ 是 $f$ 的 $m$ 阶零点，则在 $z_0$ 附近 $f(z) = (z-z_0)^m \varphi(z)$，$\varphi(z_0) \ne 0$，故</p>
-      <p>$$\frac{f'(z)}{f(z)} = \frac{m}{z-z_0} + \frac{\varphi'(z)}{\varphi(z)}.$$</p>
-      <p>因此 $f'/f$ 在 $z_0$ 处有一阶极点，留数为 $m$。类似地，若 $z_0$ 是 $f$ 的 $n$ 阶极点，留数为 $-n$。由留数定理，对数留数等于所有留数之和，即 $N - P$。</p>
+      <div class="box-title">证明 · 对数留数定理</div>
+      <p><strong>情形1：$z_0$ 是 $f$ 的 $m$ 阶零点。</strong></p>
+      <p>在 $z_0$ 附近，$f(z) = (z-z_0)^m \varphi(z)$，其中 $\varphi$ 在 $z_0$ 处解析且 $\varphi(z_0) \ne 0$。取对数导数：</p>
+      $$\frac{f'(z)}{f(z)} = \frac{m(z-z_0)^{m-1}\varphi(z) + (z-z_0)^m\varphi'(z)}{(z-z_0)^m\varphi(z)} = \frac{m}{z-z_0} + \frac{\varphi'(z)}{\varphi(z)}$$
+      <p>由于 $\varphi(z_0) \ne 0$ 且 $\varphi$ 解析，$\varphi'(z)/\varphi(z)$ 在 $z_0$ 处解析（分母不为零）。因此 $f'(z)/f(z)$ 在 $z_0$ 处的 Laurent 展开中只有一项负幂 $m/(z-z_0)$，留数为 $m$。</p>
+      <p><strong>情形2：$z_0$ 是 $f$ 的 $n$ 阶极点。</strong></p>
+      <p>在 $z_0$ 附近，$f(z) = (z-z_0)^{-n} \psi(z)$，其中 $\psi$ 在 $z_0$ 处解析且 $\psi(z_0) \ne 0$。类似计算：</p>
+      $$\frac{f'(z)}{f(z)} = \frac{-n(z-z_0)^{-n-1}\psi(z) + (z-z_0)^{-n}\psi'(z)}{(z-z_0)^{-n}\psi(z)} = \frac{-n}{z-z_0} + \frac{\psi'(z)}{\psi(z)}$$
+      <p>因此 $f'(z)/f(z)$ 在 $z_0$ 处的留数为 $-n$。</p>
+      <p><strong>总结：</strong>$f'/f$ 在 $C$ 内部的全部奇点恰为 $f$ 的零点和极点（因为 $f'/f$ 的奇点只能来自 $f(z)=0$ 或 $f$ 的极点；$f'/f$ 在其他点解析）。每个零点贡献留数 $+m$（重数），每个极点贡献留数 $-n$（阶数）。由留数定理：</p>
+      $$\frac{1}{2\pi i}\oint_C \frac{f'(z)}{f(z)}\,\dd z = \sum_{\text{零点}} m_k - \sum_{\text{极点}} n_j = N - P$$
+      <p>其中 $N = \sum m_k$ 为零点总重数，$P = \sum n_j$ 为极点总阶数。$\square$</p>
     </div>
 
     <div class="box box-theorem">

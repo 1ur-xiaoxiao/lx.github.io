@@ -114,6 +114,18 @@
       <p>这里用到了实三角函数的和角公式。</p>
     </div>
 
+    <div class="box box-proof">
+      <div class="box-title">证明 · 周期性、解析性与无零点</div>
+      <p><strong>周期性：</strong>由加法定理和 Euler 公式：</p>
+      $$e^{z+2\pi i} = e^z \cdot e^{2\pi i} = e^z \cdot (\cos 2\pi + i\sin 2\pi) = e^z \cdot (1 + 0) = e^z$$
+      <p>因此 $2\pi i$ 是 $e^z$ 的一个周期。更进一步可以证明 $2\pi i$ 是<strong>基本周期</strong>：若 $e^{z+T}=e^z$ 对所有 $z$ 成立，则 $e^T=1$，即 $e^{\Re T}(\cos(\Im T)+i\sin(\Im T))=1$。比较模得 $\Re T=0$，比较辐角得 $\Im T = 2k\pi$（$k \in \ZZ$），故基本周期为 $2\pi i$。</p>
+      <p><strong>解析性：</strong>$u(x,y)=e^x\cos y$，$v(x,y)=e^x\sin y$。验证 C-R 方程：</p>
+      $$\frac{\partial u}{\partial x} = e^x\cos y = \frac{\partial v}{\partial y}, \qquad \frac{\partial u}{\partial y} = -e^x\sin y = -\frac{\partial v}{\partial x}$$
+      <p>C-R 方程处处成立，偏导数连续（可微），故 $e^z$ 在全平面解析。由 C-R 条件下的导数公式：</p>
+      $$\frac{\dd}{\dd z}e^z = \frac{\partial u}{\partial x} + i\frac{\partial v}{\partial x} = e^x\cos y + ie^x\sin y = e^z$$
+      <p><strong>无零点：</strong>$|e^z| = e^x > 0$ 对所有 $z$ 成立（因为实指数 $e^x$ 恒正），故 $e^z \ne 0$。$\square$</p>
+    </div>
+
     <div class="box box-formula">
       <div class="box-title">Euler 公式</div>
       <p>在定义中令 $z = iy$，得到著名的 <strong>Euler 公式</strong>：</p>
@@ -614,6 +626,20 @@
       </ul>
     </div>
 
+    <div class="box box-proof">
+      <div class="box-title">证明 · 幂函数单值性条件</div>
+      <p>由幂函数定义 $z^a = e^{a\log z}$，将多值对数 $\log z = \ln|z| + i(\Arg z + 2k\pi)$ 代入：</p>
+      $$z^a = e^{a[\ln|z| + i\Arg z + 2k\pi i]} = \underbrace{|z|^a e^{ia\Arg z}}_{\text{与 }k\text{ 无关}} \cdot \; e^{2k\pi ia}$$
+      <p>多值性完全取决于因子 $e^{2k\pi ia} = e^{i(2\pi a)k}$（$k \in \ZZ$）。</p>
+      <p><strong>情形1：$a = n \in \ZZ$（整数）。</strong></p>
+      <p>$e^{2k\pi i n} = (e^{2\pi i})^{nk} = 1^{nk} = 1$ 对所有 $k \in \ZZ$ 成立。因此 $k$ 的不同取值给出相同的 $z^a$ 值——单值。</p>
+      <p><strong>情形2：$a = p/q$（$p,q$ 互素整数，$q > 1$）。</strong></p>
+      <p>$e^{2k\pi i p/q} = e^{2\pi i \cdot kp/q}$。由于 $p$ 和 $q$ 互素，当 $k = 0, 1, \ldots, q-1$ 时，$kp \bmod q$ 取遍 $0, 1, \ldots, q-1$ 的所有值（这是数论中互素的基本性质）。</p>
+      <p>当 $k = q$ 时，$e^{2\pi i \cdot qp/q} = e^{2\pi i p} = 1$，与 $k = 0$ 相同。因此恰有 $q$ 个不同的值。</p>
+      <p><strong>情形3：$a$ 为无理数或非实数。</strong></p>
+      <p>若 $a \notin \QQ$（包括无理实数和所有虚/复数），则 $e^{2k\pi ia}$ 对不同的整数 $k$ 给出不同的值——因为若 $e^{2k_1\pi ia} = e^{2k_2\pi ia}$，则 $e^{2(k_1-k_2)\pi ia} = 1$，这意味着 $2(k_1-k_2)\pi a$ 是 $2\pi$ 的整数倍，即 $(k_1-k_2)a \in \ZZ$。当 $a$ 非有理数时，这只有在 $k_1 = k_2$ 时才成立。因此不同的 $k$ 给出不同的值——有无穷多个值。$\square$</p>
+    </div>
+
     <div class="box box-example">
       <div class="box-title">例3 · 计算 $i^i$</div>
       <p>$i^i = e^{i\log i} = e^{i \cdot i(\pi/2 + 2k\pi)} = e^{-\pi/2 - 2k\pi}$，$k \in \ZZ$。</p>
@@ -748,6 +774,18 @@
         <p>利用 $\cosh^2 y = 1 + \sinh^2 y$：</p>
         $$= \sin^2 x(1 + \sinh^2 y) + \cos^2 x \sinh^2 y = \sin^2 x + \sinh^2 y(\sin^2 x + \cos^2 x) = \sin^2 x + \sinh^2 y$$
         <p>由此可以看出：当 $y \neq 0$ 时 $|\sin z| > |\sin x|$，当 $|y| \to \infty$ 时 $|\sin z| \to \infty$。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 证明 $|\cos z|^2 = \cos^2 x + \sinh^2 y$</div>
+      <div class="collapsible-body">
+        <p><strong>证明</strong>：$\cos(x+iy) = \cos x\cosh y - i\sin x\sinh y$，故</p>
+        $$|\cos z|^2 = \cos^2 x \cosh^2 y + \sin^2 x \sinh^2 y$$
+        <p>利用 $\cosh^2 y = 1 + \sinh^2 y$：</p>
+        $$= \cos^2 x(1 + \sinh^2 y) + \sin^2 x \sinh^2 y = \cos^2 x + \sinh^2 y(\cos^2 x + \sin^2 x) = \cos^2 x + \sinh^2 y$$
+        <p>由此可以看出：当 $y \neq 0$ 时 $|\cos z| > |\cos x|$，当 $|y| \to \infty$ 时 $|\cos z| \to \infty$。</p>
+        <p><strong>比较：</strong>$|\sin z|^2 = \sin^2 x + \sinh^2 y$ 与 $|\cos z|^2 = \cos^2 x + \sinh^2 y$。两个公式的"无界部分"都是 $\sinh^2 y$——无论 $\sin z$ 还是 $\cos z$，只要 $|y|$ 变大，模就指数增长。这完美地说明了复三角函数与实三角函数最本质的区别：在实轴上（$y=0$），$\sinh 0 = 0$，有界性恢复；但一旦进入虚轴方向，双曲函数的指数增长接管了一切。</p>
       </div>
     </div>
   </div>

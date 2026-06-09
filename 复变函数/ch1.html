@@ -121,6 +121,24 @@
       </ol>
     </div>
 
+    <div class="box box-proof">
+      <div class="box-title">证明 · 三角不等式</div>
+      <p><strong>证明 $|z_1+z_2| \le |z_1|+|z_2|$：</strong></p>
+      <p>利用 $|z|^2 = z\bar{z}$：</p>
+      $$|z_1+z_2|^2 = (z_1+z_2)\overline{(z_1+z_2)} = (z_1+z_2)(\bar{z}_1+\bar{z}_2)$$
+      $$= z_1\bar{z}_1 + z_2\bar{z}_2 + z_1\bar{z}_2 + \bar{z}_1 z_2 = |z_1|^2 + |z_2|^2 + z_1\bar{z}_2 + \overline{z_1\bar{z}_2}$$
+      $$= |z_1|^2 + |z_2|^2 + 2\Re(z_1\bar{z}_2)$$
+      <p>由于对任意复数 $w$ 有 $\Re(w) \le |w|$，取 $w = z_1\bar{z}_2$：</p>
+      $$\Re(z_1\bar{z}_2) \le |z_1\bar{z}_2| = |z_1||z_2|$$
+      <p>故：</p>
+      $$|z_1+z_2|^2 \le |z_1|^2 + |z_2|^2 + 2|z_1||z_2| = (|z_1|+|z_2|)^2$$
+      <p>两边开平方（模为非负实数），即得 $|z_1+z_2| \le |z_1|+|z_2|$。</p>
+      <p><strong>证明 $||z_1|-|z_2|| \le |z_1-z_2|$：</strong></p>
+      <p>由已证的三角不等式：</p>
+      $$|z_1| = |(z_1-z_2)+z_2| \le |z_1-z_2| + |z_2| \implies |z_1|-|z_2| \le |z_1-z_2|$$
+      <p>交换 $z_1, z_2$ 的角色：$|z_2|-|z_1| \le |z_1-z_2|$。结合两式即得 $||z_1|-|z_2|| \le |z_1-z_2|$。$\square$</p>
+    </div>
+
     <div class="box box-example">
       <div class="box-title">例题 1.1</div>
       <p>设 $z_1 = 3 + 4i$，$z_2 = 1 - 2i$，计算 $z_1 z_2$、$|z_1/z_2|$ 和 $\overline{z_1 z_2}$。</p>
@@ -243,6 +261,21 @@
       <p>即 $(e^{i\theta})^n = e^{in\theta}$。利用二项式展开可推导 $\cos n\theta$ 和 $\sin n\theta$ 用 $\cos\theta, \sin\theta$ 表示的公式。</p>
     </div>
 
+    <div class="box box-proof">
+      <div class="box-title">证明 · 棣莫弗公式（数学归纳法）</div>
+      <p><strong>基底 $n=1$：</strong>$(\cos\theta + i\sin\theta)^1 = \cos\theta + i\sin\theta$，公式显然成立。</p>
+      <p><strong>归纳步骤：</strong>假设公式对 $n$ 成立，考虑 $n+1$：</p>
+      $$(\cos\theta + i\sin\theta)^{n+1} = (\cos\theta + i\sin\theta)^n \cdot (\cos\theta + i\sin\theta)$$
+      <p>由归纳假设 $(\cos\theta + i\sin\theta)^n = \cos n\theta + i\sin n\theta$，代入：</p>
+      $$= (\cos n\theta + i\sin n\theta)(\cos\theta + i\sin\theta)$$
+      <p>展开乘积：</p>
+      $$= (\cos n\theta \cos\theta - \sin n\theta \sin\theta) + i(\sin n\theta \cos\theta + \cos n\theta \sin\theta)$$
+      <p>利用实三角函数的和角公式 $\cos(A+B)=\cos A\cos B-\sin A\sin B$ 和 $\sin(A+B)=\sin A\cos B+\cos A\sin B$：</p>
+      $$= \cos(n\theta+\theta) + i\sin(n\theta+\theta) = \cos(n+1)\theta + i\sin(n+1)\theta$$
+      <p>由数学归纳法，公式对所有正整数 $n$ 成立。$\square$</p>
+      <p><strong>注：</strong>利用 Euler 公式 $e^{i\theta} = \cos\theta + i\sin\theta$，棣莫弗公式等价于 $(e^{i\theta})^n = e^{in\theta}$，这是指数运算的自然推论。不过历史上棣莫弗公式的发现早于 Euler 公式。</p>
+    </div>
+
     <div class="box box-example">
       <div class="box-title">例题 1.5（用棣莫弗公式展开 $\cos 3\theta$）</div>
       <div class="collapsible">
@@ -263,6 +296,20 @@
       <p>设 $w \ne 0$，方程 $z^n = w$（$n \ge 2$ 为正整数）恰有 $n$ 个不同的解。设 $w = \rho e^{i\varphi}$，则：</p>
       $$z_k = \rho^{1/n} \, e^{i(\varphi + 2k\pi)/n}, \quad k = 0, 1, 2, \ldots, n-1$$
       <p><strong>几何意义</strong>：$n$ 个根均匀分布在以原点为圆心、$\rho^{1/n}$ 为半径的圆周上，相邻两根的辐角差为 $\dfrac{2\pi}{n}$。</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明 · $n$ 次方根的存在唯一性</div>
+      <p>设 $w = \rho e^{i\varphi} \ne 0$（$\rho > 0$，$\varphi = \Arg(w)$），令 $z = r e^{i\theta}$（$r > 0$），方程 $z^n = w$ 等价于：</p>
+      $$r^n e^{in\theta} = \rho e^{i\varphi}$$
+      <p>比较模和辐角：</p>
+      $$r^n = \rho \implies r = \rho^{1/n} \quad (\text{正实数的 } n \text{ 次算术根，唯一})$$
+      $$n\theta = \varphi + 2k\pi \implies \theta_k = \frac{\varphi + 2k\pi}{n}, \quad k \in \ZZ$$
+      <p>当 $k = 0, 1, \ldots, n-1$ 时，得到 $n$ 个不同的辐角值：</p>
+      $$\theta_0 = \frac{\varphi}{n},\ \theta_1 = \frac{\varphi+2\pi}{n},\ \ldots,\ \theta_{n-1} = \frac{\varphi+2(n-1)\pi}{n}$$
+      <p>当 $k = n$ 时，$\theta_n = \frac{\varphi+2n\pi}{n} = \frac{\varphi}{n} + 2\pi$，对应的 $z_n = \rho^{1/n} e^{i(\theta_0+2\pi)} = \rho^{1/n} e^{i\theta_0} = z_0$。因此 $k = n, n+1, \ldots$ 的值与 $k = 0, 1, \ldots$ 重复。</p>
+      <p>类似地，$k = -1$ 时 $\theta_{-1} = \frac{\varphi-2\pi}{n} = \frac{\varphi+2(n-1)\pi}{n} - 2\pi$，对应 $z_{-1} = z_{n-1}$。</p>
+      <p>因此方程 $z^n = w$ 恰有 $n$ 个不同的根 $z_0, z_1, \ldots, z_{n-1}$，模均为 $\rho^{1/n}$，相邻两根辐角差 $2\pi/n$，恰好均匀分布在圆周上。$\square$</p>
     </div>
 
     <div class="box box-example">

@@ -266,10 +266,18 @@
     </div>
 
     <div class="box box-proof">
-      <div class="box-title">证明思路</div>
-      <p>取 $r < R$，令 $C: |\zeta - z_0| = r$。对 $|z - z_0| < r$，由 Cauchy 积分公式：</p>
-      <p>$$f(z) = \frac{1}{2\pi i} \oint_C \frac{f(\zeta)}{\zeta - z}\,\dd\zeta.$$</p>
-      <p>将 $\dfrac{1}{\zeta - z} = \dfrac{1}{\zeta - z_0} \cdot \dfrac{1}{1 - \frac{z - z_0}{\zeta - z_0}}$ 展开为几何级数（因 $\left|\dfrac{z - z_0}{\zeta - z_0}\right| < 1$），代入后逐项积分即得。唯一性由幂级数系数的唯一性保证。</p>
+      <div class="box-title">证明 · Taylor 展开定理</div>
+      <p>取 $r < R$，令 $C: |\zeta - z_0| = r$（正向）。对 $|z - z_0| < r$，由 Cauchy 积分公式：</p>
+      $$f(z) = \frac{1}{2\pi i} \oint_C \frac{f(\zeta)}{\zeta - z}\,\dd\zeta$$
+      <p><strong>关键步骤——几何级数展开：</strong></p>
+      $$\frac{1}{\zeta - z} = \frac{1}{(\zeta - z_0) - (z - z_0)} = \frac{1}{\zeta - z_0} \cdot \frac{1}{1 - \frac{z - z_0}{\zeta - z_0}}$$
+      <p>由于 $z$ 在圆内、$\zeta$ 在圆周上，$\left|\frac{z - z_0}{\zeta - z_0}\right| = \frac{|z - z_0|}{r} < 1$，可用几何级数：</p>
+      $$\frac{1}{1 - \frac{z - z_0}{\zeta - z_0}} = \sum_{n=0}^{\infty} \left(\frac{z - z_0}{\zeta - z_0}\right)^n$$
+      <p>该级数对 $\zeta \in C$ <strong>一致收敛</strong>（因为 $\frac{|z-z_0|}{r} < 1$ 固定），故可逐项积分：</p>
+      $$f(z) = \frac{1}{2\pi i} \oint_C f(\zeta) \sum_{n=0}^{\infty} \frac{(z - z_0)^n}{(\zeta - z_0)^{n+1}}\,\dd\zeta = \sum_{n=0}^{\infty} \left(\frac{1}{2\pi i}\oint_C \frac{f(\zeta)}{(\zeta - z_0)^{n+1}}\,\dd\zeta\right)(z - z_0)^n$$
+      <p>令 $a_n = \frac{1}{2\pi i}\oint_C \frac{f(\zeta)}{(\zeta - z_0)^{n+1}}\,\dd\zeta = \frac{f^{(n)}(z_0)}{n!}$（由 Cauchy 高阶导数公式），即得 Taylor 展开。</p>
+      <p><strong>收敛半径：</strong>幂级数的收敛半径至少为 $R$（因为上述推导对任意 $r < R$ 有效），且不可能超过 $z_0$ 到 $f$ 最近奇点的距离（否则 $f$ 在奇点处也解析，矛盾）。</p>
+      <p><strong>唯一性：</strong>若 $f(z) = \sum a_n(z-z_0)^n$，则逐项求导 $n$ 次并令 $z=z_0$ 给出 $a_n = f^{(n)}(z_0)/n!$，故展开唯一。$\square$</p>
     </div>
 
     <div class="box box-theorem">
@@ -385,6 +393,26 @@
       <p>$C$ 为圆环域内绕 $z_0$ 的任一简单闭曲线。</p>
     </div>
 
+    <div class="box box-proof">
+      <div class="box-title">证明 · Laurent 展开定理</div>
+      <p>这是复分析中仅次于 Cauchy 积分公式的重要证明。核心思想是：在圆环域内，Cauchy 积分公式需要用到<strong>两个圆周</strong>（而非一个），两者的几何级数展开分别产生正幂项和负幂项。</p>
+      <p><strong>第一步：双围道表示。</strong>任取 $z$ 满足 $r < |z-z_0| < R$。选取 $r_1, R_1$ 使得 $r < r_1 < |z-z_0| < R_1 < R$。令 $C_1: |\zeta-z_0| = R_1$（外圆周，正向），$C_2: |\zeta-z_0| = r_1$（内圆周，正向）。$f$ 在由 $C_1$ 和 $C_2$ 围成的圆环域及其边界上解析，由 Cauchy 积分公式（多连通域版本）：</p>
+      $$f(z) = \frac{1}{2\pi i}\oint_{C_1} \frac{f(\zeta)}{\zeta - z}\,\dd\zeta - \frac{1}{2\pi i}\oint_{C_2} \frac{f(\zeta)}{\zeta - z}\,\dd\zeta \qquad (\star)$$
+      <p><strong>第二步：外圆周 $C_1$ 上的展开（产生正则部分）。</strong>在 $C_1$ 上 $|\zeta-z_0| = R_1 > |z-z_0|$，故 $\left|\frac{z-z_0}{\zeta-z_0}\right| < 1$：</p>
+      $$\frac{1}{\zeta - z} = \frac{1}{\zeta - z_0} \cdot \frac{1}{1 - \frac{z - z_0}{\zeta - z_0}} = \sum_{n=0}^{\infty} \frac{(z - z_0)^n}{(\zeta - z_0)^{n+1}}$$
+      <p>代入 $(\star)$ 中第一个积分并逐项积分（级数在 $C_1$ 上一致收敛）：</p>
+      $$\frac{1}{2\pi i}\oint_{C_1} \frac{f(\zeta)}{\zeta - z}\,\dd\zeta = \sum_{n=0}^{\infty} \left(\frac{1}{2\pi i}\oint_{C_1} \frac{f(\zeta)}{(\zeta - z_0)^{n+1}}\,\dd\zeta\right)(z - z_0)^n = \sum_{n=0}^{\infty} a_n (z - z_0)^n$$
+      <p><strong>第三步：内圆周 $C_2$ 上的展开（产生主要部分）。</strong>在 $C_2$ 上 $|\zeta-z_0| = r_1 < |z-z_0|$，故 $\left|\frac{\zeta-z_0}{z-z_0}\right| < 1$。此时展开方向相反：</p>
+      $$\frac{1}{\zeta - z} = -\frac{1}{z - z_0} \cdot \frac{1}{1 - \frac{\zeta - z_0}{z - z_0}} = -\sum_{m=0}^{\infty} \frac{(\zeta - z_0)^m}{(z - z_0)^{m+1}}$$
+      <p>代入 $(\star)$ 中第二个积分（注意前面的负号）：</p>
+      $$-\frac{1}{2\pi i}\oint_{C_2} \frac{f(\zeta)}{\zeta - z}\,\dd\zeta = \sum_{m=0}^{\infty} \left(\frac{1}{2\pi i}\oint_{C_2} f(\zeta)(\zeta - z_0)^m\,\dd\zeta\right)\frac{1}{(z - z_0)^{m+1}}$$
+      <p>令 $n = -(m+1)$，即 $m = -n-1$，则 $(z-z_0)^{-(m+1)} = (z-z_0)^n$，系数为 $\frac{1}{2\pi i}\oint_{C_2} \frac{f(\zeta)}{(\zeta - z_0)^{n+1}}\,\dd\zeta$。由于被积函数在 $C_1$ 和 $C_2$ 之间的圆环域内解析，积分围道可变形为任意绕 $z_0$ 的圆周 $C$，从而系数统一表示为 $a_n$（$n < 0$）。</p>
+      $$-\frac{1}{2\pi i}\oint_{C_2} \frac{f(\zeta)}{\zeta - z}\,\dd\zeta = \sum_{n=-1}^{-\infty} a_n (z - z_0)^n$$
+      <p><strong>第四步：合并。</strong>两部分的级数相加即得完整的 Laurent 展开：</p>
+      $$f(z) = \sum_{n=-\infty}^{+\infty} a_n (z - z_0)^n, \quad a_n = \frac{1}{2\pi i}\oint_C \frac{f(\zeta)}{(\zeta - z_0)^{n+1}}\,\dd\zeta$$
+      <p><strong>唯一性：</strong>若在同一圆环域内有两个 Laurent 展开，其差为一个双边幂级数恒为零，则所有系数必为零（可用围道积分在 $C$ 上逐项积分验证，只有 $n=-1$ 项留下）。$\square$</p>
+    </div>
+
     <div class="box box-definition">
       <div class="box-title">定义 5.5（正则部分与主要部分）</div>
       <p>Laurent 级数可拆分为两部分：</p>
@@ -486,10 +514,36 @@
       <p><strong>$z_0$ 为本性奇点</strong> $\Longleftrightarrow$ $\lim_{z\to z_0} f(z)$ 不存在（不为有限值也不为 $\infty$）。</p>
     </div>
 
+    <div class="box box-proof">
+      <div class="box-title">证明 · 奇点分类的等价条件</div>
+      <p>这些等价条件将 Laurent 展开的代数分类与极限行为联系起来，是理解奇点的关键桥梁。</p>
+      <p><strong>可去奇点：</strong></p>
+      <p>"主要部分为零 $\implies$ $\lim f(z)$ 存在有限"：当主要部分为零时 $f(z) = a_0 + a_1(z-z_0) + \cdots$ 是 $z_0$ 的去心邻域内的幂级数，令 $z \to z_0$ 得极限为 $a_0$。</p>
+      <p>"$\lim f(z)$ 存在有限 $\implies$ $f$ 有界"：由极限定义，存在 $\delta > 0$ 使得 $0 < |z-z_0| < \delta$ 时 $|f(z)| \le |\lim f| + 1$。</p>
+      <p>"$f$ 有界 $\implies$ 主要部分为零"：设 $|f(z)| \le M$ 在 $0 < |z-z_0| < \delta$ 内。对 $n \ge 1$，由 Laurent 系数公式取 $C: |z-z_0| = \rho$：</p>
+      $$|a_{-n}| = \left|\frac{1}{2\pi i}\oint_C f(z)(z-z_0)^{n-1}\,\dd z\right| \le \frac{1}{2\pi} \cdot M \rho^{n-1} \cdot 2\pi\rho = M\rho^n$$
+      <p>令 $\rho \to 0$ 得 $a_{-n} = 0$ 对所有 $n \ge 1$ 成立。故主要部分为零。这完成了可去奇点的循环等价。</p>
+      <p><strong>$m$ 阶极点：</strong></p>
+      <p>"主要部分有限项，最高 $(z-z_0)^{-m}$ $\implies$ $\lim (z-z_0)^m f(z) = a_{-m} \ne 0$"：从 Laurent 展开直接提取：</p>
+      $$(z-z_0)^m f(z) = a_{-m} + a_{-(m-1)}(z-z_0) + \cdots \to a_{-m} \ne 0$$
+      <p>"$\lim (z-z_0)^m f(z) = c \ne 0$ $\implies$ $\lim f(z) = \infty$"：显然——分母趋于零而分子趋于非零常数，故 $|f(z)| \sim |c|/|z-z_0|^m \to \infty$。</p>
+      <p>"$\lim f(z) = \infty$ $\implies$ 主要部分有限项"：若 $\lim_{z\to z_0} f(z) = \infty$，则 $\lim_{z\to z_0} 1/f(z) = 0$，故 $z_0$ 是 $1/f$ 的可去奇点且在该点值为 $0$。设 $z_0$ 是 $1/f$ 的 $m$ 阶零点，则 $f(z) = 1/[(z-z_0)^m g(z)]$ 其中 $g(z_0) \ne 0$，从而 $f$ 的主要部分恰有 $m$ 项。</p>
+      <p><strong>本性奇点：</strong>既不是可去奇点也不是极点的情况即为本性奇点。由前两类奇点的等价条件，这等价于极限既不为有限值也不为 $\infty$，即极限不存在。$\square$</p>
+    </div>
+
     <div class="box box-theorem">
       <div class="box-title">定理 5.11（Weierstrass 定理）</div>
       <p>若 $z_0$ 为 $f(z)$ 的本性奇点，则对任意 $w_0 \in \CC \cup \{\infty\}$，存在数列 $\{z_n\}$，$z_n \to z_0$，使得 $f(z_n) \to w_0$。</p>
       <p><strong>通俗说法：</strong> 在本性奇点的任意小邻域内，$f(z)$ 可以取到任意接近任何复数值的值（Picard 大定理甚至说明 $f(z)$ 取遍所有复数值至多一个例外）。</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明思路 · Casorati-Weierstrass 定理</div>
+      <p>用反证法。假设结论不成立——即存在某个 $w_0 \in \CC$ 和 $\varepsilon > 0$，使得在 $z_0$ 的任意小去心邻域内，$|f(z) - w_0| \ge \varepsilon$。</p>
+      <p>考虑函数 $g(z) = \dfrac{1}{f(z) - w_0}$。在上述邻域内，$|g(z)| \le 1/\varepsilon$，即 $g(z)$ 有界。由 Riemann 可去奇点定理（有界解析函数在孤立奇点处可去），$z_0$ 是 $g(z)$ 的可去奇点。</p>
+      <p>若 $g(z_0) \ne 0$，则 $f(z) = w_0 + 1/g(z)$ 在 $z_0$ 处解析（或可去），与 $z_0$ 是本性奇点矛盾。</p>
+      <p>若 $g(z_0) = 0$（$m$ 阶零点），则 $1/g(z)$ 以 $z_0$ 为 $m$ 阶极点，从而 $f(z)$ 也以 $z_0$ 为 $m$ 阶极点，同样与本性奇点矛盾。</p>
+      <p>因此假设不成立，$f(z)$ 在本性奇点的任意小邻域内的值域在 $\CC$ 中稠密（更精确地，其值域在扩充复平面 $\CC \cup \{\infty\}$ 中稠密）。$\square$</p>
     </div>
 
     <div class="box box-example">

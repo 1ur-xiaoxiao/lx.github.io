@@ -242,6 +242,30 @@
       $$f'(z_0) = \frac{\partial u}{\partial x} + i\frac{\partial v}{\partial x}$$
     </div>
 
+    <div class="box box-proof">
+      <div class="box-title">证明 · C-R 条件的充分性</div>
+      <p>这个证明是复分析中最关键的论证之一。它解释了为什么"验证两个特殊方向的一致性"竟足以保证"所有方向的一致性"。</p>
+      <p>设 $u, v$ 在 $(x_0, y_0)$ 处可微（作为二元实函数），则由可微性：</p>
+      $$\Delta u = u_x \Delta x + u_y \Delta y + \varepsilon_1 |\Delta z|$$
+      $$\Delta v = v_x \Delta x + v_y \Delta y + \varepsilon_2 |\Delta z|$$
+      <p>其中 $\Delta z = \Delta x + i\Delta y$，$|\Delta z| = \sqrt{(\Delta x)^2+(\Delta y)^2}$，且 $\varepsilon_1, \varepsilon_2 \to 0$（当 $\Delta z \to 0$）。这里为简洁略去了偏导数在 $(x_0, y_0)$ 处的取值标记。</p>
+      <p>考虑复增量 $\Delta f = \Delta u + i\Delta v$：</p>
+      $$\Delta f = (u_x \Delta x + u_y \Delta y) + i(v_x \Delta x + v_y \Delta y) + (\varepsilon_1 + i\varepsilon_2)|\Delta z|$$
+      $$= (u_x + i v_x)\Delta x + (u_y + i v_y)\Delta y + \varepsilon |\Delta z|$$
+      <p>其中 $\varepsilon = \varepsilon_1 + i\varepsilon_2 \to 0$（当 $\Delta z \to 0$）。</p>
+      <p><strong>关键步骤——利用 C-R 方程：</strong>将 $u_y = -v_x$ 和 $v_y = u_x$ 代入第二项：</p>
+      $$(u_y + i v_y)\Delta y = (-v_x + i u_x)\Delta y = i(u_x + i v_x)\Delta y$$
+      <p>因此：</p>
+      $$\Delta f = (u_x + i v_x)\Delta x + i(u_x + i v_x)\Delta y + \varepsilon |\Delta z|$$
+      $$= (u_x + i v_x)(\Delta x + i\Delta y) + \varepsilon |\Delta z| = (u_x + i v_x)\Delta z + \varepsilon |\Delta z|$$
+      <p>现在计算差商：</p>
+      $$\frac{\Delta f}{\Delta z} = u_x + i v_x + \varepsilon \cdot \frac{|\Delta z|}{\Delta z}$$
+      <p>由于 $||\Delta z|/\Delta z| = 1$（无论 $\Delta z$ 沿何方向趋近），当 $\Delta z \to 0$ 时 $\varepsilon \to 0$，故：</p>
+      $$\lim_{\Delta z \to 0} \frac{\Delta f}{\Delta z} = u_x + i v_x$$
+      <p>极限存在且与 $\Delta z \to 0$ 的路径无关！因此 $f'(z_0) = u_x + i v_x$。$\square$</p>
+      <p><strong>注：</strong>这个证明的核心在于，C-R 方程恰好消去了 $\Delta f$ 表达式中 $\Delta x$ 和 $\Delta y$ 的"独立性"——有了 C-R 方程，整个增量 $\Delta f$ 被压缩为只与 $\Delta z = \Delta x + i\Delta y$ 成正比（加上高阶无穷小），从而保证了沿任何方向趋近的极限都相同。</p>
+    </div>
+
     <div class="box box-theorem">
       <div class="box-title">定理 2.4（可导的充要条件）</div>
       <p>$f(z) = u + iv$ 在 $z_0$ 处可导 $\iff$ $u, v$ 在 $(x_0, y_0)$ 可微且满足 C-R 方程。</p>
@@ -398,6 +422,28 @@
         <li>$\varphi(x,y) = c_1$ 为<strong>等势线</strong>。</li>
         <li>$\psi(x,y) = c_2$ 为<strong>流线</strong>。等势线与流线正交。</li>
       </ul>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明 · $\varphi$ 和 $\psi$ 互为共轭调和函数</div>
+      <p><strong>第一步：证明 $\varphi$ 是调和函数。</strong></p>
+      <p>由势函数的定义 $v_x = \partial\varphi/\partial x$，$v_y = \partial\varphi/\partial y$，代入无源条件：</p>
+      $$\frac{\partial v_x}{\partial x} + \frac{\partial v_y}{\partial y} = \frac{\partial^2\varphi}{\partial x^2} + \frac{\partial^2\varphi}{\partial y^2} = 0$$
+      <p>故 $\Delta\varphi = 0$，$\varphi$ 为调和函数。</p>
+      <p><strong>第二步：证明 $\psi$ 是调和函数。</strong></p>
+      <p>由流函数的定义 $v_x = \partial\psi/\partial y$，$v_y = -\partial\psi/\partial x$，代入无旋条件：</p>
+      $$\frac{\partial v_y}{\partial x} - \frac{\partial v_x}{\partial y} = \frac{\partial}{\partial x}\left(-\frac{\partial\psi}{\partial x}\right) - \frac{\partial}{\partial y}\left(\frac{\partial\psi}{\partial y}\right) = -\frac{\partial^2\psi}{\partial x^2} - \frac{\partial^2\psi}{\partial y^2} = 0$$
+      <p>故 $\Delta\psi = 0$，$\psi$ 也为调和函数。</p>
+      <p><strong>第三步：证明 $\varphi$ 和 $\psi$ 满足 C-R 方程。</strong></p>
+      <p>比较势函数和流函数的定义：</p>
+      $$v_x = \frac{\partial\varphi}{\partial x} = \frac{\partial\psi}{\partial y} \implies \frac{\partial\varphi}{\partial x} = \frac{\partial\psi}{\partial y}$$
+      $$v_y = \frac{\partial\varphi}{\partial y} = -\frac{\partial\psi}{\partial x} \implies \frac{\partial\varphi}{\partial y} = -\frac{\partial\psi}{\partial x}$$
+      <p>这正是 Cauchy-Riemann 方程！因此 $\varphi$ 和 $\psi$ 互为共轭调和函数，$f(z) = \varphi + i\psi$ 是解析函数。</p>
+      <p><strong>第四步：验证 $f'(z) = v_x - iv_y$。</strong></p>
+      <p>由 C-R 条件下的导数公式：</p>
+      $$f'(z) = \frac{\partial\varphi}{\partial x} + i\frac{\partial\psi}{\partial x} = v_x + i(-v_y) = v_x - iv_y$$
+      <p>这正是流速向量的复表示——实部为 $x$ 方向流速，虚部为 $-v_y$（注意负号）。$\square$</p>
+      <p><strong>注：</strong>等势线 $\varphi = c_1$ 和流线 $\psi = c_2$ 正交的原因来自 C-R 方程的几何解释——解析函数的等值线族（$\varphi=$常数和$\psi=$常数）天然正交。这可以从梯度正交性看出：$\nabla\varphi \cdot \nabla\psi = \varphi_x\psi_x + \varphi_y\psi_y = \varphi_x(-\varphi_y) + \varphi_y(\varphi_x) = 0$。</p>
     </div>
 
     <div class="box box-note">
