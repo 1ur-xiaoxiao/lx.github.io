@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>第五章 · 级数</title>
+  <title>第五章 · 洛朗展式与孤立奇点</title>
   <link rel="stylesheet" href="css/style.css">
   <script>
     window.MathJax = {
@@ -45,344 +45,48 @@
     <li><a href="ch5.html">第五章</a></li>
     <li><a href="ch6.html">第六章</a></li>
     <li><a href="ch7.html">第七章</a></li>
+    <li><a href="ch8.html">第八章</a></li>
     <li><a href="appendix.html" style="color:#fbbf24;">📋 附录</a></li>
     <li><a href="quiz.html" style="color:#fbbf24;">🎮 闯关答题</a></li>
   </ul>
 </nav>
 
+
 <div class="main-content">
 
   <div class="chapter-header">
-    <h1>第五章 · 级数</h1>
-    <p>用无穷级数表示复变函数——幂级数、Taylor 展开与 Laurent 展开构成留数理论的基础</p>
+    <h1>第五章 · 洛朗展式与孤立奇点</h1>
+    <p>在奇点附近，Taylor 展开失效——我们需要双边幂级数（洛朗展开）来刻画函数的奇异行为</p>
   </div>
 
-  <!-- 学习目标 -->
   <div class="box box-definition" style="margin-bottom:1.5rem;">
     <div class="box-title">学完本章，你将能够：</div>
     <ol style="margin-bottom:0;">
-      <li>判断复数项级数的收敛性（绝对收敛/条件收敛），求幂级数的收敛半径</li>
-      <li>将解析函数在正则点附近展开为 Taylor 级数</li>
-      <li>将函数在圆环域内展开为 Laurent 级数（含负幂项）</li>
-      <li>根据 Laurent 展开的主要部分，给孤立奇点分类（可去/极点/本性）</li>
-      <li>理解奇点分类与极限行为之间的等价关系</li>
+      <li>将函数在环形区域内展开为洛朗级数</li>
+      <li>区分三种类型的孤立奇点：可去奇点、极点、本性奇点</li>
+      <li>利用洛朗展开提取留数（为下一章做准备）</li>
+      <li>理解 Weierstrass 定理和 Picard 定理的结论</li>
     </ol>
   </div>
 
-  <!-- 本章导读 -->
   <div class="section" style="margin-bottom:1.5rem;padding:1.25rem 1.5rem;">
     <h2 style="font-size:1.15rem;margin-bottom:0.5rem;border:none;padding:0;">本章导读</h2>
-    <p>第四章通过积分的方法研究了函数的全局性质。现在换一个视角：用<strong>无穷级数</strong>来"微观解剖"函数在某点附近的行为。</p>
-    <p>如果说 Cauchy 积分公式是从远处观察——知道函数在围道上的值就能推知内部所有信息——那么级数展开就是从近处观察——把函数拆解为 $(z-z_0)$ 的整数次幂的叠加。Taylor 展开告诉你在<strong>正则点</strong>（解析点）附近，函数像幂级数一样光滑。但真正的突破是 <strong>Laurent 展开</strong>——它允许负幂项，因此可以描述函数在<strong>奇点</strong>附近的行为。</p>
-    <p>奇点按照 Laurent 展开中负幂项的多寡分为三类：没有负幂项（可去）、有限多项负幂项（极点）、无穷多项负幂项（本性奇点）。这个简单的分类直接决定了第六章留数的计算方法——因为留数恰好就是 $(z-z_0)^{-1}$ 的系数。</p>
-  </div>
-
-  <!-- 数学分析级数知识回顾 -->
-  <div class="section" style="margin-bottom:1.5rem;padding:1.25rem 1.5rem;background:#fef9e7;border-left:4px solid #f1c40f;">
-    <h2 style="font-size:1.15rem;margin-bottom:0.5rem;border:none;padding:0;">预备：数学分析级数知识速览</h2>
-    <p>如果你对数学分析中的级数理论已经有些生疏，别担心——这里帮你快速回顾本章需要用到的基础概念。只需要读懂这些，就能顺利进入复变函数中更精彩的级数世界。</p>
-
-    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">1. 什么是级数？</h3>
-    <p>把无穷多个数按顺序加起来，就得到一个<strong>级数</strong>：$a_1 + a_2 + a_3 + \cdots = \sum_{n=1}^{\infty} a_n$。但"无穷多项相加"这个说法本身就有问题——我们不可能真的加无穷多次。所以数学家定义：先求前 $n$ 项的部分和 $S_n = a_1 + \cdots + a_n$，然后让 $n \to \infty$。如果极限 $\lim_{n\to\infty} S_n$ 存在（且有限），就说级数<strong>收敛</strong>，这个极限值就是级数的<strong>和</strong>；否则级数<strong>发散</strong>。</p>
-    <p><strong>直观理解：</strong>每次加一项，部分和就像在数轴上走路。如果步伐越来越小、最终"停"在某处，级数收敛；如果永远在摆动或者越走越远，级数发散。</p>
-
-    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">2. 收敛的必要条件</h3>
-    <p>如果级数 $\sum a_n$ 收敛，则通项 $a_n \to 0$。这只是一个<strong>必要条件</strong>（不是充分条件），用于快速排除发散级数——如果通项不趋于零，级数一定发散。比如调和级数 $\sum \frac{1}{n}$ 的通项趋于零，但它却是发散的，这说明"通项趋于零"不足以保证收敛。</p>
-
-    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">3. 几个你必须记住的标准级数</h3>
-    <p>这些是判断其他级数收敛性的"参照物"：</p>
-    <ul>
-      <li><strong>几何级数</strong> $\sum_{n=0}^{\infty} q^n$：当 $|q| < 1$ 时收敛，和为 $\frac{1}{1-q}$；当 $|q| \ge 1$ 时发散。这是<strong>最重要</strong>的级数——复变函数中的 Taylor 展开本质上就是几何级数的推广。</li>
-      <li><strong>$p$-级数</strong> $\sum_{n=1}^{\infty} \frac{1}{n^p}$：当 $p > 1$ 时收敛；当 $p \le 1$ 时发散。特别地，$p=1$ 时的调和级数 $\sum \frac{1}{n}$ 发散，$p=2$ 时 $\sum \frac{1}{n^2} = \frac{\pi^2}{6}$ 收敛。</li>
-    </ul>
-
-    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">4. 绝对收敛 vs 条件收敛</h3>
-    <p>如果每项加了绝对值之后构成的级数 $\sum |a_n|$ 收敛，就说原级数<strong>绝对收敛</strong>。绝对收敛是比普通收敛更强的性质——绝对收敛的级数一定收敛，而且<strong>重排各项顺序后和不变</strong>。</p>
-    <p>如果级数收敛但不绝对收敛（即 $\sum a_n$ 收敛但 $\sum |a_n|$ 发散），就称为<strong>条件收敛</strong>。条件收敛的级数很"娇气"——重排各项顺序可能改变和的值，甚至让它发散。</p>
-    <p><strong>对复变函数的意义：</strong>在复数域中，我们几乎只关心<strong>绝对收敛</strong>的级数，因为绝对收敛级数可以像有限和一样自由地重新排列、逐项相乘，而解析函数的 Taylor 展开恰好是绝对收敛的幂级数。</p>
-
-    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">5. 判断收敛性的常用工具</h3>
-    <ul>
-      <li><strong>比较判别法：</strong>如果 $0 \le a_n \le b_n$（对充分大的 $n$），且 $\sum b_n$ 收敛，则 $\sum a_n$ 收敛；如果 $\sum a_n$ 发散，则 $\sum b_n$ 发散。简单说就是"比一个已知收敛的小就收敛，比一个已知发散的大就发散"。</li>
-      <li><strong>比值判别法（D'Alembert）：</strong>计算极限 $\rho = \lim_{n\to\infty} \left|\frac{a_{n+1}}{a_n}\right|$。若 $\rho < 1$，级数绝对收敛；若 $\rho > 1$，级数发散；若 $\rho = 1$，此法失效，需要用别的方法。</li>
-      <li><strong>根值判别法（Cauchy）：</strong>计算极限 $\rho = \lim_{n\to\infty} \sqrt[n]{|a_n|}$。判断规则同上。</li>
-    </ul>
-    <p><strong>为什么比值法和根值法这么重要？</strong>因为它们在复变函数中直接引出了<strong>收敛半径</strong>的概念。对幂级数 $\sum c_n z^n$，用比值法得到 $|z| < \lim |c_n/c_{n+1}|$ 时收敛，这个上界就是收敛半径 $R$。</p>
-
-    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">6. 幂级数与收敛半径</h3>
-    <p>形如 $\sum_{n=0}^{\infty} c_n (z - z_0)^n$ 的级数叫做<strong>幂级数</strong>——每一项都是 $(z-z_0)$ 的幂乘以系数。幂级数有一个极其优美的性质：存在一个<strong>收敛半径</strong> $R$（$0 \le R \le +\infty$），使得：</p>
-    <ul>
-      <li>当 $|z - z_0| < R$ 时，级数<strong>绝对收敛</strong>；</li>
-      <li>当 $|z - z_0| > R$ 时，级数<strong>发散</strong>；</li>
-      <li>在 $|z - z_0| = R$ 的圆周上，需要单独判断。</li>
-    </ul>
-    <p>复变函数中，这给出了一个完美的<strong>收敛圆盘</strong>——在复平面上，收敛区域是一个以 $z_0$ 为圆心、$R$ 为半径的圆。这与实分析中收敛区间只是一条线段形成了鲜明对比，也是复数视角带来的一种"高维美感"。</p>
-    <p>收敛半径可以通过以下公式计算（来自比值/根值判别法）：</p>
-    <p>$$R = \lim_{n\to\infty} \left|\frac{c_n}{c_{n+1}}\right| \quad \text{或} \quad R = \frac{1}{\lim_{n\to\infty} \sqrt[n]{|c_n|}}$$</p>
-
-    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">7. 从实分析到复分析的过渡要点</h3>
-    <p>好消息是，复数项级数的很多判别法<strong>直接继承</strong>自实数项级数——你把复数列的实部和虚部分开处理就行。但坏消息是，有些在实数域中无法理解的现象（比如"为什么 $\ln(1+z)$ 的展开只在 $|z|<1$ 内有效"），在复数域中豁然开朗——因为复数视角揭示了奇点是收敛半径受限的真正原因。</p>
-    <p>本章的目标就是把你在数学分析中学到的级数工具"升级"到复数域，并利用 Laurent 展开这把新钥匙，打开奇点分类和留数计算的大门。</p>
+    <p>前一章我们学习了函数在<strong>解析点</strong>附近的幂级数展开。本章处理函数在<strong>奇点</strong>附近的行为——这是复分析真正展现出其独特力量的地方。</p>
+    <p>核心工具是<strong>洛朗展开</strong>：将函数在环形区域上展开为包含负幂次的双边幂级数。洛朗展开揭示了解析函数在孤立奇点附近的完整结构，由此自然导出<strong>可去奇点、极点、本性奇点</strong>的三种分类。这个分类直接通向下一章的留数理论——留数正是洛朗展开中 $(z-z_0)^{-1}$ 的系数 $a_{-1}$。</p>
+    <p>对应钟玉泉《复变函数论》第五章。</p>
   </div>
 
   <div class="toc">
     <h3>本章目录</h3>
     <ol>
-      <li><a href="#s1">5.1 复数项级数</a></li>
-      <li><a href="#s2">5.2 幂级数</a></li>
-      <li><a href="#s3">5.3 Taylor 展开定理</a></li>
-      <li><a href="#s4">5.4 Laurent 展开定理</a></li>
-      <li><a href="#s5">5.5 孤立奇点的分类</a></li>
+      <li><a href="#s1">5.1 洛朗展开定理</a></li>
+      <li><a href="#s2">5.2 孤立奇点的分类</a></li>
     </ol>
   </div>
 
-  <!-- ==================== 5.1 复数项级数 ==================== -->
-  <div class="section" id="s1">
-    <h2>5.1 复数项级数</h2>
 
-    <div class="box box-definition">
-      <div class="box-title">定义 5.1（复数项级数的收敛）</div>
-      <p>设 $\{z_n\}_{n=1}^{\infty}$ 为复数列，称</p>
-      <p>$$\sum_{n=1}^{\infty} z_n = z_1 + z_2 + z_3 + \cdots$$</p>
-      <p>为复数项级数。令部分和 $S_n = \sum_{k=1}^{n} z_k$，若 $\lim_{n\to\infty} S_n = S$ 存在（$S \in \CC$），则称级数 <strong>收敛</strong>，$S$ 为其和；否则称级数 <strong>发散</strong>。</p>
-    </div>
-
-    <div class="box box-theorem">
-      <div class="box-title">定理 5.1（收敛的必要条件）</div>
-      <p>若 $\sum_{n=1}^{\infty} z_n$ 收敛，则 $\lim_{n\to\infty} z_n = 0$。</p>
-      <p><strong>证明思路：</strong> 设 $S_n \to S$，则 $z_n = S_n - S_{n-1} \to S - S = 0$。</p>
-    </div>
-
-    <div class="box box-theorem">
-      <div class="box-title">定理 5.2（复数项级数收敛与实部、虚部级数的关系）</div>
-      <p>设 $z_n = x_n + iy_n$，则 $\sum_{n=1}^{\infty} z_n$ 收敛的充要条件是 $\sum_{n=1}^{\infty} x_n$ 和 $\sum_{n=1}^{\infty} y_n$ 同时收敛，且</p>
-      <p>$$\sum_{n=1}^{\infty} z_n = \sum_{n=1}^{\infty} x_n + i\sum_{n=1}^{\infty} y_n.$$</p>
-    </div>
-
-    <div class="box box-definition">
-      <div class="box-title">定义 5.2（绝对收敛与条件收敛）</div>
-      <p>若 $\sum_{n=1}^{\infty} |z_n|$ 收敛，则称 $\sum_{n=1}^{\infty} z_n$ <strong>绝对收敛</strong>。收敛但不绝对收敛的级数称为 <strong>条件收敛</strong>。</p>
-    </div>
-
-    <div class="box box-theorem">
-      <div class="box-title">定理 5.3（绝对收敛蕴含收敛）</div>
-      <p>若 $\sum_{n=1}^{\infty} |z_n|$ 收敛，则 $\sum_{n=1}^{\infty} z_n$ 收敛。</p>
-      <p><strong>证明：</strong> 由 $|x_n| \le |z_n|$，$|y_n| \le |z_n|$，由比较判别法知 $\sum x_n$，$\sum y_n$ 均绝对收敛从而收敛，再由定理 5.2 得证。</p>
-    </div>
-
-    <div class="box box-theorem">
-      <div class="box-title">定理 5.4（Cauchy 收敛准则）</div>
-      <p>$\sum_{n=1}^{\infty} z_n$ 收敛的充要条件是：$\forall\,\varepsilon > 0$，$\exists\, N \in \NN$，当 $n > N$ 时，对任意正整数 $p$，有</p>
-      <p>$$|z_{n+1} + z_{n+2} + \cdots + z_{n+p}| < \varepsilon.$$</p>
-    </div>
-
-    <div class="box box-note">
-      <div class="box-title">注记</div>
-      <p>复数项级数的收敛理论本质上可归结为两个实数项级数的收敛问题。但绝对收敛的概念使得我们无需分离实部和虚部即可判断收敛性。常用的正项级数判别法（比较法、比值法、根值法）对复数项级数的绝对收敛性判断同样适用，因为 $|z_n|$ 是非负实数。</p>
-    </div>
-  </div>
-
-  <!-- ==================== 5.2 幂级数 ==================== -->
-  <div class="section" id="s2">
-    <h2>5.2 幂级数</h2>
-
-    <div class="box box-definition">
-      <div class="box-title">定义 5.3（幂级数）</div>
-      <p>形如</p>
-      <p>$$\sum_{n=0}^{\infty} a_n (z - z_0)^n = a_0 + a_1(z-z_0) + a_2(z-z_0)^2 + \cdots$$</p>
-      <p>的级数称为以 $z_0$ 为中心的幂级数，其中 $a_n \in \CC$ 为系数。</p>
-    </div>
-
-    <div class="box box-theorem">
-      <div class="box-title">定理 5.5（Abel 定理）</div>
-      <p>若幂级数 $\sum_{n=0}^{\infty} a_n z^n$ 在 $z = z_1 \ne 0$ 处收敛，则它在圆盘 $|z| < |z_1|$ 内绝对收敛且内闭一致收敛。</p>
-      <p><strong>证明：</strong> 因 $\sum a_n z_1^n$ 收敛，故 $a_n z_1^n \to 0$，从而有界：$|a_n z_1^n| \le M$。对 $|z| < |z_1|$，令 $r = |z|/|z_1| < 1$，则</p>
-      <p>$$|a_n z^n| = |a_n z_1^n| \cdot \left|\frac{z}{z_1}\right|^n \le M r^n,$$</p>
-      <p>由几何级数 $\sum Mr^n$ 收敛知 $\sum |a_n z^n|$ 收敛。</p>
-    </div>
-
-    <div class="box box-theorem">
-      <div class="box-title">定理 5.6（收敛半径的存在性）</div>
-      <p>对幂级数 $\sum_{n=0}^{\infty} a_n z^n$，存在 $R \in [0, +\infty]$（称为收敛半径），使得：</p>
-      <ul>
-        <li>当 $|z| < R$ 时，级数绝对收敛；</li>
-        <li>当 $|z| > R$ 时，级数发散；</li>
-        <li>当 $|z| = R$ 时，需要具体判断。</li>
-      </ul>
-      <p>圆盘 $|z| < R$ 称为 <strong>收敛圆</strong>。</p>
-    </div>
-
-    <div class="box box-formula">
-      <div class="box-title">收敛半径的求法</div>
-      <p><strong>比值法（d'Alembert）：</strong> 若 $\lim_{n\to\infty} \left|\dfrac{a_{n+1}}{a_n}\right| = \lambda$，则</p>
-      <p>$$R = \frac{1}{\lambda} \quad (\lambda = 0 \text{ 时 } R = +\infty,\; \lambda = +\infty \text{ 时 } R = 0).$$</p>
-      <p><strong>根值法（Cauchy-Hadamard）：</strong></p>
-      <p>$$R = \frac{1}{\limsup_{n\to\infty} \sqrt[n]{|a_n|}}.$$</p>
-      <p>（约定 $1/0 = +\infty$，$1/+\infty = 0$。）</p>
-    </div>
-
-    <div class="box box-example">
-      <div class="box-title">例 5.1</div>
-      <p>求幂级数 $\displaystyle\sum_{n=0}^{\infty} \frac{z^n}{n!}$ 的收敛半径。</p>
-      <p><strong>解：</strong> $a_n = 1/n!$，由比值法</p>
-      <p>$$\left|\frac{a_{n+1}}{a_n}\right| = \frac{n!}{(n+1)!} = \frac{1}{n+1} \to 0,$$</p>
-      <p>故 $R = +\infty$，即该级数在全平面收敛。</p>
-    </div>
-
-    <div class="box box-example">
-      <div class="box-title">例 5.2</div>
-      <p>求幂级数 $\displaystyle\sum_{n=1}^{\infty} n^n z^n$ 的收敛半径。</p>
-      <p><strong>解：</strong> 由根值法</p>
-      <p>$$\limsup_{n\to\infty} \sqrt[n]{|a_n|} = \lim_{n\to\infty} n = +\infty,$$</p>
-      <p>故 $R = 0$，级数仅在 $z = 0$ 处收敛。</p>
-    </div>
-
-    <div class="box box-theorem">
-      <div class="box-title">定理 5.7（幂级数的性质）</div>
-      <p>设 $\sum a_n z^n$ 的收敛半径为 $R > 0$，则：</p>
-      <ol>
-        <li>在收敛圆 $|z| < R$ 内，和函数 $f(z) = \sum a_n z^n$ 解析；</li>
-        <li>可在收敛圆内逐项求导：$f'(z) = \sum_{n=1}^{\infty} n a_n z^{n-1}$；</li>
-        <li>可在收敛圆内逐项积分：$\int_0^z f(\zeta)\,\dd\zeta = \sum_{n=0}^{\infty} \frac{a_n}{n+1} z^{n+1}$；</li>
-        <li>逐项求导和逐项积分不改变收敛半径。</li>
-      </ol>
-    </div>
-
-    <div class="box box-note">
-      <div class="box-title">注记：Abel 定理的逆否命题</div>
-      <p>若 $\sum a_n z^n$ 在 $z = z_1$ 处发散，则对所有 $|z| > |z_1|$，级数也发散。这说明收敛圆外的点一定使级数发散。</p>
-    </div>
-  </div>
-
-  <!-- ==================== 5.3 Taylor 展开定理 ==================== -->
-  <div class="section" id="s3">
-    <h2>5.3 Taylor 展开定理</h2>
-
-    <div class="box box-theorem">
-      <div class="box-title">定理 5.8（Taylor 展开定理）</div>
-      <p>设 $f(z)$ 在圆盘 $D: |z - z_0| < R$ 内解析，则 $f(z)$ 在 $D$ 内可唯一地展开为幂级数</p>
-      <p>$$f(z) = \sum_{n=0}^{\infty} a_n (z - z_0)^n, \quad |z - z_0| < R,$$</p>
-      <p>其中</p>
-      <p>$$a_n = \frac{f^{(n)}(z_0)}{n!} = \frac{1}{2\pi i} \oint_C \frac{f(\zeta)}{(\zeta - z_0)^{n+1}}\,\dd\zeta,$$</p>
-      <p>$C$ 为圆周 $|\zeta - z_0| = r < R$。</p>
-    </div>
-
-    <div class="box box-proof">
-      <div class="box-title">证明 · Taylor 展开定理</div>
-      <p>取 $r < R$，令 $C: |\zeta - z_0| = r$（正向）。对 $|z - z_0| < r$，由 Cauchy 积分公式：</p>
-      $$f(z) = \frac{1}{2\pi i} \oint_C \frac{f(\zeta)}{\zeta - z}\,\dd\zeta$$
-      <p><strong>关键步骤——几何级数展开：</strong></p>
-      $$\frac{1}{\zeta - z} = \frac{1}{(\zeta - z_0) - (z - z_0)} = \frac{1}{\zeta - z_0} \cdot \frac{1}{1 - \frac{z - z_0}{\zeta - z_0}}$$
-      <p>由于 $z$ 在圆内、$\zeta$ 在圆周上，$\left|\frac{z - z_0}{\zeta - z_0}\right| = \frac{|z - z_0|}{r} < 1$，可用几何级数：</p>
-      $$\frac{1}{1 - \frac{z - z_0}{\zeta - z_0}} = \sum_{n=0}^{\infty} \left(\frac{z - z_0}{\zeta - z_0}\right)^n$$
-      <p>该级数对 $\zeta \in C$ <strong>一致收敛</strong>（因为 $\frac{|z-z_0|}{r} < 1$ 固定），故可逐项积分：</p>
-      $$f(z) = \frac{1}{2\pi i} \oint_C f(\zeta) \sum_{n=0}^{\infty} \frac{(z - z_0)^n}{(\zeta - z_0)^{n+1}}\,\dd\zeta = \sum_{n=0}^{\infty} \left(\frac{1}{2\pi i}\oint_C \frac{f(\zeta)}{(\zeta - z_0)^{n+1}}\,\dd\zeta\right)(z - z_0)^n$$
-      <p>令 $a_n = \frac{1}{2\pi i}\oint_C \frac{f(\zeta)}{(\zeta - z_0)^{n+1}}\,\dd\zeta = \frac{f^{(n)}(z_0)}{n!}$（由 Cauchy 高阶导数公式），即得 Taylor 展开。</p>
-      <p><strong>收敛半径：</strong>幂级数的收敛半径至少为 $R$（因为上述推导对任意 $r < R$ 有效），且不可能超过 $z_0$ 到 $f$ 最近奇点的距离（否则 $f$ 在奇点处也解析，矛盾）。</p>
-      <p><strong>唯一性：</strong>若 $f(z) = \sum a_n(z-z_0)^n$，则逐项求导 $n$ 次并令 $z=z_0$ 给出 $a_n = f^{(n)}(z_0)/n!$，故展开唯一。$\square$</p>
-    </div>
-
-    <div class="box box-theorem">
-      <div class="box-title">定理 5.9（Taylor 展开的唯一性）</div>
-      <p>若 $f(z)$ 在 $|z - z_0| < R$ 内有两种幂级数表示 $f(z) = \sum a_n(z-z_0)^n = \sum b_n(z-z_0)^n$，则 $a_n = b_n$ 对所有 $n$ 成立。</p>
-    </div>
-
-    <div class="box box-note">
-      <div class="box-title">注记：展开的注意事项</div>
-      <p>Taylor 展开的收敛半径等于展开中心 $z_0$ 到 $f(z)$ 最近奇点的距离。例如 $\dfrac{1}{1+z^2}$ 在 $z_0 = 0$ 处展开的收敛半径为 $1$（因为 $z = \pm i$ 是奇点，距原点距离为 $1$），尽管该函数在实轴上处处光滑。</p>
-    </div>
-
-    <h3>常用 Taylor 展开公式表</h3>
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>函数</th>
-            <th>Taylor 展开</th>
-            <th>收敛域</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>$e^z$</td>
-            <td>$\displaystyle\sum_{n=0}^{\infty} \frac{z^n}{n!}$</td>
-            <td>$|z| < +\infty$</td>
-          </tr>
-          <tr>
-            <td>$\sin z$</td>
-            <td>$\displaystyle\sum_{n=0}^{\infty} \frac{(-1)^n z^{2n+1}}{(2n+1)!}$</td>
-            <td>$|z| < +\infty$</td>
-          </tr>
-          <tr>
-            <td>$\cos z$</td>
-            <td>$\displaystyle\sum_{n=0}^{\infty} \frac{(-1)^n z^{2n}}{(2n)!}$</td>
-            <td>$|z| < +\infty$</td>
-          </tr>
-          <tr>
-            <td>$\dfrac{1}{1-z}$</td>
-            <td>$\displaystyle\sum_{n=0}^{\infty} z^n$</td>
-            <td>$|z| < 1$</td>
-          </tr>
-          <tr>
-            <td>$\dfrac{1}{1+z}$</td>
-            <td>$\displaystyle\sum_{n=0}^{\infty} (-1)^n z^n$</td>
-            <td>$|z| < 1$</td>
-          </tr>
-          <tr>
-            <td>$\log(1+z)$</td>
-            <td>$\displaystyle\sum_{n=1}^{\infty} \frac{(-1)^{n-1} z^n}{n}$</td>
-            <td>$|z| < 1$</td>
-          </tr>
-          <tr>
-            <td>$(1+z)^\alpha$</td>
-            <td>$\displaystyle\sum_{n=0}^{\infty} \binom{\alpha}{n} z^n$</td>
-            <td>$|z| < 1$</td>
-          </tr>
-          <tr>
-            <td>$\dfrac{1}{(1-z)^2}$</td>
-            <td>$\displaystyle\sum_{n=1}^{\infty} n z^{n-1}$</td>
-            <td>$|z| < 1$</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="box box-example">
-      <div class="box-title">例 5.3</div>
-      <p>将 $f(z) = \dfrac{1}{z(z-1)}$ 在 $z_0 = 0$ 的邻域内展开。</p>
-      <p><strong>解：</strong> 对 $|z| < 1$，利用 $\dfrac{1}{1-z} = \sum_{n=0}^{\infty} z^n$，得</p>
-      <p>$$f(z) = \frac{1}{z} \cdot \frac{1}{z-1} = -\frac{1}{z} \cdot \frac{1}{1-z} = -\frac{1}{z} \sum_{n=0}^{\infty} z^n = -\sum_{n=0}^{\infty} z^{n-1} = -\frac{1}{z} - 1 - z - z^2 - \cdots.$$</p>
-      <p>这不是 Taylor 级数（含负幂项），而是 Laurent 级数，因为 $z = 0$ 是奇点。</p>
-    </div>
-
-    <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例 5.4（间接展开法）</div>
-      <div class="collapsible-body">
-        <p>将 $f(z) = \dfrac{1}{(1-z)^2}$ 在 $z_0 = 0$ 处展开。</p>
-        <p><strong>解法一（逐项求导）：</strong> 由 $\dfrac{1}{1-z} = \sum_{n=0}^{\infty} z^n$，两边对 $z$ 求导：</p>
-        <p>$$\frac{1}{(1-z)^2} = \sum_{n=1}^{\infty} n z^{n-1} = 1 + 2z + 3z^2 + 4z^3 + \cdots, \quad |z| < 1.$$</p>
-        <p><strong>解法二（级数乘法）：</strong> $\dfrac{1}{(1-z)^2} = \left(\sum_{n=0}^{\infty} z^n\right)^2$，由 Cauchy 乘积公式：</p>
-        <p>$$c_n = \sum_{k=0}^{n} 1 \cdot 1 = n+1,$$</p>
-        <p>故 $\dfrac{1}{(1-z)^2} = \sum_{n=0}^{\infty} (n+1)z^n$，收敛半径 $R = 1$。</p>
-      </div>
-    </div>
-
-    <div class="box box-example">
-      <div class="box-title">例 5.4b（非平凡展开中心）</div>
-      <p>将 $f(z) = \dfrac{1}{1+z^2}$ 在 $z_0 = 1$ 处展开为 Taylor 级数，并求收敛半径。</p>
-      <p><strong>解</strong>：$f(z)$ 的奇点为 $z = \pm i$（分母为零）。展开中心 $z_0 = 1$ 到最近奇点的距离为 $|1-i| = \sqrt{2}$，故收敛半径 $R = \sqrt{2}$。</p>
-      <p>变形：$f(z) = \dfrac{1}{(z-i)(z+i)}$。令 $w = z-1$，即 $z = 1+w$，则：</p>
-      $$f(1+w) = \frac{1}{1+(1+w)^2} = \frac{1}{2+2w+w^2} = \frac{1}{2}\cdot\frac{1}{1+w+\frac{w^2}{2}}$$
-      <p>对 $|w+\frac{w^2}{2}| < 1$（即 $|w|$ 充分小），用几何级数展开：</p>
-      $$\frac{1}{2}\sum_{n=0}^{\infty}(-1)^n\left(w+\frac{w^2}{2}\right)^n = \frac{1}{2} - \frac{1}{2}w + \frac{1}{4}w^2 + \frac{1}{4}w^3 - \cdots$$
-      <p>代回 $z$ 得 $f(z) = \dfrac{1}{2} - \dfrac{1}{2}(z-1) + \dfrac{1}{4}(z-1)^2 + \dfrac{1}{4}(z-1)^3 - \cdots$，收敛半径为 $\sqrt{2}$。</p>
-      <p><strong>注</strong>：虽然 $f(z)$ 在实轴上处处光滑，但其 Taylor 级数的收敛半径受复数奇点 $\pm i$ 的限制。这体现了复数视角的威力——复数域中的奇点决定了级数的收敛范围，即使在实数域上看不到任何异常。</p>
-    </div>
-  </div>
-
-  <!-- ==================== 5.4 Laurent 展开定理 ==================== -->
-  <div class="section" id="s4">
-    <h2>5.4 Laurent 展开定理</h2>
+<div class="section" id="s4">
+    <h2>5.1 Laurent 展开定理</h2>
 
     <div class="box box-note">
       <div class="box-title">直觉导航</div>
@@ -489,7 +193,7 @@
 
   <!-- ==================== 5.5 孤立奇点的分类 ==================== -->
   <div class="section" id="s5">
-    <h2>5.5 孤立奇点的分类</h2>
+    <h2>5.2 孤立奇点的分类</h2>
 
     <div class="box box-note">
       <div class="box-title">直觉导航</div>
@@ -649,7 +353,7 @@
   </div>
 
   <div class="chapter-nav">
-    <a href="ch4.html" class="prev">第四章 · 复积分</a>
+    <a href="ch4.html" class="prev">第四章 · 解析函数的幂级数表示</a>
     <a href="ch6.html" class="next">第六章 · 留数</a>
   </div>
 

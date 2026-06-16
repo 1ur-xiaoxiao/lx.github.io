@@ -36,6 +36,7 @@
     <li><a href="ch5.html">第五章</a></li>
     <li><a href="ch6.html">第六章</a></li>
     <li><a href="ch7.html">第七章</a></li>
+    <li><a href="ch8.html">第八章</a></li>
     <li><a href="quiz.html" style="color:#fbbf24;">🎮 闯关答题</a></li>
   </ul>
 </nav>
@@ -96,8 +97,8 @@
       </table>
     </div>
 
-    <!-- Ch3 -->
-    <h3>第三章 · 初等函数</h3>
+    <!-- Ch2 初等函数（属于第二章） -->
+    <h3>第二章（续）· 初等函数</h3>
     <div class="table-wrapper">
       <table>
         <thead><tr><th>公式</th><th>说明</th></tr></thead>
@@ -114,8 +115,8 @@
       </table>
     </div>
 
-    <!-- Ch4 -->
-    <h3>第四章 · 复积分 ★★★（分值最重）</h3>
+    <!-- Ch3 -->
+    <h3>第三章 · 复变函数的积分 ★★★（分值最重）</h3>
     <div class="table-wrapper">
       <table>
         <thead><tr><th>公式</th><th>说明</th></tr></thead>
@@ -134,8 +135,8 @@
       </table>
     </div>
 
-    <!-- Ch5 -->
-    <h3>第五章 · 级数</h3>
+    <!-- Ch4+Ch5 -->
+    <h3>第四章 · 幂级数 &amp; 第五章 · 洛朗展式与孤立奇点</h3>
     <div class="table-wrapper">
       <table>
         <thead><tr><th>公式</th><th>说明</th></tr></thead>
@@ -201,9 +202,9 @@
       <div class="box-title">计划设计原则</div>
       <ul>
         <li>前三章是基础工具，需要熟练掌握运算方法（而非死记硬背）。</li>
-        <li>第四章是理论核心和考试重点，分配两天。</li>
-        <li>第五、六章是计算工具（留数计算实积分是必考题），分配两天。</li>
-        <li>第七章只考前3节，分配一天。</li>
+        <li>第三章（复积分）是理论核心和考试重点，分配两天。</li>
+        <li>第五、六章是计算工具（留数计算实积分是必考题），各分配一天。</li>
+        <li>第七章（共形映射）只考前3节，分配一天。第八章（解析延拓）浏览即可。</li>
         <li>最后两天用于综合复习和真题/模拟训练。</li>
       </ul>
     </div>
@@ -221,7 +222,7 @@
     <p><strong>重点练习</strong>：用指数形式做乘除和幂运算；利用 $|z|^2=z\bar{z}$ 简化表达式；三角不等式的应用；判断点集的类型和连通性。</p>
     <p><strong>自查</strong>：能否在30秒内将 $1+\sqrt{3}i$ 化为指数形式？能否求出 $(1+i)^8$ 而不展开二项式？</p>
 
-    <h3>★ 第2天：第二章 解析函数</h3>
+    <h3>★ 第2天：第二章 解析函数（含初等函数）</h3>
     <div class="box box-note">
       <div class="box-title">学习目标</div>
       <ul>
@@ -234,52 +235,52 @@
     <p><strong>重点练习</strong>：用C-R方程判断函数是否解析；给定$u$求$v$（和反过来）；验证调和性。</p>
     <p><strong>易错点</strong>：可导$\neq$解析（解析需要邻域内处处可导，$|z|^2$在$z=0$可导但不解析是经典反例）。C-R方程只是必要条件，需配合可微性才是充分条件。</p>
 
-    <h3>第3天：第三章 初等函数</h3>
+    <h3>第3天：第三章 复变函数的积分（上）</h3>
     <div class="box box-note">
       <div class="box-title">学习目标</div>
       <ul>
-        <li>掌握 $e^z$ 的周期性和映射性质</li>
-        <li>理解对数函数的多值性和主值分支</li>
-        <li>判断幂函数 $z^a$ 的分支数量</li>
-        <li>会计算复三角函数的值并理解其无界性</li>
+        <li>掌握参数化计算复积分的方法</li>
+        <li>牢记 $\oint (z-a)^n dz$ 的结果</li>
+        <li>理解 Cauchy 积分定理的条件和结论</li>
+        <li>熟练运用 Cauchy 积分公式计算围道积分</li>
       </ul>
     </div>
-    <p><strong>重点练习</strong>：计算$\Log z$、$z^a$的具体值；判断$z^a$是几值函数；解含指数/对数的方程（如$e^z=1+i$）。</p>
-    <p><strong>易错点</strong>：$\Log(z_1z_2) \neq \Log z_1 + \Log z_2$（可能差$2\pi i$）；$|\sin z|$可以大于1。</p>
+    <p><strong>重点练习</strong>：参数化法计算简单积分；用 Cauchy 积分公式计算 $\oint \frac{f(z)}{z-a}dz$ 型积分。</p>
+    <p><strong>易错点</strong>：可导≠解析（解析需要邻域内处处可导）；C-R 方程只是必要条件，需配合可微性才是充分条件。</p>
 
-    <h3>★★ 第4天：第四章 复积分（上）—— 基础与Cauchy积分公式</h3>
+    <h3>★★ 第4天：第三章 复变函数的积分（下）—— 高阶导数与深刻推论</h3>
     <div class="box box-note">
       <div class="box-title">学习目标</div>
       <ul>
         <li>掌握参数化计算复积分的方法</li>
         <li>牢记 $\oint (z-a)^n dz$ 的结果（$n=-1$是唯一例外）</li>
-        <li>理解Cauchy积分定理的条件和结论</li>
-        <li>熟练运用Cauchy积分公式计算围道积分</li>
+        <li>理解 Cauchy 估计 → Liouville 定理 → 代数基本定理的逻辑链</li>
+        <li>掌握奇点的等价判别法（极限判别）</li>
       </ul>
     </div>
-    <p><strong>重点练习</strong>：参数化法计算简单积分；用Cauchy积分公式计算 $\oint \frac{f(z)}{z-a}dz$ 型积分（确认$a$在围道内部）。</p>
-    <p><strong>自我检测</strong>：$\oint_{|z|=2}\frac{e^z}{z-1}dz = ?$（答案：$2\pi i e$）</p>
+    <p><strong>重点练习</strong>：参数化法计算简单积分；用几何级数 $\frac{1}{1-z}=\sum z^n$ 做间接展开；求幂级数的收敛半径。</p>
+    <p><strong>自我检测</strong>：$\oint_{|z|=3}\frac{\cos z}{(z-\pi)^3}dz = ?$（答案：$\pi i \sin\pi = 0$）</p>
 
-    <h3>★★ 第5天：第四章 复积分（下）—— 高阶导数与深刻推论</h3>
+    <h3>★ 第5天：第四章 解析函数的幂级数表示</h3>
     <div class="box box-note">
       <div class="box-title">学习目标</div>
       <ul>
-        <li>熟练运用高阶导数公式</li>
-        <li>理解Cauchy估计 → Liouville定理 → 代数基本定理的逻辑链</li>
-        <li>掌握最大模原理及其应用</li>
+        <li>掌握奇点的等价判别法（极限判别）</li>
+        <li>理解 Weierstrass 定理（本性奇点的稠密性）（可去/极点/本性）</li>
+        <li>理解收敛半径 = 到最近奇点的距离</li>
       </ul>
     </div>
-    <p><strong>重点练习</strong>：高阶导数公式计算含$(z-a)^{-n}$（$n\ge 2$）的积分；用最大模原理证明不等式。</p>
-    <p><strong>自我检测</strong>：$\oint_{|z|=3}\frac{\cos z}{(z-\pi)^3}dz = ?$（答案：$\pi i \sin\pi = 0$，注意$\cos\pi = -1$的导数为$\sin\pi = 0$）</p>
+    <p><strong>重点练习</strong>：用几何级数 $\frac{1}{1-z}=\sum z^n$ 做间接展开；求幂级数的收敛半径。</p>
+    <p><strong>自我检测</strong>：$\sum_{n=1}^{\infty} \frac{n}{2^n} z^n$ 的收敛半径是多少？（答案：$R=2$）</p>
 
-    <h3>★ 第6天：第五章 级数</h3>
+    <h3>★ 第6天：第五章 洛朗展式与孤立奇点</h3>
     <div class="box box-note">
       <div class="box-title">学习目标</div>
       <ul>
-        <li>掌握幂级数收敛半径的求法</li>
-        <li>能对解析函数做 Taylor 展开（直接法和间接法）</li>
-        <li>能在圆环域内做 Laurent 展开（间接法为主）</li>
-        <li>能根据 Laurent 展开判断奇点类型</li>
+        <li>掌握奇点的等价判别法（极限判别）</li>
+        <li>理解 Weierstrass 定理（本性奇点的稠密性）（可去/极点/本性）</li>
+        <li>掌握奇点的等价判别法（极限判别）</li>
+        <li>理解 Weierstrass 定理（本性奇点的稠密性）</li>
       </ul>
     </div>
     <p><strong>重点练习</strong>：用几何级数 $\frac{1}{1-z}=\sum z^n$ 做间接展开；在不同圆环域内展开同一函数；判断奇点类型（数负幂项个数是最直接的方法）。</p>
@@ -395,7 +396,7 @@
   </div>
 
   <div class="chapter-nav">
-    <a href="ch7.html" class="prev">← 第七章 · 共形映射</a>
+    <a href="ch8.html" class="prev">← 第八章 · 解析延拓</a>
     <a href="quiz.html" class="next">🎮 闯关答题</a>
   </div>
 

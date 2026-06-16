@@ -33,10 +33,7 @@
     <li><a href="ch2.html">第二章</a></li>
     <li><a href="ch3.html">第三章</a></li>
     <li><a href="ch4.html">第四章</a></li>
-    <li><a href="ch5.html">第五章</a></li>
-    <li><a href="ch6.html">第六章</a></li>
-    <li><a href="ch7.html">第七章</a></li>
-        <li><a href="appendix.html">附录</a></li>
+    <li><a href="appendix.html">附录</a></li>
   </ul>
 </nav>
 
@@ -54,8 +51,10 @@
       <li><a href="#s2">3.2 Green公式与Green函数</a></li>
       <li><a href="#s3">3.3 分离变量法解Laplace方程</a></li>
       <li><a href="#s4">3.4 球上的Dirichlet问题与Poisson积分公式</a></li>
-      <li><a href="#s5">3.5 极值原理</a></li>
+      <li><a href="#s5">3.5 极值原理与Neumann问题的可解性条件</a></li>
       <li><a href="#s6">3.6 调和函数的深刻性质</a></li>
+      <li><a href="#s7">3.7 半空间的Green函数与镜像法</a></li>
+      <li><a href="#s8">3.8 外问题与无穷远处的边界条件</a></li>
     </ol>
   </div>
 
@@ -436,11 +435,49 @@
       <p>由极值原理，$w$ 的最大值和最小值均在边界上达到。因为 $w|_{\pd\Omega} = 0$，所以 $0 \leq w(x) \leq 0$，即 $w \equiv 0$，$u_1 = u_2$。这是 PDE 理论中"先验估计 + 极值原理推出唯一性"的典范论证。</p>
     </div>
 
+    <h3>Neumann问题的可解性必要条件</h3>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 3.5.3（Neumann问题的必要条件）</div>
+      <p>考虑 Poisson 方程的 Neumann 边值问题：</p>
+      $$\begin{cases} \lap u = f & \text{in } \Omega, \\ \dfrac{\pd u}{\pd n} = g & \text{on } \pd\Omega. \end{cases}$$
+      <p>该问题<strong>有解的必要条件</strong>为源项与边界通量满足相容性条件：</p>
+      $$\boxed{\int_\Omega f(x)\,\dd x = \int_{\pd\Omega} g(x)\,\dd S}.$$
+      <p>特别地，对于 Laplace 方程（$f=0$）的 Neumann 问题，必要条件简化为：</p>
+      $$\boxed{\int_{\pd\Omega} g(x)\,\dd S = 0}.$$
+      <p>即边界法向导数的面积分必为零——流入的热量必须等于流出的热量，稳态下不能有净热流。</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明（利用散度定理）</div>
+      <p>由散度定理（Gauss定理）：</p>
+      $$\int_\Omega \lap u \,\dd x = \int_\Omega \div(\grad u)\,\dd x = \int_{\pd\Omega} \grad u \cdot \vec{n}\,\dd S = \int_{\pd\Omega} \frac{\pd u}{\pd n}\,\dd S.$$
+      <p>代入 $\lap u = f$ 和 $\frac{\pd u}{\pd n} = g$，即得 $\int_\Omega f\,\dd x = \int_{\pd\Omega} g\,\dd S$。</p>
+      <p>这个等式是散度定理的直接推论，其物理含义是<strong>稳态下的守恒律</strong>：区域内部产生的"源"的总量，必须等于通过边界流出的"通量"的总量。如果两者不相等，稳态不可能成立。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 3.5.1（考试重点：Neumann问题可解性判断）</div>
+      <p>选择题：下列哪个 Neumann 问题可能有解？</p>
+      <p>(a) $\lap u = 0$ in $\Omega$，$\frac{\pd u}{\pd n}\big|_{\pd\Omega} = 1$</p>
+      <p>(b) $\lap u = 0$ in $\Omega$，$\frac{\pd u}{\pd n}\big|_{\pd\Omega} = \cos\theta$（在单位球面上）</p>
+      <p>(c) $\lap u = 1$ in $\Omega$，$\frac{\pd u}{\pd n}\big|_{\pd\Omega} = |\Omega|/|\pd\Omega|$</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p><strong>(a)</strong> 条件为 $\int_{\pd\Omega} 1\,\dd S = |\pd\Omega| \neq 0$，但 $f=0$，故 $\int_\Omega 0\,\dd x = 0 \neq |\pd\Omega|$。相容性条件不满足，<strong>无解</strong>。</p>
+          <p><strong>(b)</strong> 在单位球面上 $\int_{S^2} \cos\theta\,\dd S = 0$（对称性——上半球面为正，下半球面为负，互相抵消）。又 $f=0$，相容性条件 $0=0$ 满足。可能<strong>有解</strong>（解为 $u = \frac{1}{2}z = \frac{1}{2}r\cos\theta$，可验证 $\frac{\pd u}{\pd n}\big|_{r=1} = \frac{\pd u}{\pd r} = \frac{1}{2}\cos\theta$，确实满足）。</p>
+          <p><strong>(c)</strong> $\int_\Omega 1\,\dd x = |\Omega|$，$\int_{\pd\Omega} |\Omega|/|\pd\Omega|\,\dd S = |\Omega|$。相容性条件满足，可能<strong>有解</strong>。</p>
+          <p><strong>总结：</strong>Laplace 方程 Neumann 问题有解的必要且（在适当条件下）充分条件是 $\int_{\pd\Omega} g\,\dd S = 0$。这是考试中的高频考点（如选择题1）。</p>
+        </div>
+      </div>
+    </div>
+
     <div class="box box-pitfall">
       <div class="box-title">常见误区：Neumann问题的解不唯一</div>
       <p>Neumann 问题</p>
       $$\begin{cases} \lap u = 0 & \text{in } \Omega \\ \frac{\pd u}{\pd n} = \psi & \text{on } \pd\Omega \end{cases}$$
-      <p>的解<strong>不唯一</strong>：若 $u$ 为解，则 $u + C$（$C$ 为任意常数）也是解。这与 Dirichlet 问题有本质区别——Dirichlet 问题固定了边界的值（"把铁丝固定"），而 Neumann 问题只固定了边界的法向导数（"只控制斜率"），允许整体上下平移。要恢复唯一性，通常需要附加额外条件，如固定某点的值或要求 $\int_\Omega u = 0$。</p>
+      <p>即使相容性条件满足，解仍<strong>不唯一</strong>：若 $u$ 为解，则 $u + C$（$C$ 为任意常数）也是解。这与 Dirichlet 问题有本质区别——Dirichlet 问题固定了边界的值（"把铁丝固定"），而 Neumann 问题只固定了边界的法向导数（"只控制斜率"），允许整体上下平移。要恢复唯一性，通常需要附加额外条件，如固定某点的值或要求 $\int_\Omega u = 0$。</p>
     </div>
   </div>
 
@@ -528,6 +565,33 @@
       <p>想象一个房间的稳态温度分布（非负，因为用 Kelvin 温标）。Harnack 不等式说：如果你在某处测到温度是 $1^\circ\text{K}$，那么房间内任何别的地方的温度<strong>不会超过某个固定的倍数</strong>（比如 $10$ 倍）。你不可能有一个角落是 $1^\circ\text{K}$ 而另一个角落是 $1000^\circ\text{K}$——调和函数不允许这样剧烈的变化。这就是椭圆方程的<strong>内在正则性</strong>。</p>
     </div>
 
+    <div class="box box-formula">
+      <div class="box-title">球上的显式 Harnack 不等式</div>
+      <p>对于球 $B_R(0)$ 上的非负调和函数 $u$，有以下<strong>精确形式</strong>的 Harnack 不等式：</p>
+      $$\frac{R^{n-2}(R-|x|)}{(R+|x|)^{n-1}} u(0) \le u(x) \le \frac{R^{n-2}(R+|x|)}{(R-|x|)^{n-1}} u(0), \quad \forall x \in B_R(0).$$
+      <p>该不等式从 Poisson 积分公式直接推出（利用 Poisson 核的上下界估计）。当 $n=2$ 时，上式简化为：</p>
+      $$\frac{R-|x|}{R+|x|} u(0) \le u(x) \le \frac{R+|x|}{R-|x|} u(0).$$
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 3.6.2（考试重点：Harnack不等式的应用）</div>
+      <p>选择题：设 $u$ 是 $B_1(0) \subset \RR^n$ 上的非负调和函数，$u(0)=1$。下列哪个结论正确？</p>
+      <p>(A) $u(x) \ge \frac{1-|x|}{(1+|x|)^{n-1}}$ 对所有 $x \in B_1(0)$ 成立</p>
+      <p>(B) 存在 $x \in B_1(0)$ 使 $u(x) = 100$</p>
+      <p>(C) $u$ 在 $B_1(0)$ 上有上界，但下界可以为 0</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>取 $R=1$，$u(0)=1$。由球上 Harnack 不等式：</p>
+          <p>下界：$u(x) \ge \frac{(1-|x|)}{(1+|x|)^{n-1}} \cdot 1 = \frac{1-|x|}{(1+|x|)^{n-1}}$。故<strong>(A) 正确</strong>。</p>
+          <p>上界：$u(x) \le \frac{(1+|x|)}{(1-|x|)^{n-1}}$。当 $|x| \to 1$ 时上界趋于无穷，但这只是上界——实际值可能远小于上界。不能由此推出存在 $u(x)=100$。<strong>(B) 不一定正确</strong>。</p>
+          <p>下界为正数：$u(x) \ge \frac{1-|x|}{(1+|x|)^{n-1}} > 0$（对 $|x|<1$），故 $u$ 在紧子集上有严格正下界。<strong>(C) 错误</strong>——下界不能为 0。</p>
+          <p>因此<strong>正确答案是 (A)</strong>。</p>
+          <p><strong>Harnack 不等式的核心结论：</strong>非负调和函数在区域内部不能接近于零（除非它恒为零）。更精确地说，在紧子集上，$\sup_K u \le C \inf_K u$。</p>
+        </div>
+      </div>
+    </div>
+
     <h3>3.6.4 解析性与正则性</h3>
 
     <div class="box box-theorem">
@@ -546,6 +610,152 @@
         <li><strong>调和方程</strong>：解在区域内部<strong>无条件</strong>光滑，甚至解析——椭圆方程是最"规矩"的。</li>
       </ul>
       <p>这一区别源于三类方程的物理本质：椭圆方程描述的是已经"安顿下来"的稳态，所有信息已经在区域内充分传播和平均化了。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 3.7 ==================== -->
+  <div class="section" id="s7">
+    <h2>3.7 半空间的Green函数与镜像法</h2>
+
+    <div class="box box-intuition">
+      <div class="box-title">物理直觉：地板上的点电荷</div>
+      <p>考虑上半空间 $\RR^n_+ = \{x = (x', x_n) \mid x' \in \RR^{n-1}, x_n > 0\}$，边界为超平面 $x_n = 0$。想象在点 $x_0 = (x_0', y_0)$（$y_0 > 0$）处放一个正点电荷。为了使"地板" $x_n = 0$ 上的电势为零（Dirichlet条件），我们在 $x_0$ 关于平面的<strong>镜面对称点</strong>处放一个等大反号的负点电荷 $\tilde{x}_0 = (x_0', -y_0)$。地板上的电势恰好正负相消，自动为零。</p>
+      <p>这正是<strong>镜像法</strong>最纯粹的形式——一条直线，一个点，一个镜像。比球的镜像法简单得多！</p>
+    </div>
+
+    <h3>上半空间的Green函数</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">三维上半空间的Green函数</div>
+      <p>对 $\RR^3_+ = \{(x,y,z) \mid z > 0\}$，点源位于 $x_0 = (x_0, y_0, z_0)$（$z_0 > 0$），Green函数为：</p>
+      $$G(x, x_0) = \frac{1}{4\pi|x - x_0|} - \frac{1}{4\pi|x - \tilde{x}_0|},$$
+      <p>其中 $\tilde{x}_0 = (x_0, y_0, -z_0)$ 为 $x_0$ 关于平面 $z=0$ 的<strong>镜面对称点</strong>。</p>
+      <p>当 $x$ 在边界 $z=0$ 上时，$|x - x_0| = |x - \tilde{x}_0|$（因为 $x_0$ 和 $\tilde{x}_0$ 到平面上任意点的距离相等），故 $G(x, x_0) = 0$。Dirichlet条件自动满足。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">上半空间的 Poisson 核</div>
+      <p>由 Green 函数表示公式 $u(x_0) = -\int_{\pd\RR^3_+} u(x) \frac{\pd G}{\pd n_x} \dd S_x$，其中边界 $\pd\RR^3_+$ 是平面 $z=0$。外法线方向指向负 $z$ 轴，$\frac{\pd}{\pd n} = -\frac{\pd}{\pd z}$。计算得：</p>
+      $$u(x_0, y_0, z_0) = \frac{z_0}{2\pi} \iint_{\RR^2} \frac{u(x,y,0)}{[(x-x_0)^2 + (y-y_0)^2 + z_0^2]^{3/2}} \,\dd x\dd y.$$
+      <p>被积函数中的因子</p>
+      $$K(x,y; x_0, y_0, z_0) = \frac{z_0}{2\pi[(x-x_0)^2 + (y-y_0)^2 + z_0^2]^{3/2}}$$
+      <p>称为<strong>上半空间 Poisson 核</strong>。它满足 $\iint_{\RR^2} K\,\dd x\dd y = 1$（归一化）。</p>
+    </div>
+
+    <h3>一般 $n$ 维情况</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">$\RR^n_+$ 的 Green 函数与 Poisson 核</div>
+      <p>Green函数：$G(x, x_0) = \Phi(x - x_0) - \Phi(x - \tilde{x}_0)$，其中 $\tilde{x}_0 = (x_0', -x_{0n})$。</p>
+      <p>Poisson核：$K(x', x_0) = \frac{2x_{0n}}{n\omega_n} \cdot \frac{1}{|x' - x_0'|^2 + x_{0n}^2|^{n/2}}$（一般形式），</p>
+      <p>其中 $x' \in \RR^{n-1}$ 为边界上的坐标，$\omega_n$ 为单位球体积。</p>
+      <p>半空间上 Dirichlet 问题的解：</p>
+      $$u(x_0) = \int_{\RR^{n-1}} K(x', x_0)\, \varphi(x')\,\dd x',$$
+      <p>其中 $\varphi(x') = u(x', 0)$ 为在边界 $x_n = 0$ 上的 Dirichlet 数据。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 3.7.1（考试重点：半空间Dirichlet问题）</div>
+      <p>求解上半空间 $\RR^3_+ = \{z > 0\}$ 上的 Dirichlet 问题：</p>
+      $$\begin{cases} \lap u = 0, & z > 0, \\ u(x,y,0) = \varphi(x,y), & z = 0. \end{cases}$$
+      <p>设 $\varphi(x,y) = \begin{cases} 1, & x^2 + y^2 \le 1, \\ 0, & x^2 + y^2 > 1. \end{cases}$</p>
+      <p>求 $u(0,0,z_0)$ 的表达式。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>由上半空间 Poisson 公式，在 $(0,0,z_0)$ 处：</p>
+          $$u(0,0,z_0) = \frac{z_0}{2\pi} \iint_{x^2+y^2 \le 1} \frac{1}{(x^2 + y^2 + z_0^2)^{3/2}} \,\dd x\dd y.$$
+          <p>换极坐标 $x = r\cos\theta, y = r\sin\theta$，$\dd x\dd y = r\dd r\dd\theta$：</p>
+          $$\begin{aligned} u(0,0,z_0) &= \frac{z_0}{2\pi} \int_0^{2\pi}\dd\theta \int_0^1 \frac{r}{(r^2 + z_0^2)^{3/2}}\,\dd r \\ &= z_0 \int_0^1 \frac{r}{(r^2 + z_0^2)^{3/2}}\,\dd r. \end{aligned}$$
+          <p>令 $w = r^2 + z_0^2$，$\dd w = 2r\dd r$：</p>
+          $$u(0,0,z_0) = z_0 \int_{z_0^2}^{1+z_0^2} \frac{1}{2} w^{-3/2}\,\dd w = \frac{z_0}{2} \left[ -2w^{-1/2} \right]_{z_0^2}^{1+z_0^2} = z_0 \left( \frac{1}{z_0} - \frac{1}{\sqrt{1+z_0^2}} \right).$$
+          <p>化简得：</p>
+          $$\boxed{u(0,0,z_0) = 1 - \frac{z_0}{\sqrt{1 + z_0^2}}}.$$
+          <p><strong>验证极限行为：</strong></p>
+          <ul>
+            <li>$z_0 \to 0^+$：$u \to 1 - 0 = 1$（边界条件 $\varphi(0,0)=1$ 满足）；</li>
+            <li>$z_0 \to +\infty$：$u \to 1 - 1 = 0$（远离热源，影响消失）。</li>
+          </ul>
+          <p><strong>物理图像：</strong>单位圆盘恒温 $1^\circ$C 的区域（边界上的"热点"），在上半空间产生的稳态温度场随高度衰减。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 3.8 ==================== -->
+  <div class="section" id="s8">
+    <h2>3.8 外问题与无穷远处的边界条件</h2>
+
+    <div class="box box-intuition">
+      <div class="box-title">什么是外问题？</div>
+      <p>之前我们一直在研究<strong>内问题</strong>：在<strong>有界</strong>区域 $\Omega$ 内部求解 PDE，边界条件给在 $\pd\Omega$ 上。但如果区域是<strong>无界的</strong>——例如求解一个障碍物<strong>外部</strong>的静电场或流场——情况就不同了。此时除了障碍物表面（内边界）上的条件，还需要在<strong>无穷远处</strong>附加条件，才能保证解的唯一性。</p>
+      <p>典型的<strong>外问题</strong>（exterior problem）：区域 $\Omega$ 是 $\RR^n$ 减去一个有界闭集（比如 $\RR^3$ 中半径为 $R$ 的球的外部）。</p>
+    </div>
+
+    <h3>Dirichlet 外问题的唯一性</h3>
+
+    <div class="box box-definition">
+      <div class="box-title">Dirichlet 外问题</div>
+      <p>设 $K \subset \RR^3$ 为有界闭集（如一个球），$\Omega = \RR^3 \setminus K$（$K$ 的外部区域）。问题为：</p>
+      $$\begin{cases} \lap u = 0, & x \in \Omega, \\ u = \varphi, & x \in \pd K. \end{cases}$$
+      <p>此问题的解<strong>不唯一</strong>，除非在无穷远处附加条件。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">外问题解的唯一性条件</div>
+      <p><strong>三维情况（$n=3$）：</strong>若 $u$ 在 $\Omega = \RR^3 \setminus K$ 内调和，且在无穷远处<strong>一致地趋于零</strong>：</p>
+      $$\lim_{|x| \to \infty} u(x) = 0 \quad (\text{一致地}),$$
+      <p>则 Dirichlet 外问题的解<strong>唯一</strong>。</p>
+      <p>更一般地，解的行为可取 $u(x) = O(|x|^{-1})$（如基本解在无穷远处的衰减）。</p>
+      <p><strong>二维情况（$n=2$）：</strong>在 $\RR^2$ 的有界障碍物外部，调和函数 $u$ 在无穷远处<strong>只需要有界</strong>即可保证解的唯一性（到相差一个常数）。这是因为二维基本解 $\ln|x|$ 在无穷远处发散而非衰减。</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">唯一性证明（三维外问题）</div>
+      <p>设 $u_1, u_2$ 为两个解，$w = u_1 - u_2$。则 $\lap w = 0$（在 $\Omega$ 内），$w|_{\pd K} = 0$，且 $w(x) \to 0$ 一致地（$|x| \to \infty$）。</p>
+      <p>取充分大的球 $B_R(0)$ 包含 $K$。在 $\Omega_R = B_R(0) \setminus K$ 上应用极值原理：$w$ 的最大值和最小值在 $\pd\Omega_R = \pd K \cup \pd B_R(0)$ 上取到。</p>
+      <p>在 $\pd K$ 上 $w = 0$；在 $\pd B_R(0)$ 上，令 $R \to \infty$，由一致趋于零，$\sup_{\pd B_R(0)} |w| \to 0$。</p>
+      <p>故在 $\Omega$ 内 $w \equiv 0$，即 $u_1 = u_2$。</p>
+      <p><strong>关键要求："一致地趋于零"</strong>。如果仅在<strong>逐点</strong>意义下 $u(x) \to 0$，极值原理的论证无法通过。这是因为极值原理需要 $\sup_{\pd B_R} |w| \to 0$，而逐点收敛不保证上确界也趋于零。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 3.8.1（考试重点：外问题唯一性条件）</div>
+      <p>选择题：对于三维空间中单位球外部的 Dirichlet 问题 $\lap u = 0$（$|x| > 1$），$u|_{|x|=1} = f$，以下哪个附加条件能保证解的唯一性？</p>
+      <p>(A) $u(x)$ 在无穷远处有界</p>
+      <p>(B) $u(x) \to 0$ 逐点（$|x| \to \infty$）</p>
+      <p>(C) $u(x) \to 0$ 一致地（$|x| \to \infty$）</p>
+      <p>(D) 不需要附加条件，Dirichlet 问题本身已经唯一</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p><strong>正确答案：</strong>(C)。</p>
+          <p><strong>解析：</strong></p>
+          <ul>
+            <li>(A) 不够。例如 $u_1 \equiv 0$ 和 $u_2(x) = 1 - 1/|x|$ 都在 $|x|=1$ 上为零（这里举的例子不完美，更好的例子是三维中的常数函数 $u \equiv C$ 和 $u \equiv 0$ 都满足 $\lap u=0$，如果在无穷远处不趋于零）。更精确地说，三维调和函数 $u(x) = C(1 - 1/|x|)$ 满足 $u|_{|x|=1} = 0$，且 $\lim_{|x|\to\infty} u = C$。如果 $u$ 在无穷远处只要求有界（不要求趋于零），则 $C$ 可以是任意常数——破坏了唯一性。</li>
+            <li>(B) 不够。逐点趋于零不能推出上确界趋于零（存在反例）。</li>
+            <li><strong>(C) 正确。一致地趋于零才能通过对充分大的球面应用极值原理完成唯一性证明。</strong></li>
+            <li>(D) 错误。对于无界区域，缺少无穷远处的条件会导致解不唯一。</li>
+          </ul>
+          <p><strong>考试要点：</strong>三维外问题要求<strong>一致地趋于零</strong>，二维外问题<strong>有界即可</strong>。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 3.8.2（平均值性质求原点的值）</div>
+      <p>填空题：设 $u$ 是 $\RR^3$ 中球 $B_2(0)$ 上的调和函数，已知 $u$ 在球面 $|x|=1$ 上的平均值为 $3$，在球面 $|x|=2$ 上的平均值为 $5$。求 $u(0)$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>由球面平均值性质：对任意 $R > 0$（只要 $B_R(0) \subset \Omega$），调和函数在球心的值等于球面上的平均值。</p>
+          <p>取 $R = 1$：$u(0) = \frac{1}{4\pi}\int_{|x|=1} u(x)\,\dd S = 3$。</p>
+          <p>取 $R = 2$：$u(0) = \frac{1}{4\pi \cdot 4}\int_{|x|=2} u(x)\,\dd S = 5$。</p>
+          <p><strong>矛盾！</strong>这意味着不存在这样的调和函数。平均值性质给出了"一致性检验"——如果 $u$ 确实是调和函数，两个不同的球面给出的平均值必须相等。故 $\boxed{\text{这样的调和函数不存在}}$。</p>
+          <p>如果题目中第二个平均值也是 $3$（而非 $5$），则 $u(0) = 3$。</p>
+          <p><strong>考试技巧：</strong>利用平均值公式 $u(0) = \frac{1}{|\pd B_R|}\int_{\pd B_R} u\,\dd S$，只要半径 $R$ 使得球完全在调和区域内部，$u(0)$ 的值就与 $R$ 无关。这是快速求解原点和函数值的有力工具。</p>
+        </div>
+      </div>
     </div>
   </div>
 

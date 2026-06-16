@@ -24,9 +24,9 @@
 <body>
 
 <nav class="navbar">
-  <a href="../index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;margin-right:12px;">← 总览</a>
+  <a href="../index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;margin-right:12px;">&#8592; 总览</a>
   <a href="index.html" class="nav-brand">复变函数复习</a>
-  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <button class="nav-toggle" aria-label="菜单">&#9776;</button>
   <ul class="nav-links">
     <li><a href="index.html">首页</a></li>
     <li><a href="ch1.html">第一章</a></li>
@@ -36,8 +36,9 @@
     <li><a href="ch5.html">第五章</a></li>
     <li><a href="ch6.html">第六章</a></li>
     <li><a href="ch7.html">第七章</a></li>
-    <li><a href="appendix.html" style="color:#fbbf24;">📋 附录</a></li>
-    <li><a href="quiz.html" style="color:#fbbf24;">🎮 闯关答题</a></li>
+    <li><a href="ch8.html">第八章</a></li>
+    <li><a href="appendix.html" style="color:#fbbf24;">&#x1F4CB; 附录</a></li>
+    <li><a href="quiz.html" style="color:#fbbf24;">&#x1F3AE; 闯关答题</a></li>
   </ul>
 </nav>
 
@@ -45,44 +46,49 @@
 
   <div class="chapter-header">
     <h1>第二章 · 解析函数</h1>
-    <p>复分析的核心：可导的苛刻条件催生 Cauchy-Riemann 方程，解析性是复分析区别于实分析的关键。解析函数与调和函数的深刻联系，以及在物理中的应用。</p>
+    <p>复分析的核心章节：解析性的判定标准（Cauchy-Riemann 方程）、解析函数与调和函数的深刻联系及其物理应用。随后将实数域中的初等函数（指数、对数、幂函数、三角函数）系统推广到复数域——指数函数获得周期性，对数函数变成多值函数，三角函数失去有界性。理解这些推广是掌握复分析全部工具的关键。</p>
   </div>
 
   <!-- 学习目标 -->
   <div class="box box-definition" style="margin-bottom:1.5rem;">
     <div class="box-title">学完本章，你将能够：</div>
     <ol style="margin-bottom:0;">
-      <li>用导数定义判断一个复变函数是否可导，区分"在一点可导"和"在一点解析"</li>
-      <li>用 Cauchy-Riemann 方程判断函数 $f(z)=u+iv$ 的解析性</li>
-      <li>已知解析函数的实部 $u$，通过 C-R 方程求出虚部 $v$（或反过来）</li>
-      <li>判断一个二元实函数是否是调和函数，理解它与解析函数的关系</li>
+      <li>用导数定义判断复变函数是否可导，区分"在一点可导"和"在一点解析"</li>
+      <li>用 Cauchy-Riemann 方程判断 $f(z)=u+iv$ 的解析性，并由实部求虚部（或反过来）</li>
+      <li>判断调和函数，理解其与解析函数的关系，求共轭调和函数</li>
       <li>理解解析函数在平面流场和静电场中的物理意义</li>
+      <li>计算 $e^z$ 的值，理解其 $2\pi i$ 周期性、解析性及映射性质</li>
+      <li>计算 $\log z$ 的所有值及其主值，理解多值性、分支与支割线的概念</li>
+      <li>计算 $z^a$，判断其为单值、$q$ 值还是无穷多值函数</li>
+      <li>计算复三角函数与双曲函数的值，理解它们与实函数的本质区别（特别是有界性的丧失）</li>
     </ol>
   </div>
 
   <!-- 本章导读 -->
   <div class="section" style="margin-bottom:1.5rem;padding:1.25rem 1.5rem;">
     <h2 style="font-size:1.15rem;margin-bottom:0.5rem;border:none;padding:0;">本章导读</h2>
-    <p>第一章我们认识了复数。现在来讨论复变函数的微积分。</p>
-    <p>你可能会想：既然 $f(z)=u(x,y)+iv(x,y)$ 本质上是两个二元实函数，那直接用实函数的微积分工具不就行了吗？答案是：<strong>不行</strong>——复可导的要求远远严于实可导。在实分析中，$f(x)$ 可导只需左右导数相等（两个方向）。但在复平面上，$\Delta z$ 可以沿无穷多种路径趋近于零——沿实轴、沿虚轴、沿斜线、沿螺旋线……要求所有方向上的差商极限一致，这是一个极强的约束。</p>
-    <p>但这个苛刻的条件筛选出了一类极其"好"的函数——<strong>解析函数</strong>。它们的性质好得惊人：一旦你确认一个函数在某区域内解析，它自动无穷次可微、其实虚部自动成为调和函数（满足 Laplace 方程）、其积分有路径无关性……整个复分析大厦就建立在这个看似苛刻的入门条件之上。</p>
-    <p>本章的核心就是建立<strong>解析性的判定标准</strong>（Cauchy-Riemann 方程），并揭示解析函数与调和函数的深刻联系。这是全书最重要的概念基础。</p>
+    <p>第一章我们认识了复数。现在来讨论复变函数的微积分。你可能会想：既然 $f(z)=u(x,y)+iv(x,y)$ 本质上是两个二元实函数，直接用实函数的微积分工具不就行了吗？答案是：<strong>不行</strong>——复可导的要求远远严于实可导。在实分析中，$f(x)$ 可导只需左右导数相等。但在复平面上，$\Delta z$ 可以沿无穷多种路径趋近于零——沿实轴、沿虚轴、沿斜线、沿螺旋线……要求所有方向上的差商极限一致，这是一个极强的约束。</p>
+    <p>但这个苛刻的条件筛选出了一类极其"好"的函数——<strong>解析函数</strong>。一旦确认某函数在区域内解析，它自动无穷次可微、实虚部自动成为调和函数（满足 Laplace 方程）、积分有路径无关性……整个复分析大厦就建立在这个看似苛刻的入门条件之上。</p>
+    <p>有了判断解析性的工具之后，我们需要一批<strong>具体的解析函数</strong>实例——就像微积分中需要熟悉 $x^n$、$\sin x$、$e^x$ 一样。本章后半部分将实数域中的初等函数系统推广到复数域。但小心——这些老朋友在复数域中会展现出惊人的新面貌：$e^z$ 在实数中严格单调，在复数中却有周期 $2\pi i$；对数函数 $\log z$ 在实数中天然单值，在复数中却有无穷多个值；甚至 $\sin z$ 和 $\cos z$ 也不再满足 $|\sin z| \le 1$。这些新特性不是 bug，而恰恰是复分析丰富性和强大性的来源。</p>
   </div>
 
   <div class="toc">
     <h3>本章目录</h3>
     <ol>
-      <li><a href="#s1">复变函数的导数</a></li>
-      <li><a href="#s2">解析函数的概念</a></li>
-      <li><a href="#s3">Cauchy-Riemann 条件</a></li>
-      <li><a href="#s4">调和函数</a></li>
-      <li><a href="#s5">解析函数的物理意义</a></li>
+      <li><a href="#s1">导数与解析性</a></li>
+      <li><a href="#s2">Cauchy-Riemann 条件</a></li>
+      <li><a href="#s3">调和函数与共轭调和函数</a></li>
+      <li><a href="#s4">解析函数的物理意义</a></li>
+      <li><a href="#s5">指数函数 $e^z$</a></li>
+      <li><a href="#s6">对数函数 $\log z$</a></li>
+      <li><a href="#s7">幂函数与根式函数</a></li>
+      <li><a href="#s8">三角函数与双曲函数</a></li>
     </ol>
   </div>
 
-  <!-- ==================== 第1节 ==================== -->
+  <!-- ==================== 2.1 导数与解析性 ==================== -->
   <div class="section" id="s1">
-    <h2>2.1 复变函数的导数</h2>
+    <h2>2.1 导数与解析性</h2>
 
     <div class="box box-definition">
       <div class="box-title">定义 2.1（复变函数的导数）</div>
@@ -93,7 +99,7 @@
 
     <div class="box box-note">
       <div class="box-title">注记：与实函数导数的关键区别</div>
-      <p>实函数 $f(x)$ 中 $\Delta x \to 0$ 只有两个方向（左、右），但复变函数中 $\Delta z \to 0$ 有<strong>无穷多种路径</strong>（沿任何方向、曲线趋近）。因此，复变函数可导的要求远比实函数苛刻。$f(z)$ 在 $z_0$ 可导要求<strong>所有方向的极限一致</strong>，这将导出 Cauchy-Riemann 条件。</p>
+      <p>实函数 $f(x)$ 中 $\Delta x \to 0$ 只有两个方向（左、右），但复变函数中 $\Delta z \to 0$ 有<strong>无穷多种路径</strong>。因此复可导要求<strong>所有方向的极限一致</strong>，这将导出 Cauchy-Riemann 条件。</p>
     </div>
 
     <div class="box box-theorem">
@@ -125,7 +131,7 @@
       <div class="box-title">例题 2.1</div>
       <p>利用导数定义验证 $f(z) = z^2$ 在任意点可导，并求 $f'(z)$。</p>
       <div class="collapsible">
-        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 展开解答</div>
         <div class="collapsible-body">
           $$\frac{f(z + \Delta z) - f(z)}{\Delta z} = \frac{(z+\Delta z)^2 - z^2}{\Delta z} = \frac{2z\Delta z + (\Delta z)^2}{\Delta z} = 2z + \Delta z$$
           <p>当 $\Delta z \to 0$ 时，极限为 $2z$，与路径无关。故 $f'(z) = 2z$。</p>
@@ -137,21 +143,16 @@
       <div class="box-title">例题 2.2</div>
       <p>证明 $f(z) = \bar{z}$ 在复平面上处处不可导。</p>
       <div class="collapsible">
-        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 展开解答</div>
         <div class="collapsible-body">
           <p>计算差商：</p>
           $$\frac{f(z + \Delta z) - f(z)}{\Delta z} = \frac{\overline{z + \Delta z} - \bar{z}}{\Delta z} = \frac{\overline{\Delta z}}{\Delta z}$$
-          <p>取 $\Delta z = \Delta x$（沿实轴趋近）：$\dfrac{\overline{\Delta x}}{\Delta x} = \dfrac{\Delta x}{\Delta x} = 1$。</p>
-          <p>取 $\Delta z = i\Delta y$（沿虚轴趋近）：$\dfrac{\overline{i\Delta y}}{i\Delta y} = \dfrac{-i\Delta y}{i\Delta y} = -1$。</p>
+          <p>取 $\Delta z = \Delta x$（沿实轴趋近）：$\dfrac{\overline{\Delta x}}{\Delta x} = 1$。</p>
+          <p>取 $\Delta z = i\Delta y$（沿虚轴趋近）：$\dfrac{\overline{i\Delta y}}{i\Delta y} = -1$。</p>
           <p>两种路径极限不同，故 $f(z) = \bar{z}$ 在任意点 $z$ 处不可导。$\square$</p>
         </div>
       </div>
     </div>
-  </div>
-
-  <!-- ==================== 第2节 ==================== -->
-  <div class="section" id="s2">
-    <h2>2.2 解析函数的概念</h2>
 
     <div class="box box-definition">
       <div class="box-title">定义 2.2（解析函数）</div>
@@ -167,39 +168,35 @@
       <div class="box-title">注记：可导与解析的关系</div>
       <ul>
         <li><strong>在一点解析必在该点可导</strong>，反之不然。在孤立点可导不等于在该点解析——解析性要求在该点的整个邻域内可导。</li>
-        <li>$f(z) = |z|^2$ 在 $z = 0$ 处可导（$f'(0) = 0$），但在 $z = 0$ 处不解析（因在 $z = 0$ 的任何邻域内存在不可导点）。</li>
+        <li>$f(z) = |z|^2$ 在 $z = 0$ 处可导（$f'(0) = 0$），但在 $z = 0$ 处不解析（因在任何邻域内存在不可导点）。</li>
         <li>多项式在整个 $\CC$ 上解析（称为<strong>整函数</strong>）。有理函数在分母不为零处解析。</li>
       </ul>
     </div>
 
     <div class="box box-definition">
       <div class="box-title">定义 2.2 补充 · 奇点（奇异点）</div>
-      <p>若 $f(z)$ 在 $z_0$ 处<strong>不解析</strong>，则称 $z_0$ 为 $f(z)$ 的<strong>奇点</strong>（奇异点）。换言之，奇点就是函数不解析的点——它是"解析点"的自然对偶概念。</p>
-      <p>常见的奇点例子：</p>
+      <p>若 $f(z)$ 在 $z_0$ 处<strong>不解析</strong>，则称 $z_0$ 为 $f(z)$ 的<strong>奇点</strong>。常见例子：</p>
       <ul>
         <li>$f(z) = \dfrac{1}{z}$ 在 $z = 0$ 处（分母为零）；</li>
-        <li>$f(z) = \dfrac{1}{z^2+1}$ 在 $z = \pm i$ 处（分母为零）；</li>
-        <li>$f(z) = \Log z$ 在 $z = 0$ 及整个负实轴上的点处（对数主值分支的支割线）；</li>
-        <li>$f(z) = e^{1/z}$ 在 $z = 0$ 处（指数函数的本性奇点）。</li>
+        <li>$f(z) = \dfrac{1}{z^2+1}$ 在 $z = \pm i$ 处；</li>
+        <li>$f(z) = \Log z$ 在 $z = 0$ 及整个负实轴上（支割线）；</li>
+        <li>$f(z) = e^{1/z}$ 在 $z = 0$ 处（本性奇点）。</li>
       </ul>
-      <p>奇点有多种类型（可去奇点、极点、本性奇点），将在第五章系统分类。目前只需记住：<strong>奇点 = 函数不解析的点</strong>，在计算积分时需要特别处理（详见第四章）。</p>
+      <p>奇点有多种类型（可去奇点、极点、本性奇点），将在第五章系统分类。</p>
     </div>
 
     <div class="box box-example">
       <div class="box-title">例题 2.3</div>
       <p>证明 $f(z) = |z|^2$ 仅在 $z = 0$ 处可导，且在该点不解析。</p>
       <div class="collapsible">
-        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 展开解答</div>
         <div class="collapsible-body">
           <p>$f(z) = z\bar{z}$，在 $z = 0$ 处：</p>
-          $$\frac{f(0+\Delta z) - f(0)}{\Delta z} = \frac{|\Delta z|^2}{\Delta z} = \frac{\Delta z \cdot \overline{\Delta z}}{\Delta z} = \overline{\Delta z} \to 0$$
-          <p>故 $f'(0) = 0$，$f$ 在 $z=0$ 可导。</p>
-          <p>在 $z_0 \ne 0$ 处，令 $\Delta z = \Delta x$：</p>
-          $$\frac{f(z_0 + \Delta x) - f(z_0)}{\Delta x} = \frac{|z_0 + \Delta x|^2 - |z_0|^2}{\Delta x} = \frac{(x_0+\Delta x)^2 + y_0^2 - x_0^2 - y_0^2}{\Delta x} = 2x_0 + \Delta x \to 2x_0$$
-          <p>令 $\Delta z = i\Delta y$：</p>
-          $$\frac{f(z_0 + i\Delta y) - f(z_0)}{i\Delta y} = \frac{x_0^2 + (y_0+\Delta y)^2 - x_0^2 - y_0^2}{i\Delta y} = \frac{2y_0 + \Delta y}{i} \to -2iy_0$$
-          <p>两个方向极限相等需 $2x_0 = -2iy_0$，即 $x_0 + iy_0 = 0$，即 $z_0 = 0$。故 $f$ 仅在 $z=0$ 可导。</p>
-          <p>在 $z=0$ 的任何邻域内都存在 $z \ne 0$ 不可导，故 $f$ 在 $z=0$ 不解析。$\square$</p>
+          $$\frac{f(0+\Delta z) - f(0)}{\Delta z} = \frac{|\Delta z|^2}{\Delta z} = \overline{\Delta z} \to 0$$
+          <p>故 $f'(0) = 0$。在 $z_0 \ne 0$ 处：</p>
+          <p>沿实轴：$\dfrac{(x_0+\Delta x)^2+y_0^2-x_0^2-y_0^2}{\Delta x} \to 2x_0$；</p>
+          <p>沿虚轴：$\dfrac{x_0^2+(y_0+\Delta y)^2-x_0^2-y_0^2}{i\Delta y} \to -2iy_0$。</p>
+          <p>两者相等需 $2x_0 = -2iy_0 \Rightarrow z_0=0$。故仅在 $z=0$ 可导，且因任何邻域内存在不可导点而不解析。$\square$</p>
         </div>
       </div>
     </div>
@@ -208,27 +205,25 @@
       <div class="box-title">例题 2.4</div>
       <p>设 $f(z) = z^3 + 2z + 1$，证明 $f$ 在整个复平面上解析，并求 $f'(z)$。</p>
       <div class="collapsible">
-        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 展开解答</div>
         <div class="collapsible-body">
-          <p>$f(z)$ 是多项式。对任意 $z_0 \in \CC$：</p>
-          $$\frac{f(z_0+\Delta z)-f(z_0)}{\Delta z} = \frac{(z_0+\Delta z)^3 + 2(z_0+\Delta z) + 1 - z_0^3 - 2z_0 - 1}{\Delta z}$$
-          $$= \frac{3z_0^2\Delta z + 3z_0(\Delta z)^2 + (\Delta z)^3 + 2\Delta z}{\Delta z} = 3z_0^2 + 3z_0\Delta z + (\Delta z)^2 + 2$$
-          <p>当 $\Delta z \to 0$ 时，极限为 $3z_0^2 + 2$，与路径无关。故 $f'(z) = 3z^2 + 2$。</p>
-          <p>由于 $z_0$ 任意，$f$ 在 $\CC$ 上解析。$\square$</p>
+          <p>对任意 $z_0 \in \CC$：</p>
+          $$\frac{f(z_0+\Delta z)-f(z_0)}{\Delta z} = \frac{3z_0^2\Delta z + 3z_0(\Delta z)^2 + (\Delta z)^3 + 2\Delta z}{\Delta z} = 3z_0^2 + 3z_0\Delta z + (\Delta z)^2 + 2$$
+          <p>当 $\Delta z \to 0$ 时，极限为 $3z_0^2 + 2$，与路径无关。故 $f'(z) = 3z^2 + 2$，$f$ 在 $\CC$ 上解析。$\square$</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ==================== 第3节 ==================== -->
-  <div class="section" id="s3">
-    <h2>2.3 Cauchy-Riemann 条件</h2>
+  <!-- ==================== 2.2 Cauchy-Riemann 条件 ==================== -->
+  <div class="section" id="s2">
+    <h2>2.2 Cauchy-Riemann 条件</h2>
 
     <div class="box box-note">
       <div class="box-title">直觉导航</div>
-      <p>复可导要求 $\Delta z \to 0$ 沿<strong>所有方向</strong>的趋近极限一致。如果我们只挑其中最特殊的两个方向来检验——沿实轴（$\Delta z = \Delta x$）和沿虚轴（$\Delta z = i\Delta y$）——就已经得到了两组必须同时满足的条件。这两个方向给出的极限必须相等，比较实部和虚部，自然导出：
+      <p>复可导要求 $\Delta z \to 0$ 沿<strong>所有方向</strong>的趋近极限一致。只需挑出最特殊的两个方向——沿实轴（$\Delta z = \Delta x$）和沿虚轴（$\Delta z = i\Delta y$）——比较实部和虚部，就自然导出：
       $$\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}, \quad \frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x}$$
-      这就是 C-R 方程。令人惊讶的是，这两条必要条件的反面——只要 $u,v$ 可微且满足 C-R 方程——竟然也是充分的！换句话说，<strong>检验两个特殊方向的一致性，就足以保证所有方向的一致</strong>。这是复分析最优雅的事实之一。</p>
+      令人惊讶的是，这两条必要条件的反面——只要 $u,v$ 可微且满足 C-R 方程——竟然也是充分的。换句话说，<strong>检验两个特殊方向的一致性，就足以保证所有方向的一致</strong>。</p>
     </div>
 
     <div class="box box-theorem">
@@ -243,12 +238,10 @@
       <div class="box-title">证明（必要条件）</div>
       <p>设 $f'(z_0)$ 存在。分别令 $\Delta z = \Delta x \to 0$ 和 $\Delta z = i\Delta y \to 0$：</p>
       <p><strong>沿实轴趋近</strong>（$\Delta z = \Delta x$）：</p>
-      $$f'(z_0) = \lim_{\Delta x \to 0} \frac{u(x_0+\Delta x, y_0) - u(x_0, y_0)}{\Delta x} + i\lim_{\Delta x \to 0} \frac{v(x_0+\Delta x, y_0) - v(x_0, y_0)}{\Delta x} = \frac{\partial u}{\partial x} + i\frac{\partial v}{\partial x} \quad (\star)$$
+      $$f'(z_0) = \lim_{\Delta x \to 0} \frac{u(x_0+\Delta x, y_0) - u(x_0, y_0)}{\Delta x} + i\lim_{\Delta x \to 0} \frac{v(x_0+\Delta x, y_0) - v(x_0, y_0)}{\Delta x} = \frac{\partial u}{\partial x} + i\frac{\partial v}{\partial x}$$
       <p><strong>沿虚轴趋近</strong>（$\Delta z = i\Delta y$）：</p>
-      $$f'(z_0) = \lim_{\Delta y \to 0} \frac{u(x_0, y_0+\Delta y) - u(x_0, y_0)}{i\Delta y} + i\lim_{\Delta y \to 0} \frac{v(x_0, y_0+\Delta y) - v(x_0, y_0)}{i\Delta y} = \frac{1}{i}\frac{\partial u}{\partial y} + \frac{\partial v}{\partial y} = \frac{\partial v}{\partial y} - i\frac{\partial u}{\partial y} \quad (\star\star)$$
-      <p>$(\star)$ 和 $(\star\star)$ 应相等，比较实虚部：</p>
-      $$\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}, \quad \frac{\partial v}{\partial x} = -\frac{\partial u}{\partial y}$$
-      <p>此即 Cauchy-Riemann 方程。$\square$</p>
+      $$f'(z_0) = \lim_{\Delta y \to 0} \frac{u(x_0, y_0+\Delta y) - u(x_0, y_0)}{i\Delta y} + i\lim_{\Delta y \to 0} \frac{v(x_0, y_0+\Delta y) - v(x_0, y_0)}{i\Delta y} = \frac{\partial v}{\partial y} - i\frac{\partial u}{\partial y}$$
+      <p>两者应相等，比较实虚部即得 C-R 方程。$\square$</p>
     </div>
 
     <div class="box box-theorem">
@@ -258,34 +251,25 @@
     </div>
 
     <div class="box box-proof">
-      <div class="box-title">证明 · C-R 条件的充分性</div>
-      <p>这个证明是复分析中最关键的论证之一。它解释了为什么"验证两个特殊方向的一致性"竟足以保证"所有方向的一致性"。</p>
-      <p>设 $u, v$ 在 $(x_0, y_0)$ 处可微（作为二元实函数），则由可微性：</p>
-      $$\Delta u = u_x \Delta x + u_y \Delta y + \varepsilon_1 |\Delta z|$$
-      $$\Delta v = v_x \Delta x + v_y \Delta y + \varepsilon_2 |\Delta z|$$
-      <p>其中 $\Delta z = \Delta x + i\Delta y$，$|\Delta z| = \sqrt{(\Delta x)^2+(\Delta y)^2}$，且 $\varepsilon_1, \varepsilon_2 \to 0$（当 $\Delta z \to 0$）。这里为简洁略去了偏导数在 $(x_0, y_0)$ 处的取值标记。</p>
-      <p>考虑复增量 $\Delta f = \Delta u + i\Delta v$：</p>
-      $$\Delta f = (u_x \Delta x + u_y \Delta y) + i(v_x \Delta x + v_y \Delta y) + (\varepsilon_1 + i\varepsilon_2)|\Delta z|$$
-      $$= (u_x + i v_x)\Delta x + (u_y + i v_y)\Delta y + \varepsilon |\Delta z|$$
-      <p>其中 $\varepsilon = \varepsilon_1 + i\varepsilon_2 \to 0$（当 $\Delta z \to 0$）。</p>
-      <p><strong>关键步骤——利用 C-R 方程：</strong>将 $u_y = -v_x$ 和 $v_y = u_x$ 代入第二项：</p>
+      <div class="box-title">证明 · C-R 条件的充分性（最关键论证）</div>
+      <p>设 $u, v$ 在 $(x_0, y_0)$ 处可微，则由可微性：</p>
+      $$\Delta u = u_x \Delta x + u_y \Delta y + \varepsilon_1 |\Delta z|,\quad \Delta v = v_x \Delta x + v_y \Delta y + \varepsilon_2 |\Delta z|$$
+      <p>其中 $\varepsilon_1, \varepsilon_2 \to 0$（当 $\Delta z \to 0$）。考虑复增量 $\Delta f = \Delta u + i\Delta v$：</p>
+      $$\Delta f = (u_x + i v_x)\Delta x + (u_y + i v_y)\Delta y + \varepsilon |\Delta z|$$
+      <p><strong>关键步骤——利用 C-R 方程 $u_y = -v_x$，$v_y = u_x$：</strong></p>
       $$(u_y + i v_y)\Delta y = (-v_x + i u_x)\Delta y = i(u_x + i v_x)\Delta y$$
       <p>因此：</p>
-      $$\Delta f = (u_x + i v_x)\Delta x + i(u_x + i v_x)\Delta y + \varepsilon |\Delta z|$$
-      $$= (u_x + i v_x)(\Delta x + i\Delta y) + \varepsilon |\Delta z| = (u_x + i v_x)\Delta z + \varepsilon |\Delta z|$$
-      <p>现在计算差商：</p>
+      $$\Delta f = (u_x + i v_x)(\Delta x + i\Delta y) + \varepsilon |\Delta z| = (u_x + i v_x)\Delta z + \varepsilon |\Delta z|$$
+      <p>差商：</p>
       $$\frac{\Delta f}{\Delta z} = u_x + i v_x + \varepsilon \cdot \frac{|\Delta z|}{\Delta z}$$
-      <p>由于 $||\Delta z|/\Delta z| = 1$（无论 $\Delta z$ 沿何方向趋近），当 $\Delta z \to 0$ 时 $\varepsilon \to 0$，故：</p>
-      $$\lim_{\Delta z \to 0} \frac{\Delta f}{\Delta z} = u_x + i v_x$$
-      <p>极限存在且与 $\Delta z \to 0$ 的路径无关！因此 $f'(z_0) = u_x + i v_x$。$\square$</p>
-      <p><strong>注：</strong>这个证明的核心在于，C-R 方程恰好消去了 $\Delta f$ 表达式中 $\Delta x$ 和 $\Delta y$ 的"独立性"——有了 C-R 方程，整个增量 $\Delta f$ 被压缩为只与 $\Delta z = \Delta x + i\Delta y$ 成正比（加上高阶无穷小），从而保证了沿任何方向趋近的极限都相同。</p>
+      <p>由于 $||\Delta z|/\Delta z| = 1$（无论 $\Delta z$ 沿何方向趋近），当 $\Delta z \to 0$ 时 $\varepsilon \to 0$，故极限存在且为 $u_x + i v_x$，与路径无关。$\square$</p>
     </div>
 
     <div class="box box-theorem">
       <div class="box-title">定理 2.4（可导的充要条件）</div>
       <p>$f(z) = u + iv$ 在 $z_0$ 处可导 $\iff$ $u, v$ 在 $(x_0, y_0)$ 可微且满足 C-R 方程。</p>
       <p>$f(z)$ 在区域 $D$ 内解析 $\iff$ $u, v$ 在 $D$ 内可微且在 $D$ 内处处满足 C-R 方程。</p>
-      <p><strong>说明</strong>：这个定理将定理 2.2（必要性）和定理 2.3（充分性）合并为一个等价命题。必要性只需沿实轴和虚轴两个方向求极限即可导出（见上文定理 2.2 的证明）；充分性则需要利用 $u,v$ 的可微性，借助 C-R 方程将 $\Delta f$ 重组为仅依赖 $\Delta z$ 的表达式（见上文定理 2.3 的证明，这是复分析中最关键的论证之一）。若 $u,v$ 具有连续一阶偏导数，则自动满足可微条件，此时 C-R 方程成为可导的充要条件。</p>
+      <p><strong>实用判据</strong>：若 $u, v$ 具有连续一阶偏导数，则自动可微，此时 C-R 方程成为可导的充要条件。</p>
     </div>
 
     <div class="box box-note">
@@ -301,15 +285,13 @@
       <div class="box-title">例题 2.5</div>
       <p>验证 $f(z) = z^3$ 的实部和虚部满足 C-R 方程，并求 $f'(z)$。</p>
       <div class="collapsible">
-        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 展开解答</div>
         <div class="collapsible-body">
-          <p>$z^3 = (x+iy)^3 = x^3 + 3x^2(iy) + 3x(iy)^2 + (iy)^3 = (x^3 - 3xy^2) + i(3x^2y - y^3)$。</p>
-          <p>故 $u = x^3 - 3xy^2$，$v = 3x^2y - y^3$。</p>
-          <p><strong>验证 C-R 方程</strong>：</p>
-          $$\frac{\partial u}{\partial x} = 3x^2 - 3y^2, \quad \frac{\partial v}{\partial y} = 3x^2 - 3y^2 \quad \checkmark$$
-          $$\frac{\partial u}{\partial y} = -6xy, \quad -\frac{\partial v}{\partial x} = -6xy \quad \checkmark$$
+          <p>$z^3 = (x+iy)^3 = (x^3 - 3xy^2) + i(3x^2y - y^3)$。故 $u = x^3 - 3xy^2$，$v = 3x^2y - y^3$。</p>
+          $$\frac{\partial u}{\partial x} = 3x^2 - 3y^2 = \frac{\partial v}{\partial y} \quad \checkmark$$
+          $$\frac{\partial u}{\partial y} = -6xy = -\frac{\partial v}{\partial x} \quad \checkmark$$
           <p>C-R 方程处处满足。偏导数连续，故 $f$ 在 $\CC$ 上解析。</p>
-          <p>$$f'(z) = \frac{\partial u}{\partial x} + i\frac{\partial v}{\partial x} = (3x^2 - 3y^2) + i(6xy) = 3(x^2 - y^2 + 2ixy) = 3(x+iy)^2 = 3z^2$$</p>
+          $$f'(z) = \frac{\partial u}{\partial x} + i\frac{\partial v}{\partial x} = (3x^2 - 3y^2) + i(6xy) = 3(x+iy)^2 = 3z^2$$
         </div>
       </div>
     </div>
@@ -318,32 +300,31 @@
       <div class="box-title">例题 2.6</div>
       <p>设 $f(z) = u + iv$ 解析，且 $u = x^2 - y^2 + x$，求 $v(x,y)$ 和 $f(z)$。</p>
       <div class="collapsible">
-        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 展开解答</div>
         <div class="collapsible-body">
           <p>由 C-R 方程 $\dfrac{\partial v}{\partial y} = \dfrac{\partial u}{\partial x} = 2x + 1$，积分得 $v = (2x+1)y + g(x)$。</p>
           <p>由 $\dfrac{\partial v}{\partial x} = -\dfrac{\partial u}{\partial y} = 2y$，计算 $\dfrac{\partial v}{\partial x} = 2y + g'(x)$。</p>
-          <p>比较得 $g'(x) = 0$，故 $g(x) = C$（常数）。取 $C = 0$，则 $v = 2xy + y$。</p>
-          <p>$$f(z) = (x^2 - y^2 + x) + i(2xy + y) = (x^2 - y^2 + 2ixy) + (x + iy) = z^2 + z$$</p>
+          <p>比较得 $g'(x) = 0$，故 $g(x) = C$。取 $C = 0$，则 $v = 2xy + y$。</p>
+          $$f(z) = (x^2 - y^2 + x) + i(2xy + y) = z^2 + z$$
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ==================== 第4节 ==================== -->
-  <div class="section" id="s4">
-    <h2>2.4 调和函数</h2>
+  <!-- ==================== 2.3 调和函数与共轭调和函数 ==================== -->
+  <div class="section" id="s3">
+    <h2>2.3 调和函数与共轭调和函数</h2>
 
     <div class="box box-note">
       <div class="box-title">直觉导航</div>
-      <p>C-R 方程建立了解析函数的实部 $u$ 和虚部 $v$ 之间的一阶偏导关系。但复分析的美妙不止于此——对 C-R 方程再求一次偏导，交叉项恰好抵消，你得到 $\Delta u = 0$ 和 $\Delta v = 0$。这意味着 $u$ 和 $v$ 自动满足二维 Laplace 方程！</p>
-      <p>Laplace 方程在物理中无处不在——它描述稳态温度分布、静电场、不可压缩流体的流动……所以每一个解析函数都对应着一个物理上有意义的平面场。给定 $u$（比如温度分布），你甚至可以通过 C-R 方程求出 $v$（流函数/电力线），从而完整地描述整个物理系统。这种"数学结构自动对应物理现实"的巧合，是复变函数最吸引人的特点之一。</p>
+      <p>C-R 方程建立了解析函数的实部 $u$ 和虚部 $v$ 之间的一阶偏导关系。对 C-R 方程再求一次偏导，交叉项恰好抵消，得到 $\Delta u = 0$ 和 $\Delta v = 0$。这意味着 $u$ 和 $v$ 自动满足二维 Laplace 方程——该方程在物理中无处不在（稳态温度分布、静电场、不可压缩流体）。每一个解析函数都对应着一个物理上有意义的平面场。</p>
     </div>
 
     <div class="box box-definition">
       <div class="box-title">定义 2.3（调和函数）</div>
       <p>若二元实函数 $\varphi(x,y)$ 在区域 $D$ 内具有二阶连续偏导数，且满足 <strong>Laplace 方程</strong>：</p>
       $$\Delta \varphi = \frac{\partial^2 \varphi}{\partial x^2} + \frac{\partial^2 \varphi}{\partial y^2} = 0$$
-      <p>则称 $\varphi$ 为 $D$ 内的<strong>调和函数</strong>（其中 $\Delta = \dfrac{\partial^2}{\partial x^2} + \dfrac{\partial^2}{\partial y^2}$ 为 Laplace 算子）。</p>
+      <p>则称 $\varphi$ 为 $D$ 内的<strong>调和函数</strong>（$\Delta = \dfrac{\partial^2}{\partial x^2} + \dfrac{\partial^2}{\partial y^2}$ 为 Laplace 算子）。</p>
     </div>
 
     <div class="box box-theorem">
@@ -353,25 +334,22 @@
 
     <div class="box box-proof">
       <div class="box-title">证明</div>
-      <p>$f$ 解析意味着 $u, v$ 满足 C-R 方程且具有任意阶偏导数（解析函数无穷次可微）。对 C-R 方程求偏导：</p>
+      <p>$f$ 解析意味着 $u, v$ 满足 C-R 方程且具有任意阶偏导数。对 C-R 方程求偏导：</p>
       $$\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y} \implies \frac{\partial^2 u}{\partial x^2} = \frac{\partial^2 v}{\partial y \partial x}$$
       $$\frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x} \implies \frac{\partial^2 u}{\partial y^2} = -\frac{\partial^2 v}{\partial x \partial y}$$
-      <p>由混合偏导数连续性知 $\dfrac{\partial^2 v}{\partial y \partial x} = \dfrac{\partial^2 v}{\partial x \partial y}$，故：</p>
-      $$\Delta u = \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = \frac{\partial^2 v}{\partial y \partial x} - \frac{\partial^2 v}{\partial x \partial y} = 0$$
-      <p>同理可证 $\Delta v = 0$。$\square$</p>
+      <p>混合偏导数连续故相等，相加得 $\Delta u = 0$。同理 $\Delta v = 0$。$\square$</p>
     </div>
 
     <div class="box box-definition">
       <div class="box-title">定义 2.4（共轭调和函数）</div>
       <p>设 $u(x,y)$ 为区域 $D$ 内的调和函数。若 $v(x,y)$ 也是 $D$ 内的调和函数，且 $u, v$ 满足 C-R 方程：</p>
       $$\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}, \quad \frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x}$$
-      <p>则称 $v$ 为 $u$ 的<strong>共轭调和函数</strong>。注意：$u$ 和 $v$ 的角色不对称——$u$ 的共轭调和函数是 $v$，但 $v$ 的共轭调和函数是 $-u$（而非 $u$）。</p>
+      <p>则称 $v$ 为 $u$ 的<strong>共轭调和函数</strong>。注意角色不对称：$u$ 的共轭调和函数是 $v$，但 $v$ 的共轭调和函数是 $-u$。</p>
     </div>
 
     <div class="box box-formula">
       <div class="box-title">公式：由实部求虚部的方法</div>
-      <p>已知 $u(x,y)$ 为调和函数，求其共轭调和函数 $v(x,y)$：</p>
-      <p><strong>方法</strong>：由 C-R 方程 $\dfrac{\partial v}{\partial y} = \dfrac{\partial u}{\partial x}$，对 $y$ 积分：</p>
+      <p>已知 $u(x,y)$ 为调和函数，求其共轭调和函数 $v(x,y)$：由 C-R 方程 $\dfrac{\partial v}{\partial y} = \dfrac{\partial u}{\partial x}$，对 $y$ 积分：</p>
       $$v(x,y) = \int \frac{\partial u}{\partial x} \, \dd y + g(x)$$
       <p>再由 $\dfrac{\partial v}{\partial x} = -\dfrac{\partial u}{\partial y}$ 确定 $g(x)$。</p>
     </div>
@@ -380,14 +358,12 @@
       <div class="box-title">例题 2.7</div>
       <p>$u(x,y) = e^x \cos y$ 是调和函数，求其共轭调和函数 $v(x,y)$ 及 $f(z) = u + iv$。</p>
       <div class="collapsible">
-        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 展开解答</div>
         <div class="collapsible-body">
           <p><strong>验证调和性</strong>：$\dfrac{\partial^2 u}{\partial x^2} = e^x \cos y$，$\dfrac{\partial^2 u}{\partial y^2} = -e^x \cos y$，$\Delta u = 0$。</p>
-          <p><strong>求 $v$</strong>：由 $\dfrac{\partial v}{\partial y} = \dfrac{\partial u}{\partial x} = e^x \cos y$，对 $y$ 积分：</p>
-          $$v = e^x \sin y + g(x)$$
-          <p>由 $\dfrac{\partial v}{\partial x} = -\dfrac{\partial u}{\partial y}$：$e^x \sin y + g'(x) = -(-e^x \sin y) = e^x \sin y$。</p>
-          <p>故 $g'(x) = 0$，$g(x) = C$。取 $C = 0$：$v = e^x \sin y$。</p>
-          <p>$$f(z) = e^x \cos y + ie^x \sin y = e^x(\cos y + i\sin y) = e^x \cdot e^{iy} = e^{x+iy} = e^z$$</p>
+          <p><strong>求 $v$</strong>：由 $\dfrac{\partial v}{\partial y} = \dfrac{\partial u}{\partial x} = e^x \cos y$，对 $y$ 积分得 $v = e^x \sin y + g(x)$。</p>
+          <p>由 $\dfrac{\partial v}{\partial x} = -\dfrac{\partial u}{\partial y}$：$e^x \sin y + g'(x) = -(-e^x \sin y) = e^x \sin y$，故 $g'(x) = 0$，$g(x) = C$。</p>
+          <p>取 $C = 0$：$v = e^x \sin y$。则 $f(z) = e^x \cos y + ie^x \sin y = e^{x+iy} = e^z$。</p>
         </div>
       </div>
     </div>
@@ -396,25 +372,21 @@
       <div class="box-title">例题 2.8</div>
       <p>$u(x,y) = x^2 - y^2 + xy$ 是否为调和函数？若是，求其共轭调和函数。</p>
       <div class="collapsible">
-        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 展开解答</div>
         <div class="collapsible-body">
-          <p><strong>验证调和性</strong>：</p>
-          $$\frac{\partial^2 u}{\partial x^2} = 2, \quad \frac{\partial^2 u}{\partial y^2} = -2, \quad \Delta u = 2 - 2 = 0$$
-          <p>是调和函数。</p>
+          <p><strong>验证调和性</strong>：$\dfrac{\partial^2 u}{\partial x^2} = 2$，$\dfrac{\partial^2 u}{\partial y^2} = -2$，$\Delta u = 2 - 2 = 0$。是调和函数。</p>
           <p><strong>求 $v$</strong>：$\dfrac{\partial v}{\partial y} = \dfrac{\partial u}{\partial x} = 2x + y$，积分得 $v = 2xy + \dfrac{y^2}{2} + g(x)$。</p>
           <p>$\dfrac{\partial v}{\partial x} = 2y + g'(x) = -\dfrac{\partial u}{\partial y} = -(-2y + x) = 2y - x$。</p>
-          <p>故 $g'(x) = -x$，$g(x) = -\dfrac{x^2}{2} + C$。取 $C = 0$：</p>
-          $$v = 2xy + \frac{y^2}{2} - \frac{x^2}{2}$$
+          <p>故 $g'(x) = -x$，$g(x) = -\dfrac{x^2}{2} + C$。取 $C = 0$：$v = 2xy + \dfrac{y^2}{2} - \dfrac{x^2}{2}$。</p>
           <p><strong>验证</strong>：$\Delta v = -1 + 1 = 0$。$\checkmark$</p>
-          <p>$$f(z) = \left(x^2 - y^2 + xy\right) + i\left(2xy + \frac{y^2}{2} - \frac{x^2}{2}\right)$$</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ==================== 第5节 ==================== -->
-  <div class="section" id="s5">
-    <h2>2.5 解析函数的物理意义</h2>
+  <!-- ==================== 2.4 解析函数的物理意义 ==================== -->
+  <div class="section" id="s4">
+    <h2>2.4 解析函数的物理意义</h2>
 
     <div class="box box-definition">
       <div class="box-title">定义 2.5（平面流速场）</div>
@@ -423,127 +395,589 @@
         <li><strong>无源条件</strong>（连续性方程）：$\dfrac{\partial v_x}{\partial x} + \dfrac{\partial v_y}{\partial y} = 0$</li>
         <li><strong>无旋条件</strong>：$\dfrac{\partial v_y}{\partial x} - \dfrac{\partial v_x}{\partial y} = 0$</li>
       </ul>
-      <p>定义<strong>势函数</strong> $\\varphi$ 和<strong>流函数</strong> $\psi$：</p>
-      $$v_x = \frac{\partial \varphi}{\partial x}, \quad v_y = \frac{\partial \varphi}{\partial y} \qquad (\text{势函数})$$
-      $$v_x = \frac{\partial \psi}{\partial y}, \quad v_y = -\frac{\partial \psi}{\partial x} \qquad (\text{流函数})$$
+      <p>定义<strong>势函数</strong> $\varphi$ 和<strong>流函数</strong> $\psi$：</p>
+      $$v_x = \frac{\partial \varphi}{\partial x}, \quad v_y = \frac{\partial \varphi}{\partial y}, \qquad
+        v_x = \frac{\partial \psi}{\partial y}, \quad v_y = -\frac{\partial \psi}{\partial x}$$
     </div>
 
     <div class="box box-theorem">
       <div class="box-title">定理 2.6（解析函数与平面流动）</div>
-      <p>若 $\varphi$ 和 $\psi$ 满足无源无旋条件，则 $\varphi, \psi$ 均为调和函数，且它们互为共轭调和函数。构造复势函数：</p>
+      <p>若 $\varphi$ 和 $\psi$ 满足无源无旋条件，则 $\varphi, \psi$ 均为调和函数且互为共轭调和函数。构造复势函数：</p>
       $$w = f(z) = \varphi(x,y) + i\psi(x,y)$$
-      <p>则 $f(z)$ 在 $D$ 内解析。复势函数完全刻画了平面流动的信息：</p>
+      <p>则 $f(z)$ 在 $D$ 内解析。复势函数完全刻画了平面流动：</p>
       <ul>
-        <li>$f'(z) = v_x - iv_y$，即 $f'(z)$ 给出流速向量（实部为 $v_x$，虚部为 $-v_y$）。</li>
-        <li>$\varphi(x,y) = c_1$ 为<strong>等势线</strong>。</li>
-        <li>$\psi(x,y) = c_2$ 为<strong>流线</strong>。等势线与流线正交。</li>
+        <li>$f'(z) = v_x - iv_y$，给出流速向量。</li>
+        <li>$\varphi(x,y) = c_1$ 为<strong>等势线</strong>，$\psi(x,y) = c_2$ 为<strong>流线</strong>。等势线与流线正交。</li>
       </ul>
     </div>
 
     <div class="box box-proof">
-      <div class="box-title">证明 · $\varphi$ 和 $\psi$ 互为共轭调和函数</div>
-      <p><strong>第一步：证明 $\varphi$ 是调和函数。</strong></p>
-      <p>由势函数的定义 $v_x = \partial\varphi/\partial x$，$v_y = \partial\varphi/\partial y$，代入无源条件：</p>
-      $$\frac{\partial v_x}{\partial x} + \frac{\partial v_y}{\partial y} = \frac{\partial^2\varphi}{\partial x^2} + \frac{\partial^2\varphi}{\partial y^2} = 0$$
-      <p>故 $\Delta\varphi = 0$，$\varphi$ 为调和函数。</p>
-      <p><strong>第二步：证明 $\psi$ 是调和函数。</strong></p>
-      <p>由流函数的定义 $v_x = \partial\psi/\partial y$，$v_y = -\partial\psi/\partial x$，代入无旋条件：</p>
-      $$\frac{\partial v_y}{\partial x} - \frac{\partial v_x}{\partial y} = \frac{\partial}{\partial x}\left(-\frac{\partial\psi}{\partial x}\right) - \frac{\partial}{\partial y}\left(\frac{\partial\psi}{\partial y}\right) = -\frac{\partial^2\psi}{\partial x^2} - \frac{\partial^2\psi}{\partial y^2} = 0$$
-      <p>故 $\Delta\psi = 0$，$\psi$ 也为调和函数。</p>
-      <p><strong>第三步：证明 $\varphi$ 和 $\psi$ 满足 C-R 方程。</strong></p>
-      <p>比较势函数和流函数的定义：</p>
-      $$v_x = \frac{\partial\varphi}{\partial x} = \frac{\partial\psi}{\partial y} \implies \frac{\partial\varphi}{\partial x} = \frac{\partial\psi}{\partial y}$$
-      $$v_y = \frac{\partial\varphi}{\partial y} = -\frac{\partial\psi}{\partial x} \implies \frac{\partial\varphi}{\partial y} = -\frac{\partial\psi}{\partial x}$$
-      <p>这正是 Cauchy-Riemann 方程！因此 $\varphi$ 和 $\psi$ 互为共轭调和函数，$f(z) = \varphi + i\psi$ 是解析函数。</p>
-      <p><strong>第四步：验证 $f'(z) = v_x - iv_y$。</strong></p>
-      <p>由 C-R 条件下的导数公式：</p>
-      $$f'(z) = \frac{\partial\varphi}{\partial x} + i\frac{\partial\psi}{\partial x} = v_x + i(-v_y) = v_x - iv_y$$
-      <p>这正是流速向量的复表示——实部为 $x$ 方向流速，虚部为 $-v_y$（注意负号）。$\square$</p>
-      <p><strong>注：</strong>等势线 $\varphi = c_1$ 和流线 $\psi = c_2$ 正交的原因来自 C-R 方程的几何解释——解析函数的等值线族（$\varphi=$常数和$\psi=$常数）天然正交。这可以从梯度正交性看出：$\nabla\varphi \cdot \nabla\psi = \varphi_x\psi_x + \varphi_y\psi_y = \varphi_x(-\varphi_y) + \varphi_y(\varphi_x) = 0$。</p>
+      <div class="box-title">证明概要</div>
+      <p>由势函数定义代入无源条件得 $\Delta\varphi = 0$；由流函数定义代入无旋条件得 $\Delta\psi = 0$。比较定义：$\partial\varphi/\partial x = v_x = \partial\psi/\partial y$，$\partial\varphi/\partial y = v_y = -\partial\psi/\partial x$，正是 C-R 方程。故 $f(z)=\varphi+i\psi$ 解析，且 $f'(z)=\varphi_x+i\psi_x=v_x-iv_y$。$\square$</p>
     </div>
 
     <div class="box box-note">
       <div class="box-title">注记：电场中的应用</div>
-      <p>类似地，平面静电场中电位 $\varphi$ 也是调和函数。若定义复电位 $f(z) = \varphi + i\psi$（$\psi$ 为电通量函数），则 $f(z)$ 也解析。等位线 $\varphi = c_1$ 和电力线 $\psi = c_2$ 正交。</p>
-      <p><strong>一般规律</strong>：任何满足二维 Laplace 方程的物理量，都可以通过其共轭调和函数构造解析函数。这是解析函数物理应用的基础。</p>
+      <p>平面静电场中电位 $\varphi$ 也是调和函数。定义复电位 $f(z) = \varphi + i\psi$（$\psi$ 为电通量函数），则 $f(z)$ 解析。等位线 $\varphi = c_1$ 和电力线 $\psi = c_2$ 正交。<strong>一般规律</strong>：任何满足二维 Laplace 方程的物理量，都可以通过其共轭调和函数构造解析函数。</p>
     </div>
 
     <div class="box box-example">
       <div class="box-title">例题 2.9</div>
-      <p>设复势函数 $f(z) = z^2$，求流速场 $\mathbf{v}$、势函数 $\varphi$、流函数 $\psi$，并画出等势线和流线的大致形状。</p>
+      <p>设复势函数 $f(z) = z^2$，求流速场 $\mathbf{v}$、势函数 $\varphi$、流函数 $\psi$。</p>
       <div class="collapsible">
-        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 展开解答</div>
         <div class="collapsible-body">
-          <p>$z^2 = (x^2 - y^2) + 2ixy$，故：</p>
-          $$\varphi = x^2 - y^2, \quad \psi = 2xy$$
-          <p><strong>验证调和性</strong>：$\Delta\varphi = 2 + (-2) = 0$，$\Delta\psi = 0 + 0 = 0$。$\checkmark$</p>
-          <p><strong>流速</strong>：</p>
-          $$f'(z) = 2z = 2x + 2iy$$
-          <p>由 $f'(z) = v_x - iv_y$，比较实虚部得 $v_x = 2x$，$v_y = -2y$。</p>
-          <p><strong>等势线</strong>：$x^2 - y^2 = c$——双曲线族（以 $y = \pm x$ 为渐近线）。</p>
-          <p><strong>流线</strong>：$2xy = c$——双曲线族（以坐标轴为渐近线）。</p>
-          <p>两族曲线在非零交点处正交，这反映了解析函数的一个普遍性质。</p>
+          <p>$z^2 = (x^2 - y^2) + 2ixy$，故 $\varphi = x^2 - y^2$，$\psi = 2xy$。</p>
+          <p>$f'(z) = 2z = 2x + 2iy$，由 $f'(z) = v_x - iv_y$ 得 $v_x = 2x$，$v_y = -2y$。</p>
+          <p>等势线 $x^2 - y^2 = c$ 和流线 $2xy = c$ 是两族正交的双曲线。</p>
         </div>
       </div>
     </div>
 
     <div class="box box-example">
       <div class="box-title">例题 2.10</div>
-      <p>已知势函数 $\varphi = 2x - 3y$，验证它是调和函数，求共轭调和函数 $\psi$ 和复势 $f(z)$，并给出流速场。</p>
+      <p>已知势函数 $\varphi = 2x - 3y$，验证它是调和函数，求共轭调和函数 $\psi$ 和复势 $f(z)$。</p>
       <div class="collapsible">
-        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 展开解答</div>
         <div class="collapsible-body">
-          <p><strong>验证</strong>：$\Delta\varphi = 0 + 0 = 0$，是调和函数（平凡地，线性函数总是调和的）。</p>
-          <p><strong>求 $\psi$</strong>：由 C-R 方程：</p>
-          $$\frac{\partial \psi}{\partial y} = \frac{\partial \varphi}{\partial x} = 2 \implies \psi = 2y + g(x)$$
-          $$\frac{\partial \psi}{\partial x} = g'(x) = -\frac{\partial \varphi}{\partial y} = 3 \implies g(x) = 3x + C$$
-          <p>取 $C = 0$：$\psi = 3x + 2y$。</p>
-          <p><strong>复势</strong>：</p>
-          $$f(z) = (2x - 3y) + i(3x + 2y) = 2(x+iy) + 3i(x+iy) = (2 + 3i)z$$
-          <p><strong>流速</strong>：$f'(z) = 2 + 3i$，由 $f'(z) = v_x - iv_y$ 得 $v_x = 2$，$v_y = -3$。这是一个均匀流场。</p>
+          <p>$\Delta\varphi = 0 + 0 = 0$，是调和函数。</p>
+          <p>由 C-R：$\partial\psi/\partial y = 2 \implies \psi = 2y + g(x)$；$\partial\psi/\partial x = g'(x) = 3 \implies g(x) = 3x + C$。</p>
+          <p>取 $C = 0$：$\psi = 3x + 2y$。$f(z) = (2x-3y) + i(3x+2y) = (2+3i)z$，是均匀流场。</p>
         </div>
       </div>
     </div>
 
     <div class="box box-example">
       <div class="box-title">例题 2.11（静电场应用）</div>
-      <p>平面静电场中，两无限长平行导线（垂直于复平面）位于 $z = \pm 1$ 处，分别带有线电荷密度 $+\lambda$ 和 $-\lambda$。已知复势为 $f(z) = \dfrac{\lambda}{2\pi\varepsilon_0}\Log\dfrac{z-1}{z+1}$（取主值分支）。求等位线方程和电力线方程。</p>
+      <p>两无限长平行导线位于 $z = \pm 1$ 处，线电荷密度 $+\lambda$ 和 $-\lambda$。复势为 $f(z) = \dfrac{\lambda}{2\pi\varepsilon_0}\Log\dfrac{z-1}{z+1}$。求等位线方程和电力线方程。</p>
       <div class="collapsible">
-        <div class="collapsible-header"><span class="toggle-icon">▶</span> 展开解答</div>
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 展开解答</div>
         <div class="collapsible-body">
           <p>令 $w = \dfrac{z-1}{z+1}$，则 $f(z) = \dfrac{\lambda}{2\pi\varepsilon_0}\Log w = \dfrac{\lambda}{2\pi\varepsilon_0}(\ln|w| + i\Arg w)$。</p>
-          <p>因此：</p>
-          $$\varphi = \frac{\lambda}{2\pi\varepsilon_0}\ln\left|\frac{z-1}{z+1}\right|,\quad \psi = \frac{\lambda}{2\pi\varepsilon_0}\Arg\left(\frac{z-1}{z+1}\right)$$
-          <p><strong>等位线</strong>（$\varphi = C$）：$\left|\dfrac{z-1}{z+1}\right| = \text{常数}$。这是 Apollonius 圆族——到两点 $z=1$ 和 $z=-1$ 距离之比为常数的点的轨迹，圆心在实轴上。</p>
-          <p><strong>电力线</strong>（$\psi = C$）：$\Arg\dfrac{z-1}{z+1} = \text{常数}$。这是过 $z=\pm 1$ 两点的圆弧族——从 $z=1$ 到 $z=-1$ 的张角为常数的点的轨迹。电力线与等位线正交，这验证了复势函数 $f(z)$ 的解析性。</p>
-          <p><strong>验证</strong>：由于对数函数的主值分支在负实轴上有割线，$f(z)$ 在该割线之外解析。$\varphi$ 和 $\psi$ 分别满足 Laplace 方程且满足 C-R 方程，互为共轭调和函数。</p>
+          <p>$$\varphi = \frac{\lambda}{2\pi\varepsilon_0}\ln\left|\frac{z-1}{z+1}\right|,\quad \psi = \frac{\lambda}{2\pi\varepsilon_0}\Arg\left(\frac{z-1}{z+1}\right)$$</p>
+          <p><strong>等位线</strong>（$\varphi = C$）：$\left|\dfrac{z-1}{z+1}\right| = \text{常数}$，即 Apollonius 圆族。</p>
+          <p><strong>电力线</strong>（$\psi = C$）：$\Arg\dfrac{z-1}{z+1} = \text{常数}$，即过 $z=\pm 1$ 的圆弧族，与等位线正交。</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ========== 常见误区与FAQ ========== -->
+  <!-- ==================== 2.5 指数函数 ==================== -->
+  <div class="section" id="s5">
+    <h2>2.5 指数函数 $e^z$</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 2.6（复指数函数）</div>
+      <p>对任意 $z = x + iy \in \CC$，定义<strong>复指数函数</strong>为：</p>
+      $$e^z = e^{x+iy} = e^x(\cos y + i\sin y)$$
+      <p>利用模和辐角的语言：$|e^z| = e^x$（模由实部决定），$\arg(e^z) = y$（辐角由虚部决定）。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 2.7（指数函数的基本性质）</div>
+      <ol>
+        <li><strong>解析性</strong>：$e^z$ 在整个 $\CC$ 上解析（整函数），且 $\dfrac{\dd}{\dd z}e^z = e^z$。</li>
+        <li><strong>加法定理</strong>：$e^{z_1+z_2} = e^{z_1} \cdot e^{z_2}$。</li>
+        <li><strong>周期性</strong>：$e^z$ 以 $2\pi i$ 为基本周期，即 $e^{z+2\pi i} = e^z$。这是复指数函数与实指数函数最本质的区别。</li>
+        <li><strong>无零点</strong>：对任意 $z \in \CC$，$e^z \neq 0$（因为 $|e^z| = e^x > 0$）。</li>
+        <li><strong>值域</strong>：$e^z$ 的值域为 $\CC \setminus \{0\}$，即全体非零复数。</li>
+      </ol>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明 · 加法定理与周期性的由来</div>
+      <p><strong>加法定理</strong>：利用实三角和角公式直接展开 $e^{z_1} e^{z_2}$ 即得 $e^{z_1+z_2}$。</p>
+      <p><strong>周期性</strong>：$e^{z+2\pi i} = e^z \cdot e^{2\pi i} = e^z \cdot (\cos 2\pi + i\sin 2\pi) = e^z$。若 $e^{z+T}=e^z$ 对所有 $z$ 成立，令 $z=0$ 得 $e^T=1$，取模得 $e^{\Re T}=1 \Rightarrow \Re T=0$；再比较实虚部得 $\cos(\Im T)=1, \sin(\Im T)=0 \Rightarrow \Im T=2k\pi$。故基本周期为 $2\pi i$。</p>
+      <p><strong>解析性</strong>：$u=e^x\cos y, v=e^x\sin y$，$\partial u/\partial x = e^x\cos y = \partial v/\partial y$，$\partial u/\partial y = -e^x\sin y = -\partial v/\partial x$。C-R 处处成立，偏导数连续，故在全平面解析，且 $f'(z)=u_x+iv_x=e^z$。$\square$</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">Euler 公式</div>
+      <p>在定义中令 $z = iy$，得到著名的 <strong>Euler 公式</strong>：</p>
+      $$e^{iy} = \cos y + i\sin y$$
+      <p>特别地，$e^{i\pi} + 1 = 0$ 将 $e, i, \pi, 1, 0$ 五个最重要常数联系在一起。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">映射性质</div>
+      <p>$w = e^z$ 的映射：设 $z = x + iy$，则 $|w| = e^x$，$\arg w = y$（模 $2\pi$）。</p>
+      <ul>
+        <li>竖直线 $x = c$ 映为圆周 $|w| = e^c$。</li>
+        <li>水平线 $y = c$ 映为射线 $\arg w = c$。</li>
+        <li>宽度为 $2\pi$ 的水平带域恰好覆盖 $w$ 平面一次（去掉原点）。若带域宽度超过 $2\pi$，由于周期性不再单射。</li>
+      </ul>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 2.12</div>
+      <p>计算 $e^{2+\pi i/3}$。</p>
+      <p><strong>解</strong>：$e^{2+\pi i/3} = e^2\left(\cos\frac{\pi}{3} + i\sin\frac{\pi}{3}\right) = e^2\left(\dfrac{1}{2} + i\dfrac{\sqrt{3}}{2}\right)$。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 例题 · 解方程 $e^z = 1+i$</div>
+      <div class="collapsible-body">
+        <p><strong>解</strong>：设 $z = x + iy$，则 $e^z = e^x(\cos y + i\sin y) = 1 + i$。</p>
+        <p>取模：$e^x = |1+i| = \sqrt{2}$，故 $x = \dfrac{1}{2}\ln 2$。</p>
+        <p>取辐角：$y = \arg(1+i) = \dfrac{\pi}{4} + 2k\pi$，$k \in \ZZ$。</p>
+        <p>因此 $z = \dfrac{1}{2}\ln 2 + i\left(\dfrac{\pi}{4} + 2k\pi\right)$，$k \in \ZZ$。方程有无穷多个解，这正是 $e^z$ 的周期性所致。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 可视化：初等函数的映射效果 ==================== -->
+  <div class="section" id="viz-mapping">
+    <h2>可视化 · 初等函数的映射效果</h2>
+    <p>观察复变初等函数如何将 $z$ 平面上的网格映射到 $w$ 平面。选择不同的函数，理解其映射性质。</p>
+    <div style="margin:1rem 0;">
+      <select id="map-fn" style="padding:0.4rem;border-radius:6px;border:1px solid var(--border);">
+        <option value="exp">w = e^z</option>
+        <option value="z2">w = z&#178;</option>
+        <option value="inv">w = 1/z</option>
+        <option value="sqrt">w = &#8730;z (主支)</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+      <div><p style="text-align:center;font-size:0.85rem;font-weight:600;">z 平面（原像）</p><canvas id="canvas-zplane" width="300" height="300" style="width:100%;max-width:300px;border:1px solid var(--border-light);border-radius:8px;"></canvas></div>
+      <div><p style="text-align:center;font-size:0.85rem;font-weight:600;">w 平面（像）</p><canvas id="canvas-wplane" width="300" height="300" style="width:100%;max-width:300px;border:1px solid var(--border-light);border-radius:8px;"></canvas></div>
+    </div>
+    <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.5rem;">左图为 $z$ 平面上的矩形网格，右图为经函数映射后的像。</p>
+  </div>
+
+  <script>
+  (function() {
+    var cZ = document.getElementById('canvas-zplane');
+    var cW = document.getElementById('canvas-wplane');
+    var ctxZ = cZ.getContext('2d');
+    var ctxW = cW.getContext('2d');
+    var sel = document.getElementById('map-fn');
+    var dpr = window.devicePixelRatio || 1;
+    var GRID = 12;
+    var HCOLOR = 'rgba(52,152,219,0.6)';
+    var VCOLOR = 'rgba(231,76,60,0.6)';
+
+    function cMul(a, b) { return [a[0]*b[0]-a[1]*b[1], a[0]*b[1]+a[1]*b[0]]; }
+    function cInv(a) { var d = a[0]*a[0]+a[1]*a[1]; return [a[0]/d, -a[1]/d]; }
+    function cAbs(a) { return Math.sqrt(a[0]*a[0]+a[1]*a[1]); }
+    function cArg(a) { return Math.atan2(a[1], a[0]); }
+    function cExp(a) { var ex = Math.exp(a[0]); return [ex*Math.cos(a[1]), ex*Math.sin(a[1])]; }
+    function cSqrt(a) { var r = cAbs(a), th = cArg(a); return [Math.sqrt(r)*Math.cos(th/2), Math.sqrt(r)*Math.sin(th/2)]; }
+
+    function mapFn(z, fn) {
+      switch(fn) {
+        case 'exp':  return cExp(z);
+        case 'z2':   return cMul(z, z);
+        case 'inv':  return cInv(z);
+        case 'sqrt': return cSqrt(z);
+        default:     return z;
+      }
+    }
+
+    function setupCanvas(canvas, ctx, w) {
+      canvas.style.width = w + 'px'; canvas.style.height = w + 'px';
+      canvas.width = w * dpr; canvas.height = w * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function toScreen(x, y, w, scale, cx_scr, cy_scr) {
+      return [cx_scr + x * scale, cy_scr - y * scale];
+    }
+
+    function drawGrid(ctx, w, fn) {
+      ctx.clearRect(0, 0, w, w);
+      ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, w, w);
+      var xMin, xMax, yMin, yMax;
+      if (fn === 'exp') { xMin = -2; xMax = 2; yMin = -Math.PI; yMax = Math.PI; }
+      else { xMin = -2; xMax = 2; yMin = -2; yMax = 2; }
+
+      var scaleX = w / (xMax - xMin), scaleY = w / (yMax - yMin);
+      var scale = Math.min(scaleX, scaleY);
+      var cx_scr = w / 2, cy_scr = w / 2;
+      function toS(x, y) { return toScreen(x, y, w, scale, cx_scr, cy_scr); }
+
+      var nLines = GRID, dx = (xMax - xMin) / nLines, dy = (yMax - yMin) / nLines, steps = 80;
+
+      for (var i = 0; i <= nLines; i++) {
+        var x = xMin + i * dx;
+        ctx.strokeStyle = VCOLOR; ctx.lineWidth = 1; ctx.beginPath();
+        for (var s = 0; s <= steps; s++) {
+          var y = yMin + s * (yMax - yMin) / steps, sp = toS(x, y);
+          if (s === 0) ctx.moveTo(sp[0], sp[1]); else ctx.lineTo(sp[0], sp[1]);
+        }
+        ctx.stroke();
+      }
+      for (var j = 0; j <= nLines; j++) {
+        var y = yMin + j * dy;
+        ctx.strokeStyle = HCOLOR; ctx.lineWidth = 1; ctx.beginPath();
+        for (var s = 0; s <= steps; s++) {
+          var x = xMin + s * (xMax - xMin) / steps, sp = toS(x, y);
+          if (s === 0) ctx.moveTo(sp[0], sp[1]); else ctx.lineTo(sp[0], sp[1]);
+        }
+        ctx.stroke();
+      }
+
+      ctx.strokeStyle = '#667'; ctx.lineWidth = 1.5; ctx.beginPath();
+      var origin = toS(0, 0);
+      ctx.moveTo(0, origin[1]); ctx.lineTo(w, origin[1]);
+      ctx.moveTo(origin[0], 0); ctx.lineTo(origin[0], w);
+      ctx.stroke();
+
+      ctx.fillStyle = '#667'; ctx.font = (w*0.035) + 'px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      for (var i = Math.ceil(xMin); i <= Math.floor(xMax); i++) { if (i === 0) continue; var sp = toS(i, 0); ctx.fillText(i, sp[0], origin[1] + 2); }
+      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      for (var j = Math.ceil(yMin); j <= Math.floor(yMax); j++) { if (j === 0) continue; var sp = toS(0, j); ctx.fillText(j + 'i', origin[0] - 3, sp[1]); }
+      ctx.strokeStyle = '#dde'; ctx.lineWidth = 1; ctx.strokeRect(0, 0, w, w);
+    }
+
+    function drawWPlane(w) {
+      var fn = sel.value;
+      ctxW.clearRect(0, 0, w, w);
+      ctxW.fillStyle = '#fafbfc'; ctxW.fillRect(0, 0, w, w);
+
+      var xMin_z, xMax_z, yMin_z, yMax_z;
+      if (fn === 'exp') { xMin_z = -2; xMax_z = 2; yMin_z = -Math.PI; yMax_z = Math.PI; }
+      else { xMin_z = -2; xMax_z = 2; yMin_z = -2; yMax_z = 2; }
+
+      var nLines = GRID, dx = (xMax_z - xMin_z) / nLines, dy = (yMax_z - yMin_z) / nLines, steps = 60;
+      var allPts = [];
+
+      for (var i = 0; i <= nLines; i++) {
+        var x = xMin_z + i * dx;
+        for (var s = 0; s <= steps; s++) {
+          var y = yMin_z + s * (yMax_z - yMin_z) / steps;
+          var wv = mapFn([x, y], fn);
+          if (isFinite(wv[0]) && isFinite(wv[1])) allPts.push(wv);
+        }
+      }
+      for (var j = 0; j <= nLines; j++) {
+        var y = yMin_z + j * dy;
+        for (var s = 0; s <= steps; s++) {
+          var x = xMin_z + s * (xMax_z - xMin_z) / steps;
+          var wv = mapFn([x, y], fn);
+          if (isFinite(wv[0]) && isFinite(wv[1])) allPts.push(wv);
+        }
+      }
+
+      if (allPts.length === 0) return;
+      var wMinX, wMaxX, wMinY, wMaxY;
+      if (fn === 'exp') { wMinX = -7.5; wMaxX = 7.5; wMinY = -7.5; wMaxY = 7.5; }
+      else {
+        wMinX = Infinity; wMaxX = -Infinity; wMinY = Infinity; wMaxY = -Infinity;
+        for (var i = 0; i < allPts.length; i++) {
+          if (allPts[i][0] < wMinX) wMinX = allPts[i][0];
+          if (allPts[i][0] > wMaxX) wMaxX = allPts[i][0];
+          if (allPts[i][1] < wMinY) wMinY = allPts[i][1];
+          if (allPts[i][1] > wMaxY) wMaxY = allPts[i][1];
+        }
+        var padX = (wMaxX - wMinX) * 0.1 || 1, padY = (wMaxY - wMinY) * 0.1 || 1;
+        wMinX -= padX; wMaxX += padX; wMinY -= padY; wMaxY += padY;
+      }
+
+      var rangeX = wMaxX - wMinX, rangeY = wMaxY - wMinY, maxRange = Math.max(rangeX, rangeY);
+      var midX = (wMinX + wMaxX) / 2, midY = (wMinY + wMaxY) / 2;
+      wMinX = midX - maxRange/2; wMaxX = midX + maxRange/2;
+      wMinY = midY - maxRange/2; wMaxY = midY + maxRange/2;
+
+      var scale_w = Math.min(w / (wMaxX - wMinX), w / (wMaxY - wMinY));
+      function toSW(x, y) { return [w/2 + (x - midX) * scale_w, w/2 - (y - midY) * scale_w]; }
+
+      for (var i = 0; i <= nLines; i++) {
+        var x = xMin_z + i * dx;
+        ctxW.strokeStyle = VCOLOR; ctxW.lineWidth = 1; ctxW.beginPath();
+        var started = false;
+        for (var s = 0; s <= steps; s++) {
+          var y = yMin_z + s * (yMax_z - yMin_z) / steps;
+          var wv = mapFn([x, y], fn);
+          if (!isFinite(wv[0]) || !isFinite(wv[1])) { started = false; continue; }
+          var sp = toSW(wv[0], wv[1]);
+          if (!started) { ctxW.moveTo(sp[0], sp[1]); started = true; }
+          else ctxW.lineTo(sp[0], sp[1]);
+        }
+        ctxW.stroke();
+      }
+      for (var j = 0; j <= nLines; j++) {
+        var y = yMin_z + j * dy;
+        ctxW.strokeStyle = HCOLOR; ctxW.lineWidth = 1; ctxW.beginPath();
+        var started = false;
+        for (var s = 0; s <= steps; s++) {
+          var x = xMin_z + s * (xMax_z - xMin_z) / steps;
+          var wv = mapFn([x, y], fn);
+          if (!isFinite(wv[0]) || !isFinite(wv[1])) { started = false; continue; }
+          var sp = toSW(wv[0], wv[1]);
+          if (!started) { ctxW.moveTo(sp[0], sp[1]); started = true; }
+          else ctxW.lineTo(sp[0], sp[1]);
+        }
+        ctxW.stroke();
+      }
+
+      ctxW.strokeStyle = '#667'; ctxW.lineWidth = 1.5; ctxW.beginPath();
+      var originW = toSW(0, 0);
+      ctxW.moveTo(0, originW[1]); ctxW.lineTo(w, originW[1]);
+      ctxW.moveTo(originW[0], 0); ctxW.lineTo(originW[0], w);
+      ctxW.stroke();
+      ctxW.strokeStyle = '#dde'; ctxW.lineWidth = 1; ctxW.strokeRect(0, 0, w, w);
+    }
+
+    function render() {
+      var container = cZ.parentElement.parentElement;
+      var w = Math.min(300, (container.clientWidth - 16) / 2);
+      if (w < 150) w = 150;
+      setupCanvas(cZ, ctxZ, w); setupCanvas(cW, ctxW, w);
+      drawGrid(ctxZ, w, sel.value); drawWPlane(w);
+    }
+
+    sel.addEventListener('change', render);
+    window.addEventListener('resize', render);
+    render();
+  })();
+  </script>
+
+  <!-- ==================== 2.6 对数函数 ==================== -->
+  <div class="section" id="s6">
+    <h2>2.6 对数函数 $\log z$</h2>
+
+    <div class="box box-note">
+      <div class="box-title">直觉导航</div>
+      <p>为什么 $\log z$ 变成多值函数？根本原因是 $e^z$ 的周期性。实数中 $e^x$ 严格单调，反函数 $\ln x$ 天然单值。但在复数中，$e^z = e^{z+2\pi i}$——方程 $e^w = z$ 的解不唯一：如果 $w$ 是一个解，那么 $w+2k\pi i$ 也都是解。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 2.7（对数函数）</div>
+      <p>对 $z \neq 0$，满足 $e^w = z$ 的 $w$ 称为 $z$ 的<strong>对数</strong>，记为 $w = \log z$。</p>
+      <p>设 $z = re^{i\theta}$（$r = |z|$，$\theta = \arg z$），则：</p>
+      $$\log z = \ln|z| + i\arg z = \ln r + i(\theta + 2k\pi), \quad k \in \ZZ$$
+      <p>因此 $\log z$ 是一个<strong>多值函数</strong>，有无穷多个值，相邻值之间相差 $2\pi i$。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 对数的主值</div>
+      <p>取 $k = 0$（辐角取主值 $\Arg z \in (-\pi, \pi]$），定义<strong>对数的主值</strong>：</p>
+      $$\Log z = \ln|z| + i\Arg z$$
+      <p>主值 $\Log z$ 是单值函数，但在负实轴上不连续（辐角在负实轴上有跳跃）。</p>
+      <p>对数函数的所有值为：$\log z = \Log z + 2k\pi i$，$k \in \ZZ$。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">分支与支割线</div>
+      <p>为了从多值函数 $\log z$ 中选出一个<strong>单值连续分支</strong>，需要沿负实轴做<strong>支割线</strong>（branch cut），并指定 $\Arg z \in (-\pi, \pi]$，得到主值分支 $\Log z$。</p>
+      <p><strong>为什么需要支割线？</strong>考虑 $z$ 在负实轴两侧极限：从上方趋近 $\Arg z \to \pi$，从下方趋近 $\Arg z \to -\pi$，$\Log z$ 跳变 $2\pi i$。支割线"割断"负实轴，禁止自变量跨过它，从而在剩余连通区域内保证连续性和解析性。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 2.8（对数函数的运算性质）</div>
+      <p>对 $z_1, z_2 \neq 0$：</p>
+      <ol>
+        <li>$\log(z_1 z_2) = \log z_1 + \log z_2$（在多值意义下成立，即两边的值集合相等）</li>
+        <li>$\log\dfrac{z_1}{z_2} = \log z_1 - \log z_2$（多值意义下）</li>
+      </ol>
+      <p><strong>注意</strong>：对主值 $\Log$，等式可能相差 $2\pi i$ 的整数倍。例：$\Log(-1 \cdot -1) = 0$，但 $\Log(-1) + \Log(-1) = 2\pi i \neq 0$。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 2.13</div>
+      <p>计算 $\log(-1)$ 和 $\log i$ 的所有值。</p>
+      <p><strong>解</strong>：$|-1| = 1$，$\arg(-1) = \pi + 2k\pi$，故 $\log(-1) = (2k+1)\pi i$。主值 $\Log(-1) = \pi i$。</p>
+      <p>$|i| = 1$，$\arg(i) = \dfrac{\pi}{2} + 2k\pi$，故 $\log i = i\left(\dfrac{\pi}{2} + 2k\pi\right)$。主值 $\Log i = \dfrac{\pi}{2}i$。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 例题 · 计算 $\log(1+i)$ 的所有值</div>
+      <div class="collapsible-body">
+        <p>$1+i = \sqrt{2} \cdot e^{i\pi/4}$，故</p>
+        $$\log(1+i) = \ln\sqrt{2} + i\left(\frac{\pi}{4} + 2k\pi\right) = \frac{1}{2}\ln 2 + i\left(\frac{\pi}{4} + 2k\pi\right), \quad k \in \ZZ$$
+        <p>主值为 $\Log(1+i) = \dfrac{1}{2}\ln 2 + \dfrac{\pi}{4}i$。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2.7 幂函数与根式函数 ==================== -->
+  <div class="section" id="s7">
+    <h2>2.7 幂函数与根式函数</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 2.8（复幂函数）</div>
+      <p>对 $z \neq 0$ 和任意复数 $a \in \CC$，定义<strong>幂函数</strong>为：</p>
+      $$z^a = e^{a\log z}$$
+      <p>由于 $\log z$ 是多值的，$z^a$ 通常也是多值函数。将 $\log z$ 展开：</p>
+      $$z^a = e^{a[\ln|z| + i\Arg z + 2k\pi i]} = |z|^a \cdot e^{ia\Arg z} \cdot e^{2k\pi ia}$$
+      <p>关键在于因子 $e^{2k\pi ia}$：如果 $a$ 是整数，则此因子为 $1$；否则 $z^a$ 有多值性。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 2.9（幂函数的单值性条件）</div>
+      <p>$z^a$ 是单值函数的充要条件是 $a \in \ZZ$（$a$ 为整数）。更细致地：</p>
+      <ul>
+        <li><strong>$a = n \in \ZZ$</strong>：$z^n$ 单值。$n>0$ 时为整函数，$n<0$ 时在 $z=0$ 处有极点。</li>
+        <li><strong>$a = p/q$（$p,q$ 互素，$q > 1$）</strong>：$z^{p/q}$ 恰好有 $q$ 个不同的值（$q$ 值函数）。</li>
+        <li><strong>$a$ 为无理数或虚数</strong>：$z^a$ 有无穷多个值。</li>
+      </ul>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明概要</div>
+      <p>多值性取决于因子 $e^{2k\pi ia}$：</p>
+      <ul>
+        <li>$a=n \in \ZZ$：$e^{2k\pi in} = 1$，单值。</li>
+        <li>$a=p/q$（互素）：$e^{2k\pi i p/q}$ 当 $k=0,\ldots,q-1$ 时给出 $q$ 个不同值（因 $p$ 与 $q$ 互素，$kp \bmod q$ 取遍所有余数），$k=q$ 时重复。</li>
+        <li>$a$ 无理实数：若 $e^{2k_1\pi ia}=e^{2k_2\pi ia}$，则 $(k_1-k_2)a$ 为整数，只有 $k_1=k_2$ 可能，故无穷多值。</li>
+        <li>$a$ 有非零虚部：$|e^{2k\pi ia}| = e^{-2k\pi \Im a}$，不同 $k$ 给出不同模，故无穷多值。</li>
+      </ul>
+      <p>$\square$</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 2.14 · 计算 $i^i$</div>
+      <p>$i^i = e^{i\log i} = e^{i \cdot i(\pi/2 + 2k\pi)} = e^{-\pi/2 - 2k\pi}$，$k \in \ZZ$。</p>
+      <p>取 $k=0$ 得主值：$i^i = e^{-\pi/2} \approx 0.2079$。<strong>所有值都是正实数！</strong></p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 2.15 · 计算 $z^{1/2}$（平方根）</div>
+      <p>对 $z = re^{i\theta}$：</p>
+      $$z^{1/2} = e^{\frac{1}{2}\log z} = e^{\frac{1}{2}[\ln r + i(\theta + 2k\pi)]} = \sqrt{r} \cdot e^{i(\theta + 2k\pi)/2}$$
+      <p>$k=0$：$w_0 = \sqrt{r} \cdot e^{i\theta/2}$；$k=1$：$w_1 = \sqrt{r} \cdot e^{i(\theta/2 + \pi)} = -w_0$；$k=2$ 重复。故平方根恰好有两个值，互为相反数。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">根式函数的分支</div>
+      <p>$z^{1/n}$ 有 $n$ 个不同的值，均匀分布在以原点为圆心、半径为 $|z|^{1/n}$ 的圆周上，相邻两个值之间夹角为 $2\pi/n$。选取单值分支需要做支割线并指定 $\arg z$ 范围。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 例题 · 计算 $(1+i)^{1+i}$</div>
+      <div class="collapsible-body">
+        <p>$(1+i)^{1+i} = e^{(1+i)\log(1+i)}$。取主值 $\Log(1+i) = \dfrac{1}{2}\ln 2 + \dfrac{\pi}{4}i$。</p>
+        $$(1+i)\Log(1+i) = (1+i)\left(\frac{1}{2}\ln 2 + \frac{\pi}{4}i\right) = \left(\frac{1}{2}\ln 2 - \frac{\pi}{4}\right) + i\left(\frac{\pi}{4} + \frac{1}{2}\ln 2\right)$$
+        $$(1+i)^{1+i} = \sqrt{2} \cdot e^{-\pi/4} \left[\cos\left(\frac{\pi}{4} + \frac{\ln 2}{2}\right) + i\sin\left(\frac{\pi}{4} + \frac{\ln 2}{2}\right)\right]$$
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2.8 三角函数与双曲函数 ==================== -->
+  <div class="section" id="s8">
+    <h2>2.8 三角函数与双曲函数</h2>
+
+    <div class="box box-note">
+      <div class="box-title">直觉导航</div>
+      <p>实三角函数的值总是在 $[-1, 1]$ 之间。复三角函数为什么突然变得无界了？答案藏在 Euler 公式中：$\cos z = \frac{e^{iz} + e^{-iz}}{2}$。当 $z = iy$（纯虚数）时，$\cos(iy) = \frac{e^{-y} + e^y}{2} = \cosh y$——这是双曲余弦，在 $y \to \pm\infty$ 时指数增长。在复平面上，沿虚轴方向远离原点，$\cos z$ 和 $\sin z$ 的模会爆炸式增长。有界性的丧失只发生在脱离实轴进入虚轴方向时。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 2.9（复三角函数）</div>
+      <p>由 Euler 公式 $e^{iz} = \cos z + i\sin z$，定义：</p>
+      $$\cos z = \frac{e^{iz} + e^{-iz}}{2}, \quad \sin z = \frac{e^{iz} - e^{-iz}}{2i}$$
+      $$\tan z = \frac{\sin z}{\cos z}, \quad \cot z = \frac{\cos z}{\sin z}$$
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 2.10（复三角函数的性质）</div>
+      <ol>
+        <li><strong>周期性</strong>：$\cos z$ 和 $\sin z$ 以 $2\pi$ 为周期。</li>
+        <li><strong>奇偶性</strong>：$\cos(-z) = \cos z$（偶），$\sin(-z) = -\sin z$（奇）。</li>
+        <li><strong>Pythagoras 恒等式</strong>：$\cos^2 z + \sin^2 z = 1$。</li>
+        <li><strong>和角公式</strong>保持与实数域相同。</li>
+        <li><strong>解析性</strong>：$\cos z$ 和 $\sin z$ 在 $\CC$ 上解析（整函数）。</li>
+        <li><strong>无界性</strong>：$|\cos z|, |\sin z|$ 不再有界！$|\cos(iy)| = \cosh y \to +\infty$（$y \to \pm\infty$）。</li>
+        <li><strong>零点</strong>：$\sin z = 0 \Leftrightarrow z = k\pi$，$\cos z = 0 \Leftrightarrow z = \dfrac{\pi}{2} + k\pi$（$k \in \ZZ$），与实数域相同。</li>
+      </ol>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">三角函数的实部与虚部</div>
+      <p>设 $z = x + iy$，则：</p>
+      $$\cos(x+iy) = \cos x \cosh y - i\sin x \sinh y$$
+      $$\sin(x+iy) = \sin x \cosh y + i\cos x \sinh y$$
+      $$|\cos z|^2 = \cos^2 x + \sinh^2 y,\quad |\sin z|^2 = \sin^2 x + \sinh^2 y$$
+      <p>其中 $\cosh y = \dfrac{e^y+e^{-y}}{2}$，$\sinh y = \dfrac{e^y-e^{-y}}{2}$。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 2.10（复双曲函数）</div>
+      <p>类比实双曲函数：</p>
+      $$\cosh z = \frac{e^z + e^{-z}}{2}, \quad \sinh z = \frac{e^z - e^{-z}}{2}$$
+      $$\tanh z = \frac{\sinh z}{\cosh z}, \quad \coth z = \frac{\cosh z}{\sinh z}$$
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 2.11（三角函数与双曲函数的关系）</div>
+      <p>复三角函数与双曲函数通过虚数单位 $i$ 相互转化：</p>
+      $$\cos(iz) = \cosh z, \quad \sin(iz) = i\sinh z$$
+      $$\cosh(iz) = \cos z, \quad \sinh(iz) = i\sin z$$
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 2.16 · 计算 $\cos(1+2i)$</div>
+      <p>$\cos(1+2i) = \cos 1 \cosh 2 - i\sin 1 \sinh 2$。$\cosh 2 \approx 3.7622$，$\sinh 2 \approx 3.6269$，$\cos 1 \approx 0.5403$，$\sin 1 \approx 0.8415$。</p>
+      <p>故 $\cos(1+2i) \approx 0.5403 \times 3.7622 - i \times 0.8415 \times 3.6269 \approx 2.0327 - 3.0518i$。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 2.17 · 计算 $\sin(1+2i)$</div>
+      <p>$\sin(1+2i) = \sin 1 \cosh 2 + i\cos 1 \sinh 2 \approx 3.1659 + 1.9596i$。</p>
+      <p>$|\sin(1+2i)| \approx 3.72 > 1$，体现了复三角函数的无界性。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 2.18 · 计算 $\tan(1+i)$</div>
+      <p>使用公式 $\tan(x+iy) = \dfrac{\sin 2x + i\sinh 2y}{\cos 2x + \cosh 2y}$，代入 $x=1, y=1$：</p>
+      <p>$\sin 2 \approx 0.9093$，$\cos 2 \approx -0.4161$，$\sinh 2 \approx 3.6269$，$\cosh 2 \approx 3.7622$。</p>
+      <p>$$\tan(1+i) = \frac{0.9093 + 3.6269i}{-0.4161 + 3.7622} = \frac{0.9093 + 3.6269i}{3.3461} \approx 0.2718 + 1.0839i$$</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 例题 · 证明 $|\cos z|^2 = \cos^2 x + \sinh^2 y$</div>
+      <div class="collapsible-body">
+        <p>$\cos(x+iy) = \cos x\cosh y - i\sin x\sinh y$，故</p>
+        $$|\cos z|^2 = \cos^2 x \cosh^2 y + \sin^2 x \sinh^2 y$$
+        <p>利用 $\cosh^2 y = 1 + \sinh^2 y$：</p>
+        $$= \cos^2 x(1 + \sinh^2 y) + \sin^2 x \sinh^2 y = \cos^2 x + \sinh^2 y(\cos^2 x + \sin^2 x) = \cos^2 x + \sinh^2 y$$
+        <p>当 $|y| \to \infty$ 时 $\sinh^2 y \approx e^{2|y|}/4 \to \infty$，故复三角函数无界。$\square$</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 常见误区与 FAQ ========== -->
   <div class="section" id="faq">
     <h2>常见误区与 FAQ</h2>
 
     <div class="box box-note">
       <div class="box-title">误区：可导和解析是一回事吗？</div>
-      <p>不是。"在一点可导"只要求那一点的导数存在；"在一点解析"要求在该点的<strong>某个邻域内</strong>处处可导。举例：$f(z)=|z|^2$ 在 $z=0$ 处可导（$f'(0)=0$），但在 $z=0$ 处不解析——因为 $z=0$ 的任何邻域内都存在不可导的点（除了 $z=0$ 本身，其他点均不可导）。考试常见陷阱：让你判断"在一点是否解析"，必须先检查该点邻域内是否处处可导。</p>
+      <p>不是。"在一点可导"只要求那一点的导数存在；"在一点解析"要求在该点的<strong>某个邻域内</strong>处处可导。经典反例：$f(z)=|z|^2$ 在 $z=0$ 处可导（$f'(0)=0$），但在 $z=0$ 处不解析。考试常见陷阱：让你判断"在一点是否解析"，必须先检查该点邻域内是否处处可导。</p>
     </div>
 
     <div class="box box-note">
       <div class="box-title">FAQ：C-R 方程是充要条件吗？</div>
-      <p>C-R 方程只是<strong>必要条件</strong>。光满足 C-R 方程不能保证可导——还需要 $u, v$ 作为二元实函数<strong>可微</strong>（偏导数连续即可保可微）。只满足 C-R 但 $u$ 或 $v$ 不可微的反例是存在的（比如在原点有定义但偏导数不存在的那种病态情况）。<strong>实用判据</strong>：偏导数连续 + C-R 方程 $\iff$ 解析。考试中绝大多数函数都满足偏导数连续，所以通常只需验证 C-R 方程就够了。</p>
+      <p>C-R 方程只是<strong>必要条件</strong>。还需要 $u, v$ 作为二元实函数<strong>可微</strong>（偏导数连续即可保可微）。<strong>实用判据</strong>：偏导数连续 + C-R 方程 $\iff$ 解析。考试中绝大多数函数满足偏导数连续，通常只需验证 C-R 方程。</p>
     </div>
 
     <div class="box box-note">
-      <div class="box-title">FAQ：为什么 $f(z)=\bar{z}$ 处处不可导？这个函数明明很"光滑"</div>
-      <p>看一眼 C-R 方程就明白了：$f(z)=x-iy$，$u=x$, $v=-y$。$\partial u/\partial x = 1$，但 $\partial v/\partial y = -1$，两者不相等。C-R 第一式就不成立，所以处处不可导。几何上，$\bar{z}$ 是"关于实轴的反射"——它保持实部不变但翻转虚部，这个操作在复分析的意义下是"反向"的（它不保角），所以不是解析函数。</p>
+      <div class="box-title">FAQ：为什么 $f(z)=\bar{z}$ 处处不可导？</div>
+      <p>$f(z)=x-iy$，$u=x$, $v=-y$。$\partial u/\partial x = 1$，但 $\partial v/\partial y = -1$，C-R 第一式就不成立。几何上，$\bar{z}$ 是"关于实轴的反射"——保持实部不变但翻转虚部，这个操作在复分析意义下是"反向"的（不保角）。</p>
     </div>
 
     <div class="box box-note">
       <div class="box-title">FAQ：共轭调和函数中 $u$ 和 $v$ 的角色不对称是怎么回事？</div>
-      <p>C-R 方程 $\partial u/\partial x = \partial v/\partial y$ 和 $\partial u/\partial y = -\partial v/\partial x$ 关于 $u$ 和 $v$ 不是对称的——第二个式子有一个负号。如果 $v$ 是 $u$ 的共轭调和函数，那么 $u$ 和 $v$ 满足 C-R。但交换角色后，$u$ 和 $v$ 不再满足 C-R——需要把 $v$ 作为"实部"时取 $u$ 的相反数（$-u$）才能继续满足。这就是为什么说"$v$ 是 $u$ 的共轭调和函数"，但 "$u$ 是 $-v$ 的共轭调和函数"。</p>
+      <p>C-R 方程 $\partial u/\partial x = \partial v/\partial y$ 和 $\partial u/\partial y = -\partial v/\partial x$ 关于 $u$ 和 $v$ 不对称——第二个式子有负号。如果 $v$ 是 $u$ 的共轭调和函数，则 $u$ 是 $-v$ 的共轭调和函数（注意负号）。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：为什么 $e^z$ 有周期 $2\pi i$？</div>
+      <p>Euler 公式 $e^{iy} = \cos y + i\sin y$。$\cos y$ 和 $\sin y$ 以 $2\pi$ 为周期，所以 $e^{z+2\pi i} = e^z \cdot e^{2\pi i} = e^z$。周期性完全来源于实三角函数在虚轴方向的周期性。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：$\Log z$（大写）和 $\log z$（小写）有什么区别？</div>
+      <p>$\log z = \ln|z| + i\arg z$ 是<strong>多值函数</strong>，有无穷多个值（相差 $2\pi i$ 的整数倍）。$\Log z$（大写 L）是<strong>主值</strong>，辐角取 $(-\pi, \pi]$ 中的唯一值，是单值的。考试中不加说明时通常要求计算所有值（多值），而"主值"会明确标注。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：$i^i$ 为什么是实数？</div>
+      <p>$i^i = e^{i\log i} = e^{i \cdot i(\pi/2+2k\pi)} = e^{-(\pi/2+2k\pi)}$。所有值都是正实数！$i \cdot i$ 产生出 $-1$ 消掉了虚数单位。这是复幂函数"出人意料"之处的经典例子。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">FAQ：复三角函数无界——那它的图形长什么样？</div>
+      <p>无法画出四维图形（输入二维，输出二维）。但模的分布是：$|\cos z|^2 = \cos^2 x + \sinh^2 y$。在实轴上（$y=0$），$|\cos x| \le 1$ 与实数域一致。沿虚轴方向（$|y|$ 增大），$\sinh^2 y \approx e^{2|y|}/4$ 指数增长。所以图像像是实轴上有起伏、向虚轴两侧不断抬升的"喇叭状"曲面。</p>
     </div>
   </div>
 
@@ -555,16 +989,20 @@
       <li><strong>复可导 vs 实可导</strong>：复可导要求沿<strong>所有方向</strong>的趋近极限一致，条件远比实可导严苛。可导必连续。</li>
       <li><strong>解析的层次</strong>：点可导 → 点解析（邻域内处处可导）→ 区域解析。$f(z)=|z|^2$ 在 $z=0$ 可导但不解析，是经典反例。</li>
       <li><strong>C-R 方程</strong>：$\partial u/\partial x = \partial v/\partial y$，$\partial u/\partial y = -\partial v/\partial x$。偏导数连续 + C-R 方程 = 解析的实用判据。</li>
-      <li><strong>调和函数</strong>：解析函数的实部和虚部自动满足 Laplace 方程 $\Delta u = \Delta v = 0$。已知调和函数 $u$，可通过 C-R 方程积分求出其共轭调和函数 $v$。</li>
-      <li><strong>物理意义</strong>：解析函数的实部和虚部分别对应平面流场/静电场的势函数和流函数（电力线），两者正交。</li>
+      <li><strong>调和函数</strong>：解析函数的实虚部自动满足 $\Delta u = \Delta v = 0$。已知调和函数 $u$，可通过 C-R 方程积分求共轭调和函数 $v$。</li>
+      <li><strong>物理意义</strong>：解析函数的实虚部分别对应平面流场/静电场的势函数和流函数，两者正交。</li>
+      <li><strong>$e^z$</strong>：$e^{x+iy}=e^x(\cos y+i\sin y)$，全平面解析，以 $2\pi i$ 为周期，值域为 $\CC\setminus\{0\}$。</li>
+      <li><strong>$\log z$</strong>：$e^w=z$ 的解。因 $e^z$ 周期性成为多值函数：$\log z = \ln|z| + i(\Arg z + 2k\pi)$。主值 $\Log z$ 取 $k=0$。理解分支和支割线是正确使用对数函数的前提。</li>
+      <li><strong>$z^a$</strong>：$e^{a\log z}$。$a$ 为整数 → 单值；$a=p/q$（互素）→ $q$ 值；$a$ 无理/虚 → 无穷多值。</li>
+      <li><strong>复三角函数</strong>：$\cos z=\frac{e^{iz}+e^{-iz}}{2}$，$\sin z=\frac{e^{iz}-e^{-iz}}{2i}$。保持代数性质但失去有界性。与双曲函数通过 $i$ 相互转化。</li>
     </ol>
     <h3>承上启下</h3>
-    <p>第二章教会了我们如何判断一个函数是否解析。但到目前为止，我们手上还没有几个具体的解析函数例子——多项式、有理函数之外还有什么？第三章将把实数域中熟悉的初等函数（指数、对数、三角）系统地推广到复数域，你会看到这些"老朋友"展现出惊人的新面貌。这些初等函数将是我们后续研究积分和级数的具体素材。</p>
+    <p>第二章教会了我们判断解析性的工具，并提供了从多项式到三角函数的一大批具体解析函数实例。现在我们可以进入复分析最核心的章节——第三章（原第四章）的积分理论：Cauchy 积分定理、Cauchy 积分公式，以及它们的诸多推论。初等函数的解析性（哪些区域解析？奇点在哪里？分支如何影响积分路径？）直接决定了积分计算的成败。</p>
   </div>
 
   <div class="chapter-nav">
     <a href="ch1.html" class="prev">第一章 · 复数与复变函数</a>
-    <a href="ch3.html" class="next">第三章 · 初等函数</a>
+    <a href="ch3.html" class="next">第三章 · 复变函数的积分</a>
   </div>
 
 </div>
@@ -573,7 +1011,7 @@
   <p>复变函数复习指南 · 基于钟玉泉教材 · 仅供学习参考</p>
 </footer>
 
-<button class="back-to-top" aria-label="回到顶部">↑</button>
+<button class="back-to-top" aria-label="回到顶部">&#8593;</button>
 <script src="js/main.js"></script>
 </body>
 </html>

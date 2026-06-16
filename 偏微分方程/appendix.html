@@ -34,9 +34,6 @@
     <li><a href="ch2.html">第二章</a></li>
     <li><a href="ch3.html">第三章</a></li>
     <li><a href="ch4.html">第四章</a></li>
-    <li><a href="ch5.html">第五章</a></li>
-    <li><a href="ch6.html">第六章</a></li>
-    <li><a href="ch7.html">第七章</a></li>
     <li><a href="appendix.html" style="color:#ffd966;">附录</a></li>
   </ul>
 </nav>
@@ -405,7 +402,7 @@
           <tr>
             <td>$\delta(x)$（Dirac delta）</td>
             <td>$1$</td>
-            <td>基本解 / 点源（ch2 热核，ch3 基本解，ch6）</td>
+            <td>基本解 / 点源（ch2 热核，ch3 基本解）</td>
           </tr>
           <tr>
             <td>$1$</td>
@@ -681,57 +678,7 @@
     <h3>第二周（Day 8–14）：进阶理论与总复习</h3>
 
     <div class="box box-roadmap">
-      <div class="box-title">Day 8 — 第五章：一阶方程与特征线法</div>
-      <p><strong>上午（3小时）</strong></p>
-      <ul>
-        <li>学习 <a href="ch5.html">第五章</a>前半：一阶拟线性 PDE 的特征线法。核心思想——沿特征线将 PDE 化为 ODE 系统。</li>
-        <li>掌握特征线方程 $\frac{dx}{dt} = a(x,t,u)$ 的建立和求解。</li>
-        <li>做 2–3 道一阶传输方程/拟线性方程的例题。</li>
-      </ul>
-      <p><strong>下午（2小时）</strong></p>
-      <ul>
-        <li>学习 <a href="ch5.html">第五章</a>后半：Charpit 方法（一阶完全非线性方程）和 Cauchy-Kovalevskaya 定理（了解即可，考试概率低）。</li>
-        <li>联系第一章的 d'Alembert 法和特征线——你会发现波动方程的特征线法本质上就是第五章的特殊情形。</li>
-        <li>做 1–2 道一阶方程组的特征线法例题。</li>
-      </ul>
-      <p><strong>今日核心收获：</strong>特征线法（PDE → ODE 沿特征线）、一阶传输方程求解。</p>
-    </div>
-
-    <div class="box box-roadmap">
-      <div class="box-title">Day 9 — 第六章：广义解与广义函数</div>
-      <p><strong>上午（3小时）</strong></p>
-      <ul>
-        <li>学习 <a href="ch6.html">第六章</a>前半：$\delta$ 函数与分布（广义函数）的基本概念和运算规则。</li>
-        <li>理解弱解的定义：将 PDE 乘以测试函数后分部积分，使导数转移到测试函数上。</li>
-        <li>理解为什么基本解 $\Phi$ 满足 $\mathcal{L}\Phi = \delta$——这是现代 PDE 理论的根基。</li>
-      </ul>
-      <p><strong>下午（2小时）</strong></p>
-      <ul>
-        <li>学习 Sobolev 空间 $H^1$、$H_0^1$ 的入门概念（只需知道它们是什么，不要求证定理）。</li>
-        <li>理解弱解的存在唯一性依赖于 Lax-Milgram 定理（知道结论即可）。</li>
-        <li>回顾：基本解 + 卷积 = 一般解——这在热传导方程和调和方程中已经见过。</li>
-      </ul>
-      <p><strong>今日核心收获：</strong>$\delta$ 函数与分布、弱解概念、Sobolev 空间入门。</p>
-    </div>
-
-    <div class="box box-roadmap">
-      <div class="box-title">Day 10 — 第七章：数值解简介</div>
-      <p><strong>上午（3小时）</strong></p>
-      <ul>
-        <li>学习 <a href="ch7.html">第七章 §7.1</a>：有限差分法。前向/后向/中心差分格式，显式 vs 隐式，CFL 条件。</li>
-        <li>理解为什么 CFL 条件与第一章特征线理论有关——信息传播速度不能超过数值格式的"信号速度"。</li>
-        <li>学习 <a href="ch7.html">第七章 §7.2–§7.3</a>：有限元法弱形式和谱方法的入门思想。不要求自己写代码，但要能说清楚每种方法的基本思路。</li>
-      </ul>
-      <p><strong>下午（2小时）</strong></p>
-      <ul>
-        <li>做一个数值方法的全景对比：有限差分（局部多项式）vs 有限元（分片多项式）vs 谱方法（全局 Fourier/多项式）。</li>
-        <li>联系解析解法（回顾前六章），理解数值方法本质上是对解析方法（分离变量法、Fourier 变换、变分原理）的离散化。</li>
-      </ul>
-      <p><strong>今日核心收获：</strong>有限差分法的三种格式、CFL 条件的物理来源、数值方法与解析方法的联系。</p>
-    </div>
-
-    <div class="box box-roadmap">
-      <div class="box-title">Day 11 — 核心方法总复习（分离变量法 + Fourier 变换法）</div>
+      <div class="box-title">Day 8 — 核心方法总复习（分离变量法 + Fourier 变换法）</div>
       <p><strong>上午（3小时）</strong></p>
       <ul>
         <li>分离变量法专题：重新做 ch1、ch2、ch3 中所有分离变量的例题。注意对比三种边界条件（Dirichlet/Dirichlet, Dirichlet/Neumann, Neumann/Neumann）下本征函数系的差异。</li>
@@ -747,7 +694,7 @@
     </div>
 
     <div class="box box-roadmap">
-      <div class="box-title">Day 12 — 定性理论总复习 + 知识串联</div>
+      <div class="box-title">Day 9 — 定性理论总复习 + 知识串联</div>
       <p><strong>上午（3小时）</strong></p>
       <ul>
         <li>极值原理专题：对比热传导方程的弱极值原理和调和函数的极值原理。能口述证明思路（辅助函数法），并说出推论（唯一性、稳定性、不可逆性）。</li>
@@ -756,7 +703,7 @@
       </ul>
       <p><strong>下午（3小时）</strong></p>
       <ul>
-        <li>画一张全局知识地图：从 PDE 分类 → 求解方法 → 定性性质，所有八章内容的逻辑关系一目了然。</li>
+        <li>画一张全局知识地图：从 PDE 分类 → 求解方法 → 定性性质，前四章内容的逻辑关系一目了然。</li>
         <li>合上书，凭记忆列出：三种经典方程的物理来源、标准形式、求解方法、核心定性定理。</li>
         <li>回顾本附录 <a href="#sD">D 节</a>，确认你理解 Fourier 分析在每个章节中扮演的角色。</li>
       </ul>
@@ -764,7 +711,7 @@
     </div>
 
     <div class="box box-roadmap">
-      <div class="box-title">Day 13 — 模拟考试</div>
+      <div class="box-title">Day 10 — 模拟考试</div>
       <p><strong>上午（3.5小时）</strong></p>
       <ul>
         <li>模拟一场完整的期末考试（3 小时）：</li>
@@ -783,7 +730,7 @@
     </div>
 
     <div class="box box-roadmap">
-      <div class="box-title">Day 14 — 考前冲刺 + 心态调整</div>
+      <div class="box-title">Day 11 — 考前冲刺 + 心态调整</div>
       <p><strong>上午（3小时）</strong></p>
       <ul>
         <li>快速过一遍所有章节的总结框（box-summary），确认所有核心公式和定理名称都能说出来。</li>
@@ -827,21 +774,21 @@
 
     <div class="box box-note">
       <div class="box-title">最后的话</div>
-      <p>14 天的速成计划强度很高，但它是有节奏的：第一周建立计算能力（会做题），第二周建立理论视野（懂为什么）+ 查漏补缺。如果你严格按照这个计划执行，85 分是完全现实的目标。</p>
+      <p>11 天的速成计划强度很高，但它是有节奏的：前5天建立计算能力（会做题），后6天建立理论视野（懂为什么）+ 查漏补缺。如果你严格按照这个计划执行，85 分是完全现实的目标。</p>
       <p>最重要的是：<strong>不要只是"看"——要"做"</strong>。PDE 是推导出来的，不是读出来的。每一道例题，先遮住答案自己推一遍。等你合上书也能独立写出 d'Alembert 公式的推导、热核的求解过程、分离变量法的五步流程时——你就不只是为考试准备了，你是真正学会了偏微分方程。</p>
     </div>
 
   </div>
 
   <div class="chapter-nav">
-    <a href="ch7.html" class="prev">第七章 · 数值解简介</a>
+    <a href="ch4.html" class="prev">第四章 · 二阶方程的分类与总结</a>
     <a href="index.html" class="next">返回课程首页</a>
   </div>
 
 </div>
 
 <footer class="footer">
-  <p>偏微分方程教程 · 基于谷超豪《数学物理方程》体系 · 零基础入门 · 仅供学习参考</p>
+  <p>偏微分方程教程 · 基于谷超豪《数学物理方程》前四章 · 考试导向 · 仅供学习参考</p>
 </footer>
 
 <button class="back-to-top" aria-label="回到顶部">&uarr;</button>

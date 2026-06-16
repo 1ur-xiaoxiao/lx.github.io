@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>第三章 · 初等函数</title>
+  <title>第三章 · 复变函数的积分</title>
   <link rel="stylesheet" href="css/style.css">
   <script>
     window.MathJax = {
@@ -36,6 +36,7 @@
     <li><a href="ch5.html">第五章</a></li>
     <li><a href="ch6.html">第六章</a></li>
     <li><a href="ch7.html">第七章</a></li>
+    <li><a href="ch8.html">第八章</a></li>
     <li><a href="appendix.html" style="color:#fbbf24;">📋 附录</a></li>
     <li><a href="quiz.html" style="color:#fbbf24;">🎮 闯关答题</a></li>
   </ul>
@@ -44,800 +45,458 @@
 <div class="main-content">
 
   <div class="chapter-header">
-    <h1>第三章 · 初等函数</h1>
-    <p>将实数域中熟悉的初等函数推广到复数域：指数函数获得周期性，对数函数变成多值函数，幂函数展现出全新的分支结构。理解这些推广是掌握复分析工具的关键。</p>
+    <h1>第三章 · 复变函数的积分</h1>
+    <p>复积分（复变函数的积分）是整个复分析的基石。Cauchy 积分定理和 Cauchy 积分公式是本章的核心，由此推导出解析函数的一系列深刻性质：无穷次可微、最大模原理、Liouville 定理、代数基本定理等。本章是复分析中最重要的一章。</p>
   </div>
 
   <!-- 学习目标 -->
   <div class="box box-definition" style="margin-bottom:1.5rem;">
     <div class="box-title">学完本章，你将能够：</div>
     <ol style="margin-bottom:0;">
-      <li>计算任意复数的指数 $e^z$，理解 $e^z$ 的 $2\pi i$ 周期性及其几何意义</li>
-      <li>计算复对数的所有值（多值函数）及其主值，理解分支和支割线的概念</li>
-      <li>计算复幂函数 $z^a$，判断它是单值、多值还是 $q$ 值函数</li>
-      <li>计算复三角函数和双曲函数的值，理解它们与实三角函数的异同（特别是有界性的丧失）</li>
+      <li>用参数化方法计算复变函数沿曲线的积分</li>
+      <li>运用 Cauchy-Goursat 定理判断闭合围道积分是否为零</li>
+      <li>运用 Cauchy 积分公式和高阶导数公式计算围道积分</li>
+      <li>理解并应用 Liouville 定理、代数基本定理、最大模原理等深刻推论</li>
+      <li>理解 Cauchy 估计的思想——用边界值控制内部值和各阶导数</li>
     </ol>
   </div>
 
   <!-- 本章导读 -->
   <div class="section" style="margin-bottom:1.5rem;padding:1.25rem 1.5rem;">
     <h2 style="font-size:1.15rem;margin-bottom:0.5rem;border:none;padding:0;">本章导读</h2>
-    <p>第二章给了我们判断"什么是解析函数"的工具。现在我们需要一批<strong>具体的解析函数</strong>——就像微积分中你需要熟悉 $x^n$、$\sin x$、$e^x$、$\ln x$ 一样。第三章的任务就是将实数域中这些熟悉的朋友推广到复数域。</p>
-    <p>但小心——这些老朋友在复数域中会展现出<strong>惊人的新面貌</strong>。$e^z$ 在实数中严格单调，在复数中却有了周期 $2\pi i$。对数函数 $\log z$ 在实数中天然单值，在复数中却变得有无穷多个值（因为 $e^z$ 的周期性导致反函数不唯一）。幂函数 $z^a$ ——当 $a$ 不是整数时，也变得多值。甚至看似好脾气的三角函数 $\sin z$ 和 $\cos z$，在复数域中也不再满足 $|\sin z| \le 1$ 的有界性。</p>
-    <p>这些新特性不是 bug，而是 feature。周期性、多值性、分支——它们不是麻烦，而恰恰是复分析丰富性和强大性的来源。当你理解了这些特性之后，第四章的积分理论才有用武之地。</p>
+    <p>如果说前两章是序曲（概念与工具），本章就是<strong>第一乐章的高潮</strong>——Cauchy 积分定理和 Cauchy 积分公式是整个复分析大厦的支柱。</p>
+    <p>解析函数的优越性在这里开始兑现。在实分析中，定积分的计算依赖于被积函数的原函数（Newton-Leibniz 公式），而且一阶可导不能保证二阶可导。但在复分析中，Cauchy 积分公式告诉你三件魔法般的事：</p>
+    <p><strong>魔法一（全息性）</strong>：解析函数在围道内部任意一点的值，完全由它在围道边界上的值决定。这就像知道了房间墙壁的温度，就能精确推算出房间中心的温度。</p>
+    <p><strong>魔法二（无穷可微）</strong>：解析函数自动无穷次可微，而且有显式的积分表达式。</p>
+    <p><strong>魔法三（刚性）</strong>：有界整函数必为常数（Liouville 定理）——"全局有界且处处解析"的函数竟然是平凡函数！这在实分析中完全不可想象。</p>
+    <p>这些结果最终汇集成代数基本定理（任意 $n$ 次多项式恰有 $n$ 个复根）——一个纯代数的结论，却通过复分析的方法被优雅地证明。</p>
   </div>
 
   <div class="toc">
     <h3>本章目录</h3>
     <ol>
-      <li><a href="#s1">指数函数</a></li>
-      <li><a href="#s2">对数函数</a></li>
-      <li><a href="#s3">幂函数</a></li>
-      <li><a href="#s4">三角函数与双曲函数</a></li>
+      <li><a href="#s1">复积分的定义与性质</a></li>
+      <li><a href="#s2">Cauchy-Goursat 定理</a></li>
+      <li><a href="#s3">Cauchy 积分公式</a></li>
+      <li><a href="#s4">高阶导数公式</a></li>
+      <li><a href="#s5">Liouville 定理与代数基本定理</a></li>
     </ol>
   </div>
 
-  <!-- ==================== 3.1 指数函数 ==================== -->
+  <!-- ==================== 预备知识：奇点与极点 ==================== -->
+  <div class="section" style="margin-bottom:1.5rem;padding:1.25rem 1.5rem;background:#fef9e7;border-left:4px solid #f39c12;">
+    <h2 style="font-size:1.15rem;margin-bottom:0.5rem;border:none;padding:0;">预备知识：奇点与一阶极点</h2>
+    <p>在正式进入复积分之前，需要先建立两个重要概念。它们本是第五章"级数"中的正式内容，但本章的讨论绕不开它们——这里先给出简明的前置定义，方便你顺畅阅读。</p>
+
+    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">1. 什么是奇点？</h3>
+    <p>第二章已经定义过：<strong>若 $f(z)$ 在 $z_0$ 处不解析，则称 $z_0$ 为 $f(z)$ 的奇点</strong>。例如 $f(z)=1/z$ 在 $z=0$ 处是奇点（分母为零），$f(z)=1/(z^2+1)$ 在 $z=\pm i$ 处是奇点。</p>
+    <p>在本章中，当我们说"围道内部有奇点"时，意思就是：围道所包围的区域内存在函数不解析的点。</p>
+
+    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">2. 什么是孤立奇点？</h3>
+    <p>如果 $z_0$ 是 $f(z)$ 的奇点，但存在一个以 $z_0$ 为中心的<strong>去心邻域</strong> $0 < |z-z_0| < \delta$，使得 $f(z)$ 在这个去心邻域内处处解析，则称 $z_0$ 为 $f(z)$ 的<strong>孤立奇点</strong>。</p>
+    <p>简言之：<strong>孤立奇点是一个"孤零零"的奇点——在它附近（除它自己外）函数都是好的</strong>。本章讨论的几乎所有奇点都是孤立奇点（如 $1/z$ 在 $z=0$，$1/(z^2+1)$ 在 $z=\pm i$）。</p>
+    <p>注意：并非所有奇点都是孤立的。例如 $\Log z$ 在<strong>整个负实轴</strong>上都不解析——这些奇点连成一条线，每个都不是孤立的。</p>
+
+    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">3. 什么是一阶极点（简单极点）？</h3>
+    <p>考虑形如</p>
+    $$\frac{f(z)}{z-a}$$
+    <p>的函数，其中 $f(z)$ 在 $z=a$ 处解析且 $f(a) \neq 0$。此时 $z=a$ 是分母的一阶零点，整个函数在 $z=a$ 处具有一种特定的奇异性——当 $z \to a$ 时，函数以 $1/|z-a|$ 的速度趋于无穷。这种类型的孤立奇点称为<strong>一阶极点</strong>（或简单极点）。</p>
+    <p>第四章中最核心的 Cauchy 积分公式正是处理这种情形：被积函数形如 $\dfrac{f(z)}{z-a}$，在 $z=a$ 处有一个一阶极点，而 Cauchy 积分公式恰好告诉你这个围道积分的值就是 $2\pi i f(a)$。</p>
+    <p>更一般地，如果分母是 $(z-a)^m$（$m$ 为正整数），则 $z=a$ 称为<strong> $m$ 阶极点</strong>。$m=1$ 时就是一阶极点。高阶导数公式正是处理这种情形。</p>
+    <p style="margin-top:0.8rem;font-size:0.9rem;color:var(--text-muted);">注：奇点的完整分类（可去奇点、$m$ 阶极点、本性奇点）和 Laurent 展开的严格理论将在<strong>第五章</strong>系统展开。这里给出的前置定义足以理解本章的全部内容。</p>
+  </div>
+
+  <!-- ==================== 4.1 复积分的定义与性质 ==================== -->
   <div class="section" id="s1">
-    <h2>3.1 指数函数</h2>
+    <h2>4.1 复积分的定义与性质</h2>
 
     <div class="box box-definition">
-      <div class="box-title">定义 · 复指数函数</div>
-      <p>对任意 $z = x + iy \in \CC$，定义<strong>复指数函数</strong>为：</p>
-      $$e^z = e^{x+iy} = e^x(\cos y + i\sin y)$$
-      <p>其中 $e^x$ 为实指数函数，$\cos y, \sin y$ 为实三角函数。</p>
+      <div class="box-title">定义 · 光滑曲线与逐段光滑曲线</div>
+      <p>设 $C$ 是复平面上的一条曲线，参数化为 $z(t) = x(t) + iy(t)$，$t \in [\alpha, \beta]$。</p>
+      <ul>
+        <li>若 $x'(t), y'(t)$ 在 $[\alpha, \beta]$ 上连续且 $z'(t) \neq 0$，则称 $C$ 为<strong>光滑曲线</strong>。</li>
+        <li>由有限段光滑曲线首尾相接而成的曲线称为<strong>逐段光滑曲线</strong>。</li>
+      </ul>
+      <p>若 $C$ 的起点与终点重合（$z(\alpha) = z(\beta)$），则称 $C$ 为<strong>闭曲线</strong>（围道）。</p>
     </div>
 
-    <div class="box box-note">
-      <div class="box-title">等价写法</div>
-      <p>利用模和辐角的语言，复指数函数可写为：</p>
-      $$e^z = |e^z| \cdot e^{i\arg(e^z)}, \quad \text{其中 } |e^z| = e^x,\ \arg(e^z) = y$$
-      <p>也就是说，$e^z$ 的<strong>模</strong>由实部决定，<strong>辐角</strong>由虚部决定。这是理解复指数函数映射性质的核心。</p>
-    </div>
-
-    <div class="box box-theorem">
-      <div class="box-title">定理 · 指数函数的基本性质</div>
-      <p>复指数函数 $e^z$ 满足以下性质：</p>
-      <ol>
-        <li><strong>解析性</strong>：$e^z$ 在整个复平面 $\CC$ 上解析（整函数），且 $\dfrac{\dd}{\dd z}e^z = e^z$。</li>
-        <li><strong>加法定理</strong>：对任意 $z_1, z_2 \in \CC$，$e^{z_1+z_2} = e^{z_1} \cdot e^{z_2}$。</li>
-        <li><strong>周期性</strong>：$e^z$ 以 $2\pi i$ 为周期，即 $e^{z+2\pi i} = e^z$。这是复指数函数与实指数函数最本质的区别。</li>
-        <li><strong>无零点</strong>：对任意 $z \in \CC$，$e^z \neq 0$。因为 $|e^z| = e^x > 0$。</li>
-        <li><strong>值域</strong>：$e^z$ 的值域为 $\CC \setminus \{0\}$，即全体非零复数。</li>
-      </ol>
-    </div>
-
-    <div class="box box-proof">
-      <div class="box-title">证明 · 加法定理</div>
-      <p>设 $z_1 = x_1 + iy_1$，$z_2 = x_2 + iy_2$，则：</p>
-      $$e^{z_1} \cdot e^{z_2} = e^{x_1}(\cos y_1 + i\sin y_1) \cdot e^{x_2}(\cos y_2 + i\sin y_2)$$
-      $$= e^{x_1+x_2}[(\cos y_1\cos y_2 - \sin y_1\sin y_2) + i(\sin y_1\cos y_2 + \cos y_1\sin y_2)]$$
-      $$= e^{x_1+x_2}[\cos(y_1+y_2) + i\sin(y_1+y_2)] = e^{z_1+z_2}$$
-      <p>这里用到了实三角函数的和角公式。</p>
-    </div>
-
-    <div class="box box-proof">
-      <div class="box-title">证明 · 周期性、解析性与无零点</div>
-      <p><strong>周期性：</strong>由加法定理和 Euler 公式：</p>
-      $$e^{z+2\pi i} = e^z \cdot e^{2\pi i} = e^z \cdot (\cos 2\pi + i\sin 2\pi) = e^z \cdot (1 + 0) = e^z$$
-      <p>因此 $2\pi i$ 是 $e^z$ 的一个周期。更进一步可以证明 $2\pi i$ 是<strong>基本周期</strong>：若 $e^{z+T}=e^z$ 对所有 $z$ 成立，令 $z=0$ 得 $e^T=1$，即 $e^{\Re T}(\cos(\Im T)+i\sin(\Im T))=1$。</p>
-      <p><strong>第一步（取模）</strong>：$|e^{\Re T}(\cos(\Im T)+i\sin(\Im T))| = e^{\Re T} \cdot |\cos(\Im T)+i\sin(\Im T)| = e^{\Re T} \cdot 1 = e^{\Re T}$。又 $|1| = 1$，故 $e^{\Re T} = 1$，即 $\Re T = 0$。</p>
-      <p><strong>第二步（代回比较实虚部）</strong>：代入 $\Re T = 0$ 得 $\cos(\Im T)+i\sin(\Im T) = 1$。比较实部和虚部：$\cos(\Im T) = 1$ 且 $\sin(\Im T) = 0$，解得 $\Im T = 2k\pi$（$k \in \ZZ$）。</p>
-      <p>因此 $T = \Re T + i\Im T = 2k\pi i$，且 $k = \pm 1$ 给出最小非零周期 $2\pi i$，故基本周期为 $2\pi i$。</p>      <p><strong>解析性：</strong>$u(x,y)=e^x\cos y$，$v(x,y)=e^x\sin y$。验证 C-R 方程：</p>
-      $$\frac{\partial u}{\partial x} = e^x\cos y = \frac{\partial v}{\partial y}, \qquad \frac{\partial u}{\partial y} = -e^x\sin y = -\frac{\partial v}{\partial x}$$
-      <p>C-R 方程处处成立，偏导数连续（可微），故 $e^z$ 在全平面解析。由 C-R 条件下的导数公式：</p>
-      $$\frac{\dd}{\dd z}e^z = \frac{\partial u}{\partial x} + i\frac{\partial v}{\partial x} = e^x\cos y + ie^x\sin y = e^z$$
-      <p><strong>无零点：</strong>$|e^z| = e^x > 0$ 对所有 $z$ 成立（因为实指数 $e^x$ 恒正），故 $e^z \ne 0$。$\square$</p>
+    <div class="box box-definition">
+      <div class="box-title">定义 · 复积分</div>
+      <p>设 $f(z)$ 在逐段光滑曲线 $C$ 上有定义。将 $C$ 用分点 $z_0, z_1, \ldots, z_n$ 分割为 $n$ 段，在第 $k$ 段上任取 $\zeta_k$，令 $\Delta z_k = z_k - z_{k-1}$，作 Riemann 和：</p>
+      $$S_n = \sum_{k=1}^{n} f(\zeta_k) \Delta z_k$$
+      <p>若当 $\max_k|\Delta z_k| \to 0$ 时 $S_n$ 的极限存在且与分点和取点方式无关，则称此极限为 $f(z)$ 沿 $C$ 的<strong>复积分</strong>，记为：</p>
+      $$\int_C f(z)\,\dd z$$
     </div>
 
     <div class="box box-formula">
-      <div class="box-title">Euler 公式</div>
-      <p>在定义中令 $z = iy$，得到著名的 <strong>Euler 公式</strong>：</p>
-      $$e^{iy} = \cos y + i\sin y$$
-      <p>特别地，令 $y = \pi$：</p>
-      $$e^{i\pi} + 1 = 0$$
-      <p>这个等式将五个最重要的数学常数 $e, i, \pi, 1, 0$ 联系在一起。</p>
+      <div class="box-title">参数化计算公式</div>
+      <p>设 $C: z = z(t)$，$t \in [\alpha, \beta]$，则：</p>
+      $$\int_C f(z)\,\dd z = \int_\alpha^\beta f(z(t))\,z'(t)\,\dd t$$
+      <p>这是计算复积分最实用的公式：将复积分转化为关于参数 $t$ 的定积分。</p>
+      <p><strong>推导思路</strong>：从 Riemann 和定义出发，$\int_C f(z)dz = \lim_{\max|\Delta z_k|\to 0}\sum_{k=1}^n f(\zeta_k)\Delta z_k$。将曲线参数化后，$\Delta z_k = z(t_k)-z(t_{k-1})$。由微分中值定理的近似 $z(t_k)-z(t_{k-1}) \approx z'(t_k^*)\Delta t_k$（当分割足够细时），代入得 $\sum f(z(t_k^*))z'(t_k^*)\Delta t_k$。当 $\max\Delta t_k \to 0$ 时，这个 Riemann 和的极限正是实函数的定积分 $\int_\alpha^\beta f(z(t))z'(t)dt$。</p>
     </div>
 
     <div class="box box-theorem">
-      <div class="box-title">定理 · 映射性质</div>
-      <p>$w = e^z$ 将复平面上的<strong>水平带域</strong> $y_0 < \Im z < y_0 + 2\pi$ 映为整个 $w$ 平面去掉从原点出发的射线 $\arg w = y_0$。</p>
-      <p>特别地：</p>
-      <ul>
-        <li>水平线 $y = c$（$c$ 为常数）映为射线 $\arg w = c$；</li>
-        <li>竖直线 $x = c$ 映为圆周 $|w| = e^c$；</li>
-        <li>宽度为 $2\pi$ 的水平带域恰好覆盖 $w$ 平面一次。</li>
-      </ul>
-      <p><strong>为什么？</strong>设 $z = x + iy$，则 $|w| = |e^z| = e^x$，$\arg w = \arg(e^z) = y$（模 $2\pi$）。</p>
-      <ul>
-        <li>当 $x$ 固定（竖直线），$|w| = e^x$ 为常数 → 圆周。</li>
-        <li>当 $y$ 固定（水平线），$\arg w = y$ 为常数 → 射线。</li>
-        <li>当 $y$ 跑遍一个长度为 $2\pi$ 的区间（如 $(-\pi, \pi]$），$\arg w$ 恰好跑遍 $(-\pi, \pi]$，覆盖除原点外的整个 $w$ 平面（原点永不被 $e^z$ 取到）。若带域宽度超过 $2\pi$，则不同的 $z$ 会映射到同一个 $w$（因为 $e^z$ 有周期 $2\pi i$），不再是单射。</li>
-      </ul>
+      <div class="box-title">定理 · 复积分的基本性质</div>
+      <p>设 $f(z), g(z)$ 在曲线 $C$ 上连续，则：</p>
+      <ol>
+        <li><strong>线性性</strong>：$\int_C [\alpha f(z) + \beta g(z)]\,\dd z = \alpha\int_C f(z)\,\dd z + \beta\int_C g(z)\,\dd z$</li>
+        <li><strong>可加性</strong>：若 $C$ 被分为 $C_1$ 和 $C_2$ 两段，则 $\int_C f(z)\,\dd z = \int_{C_1} f(z)\,\dd z + \int_{C_2} f(z)\,\dd z$</li>
+        <li><strong>反向性</strong>：$\int_{-C} f(z)\,\dd z = -\int_C f(z)\,\dd z$，其中 $-C$ 表示 $C$ 的反向曲线</li>
+        <li><strong>模的估计</strong>：$\left|\int_C f(z)\,\dd z\right| \leq \int_C |f(z)|\,|\dd z| \leq M \cdot L$，其中 $M = \max_{z \in C}|f(z)|$，$L$ 为 $C$ 的长度</li>
+      </ol>
     </div>
 
     <div class="box box-example">
-      <div class="box-title">例1 · 计算具体值</div>
-      <p>计算 $e^{2+\pi i/3}$。</p>
-      <p><strong>解</strong>：由定义 $e^{2+\pi i/3} = e^2(\cos\frac{\pi}{3} + i\sin\frac{\pi}{3}) = e^2\left(\dfrac{1}{2} + i\dfrac{\sqrt{3}}{2}\right)$。</p>
+      <div class="box-title">例1 · 计算 $\int_C z\,\dd z$，$C$ 为从 $0$ 到 $1+i$ 的直线段</div>
+      <p><strong>解</strong>：参数化 $z(t) = t(1+i)$，$t \in [0,1]$，$z'(t) = 1+i$。</p>
+      $$\int_C z\,\dd z = \int_0^1 t(1+i) \cdot (1+i)\,\dd t = (1+i)^2 \int_0^1 t\,\dd t = 2i \cdot \frac{1}{2} = i$$
     </div>
 
     <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 解方程 $e^z = 1+i$</div>
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 计算 $\oint_{|z|=1} \frac{\dd z}{z}$</div>
       <div class="collapsible-body">
-        <p><strong>解</strong>：设 $z = x + iy$，则 $e^z = e^x(\cos y + i\sin y) = 1 + i$。</p>
-        <p>取模：$e^x = |1+i| = \sqrt{2}$，故 $x = \ln\sqrt{2} = \dfrac{1}{2}\ln 2$。</p>
-        <p>取辐角：$y = \arg(1+i) = \dfrac{\pi}{4} + 2k\pi$，$k \in \ZZ$。</p>
-        <p>因此 $z = \dfrac{1}{2}\ln 2 + i\left(\dfrac{\pi}{4} + 2k\pi\right)$，$k \in \ZZ$。</p>
-        <p><strong>注</strong>：方程 $e^z = w$（$w \neq 0$）有无穷多个解，这正是因为 $e^z$ 的周期性。</p>
+        <p><strong>解</strong>：参数化 $z = e^{i\theta}$，$\theta \in [0, 2\pi]$，$\dd z = ie^{i\theta}\dd\theta$。</p>
+        $$\oint_{|z|=1} \frac{\dd z}{z} = \int_0^{2\pi} \frac{ie^{i\theta}}{e^{i\theta}}\,\dd\theta = \int_0^{2\pi} i\,\dd\theta = 2\pi i$$
+        <p><strong>重要</strong>：这个结果是 Cauchy 积分公式的一个特例（$f(z) \equiv 1$，$a = 0$）。注意被积函数 $1/z$ 在 $|z| \leq 1$ 内的 $z=0$ 处不解析，因此不能直接用"积分为零"的结论。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 计算 $\oint_{|z-a|=r} (z-a)^n\,\dd z$（$n \in \ZZ$）</div>
+      <div class="collapsible-body">
+        <p><strong>解</strong>：参数化 $z = a + re^{i\theta}$，$\theta \in [0, 2\pi]$，$\dd z = ire^{i\theta}\dd\theta$。</p>
+        $$\oint_{|z-a|=r} (z-a)^n\,\dd z = \int_0^{2\pi} r^n e^{in\theta} \cdot ire^{i\theta}\,\dd\theta = ir^{n+1}\int_0^{2\pi} e^{i(n+1)\theta}\,\dd\theta$$
+        <p>当 $n+1 = 0$（即 $n = -1$）：$ir^0 \int_0^{2\pi} 1\,\dd\theta = 2\pi i$。</p>
+        <p>当 $n+1 \neq 0$：$\int_0^{2\pi} e^{i(n+1)\theta}\,\dd\theta = \left[\dfrac{e^{i(n+1)\theta}}{i(n+1)}\right]_0^{2\pi} = 0$。</p>
+        <p><strong>总结</strong>：</p>
+        $$\oint_{|z-a|=r} (z-a)^n\,\dd z = \begin{cases} 2\pi i, & n = -1 \\ 0, & n \neq -1 \end{cases}$$
+        <p>这是留数理论的基础公式。</p>
+        <p><strong>为什么 $n=-1$ 是唯一的例外？</strong>关键在于原函数的性质。当 $n \ne -1$ 时，$(z-a)^n$ 有单值原函数 $\frac{(z-a)^{n+1}}{n+1}$，它是 $\CC\setminus\{a\}$ 上的解析函数，因此绕 $a$ 一周的积分由 Newton-Leibniz 公式为零（起点和终点函数值相同）。但当 $n=-1$ 时，原函数为 $\log(z-a)$，这是一个多值函数——绕 $a$ 顺时针一周，$\log(z-a)$ 的辐角增加 $2\pi i$，原函数不回到原值，因此积分不为零。这个简单的区别是整个留数理论的核心：只有 $(z-a)^{-1}$ 项对围道积分有贡献，其余项的积分全部为零。</p>
       </div>
     </div>
   </div>
 
-  <!-- ==================== 可视化：初等函数的映射效果 ==================== -->
-  <div class="section" id="viz-mapping">
-    <h2>可视化 · 初等函数的映射效果</h2>
-    <p>观察复变初等函数如何将 $z$ 平面上的网格映射到 $w$ 平面。选择不同的函数，理解其映射性质。</p>
-    <div style="margin:1rem 0;">
-      <select id="map-fn" style="padding:0.4rem;border-radius:6px;border:1px solid var(--border);">
-        <option value="exp">w = e^z</option>
-        <option value="z2">w = z²</option>
-        <option value="inv">w = 1/z</option>
-        <option value="sqrt">w = √z (主支)</option>
-      </select>
-    </div>
-    <div style="display:flex;gap:1rem;flex-wrap:wrap;">
-      <div><p style="text-align:center;font-size:0.85rem;font-weight:600;">z 平面（原像）</p><canvas id="canvas-zplane" width="300" height="300" style="width:100%;max-width:300px;border:1px solid var(--border-light);border-radius:8px;"></canvas></div>
-      <div><p style="text-align:center;font-size:0.85rem;font-weight:600;">w 平面（像）</p><canvas id="canvas-wplane" width="300" height="300" style="width:100%;max-width:300px;border:1px solid var(--border-light);border-radius:8px;"></canvas></div>
-    </div>
-    <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.5rem;">左图为 $z$ 平面上的矩形网格，右图为经函数映射后的像。</p>
-  </div>
-
-  <script>
-  (function() {
-    var cZ = document.getElementById('canvas-zplane');
-    var cW = document.getElementById('canvas-wplane');
-    var ctxZ = cZ.getContext('2d');
-    var ctxW = cW.getContext('2d');
-    var sel = document.getElementById('map-fn');
-    var dpr = window.devicePixelRatio || 1;
-
-    var GRID = 12; // number of grid lines in each direction
-    var HCOLOR = 'rgba(52,152,219,0.6)';
-    var VCOLOR = 'rgba(231,76,60,0.6)';
-
-    // Complex arithmetic helpers
-    function cAdd(a, b) { return [a[0]+b[0], a[1]+b[1]]; }
-    function cMul(a, b) { return [a[0]*b[0]-a[1]*b[1], a[0]*b[1]+a[1]*b[0]]; }
-    function cInv(a) { var d = a[0]*a[0]+a[1]*a[1]; return [a[0]/d, -a[1]/d]; }
-    function cAbs(a) { return Math.sqrt(a[0]*a[0]+a[1]*a[1]); }
-    function cArg(a) { return Math.atan2(a[1], a[0]); }
-    function cExp(a) { var ex = Math.exp(a[0]); return [ex*Math.cos(a[1]), ex*Math.sin(a[1])]; }
-    function cSqrt(a) {
-      var r = cAbs(a);
-      var th = cArg(a);
-      // principal branch: arg in (-pi, pi], sqrt has arg in (-pi/2, pi/2]
-      return [Math.sqrt(r)*Math.cos(th/2), Math.sqrt(r)*Math.sin(th/2)];
-    }
-
-    function mapFn(z, fn) {
-      switch(fn) {
-        case 'exp':  return cExp(z);
-        case 'z2':   return cMul(z, z);
-        case 'inv':  return cInv(z);
-        case 'sqrt': return cSqrt(z);
-        default:     return z;
-      }
-    }
-
-    function setupCanvas(canvas, ctx, w) {
-      canvas.style.width = w + 'px';
-      canvas.style.height = w + 'px';
-      canvas.width = w * dpr;
-      canvas.height = w * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-
-    function drawAxes(ctx, w, xMin, xMax, yMin, yMax, label) {
-      var cx = w/2, cy = w/2;
-      // Grid background
-      ctx.clearRect(0, 0, w, w);
-      ctx.fillStyle = '#fafbfc';
-      ctx.fillRect(0, 0, w, w);
-
-      // Axes
-      var ax = cx - (0/(xMax-xMin))*w; // not used directly
-      ctx.strokeStyle = '#aab';
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      // x-axis (y=0)
-      var y0 = cy - (0 - yMin)/(yMax - yMin) * w;
-      if (y0 >= 0 && y0 <= w) { ctx.moveTo(0, y0); ctx.lineTo(w, y0); }
-      // y-axis (x=0)
-      var x0 = cx - (0 - xMin)/(xMax - xMin) * w;
-      // remap: x_screen = (x - xMin)/(xMax - xMin) * w, y_screen = (yMax - y)/(yMax - yMin) * w
-      // Actually let's use a cleaner approach
-      ctx.stroke();
-    }
-
-    // Coordinate transform: complex (x,y) -> screen (sx, sy)
-    // We center the view and scale to fit
-    function toScreen(x, y, w, scale, cx_scr, cy_scr) {
-      var sx = cx_scr + x * scale;
-      var sy = cy_scr - y * scale; // flip y
-      return [sx, sy];
-    }
-
-    function drawGrid(ctx, w, fn) {
-      ctx.clearRect(0, 0, w, w);
-      ctx.fillStyle = '#fafbfc';
-      ctx.fillRect(0, 0, w, w);
-
-      // Determine view bounds for z-plane
-      var xMin, xMax, yMin, yMax;
-      if (fn === 'exp') {
-        xMin = -2; xMax = 2; yMin = -Math.PI; yMax = Math.PI;
-      } else if (fn === 'z2') {
-        xMin = -2; xMax = 2; yMin = -2; yMax = 2;
-      } else if (fn === 'inv') {
-        xMin = -2; xMax = 2; yMin = -2; yMax = 2;
-      } else { // sqrt
-        xMin = -2; xMax = 2; yMin = -2; yMax = 2;
-      }
-
-      var scaleX = w / (xMax - xMin);
-      var scaleY = w / (yMax - yMin);
-      var scale = Math.min(scaleX, scaleY);
-      var cx_scr = w / 2;
-      var cy_scr = w / 2;
-
-      function toS(x, y) { return toScreen(x, y, w, scale, cx_scr, cy_scr); }
-      function fromS(sx, sy) {
-        return [(sx - cx_scr)/scale, -(sy - cy_scr)/scale];
-      }
-
-      // Draw grid lines
-      var nLines = GRID;
-      var dx = (xMax - xMin) / nLines;
-      var dy = (yMax - yMin) / nLines;
-
-      // Vertical lines (x = const)
-      ctx.lineWidth = 1;
-      for (var i = 0; i <= nLines; i++) {
-        var x = xMin + i * dx;
-        ctx.strokeStyle = VCOLOR;
-        ctx.beginPath();
-        var steps = 80;
-        for (var s = 0; s <= steps; s++) {
-          var y = yMin + s * (yMax - yMin) / steps;
-          var sp = toS(x, y);
-          if (s === 0) ctx.moveTo(sp[0], sp[1]);
-          else ctx.lineTo(sp[0], sp[1]);
-        }
-        ctx.stroke();
-      }
-
-      // Horizontal lines (y = const)
-      for (var j = 0; j <= nLines; j++) {
-        var y = yMin + j * dy;
-        ctx.strokeStyle = HCOLOR;
-        ctx.beginPath();
-        var steps = 80;
-        for (var s = 0; s <= steps; s++) {
-          var x = xMin + s * (xMax - xMin) / steps;
-          var sp = toS(x, y);
-          if (s === 0) ctx.moveTo(sp[0], sp[1]);
-          else ctx.lineTo(sp[0], sp[1]);
-        }
-        ctx.stroke();
-      }
-
-      // Axes
-      ctx.strokeStyle = '#667';
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      var origin = toS(0, 0);
-      ctx.moveTo(0, origin[1]); ctx.lineTo(w, origin[1]);
-      ctx.moveTo(origin[0], 0); ctx.lineTo(origin[0], w);
-      ctx.stroke();
-
-      // Tick marks and labels
-      ctx.fillStyle = '#667';
-      ctx.font = (w*0.035) + 'px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      for (var i = Math.ceil(xMin); i <= Math.floor(xMax); i++) {
-        if (i === 0) continue;
-        var sp = toS(i, 0);
-        ctx.fillText(i, sp[0], origin[1] + 2);
-      }
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      for (var j = Math.ceil(yMin); j <= Math.floor(yMax); j++) {
-        if (j === 0) continue;
-        var sp = toS(0, j);
-        ctx.fillText(j + 'i', origin[0] - 3, sp[1]);
-      }
-
-      // Border
-      ctx.strokeStyle = '#dde';
-      ctx.lineWidth = 1;
-      ctx.strokeRect(0, 0, w, w);
-    }
-
-    function drawZPlane(w) {
-      drawGrid(ctxZ, w, sel.value);
-    }
-
-    function drawWPlane(w) {
-      var fn = sel.value;
-      ctxW.clearRect(0, 0, w, w);
-      ctxW.fillStyle = '#fafbfc';
-      ctxW.fillRect(0, 0, w, w);
-
-      // We'll collect all mapped points to determine w-plane bounds
-      var xMin_z, xMax_z, yMin_z, yMax_z;
-      if (fn === 'exp') {
-        xMin_z = -2; xMax_z = 2; yMin_z = -Math.PI; yMax_z = Math.PI;
-      } else if (fn === 'z2') {
-        xMin_z = -2; xMax_z = 2; yMin_z = -2; yMax_z = 2;
-      } else if (fn === 'inv') {
-        xMin_z = -2; xMax_z = 2; yMin_z = -2; yMax_z = 2;
-      } else {
-        xMin_z = -2; xMax_z = 2; yMin_z = -2; yMax_z = 2;
-      }
-
-      // First pass: compute all mapped points to find bounds
-      var nLines = GRID;
-      var dx = (xMax_z - xMin_z) / nLines;
-      var dy = (yMax_z - yMin_z) / nLines;
-      var steps = 60;
-
-      var allPts = [];
-      // From vertical lines
-      for (var i = 0; i <= nLines; i++) {
-        var x = xMin_z + i * dx;
-        for (var s = 0; s <= steps; s++) {
-          var y = yMin_z + s * (yMax_z - yMin_z) / steps;
-          var z = [x, y];
-          var wv = mapFn(z, fn);
-          if (isFinite(wv[0]) && isFinite(wv[1])) allPts.push(wv);
-        }
-      }
-      // From horizontal lines
-      for (var j = 0; j <= nLines; j++) {
-        var y = yMin_z + j * dy;
-        for (var s = 0; s <= steps; s++) {
-          var x = xMin_z + s * (xMax_z - xMin_z) / steps;
-          var z = [x, y];
-          var wv = mapFn(z, fn);
-          if (isFinite(wv[0]) && isFinite(wv[1])) allPts.push(wv);
-        }
-      }
-
-      if (allPts.length === 0) return;
-
-      // Compute bounds with some padding
-      var wMinX = Infinity, wMaxX = -Infinity, wMinY = Infinity, wMaxY = -Infinity;
-      for (var i = 0; i < allPts.length; i++) {
-        if (allPts[i][0] < wMinX) wMinX = allPts[i][0];
-        if (allPts[i][0] > wMaxX) wMaxX = allPts[i][0];
-        if (allPts[i][1] < wMinY) wMinY = allPts[i][1];
-        if (allPts[i][1] > wMaxY) wMaxY = allPts[i][1];
-      }
-
-      // For exp mapping, the image covers a wide range; cap it
-      if (fn === 'exp') {
-        wMinX = -7.5; wMaxX = 7.5; wMinY = -7.5; wMaxY = 7.5;
-      } else {
-        // Add 10% padding
-        var padX = (wMaxX - wMinX) * 0.1 || 1;
-        var padY = (wMaxY - wMinY) * 0.1 || 1;
-        wMinX -= padX; wMaxX += padX;
-        wMinY -= padY; wMaxY += padY;
-      }
-
-      // Ensure square aspect ratio
-      var rangeX = wMaxX - wMinX;
-      var rangeY = wMaxY - wMinY;
-      var maxRange = Math.max(rangeX, rangeY);
-      var midX = (wMinX + wMaxX) / 2;
-      var midY = (wMinY + wMaxY) / 2;
-      wMinX = midX - maxRange/2; wMaxX = midX + maxRange/2;
-      wMinY = midY - maxRange/2; wMaxY = midY + maxRange/2;
-
-      var scaleX_w = w / (wMaxX - wMinX);
-      var scaleY_w = w / (wMaxY - wMinY);
-      var scale_w = Math.min(scaleX_w, scaleY_w);
-      var cx_scr_w = w / 2;
-      var cy_scr_w = w / 2;
-
-      function toSW(x, y) {
-        return [cx_scr_w + (x - midX) * scale_w, cy_scr_w - (y - midY) * scale_w];
-      }
-
-      // Draw mapped grid - vertical lines (x = const in z)
-      var prev = null;
-      for (var i = 0; i <= nLines; i++) {
-        var x = xMin_z + i * dx;
-        ctxW.strokeStyle = VCOLOR;
-        ctxW.lineWidth = 1;
-        ctxW.beginPath();
-        var started = false;
-        for (var s = 0; s <= steps; s++) {
-          var y = yMin_z + s * (yMax_z - yMin_z) / steps;
-          var z = [x, y];
-          var wv = mapFn(z, fn);
-          if (!isFinite(wv[0]) || !isFinite(wv[1])) { started = false; continue; }
-          var sp = toSW(wv[0], wv[1]);
-          if (!started) { ctxW.moveTo(sp[0], sp[1]); started = true; }
-          else ctxW.lineTo(sp[0], sp[1]);
-        }
-        ctxW.stroke();
-      }
-
-      // Draw mapped grid - horizontal lines (y = const in z)
-      for (var j = 0; j <= nLines; j++) {
-        var y = yMin_z + j * dy;
-        ctxW.strokeStyle = HCOLOR;
-        ctxW.lineWidth = 1;
-        ctxW.beginPath();
-        var started = false;
-        for (var s = 0; s <= steps; s++) {
-          var x = xMin_z + s * (xMax_z - xMin_z) / steps;
-          var z = [x, y];
-          var wv = mapFn(z, fn);
-          if (!isFinite(wv[0]) || !isFinite(wv[1])) { started = false; continue; }
-          var sp = toSW(wv[0], wv[1]);
-          if (!started) { ctxW.moveTo(sp[0], sp[1]); started = true; }
-          else ctxW.lineTo(sp[0], sp[1]);
-        }
-        ctxW.stroke();
-      }
-
-      // Draw axes in w-plane
-      ctxW.strokeStyle = '#667';
-      ctxW.lineWidth = 1.5;
-      ctxW.beginPath();
-      var originW = toSW(0, 0);
-      ctxW.moveTo(0, originW[1]); ctxW.lineTo(w, originW[1]);
-      ctxW.moveTo(originW[0], 0); ctxW.lineTo(originW[0], w);
-      ctxW.stroke();
-
-      // Border
-      ctxW.strokeStyle = '#dde';
-      ctxW.lineWidth = 1;
-      ctxW.strokeRect(0, 0, w, w);
-    }
-
-    function render() {
-      var container = cZ.parentElement.parentElement;
-      var w = Math.min(300, (container.clientWidth - 16) / 2);
-      if (w < 150) w = 150;
-      setupCanvas(cZ, ctxZ, w);
-      setupCanvas(cW, ctxW, w);
-      drawZPlane(w);
-      drawWPlane(w);
-    }
-
-    sel.addEventListener('change', render);
-    window.addEventListener('resize', render);
-    render();
-  })();
-  </script>
-
-  <!-- ==================== 3.2 对数函数 ==================== -->
+  <!-- ==================== 4.2 Cauchy-Goursat 定理 ==================== -->
   <div class="section" id="s2">
-    <h2>3.2 对数函数</h2>
+    <h2>4.2 Cauchy-Goursat 定理</h2>
 
     <div class="box box-note">
       <div class="box-title">直觉导航</div>
-      <p>为什么 $\log z$ 在复数域中变成多值函数？根本原因是 $e^z$ 的周期性。实数中 $e^x$ 严格单调，所以反函数 $\ln x$ 天然单值。但在复数中，$e^z = e^{z+2\pi i}$——指数函数以 $2\pi i$ 为周期。这意味着方程 $e^w = z$ 的解不是唯一的：如果 $w$ 是一个解，那么 $w+2\pi i$、$w+4\pi i$、$w-2\pi i$……也都是解。这就像实分析中 $\arcsin x$ 也是多值的一样（$\sin(\theta)=\sin(\theta+2\pi)$），只不过 $\arcsin$ 的多值性是"每 $2\pi$ 循环一次"，而 $\log z$ 的多值性是"每 $2\pi i$ 循环一次"——在虚轴方向上。</p>
+      <p>Cauchy 积分定理是所有魔力开始的地方：<strong>解析函数沿闭合围道的积分为零</strong>。</p>
+      <p>为什么？一个粗略的直觉：复积分 $\oint_C f(z)dz$ 本质上是在绕围道一周的路径上累积 $f(z)$ 的"复增量"。如果 $f$ 解析（即可导），那么它局部上可以很好地被线性函数逼近。而线性函数的围道积分为零（因为 $az+b$ 有原函数 $\frac{a}{2}z^2+bz$）。通过将围道无限细分，解析性保证了每个小段上的积分近似为零，总体积分为零。</p>
+      <p>Goursat 的贡献在于去掉了"$f'$ 连续"这个附加假设——仅仅"$f'$ 存在"就足以保证结论。这非常深刻，因为它意味着<strong>解析函数的导数自动连续</strong>——一个纯复分析的事实，在实分析中没有对应物。</p>
     </div>
 
-    <div class="box box-definition">
-      <div class="box-title">定义 · 对数函数</div>
-      <p>对 $z \neq 0$，满足 $e^w = z$ 的 $w$ 称为 $z$ 的<strong>对数</strong>，记为 $w = \log z$。</p>
-      <p>设 $z = re^{i\theta}$（$r = |z|$，$\theta = \arg z$），则：</p>
-      $$\log z = \ln|z| + i\arg z = \ln r + i(\theta + 2k\pi), \quad k \in \ZZ$$
-      <p>因此 $\log z$ 是一个<strong>多值函数</strong>，有无穷多个值。</p>
-    </div>
-
-    <div class="box box-definition">
-      <div class="box-title">定义 · 对数的主值</div>
-      <p>取 $k = 0$（即辐角取主值 $\Arg z \in (-\pi, \pi]$），定义<strong>对数的主值</strong>为：</p>
-      $$\Log z = \ln|z| + i\Arg z$$
-      <p>注意：主值 $\Log z$ 是一个单值函数，但它在负实轴上不连续（辐角在负实轴上有跳跃）。</p>
-    </div>
-
-    <div class="box box-formula">
-      <div class="box-title">多值性的具体表现</div>
-      <p>对数函数 $\log z$ 的所有值为：</p>
-      $$\log z = \Log z + 2k\pi i, \quad k \in \ZZ$$
-      <p>相邻两个值之间相差 $2\pi i$。这也说明 $\log z$ 与 $e^z$ 的关系：$\log z$ 是 $e^z$ 的"反函数"，但因为 $e^z$ 是周期函数，所以反函数是多值的。</p>
+    <div class="box box-theorem">
+      <div class="box-title">定理 · Cauchy 积分定理（原始形式）</div>
+      <p>设 $f(z)$ 在<strong>单连通域</strong> $D$ 内解析，$C$ 是 $D$ 内任一<strong>逐段光滑闭曲线</strong>，则：</p>
+      $$\oint_C f(z)\,\dd z = 0$$
+      <p><strong>等价表述</strong>：解析函数沿闭曲线的积分为零；或者说，解析函数的积分只依赖于起点和终点，与路径无关。</p>
     </div>
 
     <div class="box box-note">
-      <div class="box-title">分支与支割线</div>
-      <p>为了从多值函数 $\log z$ 中选出一个<strong>单值连续分支</strong>，需要：</p>
-      <ol>
-        <li><strong>支割线</strong>（branch cut）：从原点出发沿某方向画一条射线，禁止自变量跨越此线；</li>
-        <li><strong>辐角范围</strong>：指定 $\arg z$ 的取值范围，如 $(\alpha, \alpha + 2\pi]$。</li>
-      </ol>
-      <p>最常见的选择是沿负实轴做支割线，取 $\Arg z \in (-\pi, \pi]$，得到主值分支 $\Log z$。</p>
-      <p><strong>为什么需要支割线？</strong>考虑 $z$ 从上半平面（$\Arg z \approx -\pi+\varepsilon$，接近 $-\pi$ 的上方）沿小圆弧绕原点一周到达下半平面（实质上是：取 $z$ 在负实轴上方，$\Arg z \to \pi$；然后 $z$ 在负实轴下方，$\Arg z \to -\pi$）。虽然 $z$ 的两个位置在几何上可以非常接近（跨越负实轴的两侧），但 $\Arg z$ 的值却从接近 $\pi$ 跳变到接近 $-\pi$——差了 $2\pi$。这意味着 $\Log z = \ln|z| + i\Arg z$ 在负实轴的两侧极限值不同：从上方趋近得 $\ln|z| + i\pi$，从下方趋近得 $\ln|z| - i\pi$。因此 $\Log z$ 在负实轴上不连续。</p>
-      <p>支割线的作用就是"割断"负实轴，禁止自变量跨过它——这样 $\Log z$ 在剩余的连通区域内就能保持连续（从而解析）。</p>
-      <p>每个单值连续分支在其定义域内都是解析函数（可利用反函数定理或直接验证 C-R 方程证明），解析区域为割开的复平面。</p>
-    </div>
-
-    <div class="box box-theorem">
-      <div class="box-title">定理 · 对数函数的运算性质</div>
-      <p>对 $z_1, z_2 \neq 0$，对数函数满足：</p>
-      <ol>
-        <li>$\log(z_1 z_2) = \log z_1 + \log z_2$（在多值意义下成立，即两边的值集合相等）</li>
-        <li>$\log\dfrac{z_1}{z_2} = \log z_1 - \log z_2$（多值意义下）</li>
-      </ol>
-      <p><strong>注意</strong>：对主值 $\Log$，上述等式不一定成立，可能相差 $2\pi i$ 的整数倍。</p>
-      <p><strong>例</strong>：$\Log(-1 \cdot -1) = \Log(1) = 0$，但 $\Log(-1) + \Log(-1) = \pi i + \pi i = 2\pi i \neq 0$。这里多出的 $2\pi i$ 来自两个 $-1$ 的辐角相加后超过了 $(-\pi, \pi]$ 的范围，需要减去 $2\pi$ 来回到主值区间。$\Log(z_1 z_2) = \Log z_1 + \Log z_2 \pm 2\pi i$（其中 $\pm$ 取决于 $\Arg z_1 + \Arg z_2$ 是否超出 $(-\pi, \pi]$）。</p>
-    </div>
-
-    <div class="box box-example">
-      <div class="box-title">例2 · 计算 $\log(-1)$ 和 $\log i$</div>
-      <p>$\log(-1)$：$|-1| = 1$，$\arg(-1) = \pi + 2k\pi$，所以 $\log(-1) = i(\pi + 2k\pi) = (2k+1)\pi i$。</p>
-      <p>主值 $\Log(-1) = \pi i$。</p>
-      <p>$\log i$：$|i| = 1$，$\arg(i) = \dfrac{\pi}{2} + 2k\pi$，所以 $\log i = i\left(\dfrac{\pi}{2} + 2k\pi\right)$。</p>
-      <p>主值 $\Log i = \dfrac{\pi}{2}i$。</p>
-    </div>
-
-    <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 计算 $\log(1+i)$ 的所有值</div>
-      <div class="collapsible-body">
-        <p><strong>解</strong>：$1+i = \sqrt{2} \cdot e^{i\pi/4}$，故</p>
-        $$\log(1+i) = \ln\sqrt{2} + i\left(\frac{\pi}{4} + 2k\pi\right) = \frac{1}{2}\ln 2 + i\left(\frac{\pi}{4} + 2k\pi\right), \quad k \in \ZZ$$
-        <p>主值为 $\Log(1+i) = \dfrac{1}{2}\ln 2 + \dfrac{\pi}{4}i$。</p>
-        <p><strong>注意</strong>：$\ln 2$ 表示实对数，是唯一的实数值。</p>
-      </div>
-    </div>
-
-    <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 验证 $\Log(-i) = -\dfrac{\pi}{2}i$</div>
-      <div class="collapsible-body">
-        <p><strong>解</strong>：$|-i| = 1$，$\Arg(-i) = -\dfrac{\pi}{2}$（因为 $-i$ 在负虚轴上，主值辐角取 $-\pi/2$）。</p>
-        <p>故 $\Log(-i) = \ln 1 + i\left(-\dfrac{\pi}{2}\right) = -\dfrac{\pi}{2}i$。</p>
-        <p>验证：$e^{-\pi i/2} = \cos\left(-\dfrac{\pi}{2}\right) + i\sin\left(-\dfrac{\pi}{2}\right) = 0 + i(-1) = -i$。正确。</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==================== 3.3 幂函数 ==================== -->
-  <div class="section" id="s3">
-    <h2>3.3 幂函数</h2>
-
-    <div class="box box-definition">
-      <div class="box-title">定义 · 复幂函数</div>
-      <p>对 $z \neq 0$ 和任意复数 $a \in \CC$，定义<strong>幂函数</strong>为：</p>
-      $$z^a = e^{a\log z}$$
-      <p>由于 $\log z$ 是多值的，$z^a$ 通常也是多值函数。</p>
-    </div>
-
-    <div class="box box-formula">
-      <div class="box-title">幂函数的多值性</div>
-      <p>将 $\log z = \ln|z| + i(\arg z + 2k\pi)$ 代入：</p>
-      $$z^a = e^{a[\ln|z| + i\arg z + 2k\pi i]} = |z|^a \cdot e^{ia\arg z} \cdot e^{2k\pi ia}$$
-      <p>其中 $|z|^a = e^{a\ln|z|}$（实幂函数意义下）。</p>
-      <p>关键在于因子 $e^{2k\pi ia}$：如果 $a$ 是整数，则此因子为 $1$（$k$ 任意），$z^a$ 是单值的；否则 $z^a$ 有无穷多个值。</p>
-    </div>
-
-    <div class="box box-theorem">
-      <div class="box-title">定理 · 幂函数的单值性条件</div>
-      <p>$z^a$ 是单值函数的充要条件是 $a \in \ZZ$（$a$ 为整数）。</p>
-      <p>更细致地：</p>
-      <ul>
-        <li><strong>$a = n \in \ZZ$</strong>：$z^n$ 是单值函数。$n>0$ 时为整函数，$n<0$ 时在 $z=0$ 处有极点。</li>
-        <li><strong>$a = p/q$（$p,q$ 互素，$q > 1$）</strong>：$z^{p/q}$ 恰好有 $q$ 个不同的值。这是 $q$ 值函数。</li>
-        <li><strong>$a$ 为无理数或虚数</strong>：$z^a$ 有无穷多个值。</li>
-      </ul>
+      <div class="box-title">Cauchy 与 Goursat 的贡献</div>
+      <p>Cauchy 最初证明此定理时，假定 $f'(z)$ 连续（即 $f$ 为全纯函数）。后来 <strong>Goursat</strong>（1900年）给出了一个深刻推广：</p>
+      <p><strong>Goursat 定理</strong>：只要 $f(z)$ 在 $D$ 内解析（即 $f'(z)$ 存在），不需要假定 $f'(z)$ 连续，结论仍然成立。</p>
+      <p>这在逻辑上很重要：它意味着<strong>"$f'(z)$ 存在"就能推出"$f'(z)$ 连续"</strong>，即解析函数的导数自动连续。这是复分析区别于实分析的深刻之处。</p>
     </div>
 
     <div class="box box-proof">
-      <div class="box-title">证明 · 幂函数单值性条件</div>
-      <p>由幂函数定义 $z^a = e^{a\log z}$，将多值对数 $\log z = \ln|z| + i(\Arg z + 2k\pi)$ 代入：</p>
-      $$z^a = e^{a[\ln|z| + i\Arg z + 2k\pi i]} = \underbrace{|z|^a e^{ia\Arg z}}_{\text{与 }k\text{ 无关}} \cdot \; e^{2k\pi ia}$$
-      <p>多值性完全取决于因子 $e^{2k\pi ia} = e^{i(2\pi a)k}$（$k \in \ZZ$）。</p>
-      <p><strong>情形1：$a = n \in \ZZ$（整数）。</strong></p>
-      <p>$e^{2k\pi i n} = (e^{2\pi i})^{nk} = 1^{nk} = 1$ 对所有 $k \in \ZZ$ 成立。因此 $k$ 的不同取值给出相同的 $z^a$ 值——单值。</p>
-      <p><strong>情形2：$a = p/q$（$p,q$ 互素整数，$q > 1$）。</strong></p>
-      <p>$e^{2k\pi i p/q} = e^{2\pi i \cdot kp/q}$。由于 $p$ 和 $q$ 互素，当 $k = 0, 1, \ldots, q-1$ 时，$kp \bmod q$ 取遍 $0, 1, \ldots, q-1$ 的所有值（这是数论中互素的基本性质）。</p>
-      <p>当 $k = q$ 时，$e^{2\pi i \cdot qp/q} = e^{2\pi i p} = 1$，与 $k = 0$ 相同。因此恰有 $q$ 个不同的值。</p>
-      <p><strong>情形3：$a$ 为无理数或非实数。</strong></p>
-      <p><strong>3a. $a$ 为无理实数。</strong>若 $e^{2k_1\pi ia} = e^{2k_2\pi ia}$，则 $e^{2(k_1-k_2)\pi ia} = 1$，这意味着 $2(k_1-k_2)\pi a = 2m\pi$（$m \in \ZZ$），即 $(k_1-k_2)a = m$。若 $a$ 为无理数，则 $(k_1-k_2)a$ 只有在 $k_1=k_2$ 时才是整数（否则 $(k_1-k_2)a$ 仍为无理数，不能是整数）。因此不同 $k$ 给出不同值——有无穷多个值。</p>
-      <p><strong>3b. $a = p + iq$（$q \neq 0$，即 $a$ 有非零虚部）。</strong>设 $a = p + iq$，则因子为：</p>
-      $$e^{2k\pi i(p+iq)} = e^{2k\pi i p} \cdot e^{-2k\pi q}$$
-      <p>其中 $e^{2k\pi i p}$ 是模为 $1$ 的复因子（取决于 $p$ 是否整数），而 $e^{-2k\pi q}$ 是实的指数因子。对于不同的 $k_1 \neq k_2$：</p>
-      $$|e^{2k_1\pi i a}| = e^{-2k_1\pi q} \neq e^{-2k_2\pi q} = |e^{2k_2\pi i a}| \quad (\text{因为 } q \neq 0)$$
-      <p>因子的模就不同，值当然不同。因此当 $a$ 的虚部非零时，不同 $k$ 一定给出不同值——有无穷多个值。</p>
-      <p><strong>总结</strong>：仅当 $a$ 为有理实数时才有有限个分支（且仅当 $a$ 为整数时单值）；所有其他情况（无理实数或任何复数）都产生无穷多个值。$\square$</p>
+      <div class="box-title">证明思路 · Goursat 定理</div>
+      <p>核心思想：用三角形分割逼近积分。</p>
+      <p><strong>第一步</strong>：设 $C$ 是三角形 $\triangle$，要证 $\oint_\triangle f(z)\,\dd z = 0$。</p>
+      <p><strong>第二步</strong>：将 $\triangle$ 连接各边中点，分为四个全等小三角形 $\triangle_1, \triangle_2, \triangle_3, \triangle_4$。则：</p>
+      $$\oint_\triangle f(z)\,\dd z = \sum_{k=1}^{4}\oint_{\triangle_k} f(z)\,\dd z$$
+      <p>因为公共边上的积分互相抵消（反向性）。</p>
+      <p><strong>第三步</strong>：选取积分模最大的那个小三角形 $\triangle^{(1)}$，满足 $\left|\oint_{\triangle^{(1)}} f(z)\,\dd z\right| \geq \dfrac{1}{4}\left|\oint_\triangle f(z)\,\dd z\right|$。重复分割得到三角形套序列 $\triangle \supset \triangle^{(1)} \supset \triangle^{(2)} \supset \cdots$。</p>
+      <p><strong>第四步</strong>：由闭区间套定理，存在唯一的 $\zeta \in \bigcap_n \triangle^{(n)}$。由 $f$ 在 $\zeta$ 处可导：</p>
+      $$f(z) = f(\zeta) + f'(\zeta)(z-\zeta) + \varepsilon(z)(z-\zeta)$$
+      <p>其中 $\varepsilon(z) \to 0$（$z \to \zeta$）。由于 $f(\zeta) + f'(\zeta)(z-\zeta)$ 是整函数，沿闭曲线积分为零，故：</p>
+      $$\oint_{\triangle^{(n)}} f(z)\,\dd z = \oint_{\triangle^{(n)}} \varepsilon(z)(z-\zeta)\,\dd z$$
+      <p>现在进行模的精细估计。设 $\triangle^{(n)}$ 的周长为 $L_n$，直径为 $d_n$。由相似分割知 $L_n = L/2^n$，$d_n = d/2^n$（$L, d$ 为原三角形的周长和直径）。</p>
+      <p>对 $z \in \triangle^{(n)}$，有 $|z - \zeta| \le d_n$。由 $f$ 在 $\zeta$ 的可导性，$\forall\,\eta > 0$，当 $n$ 充分大时 $|\varepsilon(z)| < \eta$ 对所有 $z \in \triangle^{(n)}$ 成立。因此：</p>
+      $$\left|\oint_{\triangle^{(n)}} f(z)\,\dd z\right| = \left|\oint_{\triangle^{(n)}} \varepsilon(z)(z-\zeta)\,\dd z\right| \le \oint_{\triangle^{(n)}} |\varepsilon(z)| \cdot |z-\zeta| \cdot |\dd z|$$
+      $$\le \eta \cdot d_n \cdot L_n = \eta \cdot \frac{d}{2^n} \cdot \frac{L}{2^n} = \eta \cdot \frac{dL}{4^n}$$
+      <p>另一方面，由第三步的选取规则：</p>
+      $$\left|\oint_{\triangle^{(n)}} f(z)\,\dd z\right| \ge \frac{1}{4^n}\left|\oint_\triangle f(z)\,\dd z\right|$$
+      <p>结合两式：$\dfrac{1}{4^n}\left|\oint_\triangle f(z)\,\dd z\right| \le \eta \cdot \dfrac{dL}{4^n}$，即：</p>
+      $$\left|\oint_\triangle f(z)\,\dd z\right| \le \eta \cdot dL$$
+      <p>由于 $\eta > 0$ 可以任意小，必有 $\left|\oint_\triangle f(z)\,\dd z\right| = 0$。</p>
+      <p>至此证明了三角形围道上的积分为零。对任意逐段光滑闭曲线 $C$，可通过三角形剖分逼近得到一般结论。$\square$</p>
     </div>
 
-    <div class="box box-example">
-      <div class="box-title">例3 · 计算 $i^i$</div>
-      <p>$i^i = e^{i\log i} = e^{i \cdot i(\pi/2 + 2k\pi)} = e^{-\pi/2 - 2k\pi}$，$k \in \ZZ$。</p>
-      <p>取 $k=0$ 得主值：$i^i = e^{-\pi/2} \approx 0.2079$。</p>
-      <p><strong>令人惊讶的事实</strong>：$i^i$ 的所有值都是<strong>正实数</strong>！</p>
+    <div class="box box-theorem">
+      <div class="box-title">Cauchy 定理的推广形式</div>
+      <p><strong>复合闭路定理</strong>（多连通域的情形）：</p>
+      <p>设 $f(z)$ 在由闭曲线 $C$ 和 $C_1, C_2, \ldots, C_n$ 所围成的多连通域上解析，$C_1, \ldots, C_n$ 是 $C$ 内部互不相交的闭曲线。约定：<strong>$C$ 取正向（逆时针），$C_k$ 取反向（顺时针）</strong>，使得区域始终在行进方向的左侧，则：</p>
+      $$\oint_C f(z)\,\dd z = \sum_{k=1}^{n} \oint_{C_k} f(z)\,\dd z$$
+      <p><strong>定向说明</strong>：若所有曲线都取正向（逆时针），则等式右边需加负号。标准约定是外围 $C$ 逆时针、内部 $C_k$ 顺时针，以保证等式简洁。实际计算中，通常将所有积分统一为逆时针方向再求和。</p>
+      <p>直观理解：内部"孔洞"周围的积分之和等于外围曲线的积分。这允许我们在有奇点的情况下，通过选择合适的围道将积分转化为更易计算的形式。</p>
     </div>
 
-    <div class="box box-example">
-      <div class="box-title">例4 · 计算 $z^{1/2}$（平方根）</div>
-      <p>对 $z = re^{i\theta}$：</p>
-      $$z^{1/2} = e^{\frac{1}{2}\log z} = e^{\frac{1}{2}[\ln r + i(\theta + 2k\pi)]} = \sqrt{r} \cdot e^{i(\theta + 2k\pi)/2}$$
-      <p>$k=0$：$w_0 = \sqrt{r} \cdot e^{i\theta/2}$</p>
-      <p>$k=1$：$w_1 = \sqrt{r} \cdot e^{i(\theta/2 + \pi)} = -w_0$</p>
-      <p>$k=2$：$w_2 = \sqrt{r} \cdot e^{i(\theta/2 + 2\pi)} = w_0$（重复）</p>
-      <p>所以 $z^{1/2}$ 恰好有两个值 $\pm\sqrt{r} \cdot e^{i\theta/2}$，互为相反数。</p>
+    <div class="box box-formula">
+      <div class="box-title">路径无关性</div>
+      <p>若 $f(z)$ 在单连通域 $D$ 内解析，则对 $D$ 内任意两点 $z_0, z_1$，积分 $\int_{z_0}^{z_1} f(z)\,\dd z$ 的值与路径无关（只要路径在 $D$ 内）。</p>
+      <p>由此可定义原函数 $F(z) = \int_{z_0}^{z} f(\zeta)\,\dd\zeta$，满足 $F'(z) = f(z)$，且：</p>
+      $$\int_{z_0}^{z_1} f(z)\,\dd z = F(z_1) - F(z_0)$$
+      <p><strong>证明</strong>（$F'(z)=f(z)$）：设 $z \in D$，$\Delta z$ 充分小使 $z+\Delta z \in D$。则：
+      $$F(z+\Delta z)-F(z) = \int_{z}^{z+\Delta z} f(\zeta)d\zeta$$
+      由积分路径无关性，可取直线段。于是：
+      $$\frac{F(z+\Delta z)-F(z)}{\Delta z} - f(z) = \frac{1}{\Delta z}\int_z^{z+\Delta z}[f(\zeta)-f(z)]d\zeta$$
+      由 $f$ 的连续性，$\forall\varepsilon>0$，$\exists\delta>0$ 使 $|\zeta-z|<\delta$ 时 $|f(\zeta)-f(z)|<\varepsilon$。取 $|\Delta z|<\delta$，则 $\left|\frac{1}{\Delta z}\int_z^{z+\Delta z}[f(\zeta)-f(z)]d\zeta\right| \le \frac{1}{|\Delta z|}\cdot\varepsilon\cdot|\Delta z|=\varepsilon$。故差商极限为 $f(z)$，即 $F'(z)=f(z)$。$\square$</p>
     </div>
 
     <div class="box box-note">
-      <div class="box-title">根式函数的分支</div>
-      <p>$z^{1/n}$ 有 $n$ 个不同的值，均匀分布在以原点为圆心、半径为 $|z|^{1/n}$ 的圆周上，相邻两个值之间夹角为 $2\pi/n$。</p>
-      <p>选取单值连续分支需要：做从原点出发的支割线，并指定 $\arg z$ 的范围，如 $\arg z \in (\alpha, \alpha + 2\pi)$。</p>
+      <div class="box-title">应用 Cauchy 定理的注意事项</div>
+      <p>使用 Cauchy 定理时，必须验证两个条件：</p>
+      <ol>
+        <li>$f(z)$ 在围道 $C$ 及其内部<strong>解析</strong>（没有奇点）；</li>
+        <li>围道 $C$ 是<strong>闭曲线</strong>，且在单连通域内。</li>
+      </ol>
+      <p>如果 $f(z)$ 在 $C$ 内部有奇点，Cauchy 定理的结论 $\oint_C f(z)\,\dd z = 0$ 一般不成立（如 $\oint_{|z|=1}\frac{\dd z}{z} = 2\pi i \neq 0$）。此时需要留数理论。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 4.3 Cauchy 积分公式 ==================== -->
+  <div class="section" id="s3">
+    <h2>4.3 Cauchy 积分公式</h2>
+
+    <div class="box box-note">
+      <div class="box-title">直觉导航</div>
+      <p>Cauchy 积分定理说解析函数的围道积分为零——但这是对"围道内部没有奇点"的情形。如果被积函数形如 $\frac{f(z)}{z-a}$，在 $z=a$ 处有一个一阶极点呢？</p>
+      <p>Cauchy 积分公式给出了答案：
+      $$\frac{1}{2\pi i}\oint_C \frac{f(z)}{z-a}dz = f(a)$$
+      它说：<strong>解析函数在内部任意一点的值等于其在边界上的某种加权平均</strong>。等价地，它说 $f(a)$ 完全由 $f$ 在围道 $C$ 上的值决定——这就是我前面说的"全息性"。这是一种极强的约束：你不能随意在围道内部修改解析函数的值而不影响边界，反之亦然。</p>
+      <p>这个公式还是一切高阶导数公式的源头：对参数 $a$ 求导，你就能得到任意阶导数的围道积分表达式。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 · Cauchy 积分公式</div>
+      <p>设 $f(z)$ 在闭曲线 $C$ 及其内部解析，$a$ 是 $C$ 内部的任意一点，则：</p>
+      $$\boxed{f(a) = \frac{1}{2\pi i}\oint_C \frac{f(z)}{z-a}\,\dd z}$$
+      <p><strong>重要意义</strong>：解析函数在区域内部任意一点的值，完全由它在边界上的值决定。这是复分析最深刻、最核心的结果。</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明 · Cauchy 积分公式</div>
+      <p>设 $C$ 是正向（逆时针）闭曲线，$a$ 在 $C$ 内部。</p>
+      <p><strong>第一步</strong>：以 $a$ 为圆心、$r > 0$ 为半径作圆周 $C_r: |z-a|=r$，使 $C_r$ 完全在 $C$ 内部。</p>
+      <p><strong>第二步</strong>：函数 $\dfrac{f(z)}{z-a}$ 在 $C$ 与 $C_r$ 之间的环形区域内解析（$z = a$ 是唯一的奇点），由复合闭路定理：</p>
+      $$\oint_C \frac{f(z)}{z-a}\,\dd z = \oint_{C_r} \frac{f(z)}{z-a}\,\dd z$$
+      <p><strong>第三步</strong>：在 $C_r$ 上参数化 $z = a + re^{i\theta}$，$\dd z = ire^{i\theta}\dd\theta$：</p>
+      $$\oint_{C_r} \frac{f(z)}{z-a}\,\dd z = \int_0^{2\pi} \frac{f(a+re^{i\theta})}{re^{i\theta}} \cdot ire^{i\theta}\,\dd\theta = i\int_0^{2\pi} f(a+re^{i\theta})\,\dd\theta$$
+      <p><strong>第四步</strong>：比较此积分与 $2\pi i f(a) = i\int_0^{2\pi} f(a)\,\dd\theta$：</p>
+      $$\left|\oint_{C_r} \frac{f(z)}{z-a}\,\dd z - 2\pi i f(a)\right| = \left|i\int_0^{2\pi}[f(a+re^{i\theta}) - f(a)]\,\dd\theta\right| \leq \int_0^{2\pi}|f(a+re^{i\theta}) - f(a)|\,\dd\theta$$
+      <p>由于 $f$ 在 $a$ 处解析，故 $f$ 在 $a$ 的某邻域内连续。事实上，$f$ 在闭圆盘 $|z-a| \le r_0$ 上一致连续（紧致集上的连续函数必一致连续）。因此对给定的 $\varepsilon > 0$，存在 $r_0 > 0$，当 $r < r_0$ 时，对所有 $\theta \in [0, 2\pi]$ 一致有 $|f(a+re^{i\theta}) - f(a)| < \varepsilon$。</p>
+      <p>这里的关键是"<strong>一致</strong>"收敛：不仅每个方向的 $f(a+re^{i\theta})$ 都趋近于 $f(a)$，而且趋近的"速度"对所有 $\theta$ 是一致的。如果只有逐点收敛（每个 $\theta$ 单独趋近），我们不能将极限移入积分号内；但由于解析函数自动具有一致连续性质（在紧致邻域上），一致收敛得以保证，从而极限和积分可以交换。当 $r \to 0$ 时上式趋于 $0$。</p>
+      <p>但由第二步，左端与 $r$ 无关，故必须恒为零，即：</p>
+      $$\oint_C \frac{f(z)}{z-a}\,\dd z = 2\pi i f(a)$$
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">Cauchy 积分公式的等价形式</div>
+      <p>对于以 $a$ 为圆心、$R$ 为半径的圆周 $|z-a|=R$：</p>
+      $$f(a) = \frac{1}{2\pi}\int_0^{2\pi} f(a + Re^{i\theta})\,\dd\theta$$
+      <p>这就是<strong>解析函数的平均值公式</strong>：解析函数在圆心的值等于它在圆周上的平均值。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">推论 · 解析函数的无穷次可微性</div>
+      <p>若 $f(z)$ 在区域 $D$ 内解析，则 $f(z)$ 在 $D$ 内有<strong>任意阶导数</strong>，即 $f^{(n)}(z)$ 对所有 $n \geq 1$ 都存在且解析。</p>
+      <p>这是复分析特有的结论。在实分析中，一阶可导不能保证二阶可导。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例2 · 利用 Cauchy 积分公式计算 $\oint_{|z|=2} \frac{e^z}{z-1}\,\dd z$</div>
+      <p><strong>解</strong>：$f(z) = e^z$ 在 $|z| \leq 2$ 上解析，$a = 1$ 在 $|z| = 2$ 内部。由 Cauchy 积分公式：</p>
+      $$\oint_{|z|=2} \frac{e^z}{z-1}\,\dd z = 2\pi i \cdot f(1) = 2\pi i e$$
     </div>
 
     <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 计算 $(1+i)^{1+i}$</div>
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 计算 $\oint_{|z|=3} \frac{\sin z}{z^2+1}\,\dd z$</div>
       <div class="collapsible-body">
-        <p><strong>解</strong>：$(1+i)^{1+i} = e^{(1+i)\log(1+i)}$。</p>
-        <p>先求 $\log(1+i) = \dfrac{1}{2}\ln 2 + i\left(\dfrac{\pi}{4} + 2k\pi\right)$。</p>
-        <p>取主值 $k=0$：$\Log(1+i) = \dfrac{1}{2}\ln 2 + \dfrac{\pi}{4}i$。</p>
-        <p>则 $(1+i)\log(1+i) = (1+i)\left(\dfrac{1}{2}\ln 2 + \dfrac{\pi}{4}i\right)$</p>
-        $$= \frac{1}{2}\ln 2 + \frac{\pi}{4}i + \frac{i}{2}\ln 2 + \frac{\pi}{4}i^2 = \left(\frac{1}{2}\ln 2 - \frac{\pi}{4}\right) + i\left(\frac{\pi}{4} + \frac{1}{2}\ln 2\right)$$
-        <p>所以 $(1+i)^{1+i} = e^{\frac{1}{2}\ln 2 - \frac{\pi}{4}} \cdot e^{i(\frac{\pi}{4} + \frac{1}{2}\ln 2)}$</p>
-        $$= \sqrt{2} \cdot e^{-\pi/4} \left[\cos\left(\frac{\pi}{4} + \frac{\ln 2}{2}\right) + i\sin\left(\frac{\pi}{4} + \frac{\ln 2}{2}\right)\right]$$
+        <p><strong>解</strong>：将分母分解 $z^2+1 = (z-i)(z+i)$，奇点 $z = \pm i$ 都在 $|z|=3$ 内部。</p>
+        <p>用部分分式：$\dfrac{1}{z^2+1} = \dfrac{1}{2i}\left(\dfrac{1}{z-i} - \dfrac{1}{z+i}\right)$。</p>
+        <p>由 Cauchy 积分公式：</p>
+        $$\oint_{|z|=3} \frac{\sin z}{z^2+1}\,\dd z = \frac{1}{2i}\left[\oint_{|z|=3}\frac{\sin z}{z-i}\,\dd z - \oint_{|z|=3}\frac{\sin z}{z+i}\,\dd z\right]$$
+        $$= \frac{1}{2i}\left[2\pi i \sin(i) - 2\pi i \sin(-i)\right] = \frac{2\pi i}{2i}[\sin i - \sin(-i)] = \pi \cdot 2\sin i = 2\pi\sin i$$
+        <p>而 $\sin i = i\sinh 1$，故结果为 $2\pi i\sinh 1$。</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 计算 $\oint_{|z|=1} \frac{z^2}{z-2}\,\dd z$</div>
+      <div class="collapsible-body">
+        <p><strong>解</strong>：$f(z) = z^2$ 在 $|z| \leq 1$ 上解析。奇点 $z = 2$ 在 $|z|=1$ 的<strong>外部</strong>。</p>
+        <p>因此 $\dfrac{z^2}{z-2}$ 在 $|z| \leq 1$ 上解析，由 Cauchy 积分定理：</p>
+        $$\oint_{|z|=1} \frac{z^2}{z-2}\,\dd z = 0$$
+        <p><strong>注意</strong>：不是所有形如 $\frac{f(z)}{z-a}$ 的积分都需要用 Cauchy 积分公式。只有当 $a$ 在围道内部时才适用。</p>
       </div>
     </div>
   </div>
 
-  <!-- ==================== 3.4 三角函数与双曲函数 ==================== -->
+  <!-- ==================== 4.4 高阶导数公式 ==================== -->
   <div class="section" id="s4">
-    <h2>3.4 三角函数与双曲函数</h2>
+    <h2>4.4 高阶导数公式</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 · Cauchy 高阶导数公式</div>
+      <p>设 $f(z)$ 在闭曲线 $C$ 及其内部解析，$a$ 是 $C$ 内部的一点，则 $f$ 在 $a$ 处的 $n$ 阶导数为：</p>
+      $$\boxed{f^{(n)}(a) = \frac{n!}{2\pi i}\oint_C \frac{f(z)}{(z-a)^{n+1}}\,\dd z, \quad n = 0, 1, 2, \ldots}$$
+      <p>当 $n=0$ 时，此即 Cauchy 积分公式本身。</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明 · 高阶导数公式（$n=1$ 的情形）</div>
+      <p>要证 $f'(a) = \dfrac{1}{2\pi i}\oint_C \dfrac{f(z)}{(z-a)^2}\,\dd z$。</p>
+      <p>考虑差商的极限：取 $a+h$（$h$ 足够小使得 $a+h$ 在 $C$ 内部）：</p>
+      $$\frac{f(a+h) - f(a)}{h} = \frac{1}{2\pi i h}\left[\oint_C \frac{f(z)}{z-a-h}\,\dd z - \oint_C \frac{f(z)}{z-a}\,\dd z\right]$$
+      $$= \frac{1}{2\pi i}\oint_C f(z) \cdot \frac{1}{h}\left[\frac{1}{z-a-h} - \frac{1}{z-a}\right]\dd z = \frac{1}{2\pi i}\oint_C \frac{f(z)}{(z-a-h)(z-a)}\,\dd z$$
+      <p>当 $h \to 0$ 时，被积函数在 $C$ 上一致收敛到 $\dfrac{f(z)}{(z-a)^2}$，从而：</p>
+      $$f'(a) = \lim_{h\to 0}\frac{f(a+h)-f(a)}{h} = \frac{1}{2\pi i}\oint_C \frac{f(z)}{(z-a)^2}\,\dd z$$
+      <p>对一般的 $n$，用数学归纳法即可。</p>
+      <p><strong>归纳步骤（$n \to n+1$）</strong>：假设公式对 $n$ 成立，即 $f^{(n)}(a) = \frac{n!}{2\pi i}\oint_C \frac{f(z)}{(z-a)^{n+1}}dz$。计算 $f^{(n+1)}(a)$ 的差商：</p>
+      $$\frac{f^{(n)}(a+h)-f^{(n)}(a)}{h} = \frac{n!}{2\pi i h}\left[\oint_C \frac{f(z)}{(z-a-h)^{n+1}}dz - \oint_C \frac{f(z)}{(z-a)^{n+1}}dz\right]$$
+      $$= \frac{n!}{2\pi i}\oint_C f(z)\cdot\frac{1}{h}\left[\frac{1}{(z-a-h)^{n+1}}-\frac{1}{(z-a)^{n+1}}\right]dz$$
+      <p>利用代数恒等式 $\frac{A^{n+1}-B^{n+1}}{A-B}=A^n+A^{n-1}B+\cdots+B^n$（令 $A=z-a$，$B=z-a-h$），差项当 $h\to 0$ 时趋于 $(n+1)(z-a)^n/(z-a)^{2n+2} = (n+1)/(z-a)^{n+2}$。代入得 $f^{(n+1)}(a) = \frac{(n+1)!}{2\pi i}\oint_C \frac{f(z)}{(z-a)^{n+2}}dz$。关键仍在于验证导数与积分的交换，这由被积函数在 $C$ 上的一致收敛性保证（$f$ 在 $C$ 上有界，分母在 $C$ 上远离零）。$\square$</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">常用估计式</div>
+      <p>设 $|f(z)| \leq M$ 在 $C$ 上成立，$C$ 为以 $a$ 为圆心、$R$ 为半径的圆周，则：</p>
+      $$|f^{(n)}(a)| \leq \frac{n! \cdot M}{R^n}$$
+      <p>这称为<strong>Cauchy 估计</strong>，是推导 Liouville 定理和最大模原理的关键工具。</p>
+      <p><strong>推导</strong>：由高阶导数公式，取 $C: |z-a|=R$（正方向）：</p>
+      $$|f^{(n)}(a)| = \left|\frac{n!}{2\pi i}\oint_C \frac{f(z)}{(z-a)^{n+1}}dz\right| \le \frac{n!}{2\pi}\oint_C \frac{|f(z)|}{|z-a|^{n+1}}|dz|$$
+      $$\le \frac{n!}{2\pi}\oint_C \frac{M}{R^{n+1}}|dz| = \frac{n!}{2\pi}\cdot\frac{M}{R^{n+1}}\cdot 2\pi R = \frac{n!M}{R^n}$$
+      <p>最后一步使用了圆周 $C$ 的弧长 $L = 2\pi R$。这个估计式的美妙之处在于：它将内部的导数大小用边界上的模和半径控制住了——距离边界越远、半径越大、导数被压制得越厉害。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例3 · 计算 $\oint_{|z|=2} \frac{e^z}{(z-1)^3}\,\dd z$</div>
+      <p><strong>解</strong>：$f(z) = e^z$，$a = 1$，$n = 2$。由高阶导数公式：</p>
+      $$\oint_{|z|=2} \frac{e^z}{(z-1)^3}\,\dd z = \frac{2\pi i}{2!}f''(1) = \pi i \cdot e^1 = \pi i e$$
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 计算 $\oint_{|z|=1} \frac{\cos z}{z^3}\,\dd z$</div>
+      <div class="collapsible-body">
+        <p><strong>解</strong>：改写为 $\dfrac{\cos z}{(z-0)^3}$，即 $f(z) = \cos z$，$a = 0$，$n = 2$。</p>
+        <p>$f''(z) = -\cos z$，$f''(0) = -1$。</p>
+        $$\oint_{|z|=1} \frac{\cos z}{z^3}\,\dd z = \frac{2\pi i}{2!} \cdot (-1) = -\pi i$$
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 计算 $\oint_{|z-1|=1} \frac{z^2+1}{(z-1)^2}\,\dd z$</div>
+      <div class="collapsible-body">
+        <p><strong>解</strong>：$f(z) = z^2 + 1$，$a = 1$，$n = 1$。</p>
+        <p>$f'(z) = 2z$，$f'(1) = 2$。</p>
+        $$\oint_{|z-1|=1} \frac{z^2+1}{(z-1)^2}\,\dd z = \frac{2\pi i}{1!} \cdot f'(1) = 2\pi i \cdot 2 = 4\pi i$$
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 4.5 Liouville 定理与代数基本定理 ==================== -->
+  <div class="section" id="s5">
+    <h2>4.5 Liouville 定理与代数基本定理</h2>
 
     <div class="box box-note">
       <div class="box-title">直觉导航</div>
-      <p>实三角函数的值总是在 $[-1, 1]$ 之间——这是我们最熟悉的性质之一。但复三角函数为什么突然变得无界了？</p>
-      <p>答案藏在 Euler 公式中：$\cos z = \frac{e^{iz} + e^{-iz}}{2}$。当 $z$ 是纯虚数（$z = iy$）时，$\cos(iy) = \frac{e^{-y} + e^y}{2} = \cosh y$——这是<strong>双曲余弦</strong>，它在 $y \to \pm\infty$ 时指数增长到无穷大。所以在复平面上，随着你沿虚轴方向远离原点，$\cos z$ 和 $\sin z$ 的模会爆炸式增长。</p>
-      <p>这并不"推翻"实数中的有界性——$y=0$（实轴）上，$\cos(x)$ 和 $\sin(x)$ 仍然在 $[-1,1]$ 之间。有界性的丧失只发生在脱离实轴进入虚轴方向时。理解这一点有助于你明白为什么复分析中的定理和实分析中的定理看起来如此不同。</p>
-    </div>
-
-    <div class="box box-definition">
-      <div class="box-title">定义 · 复三角函数</div>
-      <p>由 Euler 公式 $e^{iz} = \cos z + i\sin z$，定义复三角函数为：</p>
-      $$\cos z = \frac{e^{iz} + e^{-iz}}{2}, \quad \sin z = \frac{e^{iz} - e^{-iz}}{2i}$$
-      $$\tan z = \frac{\sin z}{\cos z}, \quad \cot z = \frac{\cos z}{\sin z}, \quad \text{等}$$
+      <p>Liouville 定理说：<strong>有界整函数必为常数</strong>。这看起来简单得不值一提——但它的证明极其优雅（用 Cauchy 估计 $|f'(a)| \le M/R$，令 $R\to\infty$ 得 $f'(a)=0$），而且它的推论威力巨大。</p>
+      <p>直觉上：一个在整个复平面上解析的函数（整函数）如果没有奇点，它的"刚性"就要求它要么无界（如 $e^z$），要么平凡（常数）。你不能构造一个处处解析的、有界的、非平凡的函数。这在实分析中完全不是这样——比如 $\sin x$ 在整条实轴上处处光滑且有界（$|\sin x| \le 1$），但 $\sin z$ 在复平面上无界。</p>
+      <p>代数基本定理（$n$ 次多项式恰有 $n$ 个复根）的证明是 Liouville 定理最著名的应用之一——用反证法，假设多项式无零点，构造有界整函数 $1/p(z)$，导出矛盾。一个纯代数的结论，通过复分析的"刚性"被优雅证明。</p>
     </div>
 
     <div class="box box-theorem">
-      <div class="box-title">定理 · 复三角函数的性质</div>
-      <p>复三角函数保持了实三角函数的基本代数性质：</p>
-      <ol>
-        <li><strong>周期性</strong>：$\cos z$ 和 $\sin z$ 以 $2\pi$ 为周期。</li>
-        <li><strong>奇偶性</strong>：$\cos(-z) = \cos z$（偶函数），$\sin(-z) = -\sin z$（奇函数）。</li>
-        <li><strong>Pythagoras 恒等式</strong>：$\cos^2 z + \sin^2 z = 1$。</li>
-        <li><strong>和角公式</strong>：$\cos(z_1+z_2) = \cos z_1\cos z_2 - \sin z_1\sin z_2$，$\sin(z_1+z_2) = \sin z_1\cos z_2 + \cos z_1\sin z_2$。</li>
-        <li><strong>解析性</strong>：$\cos z$ 和 $\sin z$ 在 $\CC$ 上解析（整函数）。</li>
-      </ol>
-      <p><strong>与实函数的本质区别</strong>：</p>
-      <ul>
-        <li>$\sin z$ 和 $\cos z$ 不再是有界的！例如 $|\cos(iy)| = \dfrac{e^y + e^{-y}}{2} = \cosh y \to +\infty$（$y \to \pm\infty$）。</li>
-        <li>$\sin z = 0 \Leftrightarrow z = k\pi$（$k \in \ZZ$），$\cos z = 0 \Leftrightarrow z = \dfrac{\pi}{2} + k\pi$（$k \in \ZZ$），零点与实数域相同。</li>
-      </ul>
+      <div class="box-title">定理 · Liouville 定理</div>
+      <p><strong>有界整函数必为常数</strong>。</p>
+      <p>即：若 $f(z)$ 在整个复平面 $\CC$ 上解析（整函数），且存在 $M > 0$ 使得 $|f(z)| \leq M$ 对所有 $z \in \CC$ 成立，则 $f(z) \equiv \text{常数}$。</p>
     </div>
 
-    <div class="box box-formula">
-      <div class="box-title">三角函数的实部与虚部</div>
-      <p>设 $z = x + iy$，则：</p>
-      $$\cos(x+iy) = \cos x \cosh y - i\sin x \sinh y$$
-      $$\sin(x+iy) = \sin x \cosh y + i\cos x \sinh y$$
-      <p>其中 $\cosh y = \dfrac{e^y+e^{-y}}{2}$，$\sinh y = \dfrac{e^y-e^{-y}}{2}$ 为实双曲函数。</p>
-    </div>
-
-    <div class="box box-definition">
-      <div class="box-title">定义 · 复双曲函数</div>
-      <p>类比实双曲函数，定义：</p>
-      $$\cosh z = \frac{e^z + e^{-z}}{2}, \quad \sinh z = \frac{e^z - e^{-z}}{2}$$
-      $$\tanh z = \frac{\sinh z}{\cosh z}, \quad \coth z = \frac{\cosh z}{\sinh z}$$
+    <div class="box box-proof">
+      <div class="box-title">证明 · Liouville 定理</div>
+      <p>对任意 $a \in \CC$ 和任意 $R > 0$，由 Cauchy 估计：</p>
+      $$|f'(a)| \leq \frac{M}{R}$$
+      <p>令 $R \to \infty$，得 $|f'(a)| = 0$ 对所有 $a \in \CC$ 成立，故 $f'(a) \equiv 0$。</p>
+      <p>由 $f'(z) \equiv 0$ 知 $f(z)$ 为常数。</p>
+      <p><strong>注</strong>：这个证明极其简洁，但其思想深刻——它将 Cauchy 积分公式的威力发挥到了极致。</p>
     </div>
 
     <div class="box box-theorem">
-      <div class="box-title">定理 · 三角函数与双曲函数的关系</div>
-      <p>复三角函数与双曲函数之间有如下基本关系：</p>
-      $$\cos(iz) = \cosh z, \quad \sin(iz) = i\sinh z$$
-      $$\cosh(iz) = \cos z, \quad \sinh(iz) = i\sin z$$
-      <p>由此可得：双曲函数与三角函数本质上通过虚数单位 $i$ 相互转化。</p>
+      <div class="box-title">定理 · 代数基本定理</div>
+      <p>任意 $n$ 次多项式（$n \geq 1$）</p>
+      $$p(z) = a_n z^n + a_{n-1}z^{n-1} + \cdots + a_1 z + a_0, \quad a_n \neq 0$$
+      <p>在复数域中至少有一个零点，即存在 $z_0 \in \CC$ 使得 $p(z_0) = 0$。</p>
+      <p><strong>推论</strong>：$n$ 次多项式在 $\CC$ 中恰好有 $n$ 个零点（计重数），即 $p(z) = a_n(z-z_1)(z-z_2)\cdots(z-z_n)$。</p>
     </div>
 
-    <div class="box box-formula">
-      <div class="box-title">双曲函数的实部与虚部</div>
-      <p>设 $z = x + iy$，则：</p>
-      $$\cosh(x+iy) = \cosh x \cos y + i\sinh x \sin y$$
-      $$\sinh(x+iy) = \sinh x \cos y + i\cosh x \sin y$$
+    <div class="box box-proof">
+      <div class="box-title">证明 · 代数基本定理</div>
+      <p>用反证法。假设 $p(z) \neq 0$ 对所有 $z \in \CC$ 成立。</p>
+      <p><strong>第一步</strong>：$g(z) = \dfrac{1}{p(z)}$ 是整函数（因为 $p(z)$ 处处不为零且解析）。</p>
+      <p><strong>第二步</strong>：当 $|z| \to \infty$ 时，$|p(z)| \geq |a_n||z|^n - |a_{n-1}||z|^{n-1} - \cdots - |a_0| \to \infty$。</p>
+      <p>因此 $|g(z)| = \dfrac{1}{|p(z)|} \to 0$。特别地，存在 $R > 0$ 使得 $|z| > R$ 时 $|g(z)| < 1$。</p>
+      <p><strong>第三步</strong>：在闭圆盘 $|z| \leq R$ 上，$g(z)$ 连续故有界，设 $|g(z)| \leq M_1$。取 $M = \max(M_1, 1)$，则 $|g(z)| \leq M$ 对所有 $z \in \CC$ 成立。</p>
+      <p><strong>第四步</strong>：$g(z)$ 是有界整函数，由 Liouville 定理，$g(z) \equiv c$（常数）。从而 $p(z) \equiv 1/c$，与 $p(z)$ 是 $n \geq 1$ 次多项式矛盾。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 · 最大模原理</div>
+      <p>设 $f(z)$ 在区域 $D$ 内解析且不为常数，则 $|f(z)|$ 在 $D$ 内<strong>不能取到最大值</strong>。</p>
+      <p><strong>精确表述</strong>：若存在 $z_0 \in D$ 使得 $|f(z_0)| \geq |f(z)|$ 对所有 $z \in D$ 成立，则 $f(z) \equiv$ 常数。</p>
+      <p><strong>推论</strong>（最大模原理的实用形式）：设 $f(z)$ 在有界区域 $D$ 内解析，在 $\bar{D}$ 上连续，则 $|f(z)|$ 在 $\bar{D}$ 上的最大值必在边界 $\partial D$ 上取到。</p>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">证明思路 · 最大模原理</div>
+      <p>利用解析函数的平均值公式。</p>
+      <p>假设 $|f(z_0)| = M$ 为 $D$ 内 $|f(z)|$ 的最大值，以 $z_0$ 为圆心、$r$ 为半径作圆周 $C_r$ 完全在 $D$ 内。由平均值公式：</p>
+      $$f(z_0) = \frac{1}{2\pi}\int_0^{2\pi} f(z_0 + re^{i\theta})\,\dd\theta$$
+      <p>取模并用三角不等式：</p>
+      $$M = |f(z_0)| \leq \frac{1}{2\pi}\int_0^{2\pi}|f(z_0+re^{i\theta})|\,\dd\theta \leq \frac{1}{2\pi}\int_0^{2\pi} M\,\dd\theta = M$$
+      <p>等号成立要求 $|f(z_0+re^{i\theta})| = M$ 对所有 $\theta$ 成立。这说明 $|f(z)|$ 在 $z_0$ 的邻域内恒为 $M$。由连通性，$|f(z)| \equiv M$ 在整个 $D$ 上成立。</p>
+      <p><strong>为什么 $|f|$ 恒为常数蕴含 $f$ 为常数？</strong>设 $f = u+iv$，$|f|^2 = u^2+v^2 \equiv M^2$。对 $x$ 和 $y$ 分别求偏导：$2uu_x+2vv_x=0$，$2uu_y+2vv_y=0$。利用 C-R 方程 $u_x=v_y$、$u_y=-v_x$，代入得 $uu_x-vu_y=0$ 和 $uu_y+vu_x=0$。将此二式视为关于 $u_x,u_y$ 的线性方程组，其系数行列式为 $u^2+v^2=|f|^2=M^2$。若 $M \neq 0$，则方程组仅有零解 $u_x=u_y=0$，从而 $u$ 为常数，再由 C-R 得 $v$ 也为常数，故 $f$ 为常数。若 $M=0$，则 $f \equiv 0$，平凡地是常数。$\square$</p>
+      <p><strong>推论（实用形式）的推导</strong>：设 $f$ 在 $\bar{D}$ 上连续，$D$ 是有界区域。由连续函数在紧致集上取最大值的性质，$|f|$ 必在 $\bar{D}$ 上某点 $z_0$ 处取到最大值。若 $z_0 \in D$（最大值在内部），则最大模原理蕴含 $f$ 在 $D$ 内为常数，此时最大值也出现在边界上（边界上所有点都取相同的值）。若 $f$ 不为常数，则最大值只能在 $\partial D$ 上取到。因此：$|f|$ 在 $\bar{D}$ 上的最大值必出现在边界上。</p>
     </div>
 
     <div class="box box-note">
-      <div class="box-title">复三角函数的无界性</div>
-      <p>在实数域中，$|\sin x| \leq 1$，$|\cos x| \leq 1$。但在复数域中，三角函数是<strong>无界的</strong>。</p>
-      <p>例如：$\cos(iy) = \cosh y$，当 $y \to \infty$ 时 $\cosh y \to \infty$。</p>
-      <p>更一般地：$|\cos z|^2 = \cos^2 x + \sinh^2 y$，$|\sin z|^2 = \sin^2 x + \sinh^2 y$，当 $|y| \to \infty$ 时都趋于无穷。</p>
-    </div>
-
-    <div class="box box-example">
-      <div class="box-title">例5 · 计算 $\cos(1+2i)$</div>
-      <p>$\cos(1+2i) = \cos 1 \cdot \cosh 2 - i\sin 1 \cdot \sinh 2$</p>
-      <p>其中 $\cosh 2 = \dfrac{e^2+e^{-2}}{2} \approx 3.7622$，$\sinh 2 = \dfrac{e^2-e^{-2}}{2} \approx 3.6269$。</p>
-      <p>$\cos 1 \approx 0.5403$，$\sin 1 \approx 0.8415$。</p>
-      <p>故 $\cos(1+2i) \approx 0.5403 \times 3.7622 - i \times 0.8415 \times 3.6269 \approx 2.0327 - 3.0518i$。</p>
-    </div>
-
-    <div class="box box-example">
-      <div class="box-title">例6 · 计算 $\sin(1+2i)$</div>
-      <p>用实虚部分离公式：$\sin(x+iy) = \sin x \cosh y + i\cos x \sinh y$。代入 $x=1,y=2$：</p>
-      <p>$\sin 1 \approx 0.8415$，$\cos 1 \approx 0.5403$，$\cosh 2 \approx 3.7622$，$\sinh 2 \approx 3.6269$。</p>
-      <p>实部：$\sin 1 \cdot \cosh 2 \approx 0.8415 \times 3.7622 \approx 3.1659$</p>
-      <p>虚部：$\cos 1 \cdot \sinh 2 \approx 0.5403 \times 3.6269 \approx 1.9596$</p>
-      <p>故 $\sin(1+2i) \approx 3.1659 + 1.9596i$。注意 $|\sin(1+2i)| \approx 3.72 > 1$，体现了复三角函数的无界性。</p>
-    </div>
-
-    <div class="box box-example">
-      <div class="box-title">例7 · 计算 $\tan(1+i)$</div>
-      <p>由 $\tan z = \dfrac{\sin z}{\cos z}$。先用公式计算 $\sin(1+i)$ 和 $\cos(1+i)$：</p>
-      $$\sin(1+i) = \sin 1 \cosh 1 + i\cos 1 \sinh 1$$
-      $$\cos(1+i) = \cos 1 \cosh 1 - i\sin 1 \sinh 1$$
-      <p>$\cosh 1 \approx 1.5431$，$\sinh 1 \approx 1.1752$。</p>
-      <p>$\sin(1+i) \approx 0.8415 \times 1.5431 + i \times 0.5403 \times 1.1752 \approx 1.2985 + 0.6350i$</p>
-      <p>$\cos(1+i) \approx 0.5403 \times 1.5431 - i \times 0.8415 \times 1.1752 \approx 0.8337 - 0.9889i$</p>
-      <p>$\tan(1+i) = \dfrac{1.2985 + 0.6350i}{0.8337 - 0.9889i}$。分子分母同乘分母的共轭：</p>
-      $$= \frac{(1.2985+0.6350i)(0.8337+0.9889i)}{0.8337^2+0.9889^2} = \frac{0.4545 + 1.8130i}{1.6729} \approx 0.2718 + 1.0839i$$
-      <p><strong>技巧提示</strong>：使用公式 $\tan(x+iy) = \dfrac{\sin 2x + i\sinh 2y}{\cos 2x + \cosh 2y}$ 可以直接算出 $\tan(1+i)$，验证以上结果。</p>
+      <div class="box-title">最小模原理</div>
+      <p><strong>最小模原理</strong>：设 $f(z)$ 在区域 $D$ 内解析、不为常数、且 $f(z) \neq 0$（在 $D$ 内无零点），则 $|f(z)|$ 在 $D$ 内不能取到最小值。</p>
+      <p>证明：对 $1/f(z)$ 应用最大模原理。</p>
     </div>
 
     <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 求 $\sin z$ 的所有零点</div>
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 利用 Liouville 定理证明：若 $f$ 是整函数且 $|f(z)| \leq A|z|$，则 $f(z) = az+b$</div>
       <div class="collapsible-body">
-        <p><strong>解</strong>：$\sin z = 0 \Leftrightarrow \dfrac{e^{iz} - e^{-iz}}{2i} = 0 \Leftrightarrow e^{iz} = e^{-iz} \Leftrightarrow e^{2iz} = 1$。</p>
-        <p>设 $2iz = 2k\pi i$（$k \in \ZZ$），即 $z = k\pi$，$k \in \ZZ$。</p>
-        <p><strong>结论</strong>：$\sin z$ 的零点与实数域完全相同，都是 $z = k\pi$（$k \in \ZZ$）。这验证了 $\sin z$ 是实函数 $\sin x$ 的真正解析延拓。</p>
+        <p><strong>证明</strong>：考虑 $g(z) = \dfrac{f(z) - f(0)}{z}$（$z \neq 0$），补充定义 $g(0) = f'(0)$。</p>
+        <p>$g(z)$ 是整函数（$z=0$ 是可去奇点）。当 $|z| \to \infty$ 时：</p>
+        $$|g(z)| = \frac{|f(z)-f(0)|}{|z|} \leq \frac{|f(z)|+|f(0)|}{|z|} \leq A + \frac{|f(0)|}{|z|}$$
+        <p>故 $g(z)$ 是有界整函数，由 Liouville 定理，$g(z) \equiv c$（常数）。</p>
+        <p>从而 $f(z) - f(0) = cz$，即 $f(z) = cz + f(0)$。令 $a = c$，$b = f(0)$，得证。</p>
       </div>
     </div>
 
     <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 求 $\cos z$ 的所有零点</div>
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 证明有界整函数必为常数的一个推广</div>
       <div class="collapsible-body">
-        <p><strong>解</strong>：$\cos z = 0 \Leftrightarrow \dfrac{e^{iz} + e^{-iz}}{2} = 0 \Leftrightarrow e^{iz} + e^{-iz} = 0 \Leftrightarrow e^{iz} = -e^{-iz}$。</p>
-        <p>同乘 $e^{iz}$：$e^{2iz} = -1$。$e^{2iz} = e^{\pi i}$（因为 $e^{\pi i} = \cos\pi + i\sin\pi = -1$）。</p>
-        <p>由 $e^w = e^{\pi i} \Rightarrow w = \pi i + 2k\pi i$（利用 $e^z$ 的周期性，$e^a = e^b \Leftrightarrow a-b = 2k\pi i$），得：</p>
-        $$2iz = \pi i + 2k\pi i \implies z = \frac{\pi}{2} + k\pi, \quad k \in \ZZ$$
-        <p><strong>结论</strong>：$\cos z$ 的零点与实数域完全相同，都是 $z = \dfrac{\pi}{2} + k\pi$（$k \in \ZZ$）。与 $\sin z$ 一样，$\cos z$ 在复数域中没有新的零点。</p>
+        <p><strong>命题</strong>：若 $f$ 是整函数且满足 $|f(z)| \le A|z|^n + B$（对充分大的 $|z|$），则 $f(z)$ 是次数不超过 $n$ 的多项式。</p>
+        <p><strong>证明</strong>：对 $f$ 在 $|z|=R$ 上用 Cauchy 估计：$|f^{(k)}(0)| \le \frac{k!}{R^k}\max_{|z|=R}|f(z)| \le \frac{k!}{R^k}(A R^n + B)$。</p>
+        <p>当 $k > n$ 时，令 $R \to \infty$，右侧 $\to 0$（因为 $R^{n-k} \to 0$）。故 $f^{(k)}(0) = 0$ 对所有 $k > n$ 成立。</p>
+        <p>由 Taylor 展开定理（整函数在整个平面上的 Taylor 展开收敛），$f(z) = \sum_{k=0}^n \frac{f^{(k)}(0)}{k!}z^k$ 是次数不超过 $n$ 的多项式。$\square$</p>
+        <p><strong>特例</strong>：$n=0$ 时即 Liouville 定理（$f$ 有界 ⇒ $f$ 为常数）。$n=1$ 时得到 $|f(z)| \leq A|z|$ 蕴含 $f$ 为一次多项式，恰为上例的推广。</p>
       </div>
     </div>
 
     <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 证明 $|\sin z|^2 = \sin^2 x + \sinh^2 y$</div>
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 应用最大模原理</div>
       <div class="collapsible-body">
-        <p><strong>证明</strong>：$\sin(x+iy) = \sin x\cosh y + i\cos x\sinh y$，故</p>
-        $$|\sin z|^2 = \sin^2 x \cosh^2 y + \cos^2 x \sinh^2 y$$
-        <p>利用 $\cosh^2 y = 1 + \sinh^2 y$：</p>
-        $$= \sin^2 x(1 + \sinh^2 y) + \cos^2 x \sinh^2 y = \sin^2 x + \sinh^2 y(\sin^2 x + \cos^2 x) = \sin^2 x + \sinh^2 y$$
-        <p>由此可以看出：当 $y \neq 0$ 时 $|\sin z| > |\sin x|$，当 $|y| \to \infty$ 时 $|\sin z| \to \infty$。</p>
-      </div>
-    </div>
-
-    <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 证明 $|\cos z|^2 = \cos^2 x + \sinh^2 y$</div>
-      <div class="collapsible-body">
-        <p><strong>证明</strong>：$\cos(x+iy) = \cos x\cosh y - i\sin x\sinh y$，故</p>
-        $$|\cos z|^2 = \cos^2 x \cosh^2 y + \sin^2 x \sinh^2 y$$
-        <p>利用 $\cosh^2 y = 1 + \sinh^2 y$：</p>
-        $$= \cos^2 x(1 + \sinh^2 y) + \sin^2 x \sinh^2 y = \cos^2 x + \sinh^2 y(\cos^2 x + \sin^2 x) = \cos^2 x + \sinh^2 y$$
-        <p>由此可以看出：当 $y \neq 0$ 时 $|\cos z| > |\cos x|$，当 $|y| \to \infty$ 时 $|\cos z| \to \infty$。</p>
-        <p><strong>比较：</strong>$|\sin z|^2 = \sin^2 x + \sinh^2 y$ 与 $|\cos z|^2 = \cos^2 x + \sinh^2 y$。两个公式的"无界部分"都是 $\sinh^2 y$——无论 $\sin z$ 还是 $\cos z$，只要 $|y|$ 变大，模就指数增长。这完美地说明了复三角函数与实三角函数最本质的区别：在实轴上（$y=0$），$\sinh 0 = 0$，有界性恢复；但一旦进入虚轴方向，双曲函数的指数增长接管了一切。</p>
+        <p><strong>题目</strong>：设 $f(z)$ 在 $|z| \leq 1$ 上解析，$f(0) = 0$，且当 $|z|=1$ 时 $|f(z)| \leq 1$。证明当 $|z| \leq 1$ 时 $|f(z)| \leq |z|$。</p>
+        <p><strong>证明</strong>：设 $g(z) = \dfrac{f(z)}{z}$（$z \neq 0$），$g(0) = f'(0)$。$g(z)$ 在 $|z| \leq 1$ 上解析。</p>
+        <p>当 $|z| = 1$ 时，$|g(z)| = \dfrac{|f(z)|}{|z|} = |f(z)| \leq 1$。</p>
+        <p>由最大模原理，$|g(z)| \leq 1$ 对所有 $|z| \leq 1$ 成立，即 $|f(z)| \leq |z|$。</p>
+        <p><strong>注</strong>：这个结果称为 <strong>Schwarz 引理</strong>的雏形，是复分析中极重要的工具。</p>
       </div>
     </div>
   </div>
@@ -848,23 +507,23 @@
     <h2>常见误区与 FAQ</h2>
 
     <div class="box box-note">
-      <div class="box-title">FAQ：为什么 $e^z$ 有周期 $2\pi i$？直观理解是什么？</div>
-      <p>记住 Euler 公式 $e^{iy} = \cos y + i\sin y$。当 $y$ 增加 $2\pi$，$\cos y$ 和 $\sin y$ 都回到了原来的值（因为它们是周期函数）。所以 $e^{z+2\pi i} = e^{x+i(y+2\pi)} = e^x(\cos(y+2\pi) + i\sin(y+2\pi)) = e^x(\cos y + i\sin y) = e^z$。$e^z$ 的周期性完全来源于实三角函数在虚轴方向的周期性。</p>
+      <div class="box-title">误区：Cauchy 定理说解析函数积分恒为零，但 $\oint_{|z|=1} dz/z = 2\pi i$ 不是解析吗？</div>
+      <p>$1/z$ 在 $z=0$ 处不解析（有奇点），而 $z=0$ 在围道 $|z|=1$ 的<strong>内部</strong>。Cauchy 定理要求被积函数在围道上<strong>及围道内部</strong>处处解析。$1/z$ 在 $|z|=1$ 内部有奇点 $z=0$，所以定理不适用。这也是为什么需要本章后面的 Cauchy 积分公式和留数定理来处理内部有奇点的情况。</p>
     </div>
 
     <div class="box box-note">
-      <div class="box-title">FAQ：$\Log z$（大写）和 $\log z$（小写）有什么区别？</div>
-      <p>$\log z = \ln|z| + i\arg z$ 是<strong>多值函数</strong>，有无穷多个值（相差 $2\pi i$ 的整数倍）。$\Log z = \ln|z| + i\Arg z$（大写 L）是<strong>主值</strong>，辐角取 $(-\pi, \pi]$ 中的唯一值，是单值的。在多数考试计算题中，不加说明时通常要求计算所有值（多值），而"主值"会明确标注。</p>
+      <div class="box-title">FAQ：Cauchy 积分公式和平均值公式是什么关系？</div>
+      <p>Cauchy 积分公式在圆周上取特殊参数化就得到平均值公式：$f(a) = \frac{1}{2\pi}\int_0^{2\pi} f(a+Re^{i\theta})d\theta$。这说明解析函数在圆心的值<strong>恰好等于</strong>它在圆周上的算术平均值。这是解析函数"刚性"的又一体现——你不能在圆心处取任意值，它必须由圆周上的值唯一决定。这也是调和函数"平均值性质"在解析函数框架下的体现。</p>
     </div>
 
     <div class="box box-note">
-      <div class="box-title">FAQ：$i^i$ 为什么是实数？这太反直觉了</div>
-      <p>$i^i = e^{i\log i} = e^{i \cdot i(\pi/2+2k\pi)} = e^{-(\pi/2+2k\pi)}$。所有值都是正实数！几何意义：$i$ 在复平面上对应 $(0,1)$（单位圆上角度 $\pi/2$）。取对数后辐角进入指数，$i \cdot i$ 产生出 $-1$ 消掉了虚数单位。这个例子完美展示了复幂函数的"出人意料"之处——$i^i$ 有很多个值，而且全都是实数。</p>
+      <div class="box-title">FAQ：路径无关性和保守场有什么关系？</div>
+      <p>完全一致。解析函数的围道积分为零等价于积分与路径无关（在单连通域内）。这与向量分析中"旋度为零的向量场是保守场"本质上是一回事——C-R 方程恰好就是复平面上"旋度=0 + 散度=0"的条件。所以解析函数的积分理论可以看作二维保守场理论的复解析版本。</p>
     </div>
 
     <div class="box box-note">
-      <div class="box-title">FAQ：复三角函数无界——那它的图形长什么样？</div>
-      <p>你无法画出一个四维的图形（输入是二维，输出是二维）。但可以分别看模的等值线：$|\cos z|^2 = \cos^2 x + \sinh^2 y$。在实轴上（$y=0$），$\sinh 0 = 0$，$|\cos x| \le 1$，与实数域一致。但沿虚轴方向（$|y|$ 增大），$\sinh^2 y \approx e^{2|y|}/4$ 指数增长，$|\cos z| \approx e^{|y|}/2$ 爆炸。所以 $\cos z$ 的图像像是实轴上有起伏、向虚轴两侧不断抬升的"喇叭状"曲面。</p>
+      <div class="box-title">FAQ：最大模原理的直观意义是什么？</div>
+      <p>解析函数的模 $|f(z)|$ 不能在区域内部取到严格最大值——就像一座山，山顶不能在山体内部，必须在山脊（边界）上。更形象地说：如果你在一个平面上加热一块金属板使其达到稳态温度分布（满足 Laplace 方程），最热的点和最冷的点一定出现在边界上，不会出现在板的中心。这是调和函数的极大值原理，对应到解析函数就是最大模原理。</p>
     </div>
   </div>
 
@@ -873,18 +532,19 @@
     <h2>本章小结</h2>
     <h3>核心要点回顾</h3>
     <ol>
-      <li><strong>$e^z$</strong>：定义为 $e^x(\cos y + i\sin y)$，在整个 $\CC$ 上解析，以 $2\pi i$ 为周期，值域为 $\CC\setminus\{0\}$。</li>
-      <li><strong>$\log z$</strong>：定义为 $e^w=z$ 的解。因为 $e^z$ 是周期函数，$\log z$ 是多值函数：$\log z = \ln|z| + i(\Arg z + 2k\pi)$。主值 $\Log z$ 取 $k=0$。理解分支和支割线是正确使用对数函数的前提。</li>
-      <li><strong>$z^a$</strong>：定义为 $e^{a\log z}$。$a$ 为整数 → 单值；$a=p/q$（互素）→ $q$ 值；$a$ 无理/虚 → 无穷多值。$i^i = e^{-\pi/2-2k\pi}$ 是经典例子。</li>
-      <li><strong>复三角函数</strong>：$\cos z = \frac{e^{iz}+e^{-iz}}{2}$，$\sin z = \frac{e^{iz}-e^{-iz}}{2i}$。保持和角公式、Pythagoras 恒等式等代数性质，但失去有界性。与双曲函数通过 $\cos(iz)=\cosh z$ 联系。</li>
+      <li><strong>参数化计算</strong>：$\int_C f(z)dz = \int_\alpha^\beta f(z(t))z'(t)dt$ 是基本计算手段。$\oint (z-a)^n dz$ 当且仅当 $n=-1$ 时为 $2\pi i$，其余全为零——这个事实是整个留数理论的原点。</li>
+      <li><strong>Cauchy-Goursat 定理</strong>：解析函数在单连通域内沿闭曲线积分为零。等价于积分与路径无关、原函数存在。</li>
+      <li><strong>Cauchy 积分公式</strong>：$f(a) = \frac{1}{2\pi i}\oint_C \frac{f(z)}{z-a}dz$。边界值决定内部值。由此推出解析函数无穷次可微。</li>
+      <li><strong>高阶导数公式</strong>：$f^{(n)}(a) = \frac{n!}{2\pi i}\oint_C \frac{f(z)}{(z-a)^{n+1}}dz$。Cauchy 估计：$|f^{(n)}(a)| \le n!M/R^n$。</li>
+      <li><strong>推论链</strong>：Cauchy 估计 → Liouville 定理（有界整函数必为常数）→ 代数基本定理（$n$ 次多项式恰有 $n$ 个复根）。最大模原理：解析函数的模在边界上取最大值。</li>
     </ol>
     <h3>承上启下</h3>
-    <p>有了这批具体的解析函数作为武器，我们现在可以进入复分析最核心的章节——第四章的积分理论。初等函数的解析性（哪些区域解析？奇点在哪里？）直接决定了积分计算的成败。特别是对数函数的分支结构，将在积分路径的选择中反复发挥作用。</p>
+    <p>本章用积分的方法研究了全局性质。接下来将进入一个强大的视角：用无穷级数来局部地分解函数。如果一个函数在围道内部有奇点，积分公式的处理会变得复杂——而 Laurent 级数展开则提供了一种把奇点行为"分离出来"的系统方法。这正是第五章的主题，也是第六章留数理论的前奏。</p>
   </div>
 
   <div class="chapter-nav">
     <a href="ch2.html" class="prev">第二章 · 解析函数</a>
-    <a href="ch4.html" class="next">第四章 · 复积分</a>
+    <a href="ch4.html" class="next">第四章 · 解析函数的幂级数表示</a>
   </div>
 
 </div>

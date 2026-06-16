@@ -34,10 +34,7 @@
     <li><a href="ch2.html">第二章</a></li>
     <li><a href="ch3.html">第三章</a></li>
     <li><a href="ch4.html">第四章</a></li>
-    <li><a href="ch5.html">第五章</a></li>
-    <li><a href="ch6.html">第六章</a></li>
-    <li><a href="ch7.html">第七章</a></li>
-        <li><a href="appendix.html">附录</a></li>
+    <li><a href="appendix.html">附录</a></li>
   </ul>
 </nav>
 
@@ -57,6 +54,8 @@
       <li><a href="#s4">0.4 PDE的基本术语与概念</a></li>
       <li><a href="#s5">0.5 三类经典方程初览</a></li>
       <li><a href="#s6">0.6 学习路线图</a></li>
+      <li><a href="#s7">0.7 适定性：存在性、唯一性与稳定性</a></li>
+      <li><a href="#s8">0.8 非线性PDE的识别与分类示例</a></li>
     </ol>
   </div>
 
@@ -350,6 +349,175 @@
         <li><strong>注意联系</strong>：三类方程虽然不同，但求解方法（分离变量法、积分变换法、Green函数法）是相通的。学习时注意对比。</li>
         <li><strong>接受"不通"</strong>：初学PDE时，不可能每个细节都完全理解。先建立整体框架，细节会在反复使用中逐渐清晰。</li>
       </ol>
+    </div>
+  </div>
+
+  <!-- ==================== 0.7 ==================== -->
+  <div class="section" id="s7">
+    <h2>0.7 适定性：存在性、唯一性与稳定性</h2>
+
+    <div class="box box-intuition">
+      <div class="box-title">什么是"好问题"？</div>
+      <p>在PDE理论中，我们不只是求解方程——我们关心的问题是<strong>"这个定解问题是否合理？"</strong> 如果一个定解问题满足三个条件，我们就说它是<strong>适定的</strong>（well-posed）。这个由法国数学家 Jacques Hadamard 在1902年提出的概念，至今仍是PDE理论最核心的判断标准。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 0.7（Hadamard 适定性）</div>
+      <p>一个PDE定解问题称为<strong>适定</strong>的（well-posed），当且仅当它同时满足以下三个条件：</p>
+      <ol>
+        <li><strong>存在性（Existence）</strong>：该问题<strong>至少存在一个</strong>解。即定解条件与方程本身不矛盾，确实有函数满足所有条件。</li>
+        <li><strong>唯一性（Uniqueness）</strong>：该问题<strong>最多存在一个</strong>解。给定相同的方程和定解条件，不能产生两个不同的解。</li>
+        <li><strong>稳定性（Stability / 连续依赖性）</strong>：解<strong>连续依赖于</strong>定解条件。也就是说，如果初始条件或边界条件发生微小变化，解的变化也必须是微小的。数学上表达为：对任意 $\varepsilon > 0$，存在 $\delta > 0$，当定解数据的变化小于 $\delta$ 时，解的变化小于 $\varepsilon$。</li>
+      </ol>
+      <p>若三个条件中任意一个不满足，问题就是<strong>不适定的</strong>（ill-posed）。</p>
+    </div>
+
+    <div class="box box-analogy">
+      <div class="box-title">物理类比：适定性的直观理解</div>
+      <p>想象你在预测天气：</p>
+      <ul>
+        <li><strong>存在性</strong>：是否存在一种天气演化，符合所有物理定律和当前的观测数据？如果方程和观测矛盾，就不存在解。</li>
+        <li><strong>唯一性</strong>：给定相同的初始观测数据，预测结果是否唯一？如果模型给出两种截然不同的天气预报，那就无法决策。</li>
+        <li><strong>稳定性</strong>：如果温度计有 0.1°C 的测量误差，预测结果会完全乱套吗？如果会，那这个模型就无法实际使用——因为我们永远无法精确测量初始数据。</li>
+      </ul>
+      <p><strong>适定性是连接数学与现实世界的桥梁。</strong>只有适定的问题，其数学解才能在物理世界中对应实际可观测、可预测的现象。</p>
+    </div>
+
+    <h3>三类经典方程的适定性</h3>
+
+    <div class="box box-note">
+      <div class="box-title">适定性简要对照表</div>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>方程</th><th>存在性</th><th>唯一性</th><th>稳定性</th><th>不适定情况</th></tr>
+          <tr>
+            <td>波动方程</td>
+            <td>在 $C^2$ 类中成立</td>
+            <td>能量方法证明</td>
+            <td>由d'Alembert公式直接验证</td>
+            <td>反向波动方程（时间反演）不适定</td>
+          </tr>
+          <tr>
+            <td>热传导方程</td>
+            <td>在适当函数空间成立</td>
+            <td>极值原理证明</td>
+            <td>极值原理推出</td>
+            <td><strong>反向热方程</strong> $u_t = -a^2 u_{xx}$ 是经典的不适定问题</td>
+          </tr>
+          <tr>
+            <td>Laplace方程</td>
+            <td>对合适边界条件成立</td>
+            <td>极值原理证明</td>
+            <td>由极值原理推出</td>
+            <td>Neumann问题解可有任意常数差；Dirichlet外问题需附加无穷远处条件</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="box box-pitfall">
+      <div class="box-title">不适定的经典例子：反向热传导方程</div>
+      <p>考虑反向热方程 $u_t = -a^2 u_{xx}$，初始条件 $u(x,0) = \varphi(x)$。这是热传导方程的时间反演——试图从当前的温度分布反推过去的温度分布。</p>
+      <p>可以证明：即使 $\varphi(x)$ 的微小测量误差，在向后演化时也会被<strong>指数放大</strong>。例如若 $\varphi(x)$ 含高频扰动 $\varepsilon\sin(nx)$，其向后演化时的振幅为 $\varepsilon e^{+a^2 n^2 t}$——$n$ 越大，放大越快。这意味着反向热方程对初始数据<strong>不连续依赖</strong>，因此<strong>不适定</strong>。</p>
+      <p>物理上这很合理：热量扩散是不可逆的，你无法从一杯已经冷却的咖啡精确反推出它半小时前的温度分布——太多信息已经"丢失"在扩散过程中了。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 0.7.1（适定性判断题）</div>
+      <p>判断以下定解问题是否适定，并说明理由：</p>
+      <p>(a) $u_{tt} = u_{xx}$，$u(x,0)=\varphi(x)$，$u_t(x,0)=\psi(x)$（$\varphi\in C^2, \psi\in C^1$）</p>
+      <p>(b) $u_t = -u_{xx}$，$u(x,0) = \sin x$</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p><strong>(a)</strong> 这是标准波动方程Cauchy问题，由d'Alembert公式给出显式解（存在性），能量方法证明唯一性，从公式可直接看出解的连续依赖性（稳定性）。故<strong>适定</strong>。</p>
+          <p><strong>(b)</strong> 这是反向热方程。虽然形式上有解 $u(x,t) = e^{t}\sin x$（存在性、唯一性看似成立），但该解关于初始数据不连续依赖：若初始条件有微小扰动 $\delta\sin(Nx)$，在 $t > 0$ 时扰动被放大为 $\delta e^{N^2 t}\sin(Nx)$，放大因子 $e^{N^2 t}$ 随 $N\to\infty$ 发散。故<strong>稳定性不成立，问题不适定</strong>。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 0.8 ==================== -->
+  <div class="section" id="s8">
+    <h2>0.8 非线性PDE的识别与分类示例</h2>
+
+    <div class="box box-motivation">
+      <div class="box-title">为什么要能快速识别PDE的线性/非线性？</div>
+      <p>线性PDE和非线性PDE的求解策略完全不同。线性PDE可以用叠加原理、Fourier变换、Green函数等强大工具，而非线性PDE通常需要更复杂的方法（特征线法对一阶、数值方法等），且通解一般不再能显式写出。能<strong>快速判断一个PDE是线性还是非线性</strong>，是选择分析策略的第一步。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">判断规则（回顾并强化）</div>
+      <p>将方程中所有含未知函数 $u$ 及其导数的项移到左边，得到 $F[u]=0$ 的形式。考虑线性组合：</p>
+      <p>若对任意常数 $\alpha, \beta$ 和任意函数 $u, v$，恒有</p>
+      $$F[\alpha u + \beta v] = \alpha F[u] + \beta F[v],$$
+      <p>则方程为<strong>线性</strong>。</p>
+      <p>否则为<strong>非线性</strong>。非线性又可细分为：</p>
+      <ul>
+        <li><strong>半线性（semilinear）</strong>：最高阶导数前面的系数只依赖于 $(x,y)$，低阶项或零阶项可非线性地依赖于 $u$；</li>
+        <li><strong>拟线性（quasilinear）</strong>：最高阶导数前面的系数可依赖于 $u$ 及其低阶导数，但对最高阶导数仍是线性的；</li>
+        <li><strong>完全非线性（fully nonlinear）</strong>：最高阶导数以非线性形式出现。</li>
+      </ul>
+    </div>
+
+    <h3>非线性识别的核心技巧</h3>
+
+    <p>判断非线性的<strong>最简法则</strong>：看未知函数 $u$ 或其导数之间是否出现以下情况：</p>
+
+    <div class="box box-note">
+      <div class="box-title">非线性的"红色信号"</div>
+      <ol>
+        <li>$u$ 和它的导数出现在<strong>乘积</strong>中，如 $u \cdot u_x$、$u_x \cdot u_y$</li>
+        <li>$u$ 或其导数出现在<strong>幂次</strong>中，如 $u_x^2$、$(u_{xx})^3$</li>
+        <li>$u$ 是<strong>复合函数</strong>的参数，如 $\sin u$、$e^{u}$、$\sqrt{1+u_x^2}$</li>
+        <li>$u$ 或其导数的<strong>绝对值</strong>、<strong>符号函数</strong>等非光滑函数，如 $|u_x|$</li>
+      </ol>
+      <p>只要出现上述任意一种情况，方程就是<strong>非线性的</strong>。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 0.8.1（考试热点：快速判定线性/非线性）</div>
+      <p>判断以下偏微分方程是线性的还是非线性的。若为非线性，进一步判断是拟线性的还是完全非线性的。</p>
+      <p>(a) $u_x^2 + u u_y = 0$ 【来自考试选择题4】</p>
+      <p>(b) $u_t + u u_x = 0$（Burgers方程）</p>
+      <p>(c) $u_{xx} + \sin u = 0$（非线性Klein-Gordon方程）</p>
+      <p>(d) $(1+u_y^2)u_{xx} - 2u_x u_y u_{xy} + (1+u_x^2)u_{yy} = 0$（极小曲面方程）</p>
+      <p>(e) $u_t + u_x = 0$</p>
+      <p>(f) $u_{tt} - a^2 u_{xx} = \sin x$</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p><strong>(a) $u_x^2 + u u_y = 0$：</strong> 出现 $u_x^2$（导数的乘积）和 $u u_y$（$u$与导数的乘积），两个都是非线性项。</p>
+          <p>再看最高阶（一阶）导数：$u_x$ 和 $u_y$。其中 $u_x^2$ 说明最高阶导数以非线性形式出现（系数非1，而是 $u_x$）。故为<strong>完全非线性</strong>（一阶）。</p>
+          <p><strong>(b) $u_t + u u_x = 0$：</strong> $u u_x$ 是 $u$ 与导数的乘积，非线性。但最高阶导数 $u_t$ 和 $u_x$ 的系数（1 和 $u$）中 $u$ 不含导数，故对一阶导数是线性的。</p>
+          <p>这是<strong>拟线性</strong>（quasilinear）一阶PDE。</p>
+          <p><strong>(c) $u_{xx} + \sin u = 0$：</strong> 二阶导数 $u_{xx}$ 的系数为1（仅依赖于自变量），但零阶项含有 $\sin u$，非线性依赖于 $u$。</p>
+          <p>这是<strong>半线性</strong>（semilinear）二阶PDE。</p>
+          <p><strong>(d) 极小曲面方程：</strong> 二阶导数的系数（如 $1+u_y^2$）依赖于一阶导数。对二阶导数是线性的（每个二阶导数前有系数，二阶导数之间无乘积）。</p>
+          <p>这是<strong>拟线性</strong>（quasilinear）二阶PDE。</p>
+          <p><strong>(e) $u_t + u_x = 0$：</strong> 所有含 $u$ 的项都是一次的，系数只依赖于自变量。这是<strong>线性</strong>一阶PDE。</p>
+          <p><strong>(f) $u_{tt} - a^2 u_{xx} = \sin x$：</strong> 左边是线性的，右边 $\sin x$ 不含 $u$。这是<strong>线性非齐次</strong>PDE（非齐次不影响线性/非线性的判断——线性是关于未知函数 $u$ 而言的）。</p>
+          <p><strong>总结口诀：</strong></p>
+          <ul>
+            <li>"导数相乘或幂次，完全非线性无疑"；</li>
+            <li>"最高阶前系数含低阶导，拟线性写上不犹豫"；</li>
+            <li>"最高阶系数只依 x，低阶 u 随便翻天；只关函数不关导，这便是半线性的面"；</li>
+            <li>"一切只含u的一次，那就是线性PDE"。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-intuition">
+      <div class="box-title">考试技巧：一眼看出线性与否</div>
+      <p>在考场上，不需要一步步分析，直接看<strong>是否有以下任何情况</strong>：</p>
+      <ol>
+        <li>未知函数 $u$ 被乘到它的导数上 → 非线性</li>
+        <li>导数带平方 → 非线性</li>
+        <li>$u$ 被套在 $\sin$, $\cos$, $e$, $\ln$ 等函数里 → 非线性</li>
+        <li>导数之间相乘 → 非线性</li>
+      </ol>
+      <p>如果以上情况都不存在，且 $u$ 及其导数只以一次方出现，那就是<strong>线性的</strong>。注意：右端项（如 $f(x,t)$）是否为零不影响线性与否的判断——那是齐次/非齐次的区别。</p>
     </div>
   </div>
 

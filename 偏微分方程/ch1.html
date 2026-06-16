@@ -33,10 +33,7 @@
     <li><a href="ch2.html">第二章</a></li>
     <li><a href="ch3.html">第三章</a></li>
     <li><a href="ch4.html">第四章</a></li>
-    <li><a href="ch5.html">第五章</a></li>
-    <li><a href="ch6.html">第六章</a></li>
-    <li><a href="ch7.html">第七章</a></li>
-        <li><a href="appendix.html">附录</a></li>
+    <li><a href="appendix.html">附录</a></li>
   </ul>
 </nav>
 
@@ -454,6 +451,22 @@
       <p>定义球面平均 $M(r,t) = \frac{1}{4\pi r^2}\int_{|\xi|=r}u(x+\xi,t)\,\dd S$。可证 $rM$ 满足一维波动方程 $(rM)_{tt} = a^2(rM)_{rr}$。用 d'Alembert 公式求解 $rM$，再令 $r \to 0$ 即得 Poisson 公式。这就是"降维"的力量——高维问题化为一维！</p>
     </div>
 
+    <h3>二维波动方程与Poisson公式</h3>
+    <div class="box box-formula">
+      <div class="box-title">二维初值问题的Poisson公式</div>
+      <p>对于 $u_{tt} = a^2(u_{xx}+u_{yy})$（$\RR^2$ 上的Cauchy问题），$u|_{t=0}=\varphi$，$u_t|_{t=0}=\psi$，其解为：</p>
+      $$u(x,y,t) = \frac{1}{2\pi a}\frac{\pd}{\pd t}\iint_{B_{at}(x,y)}\frac{\varphi(\xi,\eta)}{\sqrt{a^2t^2-(\xi-x)^2-(\eta-y)^2}}\,\dd\xi\dd\eta + \frac{1}{2\pi a}\iint_{B_{at}(x,y)}\frac{\psi(\xi,\eta)}{\sqrt{a^2t^2-(\xi-x)^2-(\eta-y)^2}}\,\dd\xi\dd\eta.$$
+      <p>其中 $B_{at}(x,y)$ 是以 $(x,y)$ 为圆心、$at$ 为半径的圆盘。这称为<strong>Poisson公式（二维）</strong>。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">二维波动方程的依赖区域</div>
+      <p>在二维波动方程中，<strong>依赖区域</strong>是以观测点 $(x_0, y_0, t_0)$ 为顶点的<strong>向后锥体</strong>在 $t=0$ 平面截出的<strong>圆盘</strong>：</p>
+      $$D = \{(x,y) \mid (x-x_0)^2 + (y-y_0)^2 \le (a t_0)^2\}.$$
+      <p>即位于 $(x_0, y_0)$ 处、时刻 $t_0$ 的解值仅依赖于初始时刻 $t=0$ 时以 $(x_0, y_0)$ 为圆心、$a t_0$ 为半径的<strong>圆盘内</strong>的数据。</p>
+      <p>这与三维情况的<strong>球面</strong>依赖（只有距离恰好为 $a t_0$ 的点）有本质区别！</p>
+    </div>
+
     <h3>Huygens 原理（三维 vs 二维）</h3>
     <div class="box box-theorem">
       <div class="box-title">Huygens 原理</div>
@@ -463,7 +476,7 @@
     </div>
 
     <div class="box box-example">
-      <div class="box-title">例题 1.6.1</div>
+      <div class="box-title">例题 1.6.1（三维Poisson公式）</div>
       <p>三维波动方程，$a=1$，$\varphi=0$，$\psi(x)=1$（$|x|<1$），$\psi=0$（$|x|\ge 1$）。求 $u(0,t)$。</p>
       <div class="collapsible">
         <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
@@ -472,6 +485,43 @@
           <p>$t < 1$：球面完全在 $|\xi|<1$ 内，$\psi=1$，积分 $= 4\pi t^2$，故 $u(0,t) = t$。</p>
           <p>$t > 1$：球面完全在 $|\xi|\ge 1$ 外，$\psi=0$，故 $u(0,t) = 0$。</p>
           <p>体现了 Huygens 原理：扰动到达原点后立刻离开，不留余波。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 1.6.2（考试重点：二维依赖区域）</div>
+      <p>二维波动方程 $u_{tt} = u_{xx} + u_{yy}$，已知 $a=1$。求点 $(x,y,t) = (1, 2, 6)$ 处的 $u$ 值依赖于初始平面上哪个区域的数据？写出该区域的解析表达式。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>$a=1, t_0=6$，所以依赖区域是以 $(1, 2)$ 为圆心、$a t_0 = 6$ 为半径的圆盘。</p>
+          <p>该区域为：</p>
+          $$\{(x,y) \in \RR^2 \mid (x-1)^2 + (y-2)^2 \le 36\}.$$
+          <p>注意这是<strong>圆盘</strong>（不等式是 $\le$），不是圆周。这是因为在二维波动方程中，初始数据对整个圆盘内的贡献都会影响到观测点的值（降维法得出）。因此正确答案是 $(x-1)^2+(y-2)^2 \le 36$。</p>
+          <p>如果换为三维波动方程 $u_{tt} = u_{xx}+u_{yy}+u_{zz}$，依赖区域将是<strong>球面</strong> $(x-1)^2+(y-2)^2+(z-z_0)^2 = 36$。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 1.6.3（考试重点：三维Poisson公式求具体值）</div>
+      <p>求解三维波动方程Cauchy问题：</p>
+      $$\begin{cases} u_{tt} - \lap u = 0, & (x,y,z) \in \RR^3,\ t > 0, \\ u(x,y,z,0) = 0, & \\ u_t(x,y,z,0) = x^2. \end{cases}$$
+      <p>求 $u(0,0,0,t)$ 的表达式。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>$a=1$，$\varphi=0$，$\psi(x,y,z)=x^2$。由Poisson公式（三维Kirchhoff公式）：</p>
+          $$u(0,t) = t \cdot M_t[\psi](0) = \frac{t}{4\pi t^2} \int_{|\xi|=t} \psi(\xi) \,\dd S_\xi = \frac{1}{4\pi t} \int_{|\xi|=t} \xi_1^2 \,\dd S_\xi.$$
+          <p>需要计算 $\int_{|\xi|=t} \xi_1^2 \,\dd S_\xi$。由对称性，在球面 $|\xi|=t$ 上：</p>
+          $$\int_{|\xi|=t} \xi_1^2 \,\dd S = \int_{|\xi|=t} \xi_2^2 \,\dd S = \int_{|\xi|=t} \xi_3^2 \,\dd S.$$
+          <p>三者之和为：$\int_{|\xi|=t} (\xi_1^2 + \xi_2^2 + \xi_3^2) \,\dd S = \int_{|\xi|=t} t^2 \,\dd S = t^2 \cdot 4\pi t^2 = 4\pi t^4$。</p>
+          <p>因此每份各占三分之一：$\displaystyle\int_{|\xi|=t} \xi_1^2 \,\dd S = \frac{4\pi t^4}{3}$。</p>
+          <p>代入得：</p>
+          $$u(0,t) = \frac{1}{4\pi t} \cdot \frac{4\pi t^4}{3} = \frac{t^3}{3}.$$
+          <p><strong>验证：</strong>$u_t(0,t) = t^2$，$t \to 0^+$ 时 $u_t(0,0) = 0$（与 $\psi(0)=0$ 一致）；$u(0,t) = t^3/3$ 确实是三维波动方程的解。</p>
+          <p>注意这里用到了球面积分中的<strong>对称性技巧</strong>——这是考试中经常出现的题型。</p>
         </div>
       </div>
     </div>

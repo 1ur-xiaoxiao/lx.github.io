@@ -45,6 +45,7 @@
     <li><a href="ch5.html">第五章</a></li>
     <li><a href="ch6.html">第六章</a></li>
     <li><a href="ch7.html">第七章</a></li>
+    <li><a href="ch8.html">第八章</a></li>
     <li><a href="appendix.html" style="color:#fbbf24;">📋 附录</a></li>
     <li><a href="quiz.html" style="color:#fbbf24;">🎮 闯关答题</a></li>
   </ul>
@@ -73,7 +74,7 @@
   <div class="section" style="margin-bottom:1.5rem;padding:1.25rem 1.5rem;">
     <h2 style="font-size:1.15rem;margin-bottom:0.5rem;border:none;padding:0;">本章导读</h2>
     <p>这是复变函数课程的<strong>最后一章</strong>，也是前五章所有理论的汇合点。</p>
-    <p>回忆两个关键事实。事实一（来自第四章）：$\oint_C (z-a)^n dz$ 当 $n=-1$ 时为 $2\pi i$，其余全为零。事实二（来自第五章）：任何函数在奇点附近可以展开为 Laurent 级数，其中 $(z-a)^{-1}$ 的系数 $a_{-1}$ 被称为<strong>留数</strong>。</p>
+    <p>回忆两个关键事实。事实一（来自第三章）：$\oint_C (z-a)^n dz$ 当 $n=-1$ 时为 $2\pi i$，其余全为零。事实二（来自第四、五章）：任何函数在奇点附近可以展开为 Laurent 级数，其中 $(z-a)^{-1}$ 的系数 $a_{-1}$ 被称为<strong>留数</strong>。</p>
     <p>将两者结合，立刻得到留数定理：<strong>围道积分 = $2\pi i$ ×（围道内所有奇点留数之和）</strong>。计算积分不再需要参数化和求原函数——你只需要在奇点处展开（或套用公式），提取 $a_{-1}$，求和，乘以 $2\pi i$。这就是复分析作为一个"计算工具"的顶峰。</p>
     <p>更令人惊喜的是，留数定理可以"反哺"实分析——通过巧妙构造围道（上半平面半圆、单位圆等），许多在实分析中极难处理的定积分（如 $\int_{-\infty}^\infty \frac{\sin x}{x}dx = \frac{\pi}{2}$）可以被优雅地算出。这种"用复数方法解决实数问题"的策略，是复变函数最闪亮的应用之一。</p>
   </div>
@@ -577,14 +578,14 @@
       <li><strong>三类实积分</strong>：通过变量代换或围道设计，将实积分转化为围道积分，再用留数定理求解。这是复变函数最重要的计算应用。</li>
       <li><strong>辐角原理与 Rouché 定理</strong>：用于不直接解方程而判断零点个数——辐角变化 / $2\pi$ = $N-P$；Rouché 定理通过比较两个函数在围道上的大小来判定它们零点数相同。</li>
     </ol>
-    <h3>七章知识脉络回顾</h3>
+    <h3>八章知识脉络回顾</h3>
     <p>回顾整门课程的逻辑链：</p>
-    <p><strong>第一章</strong>（复数）→ <strong>第二章</strong>（解析性标准：C-R 方程）→ <strong>第三章</strong>（初等函数：具体素材）→ <strong>第四章</strong>（积分理论：宏观视角，Cauchy 积分公式揭示解析函数的"全息性"）→ <strong>第五章</strong>（级数展开：微观视角，Laurent 展开分离奇点的奇异行为）→ <strong>第六章</strong>（留数：前五章所有理论的汇合点，将积分化为代数计算，并反哺实分析）→ <strong>第七章</strong>（共形映射：几何篇章，解析函数的保角性与区域变换是复分析在物理和工程中最直接的几何应用）</p>
+    <p><strong>第一章</strong>（复数）→ <strong>第二章</strong>（解析函数与初等函数：C-R方程+初等函数实例库）→ <strong>第三章</strong>（积分理论：Cauchy 积分公式揭示解析函数的"内部决定性"）→ <strong>第四章</strong>（幂级数：Taylor 展开的局部表示）→ <strong>第五章</strong>（洛朗展式与孤立奇点：分离奇点的奇异行为）→ <strong>第六章</strong>（留数：前五章理论的汇合点，将积分化为代数计算并反哺实分析）→ <strong>第七章</strong>（共形映射：几何篇章，保角性与区域变换）→ <strong>第八章</strong>（解析延拓：函数的全局生长与Riemann面）</p>
     <p>这门课的核心洞见其实只有一句话：<strong>"复可导"的苛刻条件筛选出了一类性质极好的函数（解析函数），它们满足 Cauchy 积分公式和 Laurent 展开，使得围道积分由奇点处的留数决定，而几何上则体现为保角的共形映射。</strong>分析（导数、积分、级数、留数）与几何（保角、区域变换）在复变函数论中完美统一。</p>
   </div>
 
   <div class="chapter-nav">
-    <a href="ch5.html" class="prev">第五章 · 级数</a>
+    <a href="ch5.html" class="prev">第五章 · 洛朗展式与孤立奇点</a>
     <a href="ch7.html" class="next">第七章 · 共形映射</a>
   </div>
 

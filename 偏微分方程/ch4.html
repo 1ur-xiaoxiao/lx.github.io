@@ -33,10 +33,7 @@
     <li><a href="ch2.html">第二章</a></li>
     <li><a href="ch3.html">第三章</a></li>
     <li><a href="ch4.html">第四章</a></li>
-    <li><a href="ch5.html">第五章</a></li>
-    <li><a href="ch6.html">第六章</a></li>
-    <li><a href="ch7.html">第七章</a></li>
-        <li><a href="appendix.html">附录</a></li>
+    <li><a href="appendix.html">附录</a></li>
   </ul>
 </nav>
 
@@ -57,6 +54,7 @@
       <li><a href="#s5">4.5 叠加原理与Duhamel原理</a></li>
       <li><a href="#s6">4.6 Sturm-Liouville理论</a></li>
       <li><a href="#s7">4.7 三类方程的统一视角</a></li>
+      <li><a href="#s8">4.8 能量估计方法</a></li>
     </ol>
   </div>
 
@@ -240,6 +238,44 @@
         </div>
       </div>
     </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 4.5（考试重点：分类+特征方向+标准型综合题）</div>
+      <p>考虑二阶偏微分方程：</p>
+      $$3u_{xx} + 10u_{xy} + 3u_{yy} = 0.$$
+      <p>(1) 判断该方程的类型；</p>
+      <p>(2) 求其特征方向和特征曲线族；</p>
+      <p>(3) 将其化为标准型，并写出通解。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p><strong>(1) 类型判断：</strong></p>
+          <p>$a_{11}=3, a_{12}=5, a_{22}=3$。$\Delta = a_{12}^2 - a_{11}a_{22} = 25 - 9 = 16 > 0$。故方程为<strong>双曲型</strong>。</p>
+          <p><strong>(2) 特征方向：</strong></p>
+          <p>特征方程为 $a_{11}\lambda^2 - 2a_{12}\lambda + a_{22} = 0$，即：</p>
+          $$3\lambda^2 - 10\lambda + 3 = 0.$$
+          <p>解此二次方程：$\lambda = \frac{10 \pm \sqrt{100 - 36}}{6} = \frac{10 \pm 8}{6}$。</p>
+          <p>得两个实根：</p>
+          $$\lambda_1 = 3, \quad \lambda_2 = \frac{1}{3}.$$
+          <p>这两个根 $\lambda = \frac{\dd y}{\dd x}$ 就是<strong>特征方向</strong>。特征曲线由下面积分得到：</p>
+          <p>对 $\lambda_1 = 3$：$\frac{\dd y}{\dd x} = 3 \implies y - 3x = C_1$（第一族特征曲线）；</p>
+          <p>对 $\lambda_2 = 1/3$：$\frac{\dd y}{\dd x} = \frac{1}{3} \implies y - \frac{x}{3} = C_2$，即 $3y - x = \text{const}$（第二族特征曲线）。</p>
+          <p><strong>(3) 化标准型：</strong></p>
+          <p>取新变量 $\xi = y - 3x$，$\eta = y - \frac{x}{3}$（或等价的 $\eta = 3y - x$）。</p>
+          <p>利用链式法则（更简单的方法是直接使用"取两族特征曲线的不变量为自变量"）：</p>
+          <p>计算结果为标准双曲型：</p>
+          $$u_{\xi\eta} = 0.$$
+          <p>注意此为标准型（$u_{\xi\eta}=0$），而非需要进一步变换。</p>
+          <p>通解为：$u = f(y - 3x) + g\!\left(y - \frac{x}{3}\right)$，其中 $f, g$ 为任意 $C^2$ 函数。</p>
+          <p>或用另一族特征曲线：$u = F(y - 3x) + G(3y - x)$，$F, G$ 为任意 $C^2$ 函数。</p>
+          <p><strong>快速验证：</strong>设 $u = f(y-3x) + g(3y-x)$，则</p>
+          <p>$u_x = -3f' - g', \quad u_y = f' + 3g'$；</p>
+          <p>$u_{xx} = 9f'' + g'', \quad u_{xy} = -3f'' - 3g'', \quad u_{yy} = f'' + 9g''$。</p>
+          <p>$3u_{xx} + 10u_{xy} + 3u_{yy} = 3(9f''+g'') + 10(-3f''-3g'') + 3(f''+9g'') = (27-30+3)f'' + (3-30+27)g'' = 0$。验证正确。</p>
+          <p><strong>考试技巧：</strong>双曲型方程，特征方向由 $a_{11}\lambda^2 - 2a_{12}\lambda + a_{22} = 0$ 给出。标准型取特征曲线的积分不变量为 $\xi, \eta$，总能化为 $u_{\xi\eta}=0$（第一标准型），通解就是 $u = f(\xi) + g(\eta)$。</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ==================== 4.5 ==================== -->
@@ -360,9 +396,157 @@
     </div>
   </div>
 
+  <!-- ==================== 4.8 ==================== -->
+  <div class="section" id="s8">
+    <h2>4.8 能量估计方法</h2>
+
+    <div class="box box-intuition">
+      <div class="box-title">能量方法的核心思想</div>
+      <p>能量方法（Energy Method）是PDE理论中最强大的工具之一。其核心思想是：<strong>定义一个与解相关的"能量"泛函 $E(t)$，利用PDE推导 $E(t)$ 满足的微分不等式，从而获取解的估计。</strong> 能量方法不需要显式求解，却能给出：</p>
+      <ul>
+        <li><strong>唯一性证明</strong>（如果两个解能量差为零，它们相等）；</li>
+        <li><strong>稳定性估计</strong>（初始数据的小扰动导致解的小变化）；</li>
+        <li><strong>渐近行为</strong>（能量衰减的速率决定了解趋于平衡的速度）。</li>
+      </ul>
+    </div>
+
+    <h3>波动方程的能量估计</h3>
+
+    <div class="box box-formula">
+      <div class="box-title">一维波动方程的能量</div>
+      <p>对于 $u_{tt} = a^2 u_{xx}$（$x \in \RR$），定义能量：</p>
+      $$E(t) = \frac{1}{2}\int_{-\infty}^{+\infty} \big[u_t^2(x,t) + a^2 u_x^2(x,t)\big]\,\dd x.$$
+      <p>可以证明 $\frac{\dd E}{\dd t} = 0$，即<strong>能量守恒</strong>。这直接推出解的<strong>唯一性</strong>和<strong>稳定性</strong>。</p>
+    </div>
+
+    <h3>一般二阶双曲型方程的能量估计</h3>
+
+    <div class="box box-theorem">
+      <div class="box-title">能量不等式（考试重点）</div>
+      <p>考虑更一般的双曲型方程（可能有低阶项，如阻尼）：</p>
+      $$u_{tt} = a^2 u_{xx} + b(x,t) u_x + c(x,t) u_t + d(x,t) u + f(x,t).$$
+      <p>设 $|b|, |c|, |d| \le M$（系数有界）。定义能量 $E(t) = \frac{1}{2}\int (u_t^2 + a^2 u_x^2 + u^2)\,\dd x$。</p>
+      <p>则可导出<strong>能量不等式（Gronwall型）</strong>：</p>
+      $$\boxed{E(t) \le E(0)\,e^{Ct} + C\int_0^t \|f(\cdot,\tau)\|_{L^2}^2\,e^{C(t-\tau)}\,\dd\tau},$$
+      <p>其中常数 $C$ 仅依赖于 $a$ 和 $M$。</p>
+      <p><strong>该不等式有两个关键推论：</strong></p>
+      <ol>
+        <li>若 $f=0$（齐次方程），则 $E(t) \le E(0) e^{Ct}$——能量至多以指数速率增长（不会自发爆炸）；</li>
+        <li>若 $E(0)=0$ 且 $f=0$，则 $E(t) \equiv 0$，从而 $u \equiv 0$——推出<strong>唯一性</strong>。</li>
+      </ol>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">能量不等式的推导</div>
+      <p><strong>第一步：计算 $E'(t)$。</strong></p>
+      $$E'(t) = \int (u_t u_{tt} + a^2 u_x u_{xt} + u u_t)\,\dd x.$$
+      <p><strong>第二步：代入方程。</strong></p>
+      <p>$u_{tt} = a^2 u_{xx} + b u_x + c u_t + d u + f$。代入后：</p>
+      $$E'(t) = \int [u_t(a^2 u_{xx} + b u_x + c u_t + d u + f) + a^2 u_x u_{xt} + u u_t]\,\dd x.$$
+      <p><strong>第三步：分部积分处理 $u_t u_{xx}$ 项。</strong></p>
+      <p>$\int u_t u_{xx}\,\dd x = -\int u_{xt} u_x\,\dd x$（假设无穷远处边界项消失），恰好与 $a^2 u_x u_{xt}$ 项相消。</p>
+      <p><strong>第四步：用 Cauchy 不等式放缩低阶项。</strong></p>
+      <p>例：$\int b u_x u_t\,\dd x \le M \int |u_x||u_t|\,\dd x \le \frac{M}{2}\int (u_x^2 + u_t^2)\,\dd x \le M' E(t)$。</p>
+      <p><strong>第五步：得到微分不等式。</strong></p>
+      $$E'(t) \le C_1 E(t) + C_2\|f(\cdot,t)\|_{L^2}^2.$$
+      <p><strong>第六步：用 Gronwall 不等式求解。</strong></p>
+      <p>Gronwall 引理：若 $y'(t) \le \alpha y(t) + \beta(t)$ 且 $y(0) = y_0$，则</p>
+      $$y(t) \le y_0 e^{\alpha t} + \int_0^t \beta(s) e^{\alpha(t-s)}\,\dd s.$$
+      <p>取 $y = E$, $\alpha = C_1$, $\beta(t) = C_2\|f\|^2$，即得能量不等式。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 4.8.1（考试重点：能量估计法证明唯一性）</div>
+      <p>考虑含阻尼的波动方程：</p>
+      $$u_{tt} + \gamma u_t = a^2 u_{xx}, \quad \gamma > 0, \quad x \in \RR.$$
+      <p>定义能量 $E(t) = \frac{1}{2}\int_{-\infty}^{+\infty} (u_t^2 + a^2 u_x^2)\,\dd x$。</p>
+      <p>(1) 证明 $E'(t) \le 0$（即能量不增，由于阻尼耗散）；</p>
+      <p>(2) 由此证明初值问题解的唯一性；</p>
+      <p>(3) 求 $E(t)$ 满足的精确估计。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p><strong>(1) 能量衰减：</strong></p>
+          $$E'(t) = \int_{-\infty}^{+\infty} (u_t u_{tt} + a^2 u_x u_{xt})\,\dd x.$$
+          <p>代入 $u_{tt} = a^2 u_{xx} - \gamma u_t$：</p>
+          $$\begin{aligned} E'(t) &= \int_{-\infty}^{+\infty} [u_t(a^2 u_{xx} - \gamma u_t) + a^2 u_x u_{xt}]\,\dd x \\ &= a^2\int_{-\infty}^{+\infty} (u_t u_{xx} + u_x u_{xt})\,\dd x - \gamma\int_{-\infty}^{+\infty} u_t^2\,\dd x. \end{aligned}$$
+          <p>第一项 $= a^2\int \frac{\pd}{\pd x}(u_t u_x)\,\dd x = 0$（无穷远处边界项消失）。故：</p>
+          $$E'(t) = -\gamma\int_{-\infty}^{+\infty} u_t^2(x,t)\,\dd x \le 0.$$
+          <p>特别注意：$E'(t) \le 0$（严格地，只要 $u_t \neq 0$），故<strong>能量单调递减</strong>。这是物理上阻尼耗散能量的数学表达。</p>
+          <p><strong>(2) 唯一性：</strong></p>
+          <p>设 $u_1, u_2$ 为两个解，$w = u_1 - u_2$ 满足齐次方程和零初始条件 $w(x,0)=0, w_t(x,0)=0$。$E_w(0)=0$，由 $E'(t) \le 0$ 得 $E(t) \le E(0) = 0$。但 $E(t) \ge 0$，故 $E(t) \equiv 0$，从而 $w_t \equiv 0, w_x \equiv 0$，$w \equiv \text{const} = 0$（由 $w(x,0)=0$）。即 $u_1 = u_2$。</p>
+          <p><strong>(3) 精确估计：</strong></p>
+          <p>由 $E'(t) = -\gamma\int u_t^2\,\dd x \ge -2\gamma E(t)$（因为 $\int u_t^2 \le \int(u_t^2 + a^2 u_x^2) = 2E$）。这给出 $E'(t) \ge -2\gamma E(t)$，即 $E(t) \ge E(0) e^{-2\gamma t}$。</p>
+          <p>另一方面，由直接估计可进一步得 $E(t) \le E(0) e^{-2\gamma t}$（在适当的边界条件下），故 $E(t) \le E(0) e^{-2\gamma t}$——能量以指数速率衰减。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 4.8.2（考试重点：能量不等式的一般形式）</div>
+      <p>证明：若 $u$ 满足 $u_{tt} + u_t = u_{xx} + u_x + f$，则存在仅依赖于方程系数的常数 $C > 0$，使得能量</p>
+      $$E(t) = \frac{1}{2}\int_{-\infty}^{+\infty}(u_t^2 + u_x^2 + u^2)\,\dd x$$
+      <p>满足</p>
+      $$E(t) \le E(0) e^{Ct} + C\int_0^t e^{C(t-\tau)}\|f(\cdot,\tau)\|_{L^2}^2\,\dd\tau.$$
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>对 $E(t)$ 求导并代入方程：</p>
+          $$E'(t) = \int (u_t u_{tt} + u_x u_{xt} + u u_t)\,\dd x.$$
+          <p>代入 $u_{tt} = u_{xx} + u_x - u_t + f$：</p>
+          $$\begin{aligned} E'(t) &= \int [u_t(u_{xx} + u_x - u_t + f) + u_x u_{xt} + u u_t]\,\dd x \\ &= \int (u_t u_{xx} + u_x u_{xt})\,\dd x + \int u_t u_x\,\dd x - \int u_t^2\,\dd x + \int u_t f\,\dd x + \int u u_t\,\dd x. \end{aligned}$$
+          <p>第一项 $= \int \frac{\pd}{\pd x}(u_t u_x)\,\dd x = 0$（边界项消失）。</p>
+          <p>对其余项分别用 Cauchy-Schwarz 和 Cauchy 不等式（$ab \le \frac{\varepsilon}{2}a^2 + \frac{1}{2\varepsilon}b^2$）：</p>
+          <p>$\int u_t u_x\,\dd x \le \frac{1}{2}\int(u_t^2 + u_x^2)\,\dd x \le E(t)$；</p>
+          <p>$-\int u_t^2\,\dd x \le 0$；</p>
+          <p>$\int u_t f\,\dd x \le \frac{1}{2}\int u_t^2\,\dd x + \frac{1}{2}\int f^2\,\dd x \le E(t) + \frac{1}{2}\|f\|_{L^2}^2$；</p>
+          <p>$\int u u_t\,\dd x \le \frac{1}{2}\int(u^2 + u_t^2)\,\dd x \le E(t)$。</p>
+          <p>综上：$E'(t) \le 3E(t) + \frac{1}{2}\|f(\cdot,t)\|_{L^2}^2$。</p>
+          <p>由 Gronwall 引理（取 $\alpha = 3$，$\beta(t) = \frac{1}{2}\|f\|^2$）：</p>
+          $$E(t) \le E(0) e^{3t} + \frac{1}{2}\int_0^t \|f(\cdot,\tau)\|_{L^2}^2 e^{3(t-\tau)}\,\dd\tau.$$
+          <p>取 $C = \max(3, 1/2) = 3$（或其他保守常数），即得题目所需形式。</p>
+          <p><strong>能量方法的关键步骤总结：</strong></p>
+          <ol>
+            <li>定义合适的能量（通常包含 $u_t^2$, $u_x^2$, $u^2$）；</li>
+            <li>求导并代入方程，将 $u_{tt}$ 用空间导数替换；</li>
+            <li>分部积分消去最高阶耦合项；</li>
+            <li>用 Cauchy 不等式放缩低阶项；</li>
+            <li>得到 $E'(t) \le C E(t) + g(t)$ 形式的微分不等式；</li>
+            <li>用 Gronwall 引理完成估计。</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-summary">
+      <div class="box-title">能量方法的三种主要应用</div>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>应用</th><th>核心思路</th><th>典型结论</th></tr>
+          <tr>
+            <td><strong>唯一性</strong></td>
+            <td>令 $w = u_1 - u_2$，证 $E(0)=0 \implies E(t)\equiv 0$</td>
+            <td>$w \equiv 0$，即 $u_1 = u_2$</td>
+          </tr>
+          <tr>
+            <td><strong>稳定性</strong></td>
+            <td>对 $w$ 的能量用 Gronwall 不等式</td>
+            <td>$\|u_1(t)-u_2(t)\| \le C_T \|u_1(0)-u_2(0)\|$</td>
+          </tr>
+          <tr>
+            <td><strong>渐近行为</strong></td>
+            <td>推导 $E'(t) \le -\lambda E(t)$</td>
+            <td>$E(t) \le E(0) e^{-\lambda t}$（指数衰减）</td>
+          </tr>
+        </table>
+      </div>
+      <p style="margin-top:1rem;">能量方法不依赖于显式解的存在——它只需要PDE本身和适当的函数空间。这使得它可以应用于<strong>无法显式求解</strong>的方程（如变系数方程、非线性方程），是现代PDE理论不可或缺的工具。</p>
+    </div>
+  </div>
+
   <div class="chapter-nav">
     <a href="ch3.html" class="prev">第三章 · 调和方程</a>
-    <a href="ch5.html" class="next">第五章 · 一阶偏微分方程与特征线法</a>
+    <a href="appendix.html" class="next">附录 · 公式速查与备考指南</a>
   </div>
 
 </div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>第四章 · 复积分</title>
+  <title>第四章 · 解析函数的幂级数表示</title>
   <link rel="stylesheet" href="css/style.css">
   <script>
     window.MathJax = {
@@ -11,9 +11,18 @@
         inlineMath: [['$', '$'], ['\\(', '\\)']],
         displayMath: [['$$', '$$'], ['\\[', '\\]']],
         macros: {
-          RR: '\\mathbb{R}', CC: '\\mathbb{C}', EE: '\\mathbb{E}',
-          dd: '\\mathrm{d}', Res: '\\mathrm{Res}', arg: '\\mathrm{arg}',
-          Arg: '\\mathrm{Arg}', Log: '\\mathrm{Log}', ZZ: '\\mathbb{Z}', NN: '\\mathbb{N}', Re: '\\mathrm{Re}', Im: '\\mathrm{Im}'
+          RR: '\\mathbb{R}',
+          CC: '\\mathbb{C}',
+          EE: '\\mathbb{E}',
+          dd: '\\mathrm{d}',
+          Res: '\\mathrm{Res}',
+          arg: '\\mathrm{arg}',
+          Arg: '\\mathrm{Arg}',
+          Log: '\\mathrm{Log}',
+          ZZ: '\\mathbb{Z}',
+          NN: '\\mathbb{N}',
+          Re: '\\mathrm{Re}',
+          Im: '\\mathrm{Im}'
         }
       },
       svg: { fontCache: 'global' }
@@ -36,6 +45,7 @@
     <li><a href="ch5.html">第五章</a></li>
     <li><a href="ch6.html">第六章</a></li>
     <li><a href="ch7.html">第七章</a></li>
+    <li><a href="ch8.html">第八章</a></li>
     <li><a href="appendix.html" style="color:#fbbf24;">📋 附录</a></li>
     <li><a href="quiz.html" style="color:#fbbf24;">🎮 闯关答题</a></li>
   </ul>
@@ -44,506 +54,353 @@
 <div class="main-content">
 
   <div class="chapter-header">
-    <h1>第四章 · 复积分</h1>
-    <p>复积分是整个复分析的基石。Cauchy 积分定理和 Cauchy 积分公式是本章的核心，由此推导出解析函数的一系列深刻性质：无穷次可微、最大模原理、Liouville 定理、代数基本定理等。本章是复分析中最重要的一章。</p>
+    <h1>第四章 · 解析函数的幂级数表示</h1>
+    <p>用无穷级数表示复变函数——幂级数、Taylor 展开与 Laurent 展开构成留数理论的基础</p>
   </div>
 
   <!-- 学习目标 -->
   <div class="box box-definition" style="margin-bottom:1.5rem;">
     <div class="box-title">学完本章，你将能够：</div>
     <ol style="margin-bottom:0;">
-      <li>用参数化方法计算复变函数沿曲线的积分</li>
-      <li>运用 Cauchy-Goursat 定理判断闭合围道积分是否为零</li>
-      <li>运用 Cauchy 积分公式和高阶导数公式计算围道积分</li>
-      <li>理解并应用 Liouville 定理、代数基本定理、最大模原理等深刻推论</li>
-      <li>理解 Cauchy 估计的思想——用边界值控制内部值和各阶导数</li>
+      <li>判断复数项级数的收敛性（绝对收敛/条件收敛），求幂级数的收敛半径</li>
+      <li>将解析函数在正则点附近展开为 Taylor 级数</li>
+      <li>将函数在圆环域内展开为 Laurent 级数（含负幂项）</li>
+      <li>根据 Laurent 展开的主要部分，给孤立奇点分类（可去/极点/本性）</li>
+      <li>理解奇点分类与极限行为之间的等价关系</li>
     </ol>
   </div>
 
   <!-- 本章导读 -->
   <div class="section" style="margin-bottom:1.5rem;padding:1.25rem 1.5rem;">
     <h2 style="font-size:1.15rem;margin-bottom:0.5rem;border:none;padding:0;">本章导读</h2>
-    <p>如果说前两章是序曲（概念与工具），第四章就是<strong>第一乐章的高潮</strong>——Cauchy 积分定理和 Cauchy 积分公式是整个复分析大厦的支柱。</p>
-    <p>解析函数的优越性在这里开始兑现。在实分析中，定积分的计算依赖于被积函数的原函数（Newton-Leibniz 公式），而且一阶可导不能保证二阶可导。但在复分析中，Cauchy 积分公式告诉你三件魔法般的事：</p>
-    <p><strong>魔法一（全息性）</strong>：解析函数在围道内部任意一点的值，完全由它在围道边界上的值决定。这就像知道了房间墙壁的温度，就能精确推算出房间中心的温度。</p>
-    <p><strong>魔法二（无穷可微）</strong>：解析函数自动无穷次可微，而且有显式的积分表达式。</p>
-    <p><strong>魔法三（刚性）</strong>：有界整函数必为常数（Liouville 定理）——"全局有界且处处解析"的函数竟然是平凡函数！这在实分析中完全不可想象。</p>
-    <p>这些结果最终汇集成代数基本定理（任意 $n$ 次多项式恰有 $n$ 个复根）——一个纯代数的结论，却通过复分析的方法被优雅地证明。</p>
+    <p>第四章通过积分的方法研究了函数的全局性质。现在换一个视角：用<strong>无穷级数</strong>来"微观解剖"函数在某点附近的行为。</p>
+    <p>如果说 Cauchy 积分公式是从远处观察——知道函数在围道上的值就能推知内部所有信息——那么级数展开就是从近处观察——把函数拆解为 $(z-z_0)$ 的整数次幂的叠加。Taylor 展开告诉你在<strong>正则点</strong>（解析点）附近，函数像幂级数一样光滑。但真正的突破是 <strong>Laurent 展开</strong>——它允许负幂项，因此可以描述函数在<strong>奇点</strong>附近的行为。</p>
+    <p>奇点按照 Laurent 展开中负幂项的多寡分为三类：没有负幂项（可去）、有限多项负幂项（极点）、无穷多项负幂项（本性奇点）。这个简单的分类直接决定了第六章留数的计算方法——因为留数恰好就是 $(z-z_0)^{-1}$ 的系数。</p>
+  </div>
+
+  <!-- 数学分析级数知识回顾 -->
+  <div class="section" style="margin-bottom:1.5rem;padding:1.25rem 1.5rem;background:#fef9e7;border-left:4px solid #f1c40f;">
+    <h2 style="font-size:1.15rem;margin-bottom:0.5rem;border:none;padding:0;">预备：数学分析级数知识速览</h2>
+    <p>如果你对数学分析中的级数理论已经有些生疏，别担心——这里帮你快速回顾本章需要用到的基础概念。只需要读懂这些，就能顺利进入复变函数中更精彩的级数世界。</p>
+
+    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">1. 什么是级数？</h3>
+    <p>把无穷多个数按顺序加起来，就得到一个<strong>级数</strong>：$a_1 + a_2 + a_3 + \cdots = \sum_{n=1}^{\infty} a_n$。但"无穷多项相加"这个说法本身就有问题——我们不可能真的加无穷多次。所以数学家定义：先求前 $n$ 项的部分和 $S_n = a_1 + \cdots + a_n$，然后让 $n \to \infty$。如果极限 $\lim_{n\to\infty} S_n$ 存在（且有限），就说级数<strong>收敛</strong>，这个极限值就是级数的<strong>和</strong>；否则级数<strong>发散</strong>。</p>
+    <p><strong>直观理解：</strong>每次加一项，部分和就像在数轴上走路。如果步伐越来越小、最终"停"在某处，级数收敛；如果永远在摆动或者越走越远，级数发散。</p>
+
+    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">2. 收敛的必要条件</h3>
+    <p>如果级数 $\sum a_n$ 收敛，则通项 $a_n \to 0$。这只是一个<strong>必要条件</strong>（不是充分条件），用于快速排除发散级数——如果通项不趋于零，级数一定发散。比如调和级数 $\sum \frac{1}{n}$ 的通项趋于零，但它却是发散的，这说明"通项趋于零"不足以保证收敛。</p>
+
+    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">3. 几个你必须记住的标准级数</h3>
+    <p>这些是判断其他级数收敛性的"参照物"：</p>
+    <ul>
+      <li><strong>几何级数</strong> $\sum_{n=0}^{\infty} q^n$：当 $|q| < 1$ 时收敛，和为 $\frac{1}{1-q}$；当 $|q| \ge 1$ 时发散。这是<strong>最重要</strong>的级数——复变函数中的 Taylor 展开本质上就是几何级数的推广。</li>
+      <li><strong>$p$-级数</strong> $\sum_{n=1}^{\infty} \frac{1}{n^p}$：当 $p > 1$ 时收敛；当 $p \le 1$ 时发散。特别地，$p=1$ 时的调和级数 $\sum \frac{1}{n}$ 发散，$p=2$ 时 $\sum \frac{1}{n^2} = \frac{\pi^2}{6}$ 收敛。</li>
+    </ul>
+
+    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">4. 绝对收敛 vs 条件收敛</h3>
+    <p>如果每项加了绝对值之后构成的级数 $\sum |a_n|$ 收敛，就说原级数<strong>绝对收敛</strong>。绝对收敛是比普通收敛更强的性质——绝对收敛的级数一定收敛，而且<strong>重排各项顺序后和不变</strong>。</p>
+    <p>如果级数收敛但不绝对收敛（即 $\sum a_n$ 收敛但 $\sum |a_n|$ 发散），就称为<strong>条件收敛</strong>。条件收敛的级数很"娇气"——重排各项顺序可能改变和的值，甚至让它发散。</p>
+    <p><strong>对复变函数的意义：</strong>在复数域中，我们几乎只关心<strong>绝对收敛</strong>的级数，因为绝对收敛级数可以像有限和一样自由地重新排列、逐项相乘，而解析函数的 Taylor 展开恰好是绝对收敛的幂级数。</p>
+
+    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">5. 判断收敛性的常用工具</h3>
+    <ul>
+      <li><strong>比较判别法：</strong>如果 $0 \le a_n \le b_n$（对充分大的 $n$），且 $\sum b_n$ 收敛，则 $\sum a_n$ 收敛；如果 $\sum a_n$ 发散，则 $\sum b_n$ 发散。简单说就是"比一个已知收敛的小就收敛，比一个已知发散的大就发散"。</li>
+      <li><strong>比值判别法（D'Alembert）：</strong>计算极限 $\rho = \lim_{n\to\infty} \left|\frac{a_{n+1}}{a_n}\right|$。若 $\rho < 1$，级数绝对收敛；若 $\rho > 1$，级数发散；若 $\rho = 1$，此法失效，需要用别的方法。</li>
+      <li><strong>根值判别法（Cauchy）：</strong>计算极限 $\rho = \lim_{n\to\infty} \sqrt[n]{|a_n|}$。判断规则同上。</li>
+    </ul>
+    <p><strong>为什么比值法和根值法这么重要？</strong>因为它们在复变函数中直接引出了<strong>收敛半径</strong>的概念。对幂级数 $\sum c_n z^n$，用比值法得到 $|z| < \lim |c_n/c_{n+1}|$ 时收敛，这个上界就是收敛半径 $R$。</p>
+
+    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">6. 幂级数与收敛半径</h3>
+    <p>形如 $\sum_{n=0}^{\infty} c_n (z - z_0)^n$ 的级数叫做<strong>幂级数</strong>——每一项都是 $(z-z_0)$ 的幂乘以系数。幂级数有一个极其优美的性质：存在一个<strong>收敛半径</strong> $R$（$0 \le R \le +\infty$），使得：</p>
+    <ul>
+      <li>当 $|z - z_0| < R$ 时，级数<strong>绝对收敛</strong>；</li>
+      <li>当 $|z - z_0| > R$ 时，级数<strong>发散</strong>；</li>
+      <li>在 $|z - z_0| = R$ 的圆周上，需要单独判断。</li>
+    </ul>
+    <p>复变函数中，这给出了一个完美的<strong>收敛圆盘</strong>——在复平面上，收敛区域是一个以 $z_0$ 为圆心、$R$ 为半径的圆。这与实分析中收敛区间只是一条线段形成了鲜明对比，也是复数视角带来的一种"高维美感"。</p>
+    <p>收敛半径可以通过以下公式计算（来自比值/根值判别法）：</p>
+    <p>$$R = \lim_{n\to\infty} \left|\frac{c_n}{c_{n+1}}\right| \quad \text{或} \quad R = \frac{1}{\lim_{n\to\infty} \sqrt[n]{|c_n|}}$$</p>
+
+    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">7. 从实分析到复分析的过渡要点</h3>
+    <p>好消息是，复数项级数的很多判别法<strong>直接继承</strong>自实数项级数——你把复数列的实部和虚部分开处理就行。但坏消息是，有些在实数域中无法理解的现象（比如"为什么 $\ln(1+z)$ 的展开只在 $|z|<1$ 内有效"），在复数域中豁然开朗——因为复数视角揭示了奇点是收敛半径受限的真正原因。</p>
+    <p>本章的目标就是把你在数学分析中学到的级数工具"升级"到复数域，并利用 Laurent 展开这把新钥匙，打开奇点分类和留数计算的大门。</p>
   </div>
 
   <div class="toc">
     <h3>本章目录</h3>
     <ol>
-      <li><a href="#s1">复积分的定义与性质</a></li>
-      <li><a href="#s2">Cauchy-Goursat 定理</a></li>
-      <li><a href="#s3">Cauchy 积分公式</a></li>
-      <li><a href="#s4">高阶导数公式</a></li>
-      <li><a href="#s5">Liouville 定理与代数基本定理</a></li>
+      <li><a href="#s1">5.1 复数项级数</a></li>
+      <li><a href="#s2">5.2 幂级数</a></li>
+      <li><a href="#s3">5.3 Taylor 展开定理</a></li>
     </ol>
   </div>
 
-  <!-- ==================== 预备知识：奇点与极点 ==================== -->
-  <div class="section" style="margin-bottom:1.5rem;padding:1.25rem 1.5rem;background:#fef9e7;border-left:4px solid #f39c12;">
-    <h2 style="font-size:1.15rem;margin-bottom:0.5rem;border:none;padding:0;">预备知识：奇点与一阶极点</h2>
-    <p>在正式进入复积分之前，需要先建立两个重要概念。它们本是第五章"级数"中的正式内容，但第四章的讨论绕不开它们——这里先给出简明的前置定义，方便你顺畅阅读。</p>
-
-    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">1. 什么是奇点？</h3>
-    <p>第二章已经定义过：<strong>若 $f(z)$ 在 $z_0$ 处不解析，则称 $z_0$ 为 $f(z)$ 的奇点</strong>。例如 $f(z)=1/z$ 在 $z=0$ 处是奇点（分母为零），$f(z)=1/(z^2+1)$ 在 $z=\pm i$ 处是奇点。</p>
-    <p>在第四章中，当我们说"围道内部有奇点"时，意思就是：围道所包围的区域内存在函数不解析的点。</p>
-
-    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">2. 什么是孤立奇点？</h3>
-    <p>如果 $z_0$ 是 $f(z)$ 的奇点，但存在一个以 $z_0$ 为中心的<strong>去心邻域</strong> $0 < |z-z_0| < \delta$，使得 $f(z)$ 在这个去心邻域内处处解析，则称 $z_0$ 为 $f(z)$ 的<strong>孤立奇点</strong>。</p>
-    <p>简言之：<strong>孤立奇点是一个"孤零零"的奇点——在它附近（除它自己外）函数都是好的</strong>。第四章讨论的几乎所有奇点都是孤立奇点（如 $1/z$ 在 $z=0$，$1/(z^2+1)$ 在 $z=\pm i$）。</p>
-    <p>注意：并非所有奇点都是孤立的。例如 $\Log z$ 在<strong>整个负实轴</strong>上都不解析——这些奇点连成一条线，每个都不是孤立的。</p>
-
-    <h3 style="font-size:1rem;margin:1rem 0 0.4rem;">3. 什么是一阶极点（简单极点）？</h3>
-    <p>考虑形如</p>
-    $$\frac{f(z)}{z-a}$$
-    <p>的函数，其中 $f(z)$ 在 $z=a$ 处解析且 $f(a) \neq 0$。此时 $z=a$ 是分母的一阶零点，整个函数在 $z=a$ 处具有一种特定的奇异性——当 $z \to a$ 时，函数以 $1/|z-a|$ 的速度趋于无穷。这种类型的孤立奇点称为<strong>一阶极点</strong>（或简单极点）。</p>
-    <p>第四章中最核心的 Cauchy 积分公式正是处理这种情形：被积函数形如 $\dfrac{f(z)}{z-a}$，在 $z=a$ 处有一个一阶极点，而 Cauchy 积分公式恰好告诉你这个围道积分的值就是 $2\pi i f(a)$。</p>
-    <p>更一般地，如果分母是 $(z-a)^m$（$m$ 为正整数），则 $z=a$ 称为<strong> $m$ 阶极点</strong>。$m=1$ 时就是一阶极点。高阶导数公式正是处理这种情形。</p>
-    <p style="margin-top:0.8rem;font-size:0.9rem;color:var(--text-muted);">注：奇点的完整分类（可去奇点、$m$ 阶极点、本性奇点）和 Laurent 展开的严格理论将在<strong>第五章</strong>系统展开。这里给出的前置定义足以理解第四章的全部内容。</p>
+  <div class="section" style="margin-bottom:1.5rem;padding:1.25rem 1.5rem;">
+    <h2 style="font-size:1.15rem;margin-bottom:0.5rem;border:none;padding:0;">本章导读</h2>
+    <p>本章讨论解析函数的<strong>幂级数表示</strong>——这是复分析中与实分析最相似的章节，但也有本质差别。</p>
+    <p>核心结论：每个在 $z_0$ 处解析的函数 $f(z)$ 都可以在 $z_0$ 的某个邻域内展开为幂级数（Taylor 级数），且收敛半径恰好等于从 $z_0$ 到最近奇点的距离。这个"奇点决定收敛半径"的现象在实分析中完全不存在——$1/(1+x^2)$ 的 Taylor 级数收敛半径为 1 是因为复平面上 $x=\pm i$ 处有奇点！</p>
+    <p>对应钟玉泉《复变函数论》第四章。</p>
   </div>
 
-  <!-- ==================== 4.1 复积分的定义与性质 ==================== -->
+  <!-- ==================== 5.1 复数项级数 ==================== -->
   <div class="section" id="s1">
-    <h2>4.1 复积分的定义与性质</h2>
+    <h2>4.1 复数项级数</h2>
 
     <div class="box box-definition">
-      <div class="box-title">定义 · 光滑曲线与逐段光滑曲线</div>
-      <p>设 $C$ 是复平面上的一条曲线，参数化为 $z(t) = x(t) + iy(t)$，$t \in [\alpha, \beta]$。</p>
-      <ul>
-        <li>若 $x'(t), y'(t)$ 在 $[\alpha, \beta]$ 上连续且 $z'(t) \neq 0$，则称 $C$ 为<strong>光滑曲线</strong>。</li>
-        <li>由有限段光滑曲线首尾相接而成的曲线称为<strong>逐段光滑曲线</strong>。</li>
-      </ul>
-      <p>若 $C$ 的起点与终点重合（$z(\alpha) = z(\beta)$），则称 $C$ 为<strong>闭曲线</strong>（围道）。</p>
-    </div>
-
-    <div class="box box-definition">
-      <div class="box-title">定义 · 复积分</div>
-      <p>设 $f(z)$ 在逐段光滑曲线 $C$ 上有定义。将 $C$ 用分点 $z_0, z_1, \ldots, z_n$ 分割为 $n$ 段，在第 $k$ 段上任取 $\zeta_k$，令 $\Delta z_k = z_k - z_{k-1}$，作 Riemann 和：</p>
-      $$S_n = \sum_{k=1}^{n} f(\zeta_k) \Delta z_k$$
-      <p>若当 $\max_k|\Delta z_k| \to 0$ 时 $S_n$ 的极限存在且与分点和取点方式无关，则称此极限为 $f(z)$ 沿 $C$ 的<strong>复积分</strong>，记为：</p>
-      $$\int_C f(z)\,\dd z$$
-    </div>
-
-    <div class="box box-formula">
-      <div class="box-title">参数化计算公式</div>
-      <p>设 $C: z = z(t)$，$t \in [\alpha, \beta]$，则：</p>
-      $$\int_C f(z)\,\dd z = \int_\alpha^\beta f(z(t))\,z'(t)\,\dd t$$
-      <p>这是计算复积分最实用的公式：将复积分转化为关于参数 $t$ 的定积分。</p>
-      <p><strong>推导思路</strong>：从 Riemann 和定义出发，$\int_C f(z)dz = \lim_{\max|\Delta z_k|\to 0}\sum_{k=1}^n f(\zeta_k)\Delta z_k$。将曲线参数化后，$\Delta z_k = z(t_k)-z(t_{k-1})$。由微分中值定理的近似 $z(t_k)-z(t_{k-1}) \approx z'(t_k^*)\Delta t_k$（当分割足够细时），代入得 $\sum f(z(t_k^*))z'(t_k^*)\Delta t_k$。当 $\max\Delta t_k \to 0$ 时，这个 Riemann 和的极限正是实函数的定积分 $\int_\alpha^\beta f(z(t))z'(t)dt$。</p>
+      <div class="box-title">定义 5.1（复数项级数的收敛）</div>
+      <p>设 $\{z_n\}_{n=1}^{\infty}$ 为复数列，称</p>
+      <p>$$\sum_{n=1}^{\infty} z_n = z_1 + z_2 + z_3 + \cdots$$</p>
+      <p>为复数项级数。令部分和 $S_n = \sum_{k=1}^{n} z_k$，若 $\lim_{n\to\infty} S_n = S$ 存在（$S \in \CC$），则称级数 <strong>收敛</strong>，$S$ 为其和；否则称级数 <strong>发散</strong>。</p>
     </div>
 
     <div class="box box-theorem">
-      <div class="box-title">定理 · 复积分的基本性质</div>
-      <p>设 $f(z), g(z)$ 在曲线 $C$ 上连续，则：</p>
-      <ol>
-        <li><strong>线性性</strong>：$\int_C [\alpha f(z) + \beta g(z)]\,\dd z = \alpha\int_C f(z)\,\dd z + \beta\int_C g(z)\,\dd z$</li>
-        <li><strong>可加性</strong>：若 $C$ 被分为 $C_1$ 和 $C_2$ 两段，则 $\int_C f(z)\,\dd z = \int_{C_1} f(z)\,\dd z + \int_{C_2} f(z)\,\dd z$</li>
-        <li><strong>反向性</strong>：$\int_{-C} f(z)\,\dd z = -\int_C f(z)\,\dd z$，其中 $-C$ 表示 $C$ 的反向曲线</li>
-        <li><strong>模的估计</strong>：$\left|\int_C f(z)\,\dd z\right| \leq \int_C |f(z)|\,|\dd z| \leq M \cdot L$，其中 $M = \max_{z \in C}|f(z)|$，$L$ 为 $C$ 的长度</li>
-      </ol>
+      <div class="box-title">定理 5.1（收敛的必要条件）</div>
+      <p>若 $\sum_{n=1}^{\infty} z_n$ 收敛，则 $\lim_{n\to\infty} z_n = 0$。</p>
+      <p><strong>证明思路：</strong> 设 $S_n \to S$，则 $z_n = S_n - S_{n-1} \to S - S = 0$。</p>
     </div>
 
-    <div class="box box-example">
-      <div class="box-title">例1 · 计算 $\int_C z\,\dd z$，$C$ 为从 $0$ 到 $1+i$ 的直线段</div>
-      <p><strong>解</strong>：参数化 $z(t) = t(1+i)$，$t \in [0,1]$，$z'(t) = 1+i$。</p>
-      $$\int_C z\,\dd z = \int_0^1 t(1+i) \cdot (1+i)\,\dd t = (1+i)^2 \int_0^1 t\,\dd t = 2i \cdot \frac{1}{2} = i$$
+    <div class="box box-theorem">
+      <div class="box-title">定理 5.2（复数项级数收敛与实部、虚部级数的关系）</div>
+      <p>设 $z_n = x_n + iy_n$，则 $\sum_{n=1}^{\infty} z_n$ 收敛的充要条件是 $\sum_{n=1}^{\infty} x_n$ 和 $\sum_{n=1}^{\infty} y_n$ 同时收敛，且</p>
+      <p>$$\sum_{n=1}^{\infty} z_n = \sum_{n=1}^{\infty} x_n + i\sum_{n=1}^{\infty} y_n.$$</p>
     </div>
 
-    <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 计算 $\oint_{|z|=1} \frac{\dd z}{z}$</div>
-      <div class="collapsible-body">
-        <p><strong>解</strong>：参数化 $z = e^{i\theta}$，$\theta \in [0, 2\pi]$，$\dd z = ie^{i\theta}\dd\theta$。</p>
-        $$\oint_{|z|=1} \frac{\dd z}{z} = \int_0^{2\pi} \frac{ie^{i\theta}}{e^{i\theta}}\,\dd\theta = \int_0^{2\pi} i\,\dd\theta = 2\pi i$$
-        <p><strong>重要</strong>：这个结果是 Cauchy 积分公式的一个特例（$f(z) \equiv 1$，$a = 0$）。注意被积函数 $1/z$ 在 $|z| \leq 1$ 内的 $z=0$ 处不解析，因此不能直接用"积分为零"的结论。</p>
-      </div>
+    <div class="box box-definition">
+      <div class="box-title">定义 5.2（绝对收敛与条件收敛）</div>
+      <p>若 $\sum_{n=1}^{\infty} |z_n|$ 收敛，则称 $\sum_{n=1}^{\infty} z_n$ <strong>绝对收敛</strong>。收敛但不绝对收敛的级数称为 <strong>条件收敛</strong>。</p>
     </div>
 
-    <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 计算 $\oint_{|z-a|=r} (z-a)^n\,\dd z$（$n \in \ZZ$）</div>
-      <div class="collapsible-body">
-        <p><strong>解</strong>：参数化 $z = a + re^{i\theta}$，$\theta \in [0, 2\pi]$，$\dd z = ire^{i\theta}\dd\theta$。</p>
-        $$\oint_{|z-a|=r} (z-a)^n\,\dd z = \int_0^{2\pi} r^n e^{in\theta} \cdot ire^{i\theta}\,\dd\theta = ir^{n+1}\int_0^{2\pi} e^{i(n+1)\theta}\,\dd\theta$$
-        <p>当 $n+1 = 0$（即 $n = -1$）：$ir^0 \int_0^{2\pi} 1\,\dd\theta = 2\pi i$。</p>
-        <p>当 $n+1 \neq 0$：$\int_0^{2\pi} e^{i(n+1)\theta}\,\dd\theta = \left[\dfrac{e^{i(n+1)\theta}}{i(n+1)}\right]_0^{2\pi} = 0$。</p>
-        <p><strong>总结</strong>：</p>
-        $$\oint_{|z-a|=r} (z-a)^n\,\dd z = \begin{cases} 2\pi i, & n = -1 \\ 0, & n \neq -1 \end{cases}$$
-        <p>这是留数理论的基础公式。</p>
-        <p><strong>为什么 $n=-1$ 是唯一的例外？</strong>关键在于原函数的性质。当 $n \ne -1$ 时，$(z-a)^n$ 有单值原函数 $\frac{(z-a)^{n+1}}{n+1}$，它是 $\CC\setminus\{a\}$ 上的解析函数，因此绕 $a$ 一周的积分由 Newton-Leibniz 公式为零（起点和终点函数值相同）。但当 $n=-1$ 时，原函数为 $\log(z-a)$，这是一个多值函数——绕 $a$ 顺时针一周，$\log(z-a)$ 的辐角增加 $2\pi i$，原函数不回到原值，因此积分不为零。这个简单的区别是整个留数理论的核心：只有 $(z-a)^{-1}$ 项对围道积分有贡献，其余项的积分全部为零。</p>
-      </div>
+    <div class="box box-theorem">
+      <div class="box-title">定理 5.3（绝对收敛蕴含收敛）</div>
+      <p>若 $\sum_{n=1}^{\infty} |z_n|$ 收敛，则 $\sum_{n=1}^{\infty} z_n$ 收敛。</p>
+      <p><strong>证明：</strong> 由 $|x_n| \le |z_n|$，$|y_n| \le |z_n|$，由比较判别法知 $\sum x_n$，$\sum y_n$ 均绝对收敛从而收敛，再由定理 5.2 得证。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 5.4（Cauchy 收敛准则）</div>
+      <p>$\sum_{n=1}^{\infty} z_n$ 收敛的充要条件是：$\forall\,\varepsilon > 0$，$\exists\, N \in \NN$，当 $n > N$ 时，对任意正整数 $p$，有</p>
+      <p>$$|z_{n+1} + z_{n+2} + \cdots + z_{n+p}| < \varepsilon.$$</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注记</div>
+      <p>复数项级数的收敛理论本质上可归结为两个实数项级数的收敛问题。但绝对收敛的概念使得我们无需分离实部和虚部即可判断收敛性。常用的正项级数判别法（比较法、比值法、根值法）对复数项级数的绝对收敛性判断同样适用，因为 $|z_n|$ 是非负实数。</p>
     </div>
   </div>
 
-  <!-- ==================== 4.2 Cauchy-Goursat 定理 ==================== -->
+  <!-- ==================== 5.2 幂级数 ==================== -->
   <div class="section" id="s2">
-    <h2>4.2 Cauchy-Goursat 定理</h2>
+    <h2>4.2 幂级数</h2>
 
-    <div class="box box-note">
-      <div class="box-title">直觉导航</div>
-      <p>Cauchy 积分定理是所有魔力开始的地方：<strong>解析函数沿闭合围道的积分为零</strong>。</p>
-      <p>为什么？一个粗略的直觉：复积分 $\oint_C f(z)dz$ 本质上是在绕围道一周的路径上累积 $f(z)$ 的"复增量"。如果 $f$ 解析（即可导），那么它局部上可以很好地被线性函数逼近。而线性函数的围道积分为零（因为 $az+b$ 有原函数 $\frac{a}{2}z^2+bz$）。通过将围道无限细分，解析性保证了每个小段上的积分近似为零，总体积分为零。</p>
-      <p>Goursat 的贡献在于去掉了"$f'$ 连续"这个附加假设——仅仅"$f'$ 存在"就足以保证结论。这非常深刻，因为它意味着<strong>解析函数的导数自动连续</strong>——一个纯复分析的事实，在实分析中没有对应物。</p>
+    <div class="box box-definition">
+      <div class="box-title">定义 5.3（幂级数）</div>
+      <p>形如</p>
+      <p>$$\sum_{n=0}^{\infty} a_n (z - z_0)^n = a_0 + a_1(z-z_0) + a_2(z-z_0)^2 + \cdots$$</p>
+      <p>的级数称为以 $z_0$ 为中心的幂级数，其中 $a_n \in \CC$ 为系数。</p>
     </div>
 
     <div class="box box-theorem">
-      <div class="box-title">定理 · Cauchy 积分定理（原始形式）</div>
-      <p>设 $f(z)$ 在<strong>单连通域</strong> $D$ 内解析，$C$ 是 $D$ 内任一<strong>逐段光滑闭曲线</strong>，则：</p>
-      $$\oint_C f(z)\,\dd z = 0$$
-      <p><strong>等价表述</strong>：解析函数沿闭曲线的积分为零；或者说，解析函数的积分只依赖于起点和终点，与路径无关。</p>
-    </div>
-
-    <div class="box box-note">
-      <div class="box-title">Cauchy 与 Goursat 的贡献</div>
-      <p>Cauchy 最初证明此定理时，假定 $f'(z)$ 连续（即 $f$ 为全纯函数）。后来 <strong>Goursat</strong>（1900年）给出了一个深刻推广：</p>
-      <p><strong>Goursat 定理</strong>：只要 $f(z)$ 在 $D$ 内解析（即 $f'(z)$ 存在），不需要假定 $f'(z)$ 连续，结论仍然成立。</p>
-      <p>这在逻辑上很重要：它意味着<strong>"$f'(z)$ 存在"就能推出"$f'(z)$ 连续"</strong>，即解析函数的导数自动连续。这是复分析区别于实分析的深刻之处。</p>
-    </div>
-
-    <div class="box box-proof">
-      <div class="box-title">证明思路 · Goursat 定理</div>
-      <p>核心思想：用三角形分割逼近积分。</p>
-      <p><strong>第一步</strong>：设 $C$ 是三角形 $\triangle$，要证 $\oint_\triangle f(z)\,\dd z = 0$。</p>
-      <p><strong>第二步</strong>：将 $\triangle$ 连接各边中点，分为四个全等小三角形 $\triangle_1, \triangle_2, \triangle_3, \triangle_4$。则：</p>
-      $$\oint_\triangle f(z)\,\dd z = \sum_{k=1}^{4}\oint_{\triangle_k} f(z)\,\dd z$$
-      <p>因为公共边上的积分互相抵消（反向性）。</p>
-      <p><strong>第三步</strong>：选取积分模最大的那个小三角形 $\triangle^{(1)}$，满足 $\left|\oint_{\triangle^{(1)}} f(z)\,\dd z\right| \geq \dfrac{1}{4}\left|\oint_\triangle f(z)\,\dd z\right|$。重复分割得到三角形套序列 $\triangle \supset \triangle^{(1)} \supset \triangle^{(2)} \supset \cdots$。</p>
-      <p><strong>第四步</strong>：由闭区间套定理，存在唯一的 $\zeta \in \bigcap_n \triangle^{(n)}$。由 $f$ 在 $\zeta$ 处可导：</p>
-      $$f(z) = f(\zeta) + f'(\zeta)(z-\zeta) + \varepsilon(z)(z-\zeta)$$
-      <p>其中 $\varepsilon(z) \to 0$（$z \to \zeta$）。由于 $f(\zeta) + f'(\zeta)(z-\zeta)$ 是整函数，沿闭曲线积分为零，故：</p>
-      $$\oint_{\triangle^{(n)}} f(z)\,\dd z = \oint_{\triangle^{(n)}} \varepsilon(z)(z-\zeta)\,\dd z$$
-      <p>现在进行模的精细估计。设 $\triangle^{(n)}$ 的周长为 $L_n$，直径为 $d_n$。由相似分割知 $L_n = L/2^n$，$d_n = d/2^n$（$L, d$ 为原三角形的周长和直径）。</p>
-      <p>对 $z \in \triangle^{(n)}$，有 $|z - \zeta| \le d_n$。由 $f$ 在 $\zeta$ 的可导性，$\forall\,\eta > 0$，当 $n$ 充分大时 $|\varepsilon(z)| < \eta$ 对所有 $z \in \triangle^{(n)}$ 成立。因此：</p>
-      $$\left|\oint_{\triangle^{(n)}} f(z)\,\dd z\right| = \left|\oint_{\triangle^{(n)}} \varepsilon(z)(z-\zeta)\,\dd z\right| \le \oint_{\triangle^{(n)}} |\varepsilon(z)| \cdot |z-\zeta| \cdot |\dd z|$$
-      $$\le \eta \cdot d_n \cdot L_n = \eta \cdot \frac{d}{2^n} \cdot \frac{L}{2^n} = \eta \cdot \frac{dL}{4^n}$$
-      <p>另一方面，由第三步的选取规则：</p>
-      $$\left|\oint_{\triangle^{(n)}} f(z)\,\dd z\right| \ge \frac{1}{4^n}\left|\oint_\triangle f(z)\,\dd z\right|$$
-      <p>结合两式：$\dfrac{1}{4^n}\left|\oint_\triangle f(z)\,\dd z\right| \le \eta \cdot \dfrac{dL}{4^n}$，即：</p>
-      $$\left|\oint_\triangle f(z)\,\dd z\right| \le \eta \cdot dL$$
-      <p>由于 $\eta > 0$ 可以任意小，必有 $\left|\oint_\triangle f(z)\,\dd z\right| = 0$。</p>
-      <p>至此证明了三角形围道上的积分为零。对任意逐段光滑闭曲线 $C$，可通过三角形剖分逼近得到一般结论。$\square$</p>
+      <div class="box-title">定理 5.5（Abel 定理）</div>
+      <p>若幂级数 $\sum_{n=0}^{\infty} a_n z^n$ 在 $z = z_1 \ne 0$ 处收敛，则它在圆盘 $|z| < |z_1|$ 内绝对收敛且内闭一致收敛。</p>
+      <p><strong>证明：</strong> 因 $\sum a_n z_1^n$ 收敛，故 $a_n z_1^n \to 0$，从而有界：$|a_n z_1^n| \le M$。对 $|z| < |z_1|$，令 $r = |z|/|z_1| < 1$，则</p>
+      <p>$$|a_n z^n| = |a_n z_1^n| \cdot \left|\frac{z}{z_1}\right|^n \le M r^n,$$</p>
+      <p>由几何级数 $\sum Mr^n$ 收敛知 $\sum |a_n z^n|$ 收敛。</p>
     </div>
 
     <div class="box box-theorem">
-      <div class="box-title">Cauchy 定理的推广形式</div>
-      <p><strong>复合闭路定理</strong>（多连通域的情形）：</p>
-      <p>设 $f(z)$ 在由闭曲线 $C$ 和 $C_1, C_2, \ldots, C_n$ 所围成的多连通域上解析，$C_1, \ldots, C_n$ 是 $C$ 内部互不相交的闭曲线。约定：<strong>$C$ 取正向（逆时针），$C_k$ 取反向（顺时针）</strong>，使得区域始终在行进方向的左侧，则：</p>
-      $$\oint_C f(z)\,\dd z = \sum_{k=1}^{n} \oint_{C_k} f(z)\,\dd z$$
-      <p><strong>定向说明</strong>：若所有曲线都取正向（逆时针），则等式右边需加负号。标准约定是外围 $C$ 逆时针、内部 $C_k$ 顺时针，以保证等式简洁。实际计算中，通常将所有积分统一为逆时针方向再求和。</p>
-      <p>直观理解：内部"孔洞"周围的积分之和等于外围曲线的积分。这允许我们在有奇点的情况下，通过选择合适的围道将积分转化为更易计算的形式。</p>
+      <div class="box-title">定理 5.6（收敛半径的存在性）</div>
+      <p>对幂级数 $\sum_{n=0}^{\infty} a_n z^n$，存在 $R \in [0, +\infty]$（称为收敛半径），使得：</p>
+      <ul>
+        <li>当 $|z| < R$ 时，级数绝对收敛；</li>
+        <li>当 $|z| > R$ 时，级数发散；</li>
+        <li>当 $|z| = R$ 时，需要具体判断。</li>
+      </ul>
+      <p>圆盘 $|z| < R$ 称为 <strong>收敛圆</strong>。</p>
     </div>
 
     <div class="box box-formula">
-      <div class="box-title">路径无关性</div>
-      <p>若 $f(z)$ 在单连通域 $D$ 内解析，则对 $D$ 内任意两点 $z_0, z_1$，积分 $\int_{z_0}^{z_1} f(z)\,\dd z$ 的值与路径无关（只要路径在 $D$ 内）。</p>
-      <p>由此可定义原函数 $F(z) = \int_{z_0}^{z} f(\zeta)\,\dd\zeta$，满足 $F'(z) = f(z)$，且：</p>
-      $$\int_{z_0}^{z_1} f(z)\,\dd z = F(z_1) - F(z_0)$$
-      <p><strong>证明</strong>（$F'(z)=f(z)$）：设 $z \in D$，$\Delta z$ 充分小使 $z+\Delta z \in D$。则：
-      $$F(z+\Delta z)-F(z) = \int_{z}^{z+\Delta z} f(\zeta)d\zeta$$
-      由积分路径无关性，可取直线段。于是：
-      $$\frac{F(z+\Delta z)-F(z)}{\Delta z} - f(z) = \frac{1}{\Delta z}\int_z^{z+\Delta z}[f(\zeta)-f(z)]d\zeta$$
-      由 $f$ 的连续性，$\forall\varepsilon>0$，$\exists\delta>0$ 使 $|\zeta-z|<\delta$ 时 $|f(\zeta)-f(z)|<\varepsilon$。取 $|\Delta z|<\delta$，则 $\left|\frac{1}{\Delta z}\int_z^{z+\Delta z}[f(\zeta)-f(z)]d\zeta\right| \le \frac{1}{|\Delta z|}\cdot\varepsilon\cdot|\Delta z|=\varepsilon$。故差商极限为 $f(z)$，即 $F'(z)=f(z)$。$\square$</p>
+      <div class="box-title">收敛半径的求法</div>
+      <p><strong>比值法（d'Alembert）：</strong> 若 $\lim_{n\to\infty} \left|\dfrac{a_{n+1}}{a_n}\right| = \lambda$，则</p>
+      <p>$$R = \frac{1}{\lambda} \quad (\lambda = 0 \text{ 时 } R = +\infty,\; \lambda = +\infty \text{ 时 } R = 0).$$</p>
+      <p><strong>根值法（Cauchy-Hadamard）：</strong></p>
+      <p>$$R = \frac{1}{\limsup_{n\to\infty} \sqrt[n]{|a_n|}}.$$</p>
+      <p>（约定 $1/0 = +\infty$，$1/+\infty = 0$。）</p>
     </div>
 
-    <div class="box box-note">
-      <div class="box-title">应用 Cauchy 定理的注意事项</div>
-      <p>使用 Cauchy 定理时，必须验证两个条件：</p>
+    <div class="box box-example">
+      <div class="box-title">例 5.1</div>
+      <p>求幂级数 $\displaystyle\sum_{n=0}^{\infty} \frac{z^n}{n!}$ 的收敛半径。</p>
+      <p><strong>解：</strong> $a_n = 1/n!$，由比值法</p>
+      <p>$$\left|\frac{a_{n+1}}{a_n}\right| = \frac{n!}{(n+1)!} = \frac{1}{n+1} \to 0,$$</p>
+      <p>故 $R = +\infty$，即该级数在全平面收敛。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例 5.2</div>
+      <p>求幂级数 $\displaystyle\sum_{n=1}^{\infty} n^n z^n$ 的收敛半径。</p>
+      <p><strong>解：</strong> 由根值法</p>
+      <p>$$\limsup_{n\to\infty} \sqrt[n]{|a_n|} = \lim_{n\to\infty} n = +\infty,$$</p>
+      <p>故 $R = 0$，级数仅在 $z = 0$ 处收敛。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 5.7（幂级数的性质）</div>
+      <p>设 $\sum a_n z^n$ 的收敛半径为 $R > 0$，则：</p>
       <ol>
-        <li>$f(z)$ 在围道 $C$ 及其内部<strong>解析</strong>（没有奇点）；</li>
-        <li>围道 $C$ 是<strong>闭曲线</strong>，且在单连通域内。</li>
+        <li>在收敛圆 $|z| < R$ 内，和函数 $f(z) = \sum a_n z^n$ 解析；</li>
+        <li>可在收敛圆内逐项求导：$f'(z) = \sum_{n=1}^{\infty} n a_n z^{n-1}$；</li>
+        <li>可在收敛圆内逐项积分：$\int_0^z f(\zeta)\,\dd\zeta = \sum_{n=0}^{\infty} \frac{a_n}{n+1} z^{n+1}$；</li>
+        <li>逐项求导和逐项积分不改变收敛半径。</li>
       </ol>
-      <p>如果 $f(z)$ 在 $C$ 内部有奇点，Cauchy 定理的结论 $\oint_C f(z)\,\dd z = 0$ 一般不成立（如 $\oint_{|z|=1}\frac{\dd z}{z} = 2\pi i \neq 0$）。此时需要留数理论。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注记：Abel 定理的逆否命题</div>
+      <p>若 $\sum a_n z^n$ 在 $z = z_1$ 处发散，则对所有 $|z| > |z_1|$，级数也发散。这说明收敛圆外的点一定使级数发散。</p>
     </div>
   </div>
 
-  <!-- ==================== 4.3 Cauchy 积分公式 ==================== -->
+  <!-- ==================== 5.3 Taylor 展开定理 ==================== -->
   <div class="section" id="s3">
-    <h2>4.3 Cauchy 积分公式</h2>
-
-    <div class="box box-note">
-      <div class="box-title">直觉导航</div>
-      <p>Cauchy 积分定理说解析函数的围道积分为零——但这是对"围道内部没有奇点"的情形。如果被积函数形如 $\frac{f(z)}{z-a}$，在 $z=a$ 处有一个一阶极点呢？</p>
-      <p>Cauchy 积分公式给出了答案：
-      $$\frac{1}{2\pi i}\oint_C \frac{f(z)}{z-a}dz = f(a)$$
-      它说：<strong>解析函数在内部任意一点的值等于其在边界上的某种加权平均</strong>。等价地，它说 $f(a)$ 完全由 $f$ 在围道 $C$ 上的值决定——这就是我前面说的"全息性"。这是一种极强的约束：你不能随意在围道内部修改解析函数的值而不影响边界，反之亦然。</p>
-      <p>这个公式还是一切高阶导数公式的源头：对参数 $a$ 求导，你就能得到任意阶导数的围道积分表达式。</p>
-    </div>
+    <h2>4.3 Taylor 展开定理</h2>
 
     <div class="box box-theorem">
-      <div class="box-title">定理 · Cauchy 积分公式</div>
-      <p>设 $f(z)$ 在闭曲线 $C$ 及其内部解析，$a$ 是 $C$ 内部的任意一点，则：</p>
-      $$\boxed{f(a) = \frac{1}{2\pi i}\oint_C \frac{f(z)}{z-a}\,\dd z}$$
-      <p><strong>重要意义</strong>：解析函数在区域内部任意一点的值，完全由它在边界上的值决定。这是复分析最深刻、最核心的结果。</p>
+      <div class="box-title">定理 5.8（Taylor 展开定理）</div>
+      <p>设 $f(z)$ 在圆盘 $D: |z - z_0| < R$ 内解析，则 $f(z)$ 在 $D$ 内可唯一地展开为幂级数</p>
+      <p>$$f(z) = \sum_{n=0}^{\infty} a_n (z - z_0)^n, \quad |z - z_0| < R,$$</p>
+      <p>其中</p>
+      <p>$$a_n = \frac{f^{(n)}(z_0)}{n!} = \frac{1}{2\pi i} \oint_C \frac{f(\zeta)}{(\zeta - z_0)^{n+1}}\,\dd\zeta,$$</p>
+      <p>$C$ 为圆周 $|\zeta - z_0| = r < R$。</p>
     </div>
 
     <div class="box box-proof">
-      <div class="box-title">证明 · Cauchy 积分公式</div>
-      <p>设 $C$ 是正向（逆时针）闭曲线，$a$ 在 $C$ 内部。</p>
-      <p><strong>第一步</strong>：以 $a$ 为圆心、$r > 0$ 为半径作圆周 $C_r: |z-a|=r$，使 $C_r$ 完全在 $C$ 内部。</p>
-      <p><strong>第二步</strong>：函数 $\dfrac{f(z)}{z-a}$ 在 $C$ 与 $C_r$ 之间的环形区域内解析（$z = a$ 是唯一的奇点），由复合闭路定理：</p>
-      $$\oint_C \frac{f(z)}{z-a}\,\dd z = \oint_{C_r} \frac{f(z)}{z-a}\,\dd z$$
-      <p><strong>第三步</strong>：在 $C_r$ 上参数化 $z = a + re^{i\theta}$，$\dd z = ire^{i\theta}\dd\theta$：</p>
-      $$\oint_{C_r} \frac{f(z)}{z-a}\,\dd z = \int_0^{2\pi} \frac{f(a+re^{i\theta})}{re^{i\theta}} \cdot ire^{i\theta}\,\dd\theta = i\int_0^{2\pi} f(a+re^{i\theta})\,\dd\theta$$
-      <p><strong>第四步</strong>：比较此积分与 $2\pi i f(a) = i\int_0^{2\pi} f(a)\,\dd\theta$：</p>
-      $$\left|\oint_{C_r} \frac{f(z)}{z-a}\,\dd z - 2\pi i f(a)\right| = \left|i\int_0^{2\pi}[f(a+re^{i\theta}) - f(a)]\,\dd\theta\right| \leq \int_0^{2\pi}|f(a+re^{i\theta}) - f(a)|\,\dd\theta$$
-      <p>由于 $f$ 在 $a$ 处解析，故 $f$ 在 $a$ 的某邻域内连续。事实上，$f$ 在闭圆盘 $|z-a| \le r_0$ 上一致连续（紧致集上的连续函数必一致连续）。因此对给定的 $\varepsilon > 0$，存在 $r_0 > 0$，当 $r < r_0$ 时，对所有 $\theta \in [0, 2\pi]$ 一致有 $|f(a+re^{i\theta}) - f(a)| < \varepsilon$。</p>
-      <p>这里的关键是"<strong>一致</strong>"收敛：不仅每个方向的 $f(a+re^{i\theta})$ 都趋近于 $f(a)$，而且趋近的"速度"对所有 $\theta$ 是一致的。如果只有逐点收敛（每个 $\theta$ 单独趋近），我们不能将极限移入积分号内；但由于解析函数自动具有一致连续性质（在紧致邻域上），一致收敛得以保证，从而极限和积分可以交换。当 $r \to 0$ 时上式趋于 $0$。</p>
-      <p>但由第二步，左端与 $r$ 无关，故必须恒为零，即：</p>
-      $$\oint_C \frac{f(z)}{z-a}\,\dd z = 2\pi i f(a)$$
-    </div>
-
-    <div class="box box-formula">
-      <div class="box-title">Cauchy 积分公式的等价形式</div>
-      <p>对于以 $a$ 为圆心、$R$ 为半径的圆周 $|z-a|=R$：</p>
-      $$f(a) = \frac{1}{2\pi}\int_0^{2\pi} f(a + Re^{i\theta})\,\dd\theta$$
-      <p>这就是<strong>解析函数的平均值公式</strong>：解析函数在圆心的值等于它在圆周上的平均值。</p>
+      <div class="box-title">证明 · Taylor 展开定理</div>
+      <p>取 $r < R$，令 $C: |\zeta - z_0| = r$（正向）。对 $|z - z_0| < r$，由 Cauchy 积分公式：</p>
+      $$f(z) = \frac{1}{2\pi i} \oint_C \frac{f(\zeta)}{\zeta - z}\,\dd\zeta$$
+      <p><strong>关键步骤——几何级数展开：</strong></p>
+      $$\frac{1}{\zeta - z} = \frac{1}{(\zeta - z_0) - (z - z_0)} = \frac{1}{\zeta - z_0} \cdot \frac{1}{1 - \frac{z - z_0}{\zeta - z_0}}$$
+      <p>由于 $z$ 在圆内、$\zeta$ 在圆周上，$\left|\frac{z - z_0}{\zeta - z_0}\right| = \frac{|z - z_0|}{r} < 1$，可用几何级数：</p>
+      $$\frac{1}{1 - \frac{z - z_0}{\zeta - z_0}} = \sum_{n=0}^{\infty} \left(\frac{z - z_0}{\zeta - z_0}\right)^n$$
+      <p>该级数对 $\zeta \in C$ <strong>一致收敛</strong>（因为 $\frac{|z-z_0|}{r} < 1$ 固定），故可逐项积分：</p>
+      $$f(z) = \frac{1}{2\pi i} \oint_C f(\zeta) \sum_{n=0}^{\infty} \frac{(z - z_0)^n}{(\zeta - z_0)^{n+1}}\,\dd\zeta = \sum_{n=0}^{\infty} \left(\frac{1}{2\pi i}\oint_C \frac{f(\zeta)}{(\zeta - z_0)^{n+1}}\,\dd\zeta\right)(z - z_0)^n$$
+      <p>令 $a_n = \frac{1}{2\pi i}\oint_C \frac{f(\zeta)}{(\zeta - z_0)^{n+1}}\,\dd\zeta = \frac{f^{(n)}(z_0)}{n!}$（由 Cauchy 高阶导数公式），即得 Taylor 展开。</p>
+      <p><strong>收敛半径：</strong>幂级数的收敛半径至少为 $R$（因为上述推导对任意 $r < R$ 有效），且不可能超过 $z_0$ 到 $f$ 最近奇点的距离（否则 $f$ 在奇点处也解析，矛盾）。</p>
+      <p><strong>唯一性：</strong>若 $f(z) = \sum a_n(z-z_0)^n$，则逐项求导 $n$ 次并令 $z=z_0$ 给出 $a_n = f^{(n)}(z_0)/n!$，故展开唯一。$\square$</p>
     </div>
 
     <div class="box box-theorem">
-      <div class="box-title">推论 · 解析函数的无穷次可微性</div>
-      <p>若 $f(z)$ 在区域 $D$ 内解析，则 $f(z)$ 在 $D$ 内有<strong>任意阶导数</strong>，即 $f^{(n)}(z)$ 对所有 $n \geq 1$ 都存在且解析。</p>
-      <p>这是复分析特有的结论。在实分析中，一阶可导不能保证二阶可导。</p>
+      <div class="box-title">定理 5.9（Taylor 展开的唯一性）</div>
+      <p>若 $f(z)$ 在 $|z - z_0| < R$ 内有两种幂级数表示 $f(z) = \sum a_n(z-z_0)^n = \sum b_n(z-z_0)^n$，则 $a_n = b_n$ 对所有 $n$ 成立。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">注记：展开的注意事项</div>
+      <p>Taylor 展开的收敛半径等于展开中心 $z_0$ 到 $f(z)$ 最近奇点的距离。例如 $\dfrac{1}{1+z^2}$ 在 $z_0 = 0$ 处展开的收敛半径为 $1$（因为 $z = \pm i$ 是奇点，距原点距离为 $1$），尽管该函数在实轴上处处光滑。</p>
+    </div>
+
+    <h3>常用 Taylor 展开公式表</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>函数</th>
+            <th>Taylor 展开</th>
+            <th>收敛域</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>$e^z$</td>
+            <td>$\displaystyle\sum_{n=0}^{\infty} \frac{z^n}{n!}$</td>
+            <td>$|z| < +\infty$</td>
+          </tr>
+          <tr>
+            <td>$\sin z$</td>
+            <td>$\displaystyle\sum_{n=0}^{\infty} \frac{(-1)^n z^{2n+1}}{(2n+1)!}$</td>
+            <td>$|z| < +\infty$</td>
+          </tr>
+          <tr>
+            <td>$\cos z$</td>
+            <td>$\displaystyle\sum_{n=0}^{\infty} \frac{(-1)^n z^{2n}}{(2n)!}$</td>
+            <td>$|z| < +\infty$</td>
+          </tr>
+          <tr>
+            <td>$\dfrac{1}{1-z}$</td>
+            <td>$\displaystyle\sum_{n=0}^{\infty} z^n$</td>
+            <td>$|z| < 1$</td>
+          </tr>
+          <tr>
+            <td>$\dfrac{1}{1+z}$</td>
+            <td>$\displaystyle\sum_{n=0}^{\infty} (-1)^n z^n$</td>
+            <td>$|z| < 1$</td>
+          </tr>
+          <tr>
+            <td>$\log(1+z)$</td>
+            <td>$\displaystyle\sum_{n=1}^{\infty} \frac{(-1)^{n-1} z^n}{n}$</td>
+            <td>$|z| < 1$</td>
+          </tr>
+          <tr>
+            <td>$(1+z)^\alpha$</td>
+            <td>$\displaystyle\sum_{n=0}^{\infty} \binom{\alpha}{n} z^n$</td>
+            <td>$|z| < 1$</td>
+          </tr>
+          <tr>
+            <td>$\dfrac{1}{(1-z)^2}$</td>
+            <td>$\displaystyle\sum_{n=1}^{\infty} n z^{n-1}$</td>
+            <td>$|z| < 1$</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <div class="box box-example">
-      <div class="box-title">例2 · 利用 Cauchy 积分公式计算 $\oint_{|z|=2} \frac{e^z}{z-1}\,\dd z$</div>
-      <p><strong>解</strong>：$f(z) = e^z$ 在 $|z| \leq 2$ 上解析，$a = 1$ 在 $|z| = 2$ 内部。由 Cauchy 积分公式：</p>
-      $$\oint_{|z|=2} \frac{e^z}{z-1}\,\dd z = 2\pi i \cdot f(1) = 2\pi i e$$
+      <div class="box-title">例 5.3</div>
+      <p>将 $f(z) = \dfrac{1}{z(z-1)}$ 在 $z_0 = 0$ 的邻域内展开。</p>
+      <p><strong>解：</strong> 对 $|z| < 1$，利用 $\dfrac{1}{1-z} = \sum_{n=0}^{\infty} z^n$，得</p>
+      <p>$$f(z) = \frac{1}{z} \cdot \frac{1}{z-1} = -\frac{1}{z} \cdot \frac{1}{1-z} = -\frac{1}{z} \sum_{n=0}^{\infty} z^n = -\sum_{n=0}^{\infty} z^{n-1} = -\frac{1}{z} - 1 - z - z^2 - \cdots.$$</p>
+      <p>这不是 Taylor 级数（含负幂项），而是 Laurent 级数，因为 $z = 0$ 是奇点。</p>
     </div>
 
     <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 计算 $\oint_{|z|=3} \frac{\sin z}{z^2+1}\,\dd z$</div>
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例 5.4（间接展开法）</div>
       <div class="collapsible-body">
-        <p><strong>解</strong>：将分母分解 $z^2+1 = (z-i)(z+i)$，奇点 $z = \pm i$ 都在 $|z|=3$ 内部。</p>
-        <p>用部分分式：$\dfrac{1}{z^2+1} = \dfrac{1}{2i}\left(\dfrac{1}{z-i} - \dfrac{1}{z+i}\right)$。</p>
-        <p>由 Cauchy 积分公式：</p>
-        $$\oint_{|z|=3} \frac{\sin z}{z^2+1}\,\dd z = \frac{1}{2i}\left[\oint_{|z|=3}\frac{\sin z}{z-i}\,\dd z - \oint_{|z|=3}\frac{\sin z}{z+i}\,\dd z\right]$$
-        $$= \frac{1}{2i}\left[2\pi i \sin(i) - 2\pi i \sin(-i)\right] = \frac{2\pi i}{2i}[\sin i - \sin(-i)] = \pi \cdot 2\sin i = 2\pi\sin i$$
-        <p>而 $\sin i = i\sinh 1$，故结果为 $2\pi i\sinh 1$。</p>
+        <p>将 $f(z) = \dfrac{1}{(1-z)^2}$ 在 $z_0 = 0$ 处展开。</p>
+        <p><strong>解法一（逐项求导）：</strong> 由 $\dfrac{1}{1-z} = \sum_{n=0}^{\infty} z^n$，两边对 $z$ 求导：</p>
+        <p>$$\frac{1}{(1-z)^2} = \sum_{n=1}^{\infty} n z^{n-1} = 1 + 2z + 3z^2 + 4z^3 + \cdots, \quad |z| < 1.$$</p>
+        <p><strong>解法二（级数乘法）：</strong> $\dfrac{1}{(1-z)^2} = \left(\sum_{n=0}^{\infty} z^n\right)^2$，由 Cauchy 乘积公式：</p>
+        <p>$$c_n = \sum_{k=0}^{n} 1 \cdot 1 = n+1,$$</p>
+        <p>故 $\dfrac{1}{(1-z)^2} = \sum_{n=0}^{\infty} (n+1)z^n$，收敛半径 $R = 1$。</p>
       </div>
-    </div>
-
-    <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 计算 $\oint_{|z|=1} \frac{z^2}{z-2}\,\dd z$</div>
-      <div class="collapsible-body">
-        <p><strong>解</strong>：$f(z) = z^2$ 在 $|z| \leq 1$ 上解析。奇点 $z = 2$ 在 $|z|=1$ 的<strong>外部</strong>。</p>
-        <p>因此 $\dfrac{z^2}{z-2}$ 在 $|z| \leq 1$ 上解析，由 Cauchy 积分定理：</p>
-        $$\oint_{|z|=1} \frac{z^2}{z-2}\,\dd z = 0$$
-        <p><strong>注意</strong>：不是所有形如 $\frac{f(z)}{z-a}$ 的积分都需要用 Cauchy 积分公式。只有当 $a$ 在围道内部时才适用。</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==================== 4.4 高阶导数公式 ==================== -->
-  <div class="section" id="s4">
-    <h2>4.4 高阶导数公式</h2>
-
-    <div class="box box-theorem">
-      <div class="box-title">定理 · Cauchy 高阶导数公式</div>
-      <p>设 $f(z)$ 在闭曲线 $C$ 及其内部解析，$a$ 是 $C$ 内部的一点，则 $f$ 在 $a$ 处的 $n$ 阶导数为：</p>
-      $$\boxed{f^{(n)}(a) = \frac{n!}{2\pi i}\oint_C \frac{f(z)}{(z-a)^{n+1}}\,\dd z, \quad n = 0, 1, 2, \ldots}$$
-      <p>当 $n=0$ 时，此即 Cauchy 积分公式本身。</p>
-    </div>
-
-    <div class="box box-proof">
-      <div class="box-title">证明 · 高阶导数公式（$n=1$ 的情形）</div>
-      <p>要证 $f'(a) = \dfrac{1}{2\pi i}\oint_C \dfrac{f(z)}{(z-a)^2}\,\dd z$。</p>
-      <p>考虑差商的极限：取 $a+h$（$h$ 足够小使得 $a+h$ 在 $C$ 内部）：</p>
-      $$\frac{f(a+h) - f(a)}{h} = \frac{1}{2\pi i h}\left[\oint_C \frac{f(z)}{z-a-h}\,\dd z - \oint_C \frac{f(z)}{z-a}\,\dd z\right]$$
-      $$= \frac{1}{2\pi i}\oint_C f(z) \cdot \frac{1}{h}\left[\frac{1}{z-a-h} - \frac{1}{z-a}\right]\dd z = \frac{1}{2\pi i}\oint_C \frac{f(z)}{(z-a-h)(z-a)}\,\dd z$$
-      <p>当 $h \to 0$ 时，被积函数在 $C$ 上一致收敛到 $\dfrac{f(z)}{(z-a)^2}$，从而：</p>
-      $$f'(a) = \lim_{h\to 0}\frac{f(a+h)-f(a)}{h} = \frac{1}{2\pi i}\oint_C \frac{f(z)}{(z-a)^2}\,\dd z$$
-      <p>对一般的 $n$，用数学归纳法即可。</p>
-      <p><strong>归纳步骤（$n \to n+1$）</strong>：假设公式对 $n$ 成立，即 $f^{(n)}(a) = \frac{n!}{2\pi i}\oint_C \frac{f(z)}{(z-a)^{n+1}}dz$。计算 $f^{(n+1)}(a)$ 的差商：</p>
-      $$\frac{f^{(n)}(a+h)-f^{(n)}(a)}{h} = \frac{n!}{2\pi i h}\left[\oint_C \frac{f(z)}{(z-a-h)^{n+1}}dz - \oint_C \frac{f(z)}{(z-a)^{n+1}}dz\right]$$
-      $$= \frac{n!}{2\pi i}\oint_C f(z)\cdot\frac{1}{h}\left[\frac{1}{(z-a-h)^{n+1}}-\frac{1}{(z-a)^{n+1}}\right]dz$$
-      <p>利用代数恒等式 $\frac{A^{n+1}-B^{n+1}}{A-B}=A^n+A^{n-1}B+\cdots+B^n$（令 $A=z-a$，$B=z-a-h$），差项当 $h\to 0$ 时趋于 $(n+1)(z-a)^n/(z-a)^{2n+2} = (n+1)/(z-a)^{n+2}$。代入得 $f^{(n+1)}(a) = \frac{(n+1)!}{2\pi i}\oint_C \frac{f(z)}{(z-a)^{n+2}}dz$。关键仍在于验证导数与积分的交换，这由被积函数在 $C$ 上的一致收敛性保证（$f$ 在 $C$ 上有界，分母在 $C$ 上远离零）。$\square$</p>
-    </div>
-
-    <div class="box box-formula">
-      <div class="box-title">常用估计式</div>
-      <p>设 $|f(z)| \leq M$ 在 $C$ 上成立，$C$ 为以 $a$ 为圆心、$R$ 为半径的圆周，则：</p>
-      $$|f^{(n)}(a)| \leq \frac{n! \cdot M}{R^n}$$
-      <p>这称为<strong>Cauchy 估计</strong>，是推导 Liouville 定理和最大模原理的关键工具。</p>
-      <p><strong>推导</strong>：由高阶导数公式，取 $C: |z-a|=R$（正方向）：</p>
-      $$|f^{(n)}(a)| = \left|\frac{n!}{2\pi i}\oint_C \frac{f(z)}{(z-a)^{n+1}}dz\right| \le \frac{n!}{2\pi}\oint_C \frac{|f(z)|}{|z-a|^{n+1}}|dz|$$
-      $$\le \frac{n!}{2\pi}\oint_C \frac{M}{R^{n+1}}|dz| = \frac{n!}{2\pi}\cdot\frac{M}{R^{n+1}}\cdot 2\pi R = \frac{n!M}{R^n}$$
-      <p>最后一步使用了圆周 $C$ 的弧长 $L = 2\pi R$。这个估计式的美妙之处在于：它将内部的导数大小用边界上的模和半径控制住了——距离边界越远、半径越大、导数被压制得越厉害。</p>
     </div>
 
     <div class="box box-example">
-      <div class="box-title">例3 · 计算 $\oint_{|z|=2} \frac{e^z}{(z-1)^3}\,\dd z$</div>
-      <p><strong>解</strong>：$f(z) = e^z$，$a = 1$，$n = 2$。由高阶导数公式：</p>
-      $$\oint_{|z|=2} \frac{e^z}{(z-1)^3}\,\dd z = \frac{2\pi i}{2!}f''(1) = \pi i \cdot e^1 = \pi i e$$
-    </div>
-
-    <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 计算 $\oint_{|z|=1} \frac{\cos z}{z^3}\,\dd z$</div>
-      <div class="collapsible-body">
-        <p><strong>解</strong>：改写为 $\dfrac{\cos z}{(z-0)^3}$，即 $f(z) = \cos z$，$a = 0$，$n = 2$。</p>
-        <p>$f''(z) = -\cos z$，$f''(0) = -1$。</p>
-        $$\oint_{|z|=1} \frac{\cos z}{z^3}\,\dd z = \frac{2\pi i}{2!} \cdot (-1) = -\pi i$$
-      </div>
-    </div>
-
-    <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 计算 $\oint_{|z-1|=1} \frac{z^2+1}{(z-1)^2}\,\dd z$</div>
-      <div class="collapsible-body">
-        <p><strong>解</strong>：$f(z) = z^2 + 1$，$a = 1$，$n = 1$。</p>
-        <p>$f'(z) = 2z$，$f'(1) = 2$。</p>
-        $$\oint_{|z-1|=1} \frac{z^2+1}{(z-1)^2}\,\dd z = \frac{2\pi i}{1!} \cdot f'(1) = 2\pi i \cdot 2 = 4\pi i$$
-      </div>
+      <div class="box-title">例 5.4b（非平凡展开中心）</div>
+      <p>将 $f(z) = \dfrac{1}{1+z^2}$ 在 $z_0 = 1$ 处展开为 Taylor 级数，并求收敛半径。</p>
+      <p><strong>解</strong>：$f(z)$ 的奇点为 $z = \pm i$（分母为零）。展开中心 $z_0 = 1$ 到最近奇点的距离为 $|1-i| = \sqrt{2}$，故收敛半径 $R = \sqrt{2}$。</p>
+      <p>变形：$f(z) = \dfrac{1}{(z-i)(z+i)}$。令 $w = z-1$，即 $z = 1+w$，则：</p>
+      $$f(1+w) = \frac{1}{1+(1+w)^2} = \frac{1}{2+2w+w^2} = \frac{1}{2}\cdot\frac{1}{1+w+\frac{w^2}{2}}$$
+      <p>对 $|w+\frac{w^2}{2}| < 1$（即 $|w|$ 充分小），用几何级数展开：</p>
+      $$\frac{1}{2}\sum_{n=0}^{\infty}(-1)^n\left(w+\frac{w^2}{2}\right)^n = \frac{1}{2} - \frac{1}{2}w + \frac{1}{4}w^2 + \frac{1}{4}w^3 - \cdots$$
+      <p>代回 $z$ 得 $f(z) = \dfrac{1}{2} - \dfrac{1}{2}(z-1) + \dfrac{1}{4}(z-1)^2 + \dfrac{1}{4}(z-1)^3 - \cdots$，收敛半径为 $\sqrt{2}$。</p>
+      <p><strong>注</strong>：虽然 $f(z)$ 在实轴上处处光滑，但其 Taylor 级数的收敛半径受复数奇点 $\pm i$ 的限制。这体现了复数视角的威力——复数域中的奇点决定了级数的收敛范围，即使在实数域上看不到任何异常。</p>
     </div>
   </div>
 
-  <!-- ==================== 4.5 Liouville 定理与代数基本定理 ==================== -->
-  <div class="section" id="s5">
-    <h2>4.5 Liouville 定理与代数基本定理</h2>
-
-    <div class="box box-note">
-      <div class="box-title">直觉导航</div>
-      <p>Liouville 定理说：<strong>有界整函数必为常数</strong>。这看起来简单得不值一提——但它的证明极其优雅（用 Cauchy 估计 $|f'(a)| \le M/R$，令 $R\to\infty$ 得 $f'(a)=0$），而且它的推论威力巨大。</p>
-      <p>直觉上：一个在整个复平面上解析的函数（整函数）如果没有奇点，它的"刚性"就要求它要么无界（如 $e^z$），要么平凡（常数）。你不能构造一个处处解析的、有界的、非平凡的函数。这在实分析中完全不是这样——比如 $\sin x$ 在整条实轴上处处光滑且有界（$|\sin x| \le 1$），但 $\sin z$ 在复平面上无界。</p>
-      <p>代数基本定理（$n$ 次多项式恰有 $n$ 个复根）的证明是 Liouville 定理最著名的应用之一——用反证法，假设多项式无零点，构造有界整函数 $1/p(z)$，导出矛盾。一个纯代数的结论，通过复分析的"刚性"被优雅证明。</p>
-    </div>
-
-    <div class="box box-theorem">
-      <div class="box-title">定理 · Liouville 定理</div>
-      <p><strong>有界整函数必为常数</strong>。</p>
-      <p>即：若 $f(z)$ 在整个复平面 $\CC$ 上解析（整函数），且存在 $M > 0$ 使得 $|f(z)| \leq M$ 对所有 $z \in \CC$ 成立，则 $f(z) \equiv \text{常数}$。</p>
-    </div>
-
-    <div class="box box-proof">
-      <div class="box-title">证明 · Liouville 定理</div>
-      <p>对任意 $a \in \CC$ 和任意 $R > 0$，由 Cauchy 估计：</p>
-      $$|f'(a)| \leq \frac{M}{R}$$
-      <p>令 $R \to \infty$，得 $|f'(a)| = 0$ 对所有 $a \in \CC$ 成立，故 $f'(a) \equiv 0$。</p>
-      <p>由 $f'(z) \equiv 0$ 知 $f(z)$ 为常数。</p>
-      <p><strong>注</strong>：这个证明极其简洁，但其思想深刻——它将 Cauchy 积分公式的威力发挥到了极致。</p>
-    </div>
-
-    <div class="box box-theorem">
-      <div class="box-title">定理 · 代数基本定理</div>
-      <p>任意 $n$ 次多项式（$n \geq 1$）</p>
-      $$p(z) = a_n z^n + a_{n-1}z^{n-1} + \cdots + a_1 z + a_0, \quad a_n \neq 0$$
-      <p>在复数域中至少有一个零点，即存在 $z_0 \in \CC$ 使得 $p(z_0) = 0$。</p>
-      <p><strong>推论</strong>：$n$ 次多项式在 $\CC$ 中恰好有 $n$ 个零点（计重数），即 $p(z) = a_n(z-z_1)(z-z_2)\cdots(z-z_n)$。</p>
-    </div>
-
-    <div class="box box-proof">
-      <div class="box-title">证明 · 代数基本定理</div>
-      <p>用反证法。假设 $p(z) \neq 0$ 对所有 $z \in \CC$ 成立。</p>
-      <p><strong>第一步</strong>：$g(z) = \dfrac{1}{p(z)}$ 是整函数（因为 $p(z)$ 处处不为零且解析）。</p>
-      <p><strong>第二步</strong>：当 $|z| \to \infty$ 时，$|p(z)| \geq |a_n||z|^n - |a_{n-1}||z|^{n-1} - \cdots - |a_0| \to \infty$。</p>
-      <p>因此 $|g(z)| = \dfrac{1}{|p(z)|} \to 0$。特别地，存在 $R > 0$ 使得 $|z| > R$ 时 $|g(z)| < 1$。</p>
-      <p><strong>第三步</strong>：在闭圆盘 $|z| \leq R$ 上，$g(z)$ 连续故有界，设 $|g(z)| \leq M_1$。取 $M = \max(M_1, 1)$，则 $|g(z)| \leq M$ 对所有 $z \in \CC$ 成立。</p>
-      <p><strong>第四步</strong>：$g(z)$ 是有界整函数，由 Liouville 定理，$g(z) \equiv c$（常数）。从而 $p(z) \equiv 1/c$，与 $p(z)$ 是 $n \geq 1$ 次多项式矛盾。</p>
-    </div>
-
-    <div class="box box-theorem">
-      <div class="box-title">定理 · 最大模原理</div>
-      <p>设 $f(z)$ 在区域 $D$ 内解析且不为常数，则 $|f(z)|$ 在 $D$ 内<strong>不能取到最大值</strong>。</p>
-      <p><strong>精确表述</strong>：若存在 $z_0 \in D$ 使得 $|f(z_0)| \geq |f(z)|$ 对所有 $z \in D$ 成立，则 $f(z) \equiv$ 常数。</p>
-      <p><strong>推论</strong>（最大模原理的实用形式）：设 $f(z)$ 在有界区域 $D$ 内解析，在 $\bar{D}$ 上连续，则 $|f(z)|$ 在 $\bar{D}$ 上的最大值必在边界 $\partial D$ 上取到。</p>
-    </div>
-
-    <div class="box box-proof">
-      <div class="box-title">证明思路 · 最大模原理</div>
-      <p>利用解析函数的平均值公式。</p>
-      <p>假设 $|f(z_0)| = M$ 为 $D$ 内 $|f(z)|$ 的最大值，以 $z_0$ 为圆心、$r$ 为半径作圆周 $C_r$ 完全在 $D$ 内。由平均值公式：</p>
-      $$f(z_0) = \frac{1}{2\pi}\int_0^{2\pi} f(z_0 + re^{i\theta})\,\dd\theta$$
-      <p>取模并用三角不等式：</p>
-      $$M = |f(z_0)| \leq \frac{1}{2\pi}\int_0^{2\pi}|f(z_0+re^{i\theta})|\,\dd\theta \leq \frac{1}{2\pi}\int_0^{2\pi} M\,\dd\theta = M$$
-      <p>等号成立要求 $|f(z_0+re^{i\theta})| = M$ 对所有 $\theta$ 成立。这说明 $|f(z)|$ 在 $z_0$ 的邻域内恒为 $M$。由连通性，$|f(z)| \equiv M$ 在整个 $D$ 上成立。</p>
-      <p><strong>为什么 $|f|$ 恒为常数蕴含 $f$ 为常数？</strong>设 $f = u+iv$，$|f|^2 = u^2+v^2 \equiv M^2$。对 $x$ 和 $y$ 分别求偏导：$2uu_x+2vv_x=0$，$2uu_y+2vv_y=0$。利用 C-R 方程 $u_x=v_y$、$u_y=-v_x$，代入得 $uu_x-vu_y=0$ 和 $uu_y+vu_x=0$。将此二式视为关于 $u_x,u_y$ 的线性方程组，其系数行列式为 $u^2+v^2=|f|^2=M^2$。若 $M \neq 0$，则方程组仅有零解 $u_x=u_y=0$，从而 $u$ 为常数，再由 C-R 得 $v$ 也为常数，故 $f$ 为常数。若 $M=0$，则 $f \equiv 0$，平凡地是常数。$\square$</p>
-      <p><strong>推论（实用形式）的推导</strong>：设 $f$ 在 $\bar{D}$ 上连续，$D$ 是有界区域。由连续函数在紧致集上取最大值的性质，$|f|$ 必在 $\bar{D}$ 上某点 $z_0$ 处取到最大值。若 $z_0 \in D$（最大值在内部），则最大模原理蕴含 $f$ 在 $D$ 内为常数，此时最大值也出现在边界上（边界上所有点都取相同的值）。若 $f$ 不为常数，则最大值只能在 $\partial D$ 上取到。因此：$|f|$ 在 $\bar{D}$ 上的最大值必出现在边界上。</p>
-    </div>
-
-    <div class="box box-note">
-      <div class="box-title">最小模原理</div>
-      <p><strong>最小模原理</strong>：设 $f(z)$ 在区域 $D$ 内解析、不为常数、且 $f(z) \neq 0$（在 $D$ 内无零点），则 $|f(z)|$ 在 $D$ 内不能取到最小值。</p>
-      <p>证明：对 $1/f(z)$ 应用最大模原理。</p>
-    </div>
-
-    <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 利用 Liouville 定理证明：若 $f$ 是整函数且 $|f(z)| \leq A|z|$，则 $f(z) = az+b$</div>
-      <div class="collapsible-body">
-        <p><strong>证明</strong>：考虑 $g(z) = \dfrac{f(z) - f(0)}{z}$（$z \neq 0$），补充定义 $g(0) = f'(0)$。</p>
-        <p>$g(z)$ 是整函数（$z=0$ 是可去奇点）。当 $|z| \to \infty$ 时：</p>
-        $$|g(z)| = \frac{|f(z)-f(0)|}{|z|} \leq \frac{|f(z)|+|f(0)|}{|z|} \leq A + \frac{|f(0)|}{|z|}$$
-        <p>故 $g(z)$ 是有界整函数，由 Liouville 定理，$g(z) \equiv c$（常数）。</p>
-        <p>从而 $f(z) - f(0) = cz$，即 $f(z) = cz + f(0)$。令 $a = c$，$b = f(0)$，得证。</p>
-      </div>
-    </div>
-
-    <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 证明有界整函数必为常数的一个推广</div>
-      <div class="collapsible-body">
-        <p><strong>命题</strong>：若 $f$ 是整函数且满足 $|f(z)| \le A|z|^n + B$（对充分大的 $|z|$），则 $f(z)$ 是次数不超过 $n$ 的多项式。</p>
-        <p><strong>证明</strong>：对 $f$ 在 $|z|=R$ 上用 Cauchy 估计：$|f^{(k)}(0)| \le \frac{k!}{R^k}\max_{|z|=R}|f(z)| \le \frac{k!}{R^k}(A R^n + B)$。</p>
-        <p>当 $k > n$ 时，令 $R \to \infty$，右侧 $\to 0$（因为 $R^{n-k} \to 0$）。故 $f^{(k)}(0) = 0$ 对所有 $k > n$ 成立。</p>
-        <p>由 Taylor 展开定理（整函数在整个平面上的 Taylor 展开收敛），$f(z) = \sum_{k=0}^n \frac{f^{(k)}(0)}{k!}z^k$ 是次数不超过 $n$ 的多项式。$\square$</p>
-        <p><strong>特例</strong>：$n=0$ 时即 Liouville 定理（$f$ 有界 ⇒ $f$ 为常数）。$n=1$ 时得到 $|f(z)| \leq A|z|$ 蕴含 $f$ 为一次多项式，恰为上例的推广。</p>
-      </div>
-    </div>
-
-    <div class="collapsible">
-      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 应用最大模原理</div>
-      <div class="collapsible-body">
-        <p><strong>题目</strong>：设 $f(z)$ 在 $|z| \leq 1$ 上解析，$f(0) = 0$，且当 $|z|=1$ 时 $|f(z)| \leq 1$。证明当 $|z| \leq 1$ 时 $|f(z)| \leq |z|$。</p>
-        <p><strong>证明</strong>：设 $g(z) = \dfrac{f(z)}{z}$（$z \neq 0$），$g(0) = f'(0)$。$g(z)$ 在 $|z| \leq 1$ 上解析。</p>
-        <p>当 $|z| = 1$ 时，$|g(z)| = \dfrac{|f(z)|}{|z|} = |f(z)| \leq 1$。</p>
-        <p>由最大模原理，$|g(z)| \leq 1$ 对所有 $|z| \leq 1$ 成立，即 $|f(z)| \leq |z|$。</p>
-        <p><strong>注</strong>：这个结果称为 <strong>Schwarz 引理</strong>的雏形，是复分析中极重要的工具。</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- 章节导航 -->
-  <!-- ========== 常见误区与FAQ ========== -->
-  <div class="section" id="faq">
-    <h2>常见误区与 FAQ</h2>
-
-    <div class="box box-note">
-      <div class="box-title">误区：Cauchy 定理说解析函数积分恒为零，但 $\oint_{|z|=1} dz/z = 2\pi i$ 不是解析吗？</div>
-      <p>$1/z$ 在 $z=0$ 处不解析（有奇点），而 $z=0$ 在围道 $|z|=1$ 的<strong>内部</strong>。Cauchy 定理要求被积函数在围道上<strong>及围道内部</strong>处处解析。$1/z$ 在 $|z|=1$ 内部有奇点 $z=0$，所以定理不适用。这也是为什么需要本章后面的 Cauchy 积分公式和留数定理来处理内部有奇点的情况。</p>
-    </div>
-
-    <div class="box box-note">
-      <div class="box-title">FAQ：Cauchy 积分公式和平均值公式是什么关系？</div>
-      <p>Cauchy 积分公式在圆周上取特殊参数化就得到平均值公式：$f(a) = \frac{1}{2\pi}\int_0^{2\pi} f(a+Re^{i\theta})d\theta$。这说明解析函数在圆心的值<strong>恰好等于</strong>它在圆周上的算术平均值。这是解析函数"刚性"的又一体现——你不能在圆心处取任意值，它必须由圆周上的值唯一决定。这也是调和函数"平均值性质"在解析函数框架下的体现。</p>
-    </div>
-
-    <div class="box box-note">
-      <div class="box-title">FAQ：路径无关性和保守场有什么关系？</div>
-      <p>完全一致。解析函数的围道积分为零等价于积分与路径无关（在单连通域内）。这与向量分析中"旋度为零的向量场是保守场"本质上是一回事——C-R 方程恰好就是复平面上"旋度=0 + 散度=0"的条件。所以解析函数的积分理论可以看作二维保守场理论的复解析版本。</p>
-    </div>
-
-    <div class="box box-note">
-      <div class="box-title">FAQ：最大模原理的直观意义是什么？</div>
-      <p>解析函数的模 $|f(z)|$ 不能在区域内部取到严格最大值——就像一座山，山顶不能在山体内部，必须在山脊（边界）上。更形象地说：如果你在一个平面上加热一块金属板使其达到稳态温度分布（满足 Laplace 方程），最热的点和最冷的点一定出现在边界上，不会出现在板的中心。这是调和函数的极大值原理，对应到解析函数就是最大模原理。</p>
-    </div>
-  </div>
-
-  <!-- ========== 本章小结 ========== -->
-  <div class="section" style="background:linear-gradient(135deg,#faf5ff,#ebf8ff);">
+  <!-- ==================== 5.4 Laurent 展开定理 ==================== -->
+  
+  <div class="section" id="summary">
     <h2>本章小结</h2>
-    <h3>核心要点回顾</h3>
+    <p>本章建立了复变函数的幂级数理论，核心要点：</p>
     <ol>
-      <li><strong>参数化计算</strong>：$\int_C f(z)dz = \int_\alpha^\beta f(z(t))z'(t)dt$ 是基本计算手段。$\oint (z-a)^n dz$ 当且仅当 $n=-1$ 时为 $2\pi i$，其余全为零——这个事实是整个留数理论的原点。</li>
-      <li><strong>Cauchy-Goursat 定理</strong>：解析函数在单连通域内沿闭曲线积分为零。等价于积分与路径无关、原函数存在。</li>
-      <li><strong>Cauchy 积分公式</strong>：$f(a) = \frac{1}{2\pi i}\oint_C \frac{f(z)}{z-a}dz$。边界值决定内部值。由此推出解析函数无穷次可微。</li>
-      <li><strong>高阶导数公式</strong>：$f^{(n)}(a) = \frac{n!}{2\pi i}\oint_C \frac{f(z)}{(z-a)^{n+1}}dz$。Cauchy 估计：$|f^{(n)}(a)| \le n!M/R^n$。</li>
-      <li><strong>推论链</strong>：Cauchy 估计 → Liouville 定理（有界整函数必为常数）→ 代数基本定理（$n$ 次多项式恰有 $n$ 个复根）。最大模原理：解析函数的模在边界上取最大值。</li>
+      <li><strong>Abel 定理</strong>：幂级数在收敛圆内绝对收敛，在圆外发散。</li>
+      <li><strong>收敛半径公式</strong>：$R = \lim |a_n/a_{n+1}|$（比值法）或 $R = 1/\limsup \sqrt[n]{|a_n|}$（根值法）。</li>
+      <li><strong>Taylor 展开定理</strong>：在解析点附近，函数可唯一展开为 Taylor 级数。</li>
+      <li><strong>关键洞察</strong>：收敛半径 = 到最近奇点的距离。这建立了幂级数与解析函数之间的深刻联系。</li>
     </ol>
-    <h3>承上启下</h3>
-    <p>第四章用积分的方法研究了全局性质。但还有一个强大的视角等待被开发：用无穷级数来局部地分解函数。如果一个函数在围道内部有奇点，积分公式的处理会变得复杂——而 Laurent 级数展开则提供了一种把奇点行为"分离出来"的系统方法。这正是第五章的主题，也是第六章留数理论的前奏。</p>
-  </div>
-
+    <p><strong>下一章：</strong>当函数在奇点附近不解析时，我们需要更强的工具——洛朗展开，它用双边幂级数刻画函数在环形区域和孤立奇点附近的行为。</p>
   <div class="chapter-nav">
-    <a href="ch3.html" class="prev">第三章 · 初等函数</a>
-    <a href="ch5.html" class="next">第五章 · 级数</a>
+    <a href="ch3.html" class="prev">第三章 · 复变函数的积分</a>
+    <a href="ch5.html" class="next">第五章 · 洛朗展式与孤立奇点</a>
   </div>
 
 </div>
