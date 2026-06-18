@@ -47,13 +47,11 @@
     <h3>本章目录</h3>
     <ol>
       <li><a href="#s1">2.1 物理推导：热量如何扩散？</a></li>
-      <li><a href="#s2">2.2 初值问题的求解：Fourier变换法</a></li>
-      <li><a href="#s3">2.3 有界杆与分离变量法</a></li>
+      <li><a href="#s2">2.2 初值问题的求解：Fourier变换法</a> <span style="font-size:0.8rem;color:var(--accent);">含考试标准流程 + 全空间渐近分析</span></li>
+      <li><a href="#s3">2.3 有界杆与分离变量法</a> <span style="font-size:0.8rem;color:var(--accent);">含有界杆渐近分析</span></li>
       <li><a href="#s4">2.4 半无界问题：延拓法</a></li>
       <li><a href="#s5">2.5 极值原理</a></li>
       <li><a href="#s6">2.6 解的正则性：即时光滑化</a></li>
-      <li><a href="#s7">2.7 Fourier变换法解Cauchy问题（详细步骤）</a></li>
-      <li><a href="#s8">2.8 解的渐近性态分析</a></li>
     </ol>
   </div>
 
@@ -317,6 +315,105 @@
         </div>
       </div>
     </div>
+
+    <h3>考试标准流程（五步法框架）</h3>
+
+    <div class="box box-motivation">
+      <div class="box-title">考试中的"完整求解"要求</div>
+      <p>热传导方程Cauchy问题是考试中的经典<strong>大题</strong>。以下是标准五步法——注意前两步（Fourier变换化PDE为ODE、求解ODE）在上文已详细讲解，这里提炼为紧凑的答题模板：</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">五步法速查</div>
+      <ol>
+        <li><strong>Fourier变换：</strong>对 $u_t = a^2 u_{xx}$ 关于 $x$ 取变换 $\mathcal{F}$，得 $\frac{\dd\hat{u}}{\dd t} = -a^2\xi^2\hat{u}$；</li>
+        <li><strong>解ODE：</strong>$\hat{u}(\xi,t) = \hat{\varphi}(\xi)\,e^{-a^2\xi^2 t}$；</li>
+        <li><strong>逆变换：</strong>$u(x,t) = \mathcal{F}^{-1}[\hat{\varphi}(\xi)e^{-a^2\xi^2 t}]$；</li>
+        <li><strong>计算热核：</strong>$\mathcal{F}^{-1}[e^{-a^2\xi^2 t}] = K(x,t) = \frac{1}{2a\sqrt{\pi t}}e^{-x^2/(4a^2 t)}$；</li>
+        <li><strong>卷积写出解：</strong>$u(x,t) = \int_{-\infty}^{+\infty} K(x-y,t)\,\varphi(y)\,\dd y$。</li>
+      </ol>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">考试注释要点</div>
+      <ol>
+        <li>需说明 $\varphi$ 满足 Fourier 变换条件（如 $\varphi \in L^1(\RR)$ 或有界连续）；</li>
+        <li>卷积定理的使用要注明条件（$\hat{\varphi}$ 与 $e^{-a^2\xi^2 t}$ 的乘积在 $L^1$ 中）；</li>
+        <li>若考试给出具体 $\varphi(x)$，要<strong>显式计算出</strong> $u(x,t)$（通常用到误差函数 $\operatorname{erf}$）；</li>
+        <li>最后往往还需要讨论解的渐近行为（见下文）。</li>
+      </ol>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 2.2.3（考试完整大题示例 — 原 §2.7 例题合并）</div>
+      <p>用 Fourier 变换法求解热传导方程 Cauchy 问题：</p>
+      $$u_t = u_{xx} \quad (x \in \RR, t > 0), \qquad u(x,0) = e^{-x^2}.$$
+      <p>并分析解的渐近性态。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p><strong>解：</strong>$a=1$，$\varphi(x)=e^{-x^2}$。</p>
+          <p>第一步，对 $\varphi$ 做 Fourier 变换：$\hat{\varphi}(\xi) = \int_{-\infty}^{+\infty} e^{-x^2} e^{-i\xi x}\dd x = \sqrt{\pi}\,e^{-\xi^2/4}$（经典 Gauss 积分）。</p>
+          <p>第二步，$\hat{u}(\xi,t) = \hat{\varphi}(\xi) e^{-\xi^2 t} = \sqrt{\pi}\,e^{-\xi^2/4} e^{-\xi^2 t} = \sqrt{\pi}\,e^{-\xi^2(t+1/4)}$。</p>
+          <p>第三步，逆变换：$u(x,t) = \frac{1}{2\pi}\int_{-\infty}^{+\infty} \sqrt{\pi}\,e^{-\xi^2(t+1/4)} e^{i\xi x}\dd\xi$。</p>
+          <p>配方：$-\xi^2(t+1/4) + i\xi x = -(t+1/4)\left(\xi - \frac{ix}{2(t+1/4)}\right)^2 - \frac{x^2}{4(t+1/4)}$。</p>
+          <p>$$\begin{aligned} u(x,t) &= \frac{\sqrt{\pi}}{2\pi} \cdot \sqrt{\frac{\pi}{t+1/4}} \cdot \exp\!\left(-\frac{x^2}{4(t+1/4)}\right) \\ &= \frac{1}{\sqrt{4t+1}} \exp\!\left(-\frac{x^2}{4t+1}\right). \end{aligned}$$</p>
+          <p>验证：$t=0$ 时 $u(x,0) = e^{-x^2}$，满足初始条件。直接求导可验证满足 $u_t = u_{xx}$。</p>
+          <p><strong>渐近分析：</strong></p>
+          <ul>
+            <li>固定 $x$，$t \to +\infty$ 时：$u(x,t) \sim \frac{1}{\sqrt{4t}} e^{-x^2/(4t)} \sim \frac{1}{2\sqrt{t}} \to 0$。温度趋于零的速率为 $O(t^{-1/2})$。</li>
+            <li>固定 $t$，$x \to \pm\infty$ 时：$u(x,t) \sim \frac{1}{\sqrt{4t+1}} e^{-x^2/(4t+1)} \to 0$，Gauss 型指数衰减。</li>
+            <li>总热量守恒：$\int_{-\infty}^{+\infty} u(x,t)\dd x = \sqrt{\pi}$（与 $t$ 无关）。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h3>全空间解的渐近行为（原 §2.8 内容并入）</h3>
+
+    <div class="box box-intuition">
+      <div class="box-title">为什么关心渐近行为？</div>
+      <p>在物理和工程中，我们往往不关心 $t=0.01$ 时的精确温度，而更关心：<strong>经过足够长的时间后，系统最终如何？趋近速度有多快？</strong></p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">全空间解的渐近衰减</div>
+      <p>对于 $u_t = a^2 u_{xx}$（$x \in \RR$），初始条件 $u(x,0)=\varphi(x) \in L^1(\RR) \cap L^\infty(\RR)$。则：</p>
+      <ol>
+        <li><strong>逐点衰减：</strong>对每个固定的 $x$，$\displaystyle \lim_{t \to +\infty} u(x,t) = 0$。</li>
+        <li><strong>衰减速率：</strong>$\displaystyle |u(x,t)| \le \frac{\|\varphi\|_{L^1}}{2a\sqrt{\pi t}}$。特别地，$\max_x |u(x,t)|$ 以 $O(t^{-1/2})$ 速率衰减。</li>
+        <li><strong>总热量守恒：</strong>$\displaystyle \int_{-\infty}^{+\infty} u(x,t)\,\dd x = \int_{-\infty}^{+\infty} \varphi(x)\,\dd x$（对任意 $t > 0$ 为常数）。</li>
+        <li><strong>渐近 Profile：</strong>当 $t \to +\infty$ 时，解的形态越来越接近热核本身的形状：
+          $$u(x,t) \sim \frac{M}{2a\sqrt{\pi t}} \exp\!\left(-\frac{x^2}{4a^2 t}\right), \quad M = \int_{-\infty}^{+\infty} \varphi(x)\,\dd x.$$
+          即无论初始分布是什么形状，经过足够长的时间后，解都趋于一个中心化的 Gauss 分布——这是中心极限定理在 PDE 层面的体现。</li>
+      </ol>
+    </div>
+
+    <div class="box box-proof">
+      <div class="box-title">逐点衰减估计的证明</div>
+      <p>由热核公式：</p>
+      $$|u(x,t)| = \left|\int_{-\infty}^{+\infty} \frac{1}{2a\sqrt{\pi t}} e^{-(x-y)^2/(4a^2 t)} \varphi(y)\,\dd y\right| \le \frac{1}{2a\sqrt{\pi t}} \int_{-\infty}^{+\infty} |\varphi(y)|\,\dd y = \frac{\|\varphi\|_{L^1}}{2a\sqrt{\pi t}}.$$
+      <p>因为 $e^{-(x-y)^2/(4a^2 t)} \le 1$，直接将指数因子放大为 1 即得此简洁而有用的估计。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 2.2.4（渐近性态分析 — 原 §2.8 例题合并）</div>
+      <p>求解热传导方程初值问题：</p>
+      $$u_t = u_{xx} \quad (x \in \RR, t > 0), \qquad u(x,0) = \begin{cases} 1, & |x| \le 1, \\ 0, & |x| > 1. \end{cases}$$
+      <p>(1) $u(0,t)$ 的衰减速率是多少？ (2) 解的渐近 Profile 是什么形状？</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>$a=1$，$\varphi$ 的 $L^1$ 范数 $M = \int_{-1}^1 1\,\dd x = 2$（总热量为 2）。</p>
+          <p><strong>(1) 衰减速率：</strong>由一般估计：</p>
+          $$|u(x,t)| \le \frac{\|\varphi\|_{L^1}}{2\sqrt{\pi t}} = \frac{1}{\sqrt{\pi t}}.$$
+          <p>因此 $|u(0,t)|$ 以 $O(t^{-1/2})$ 的代数速率衰减。更精确地，在例题 2.2.2 中已求得 $u(0,t) = \operatorname{erf}(1/(2\sqrt{t}))$。当 $t$ 很大时，$\operatorname{erf}(z) \sim 2z/\sqrt{\pi}$（$z \ll 1$），故 $u(0,t) \sim \frac{1}{\sqrt{\pi t}}$。</p>
+          <p><strong>(2) 渐近 Profile：</strong>由渐近 Profile 定理，当 $t \to +\infty$ 时：</p>
+          $$u(x,t) \sim \frac{M}{2\sqrt{\pi t}} e^{-x^2/(4t)} = \frac{1}{\sqrt{\pi t}} e^{-x^2/(4t)}.$$
+          <p>即无论初始是矩形脉冲还是其他有界支集函数，经过足够长的时间后，温度分布都趋近于宽度 $O(\sqrt{t})$、高度 $O(t^{-1/2})$ 的 Gauss 钟形曲线——热核的多次卷积等价于中心极限定理中独立随机变量之和的极限分布。</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ==================== 2.3 ==================== -->
@@ -426,6 +523,28 @@
           <p><strong>物理意义：</strong>绝热杆中总热量守恒。初始温度从 $0$（$x=0$）线性增长到 $1$（$x=1$），平均值为 $1/2$。经过足够长的时间后，热量均匀分布，整根杆的温度趋于平均值 $1/2$。这就是<strong>热平衡</strong>。</p>
         </div>
       </div>
+    </div>
+
+    <h3>有界杆解的渐近行为（原 §2.8 内容并入）</h3>
+
+    <div class="box box-theorem">
+      <div class="box-title">有界杆解的大时间行为</div>
+      <p>对于 $u_t = a^2 u_{xx}$（$0 < x < l$），其解为 $u(x,t) = \sum_{n=1}^\infty C_n e^{-a^2(n\pi/l)^2 t} X_n(x)$。</p>
+      <ol>
+        <li><strong>Dirichlet 边值（$u(0,t) = u(l,t) = 0$）：</strong>当 $t \to +\infty$ 时，所有模态都指数衰减到零。主导项为 $n=1$ 模态：$u(x,t) \sim C_1 e^{-a^2(\pi/l)^2 t} \sin\frac{\pi x}{l}$。衰减速率：<strong>指数衰减</strong>，特征时间尺度 $\tau = l^2/(a^2\pi^2)$。</li>
+        <li><strong>Neumann 边值（$u_x(0,t) = u_x(l,t) = 0$）：</strong>当 $t \to +\infty$ 时，解趋于常数——初始平均温度：
+          $$\lim_{t \to +\infty} u(x,t) = \frac{1}{l}\int_0^l \varphi(x)\,\dd x = C_0.$$
+          趋近常数的速率为 $O(e^{-a^2(\pi/l)^2 t})$（由 $n=1$ 模态决定）。</li>
+      </ol>
+    </div>
+
+    <div class="box box-analogy">
+      <div class="box-title">直觉对比：全空间 vs 有界杆</div>
+      <ul>
+        <li><strong>全空间（$\RR$）</strong>：热量可以扩散到无穷远处，没有边界将热量"困住"。温度以<strong>代数速率</strong> $O(t^{-1/2})$ 衰减到零——缓慢但持续下降。</li>
+        <li><strong>有界杆（Dirichlet）</strong>：两端恒温为零，热量持续从两端流出。温度以<strong>指数速率</strong> $O(e^{-\lambda_1 t})$ 衰减——非常快，因为有边界帮助"散热"。</li>
+        <li><strong>有界杆（Neumann / 绝热）</strong>：两端无热流通过，总热量被"困住"在杆内。温度最终趋于一个非零常数——平均值，永不衰减到零。趋近速率同样为<strong>指数</strong>。</li>
+      </ul>
     </div>
   </div>
 
@@ -747,161 +866,6 @@
     </div>
   </div>
 
-  <!-- ==================== 2.7 ==================== -->
-  <div class="section" id="s7">
-    <h2>2.7 Fourier变换法解Cauchy问题（考试完整步骤）</h2>
-
-    <div class="box box-motivation">
-      <div class="box-title">考试中的"完整求解"要求</div>
-      <p>在考试中，热传导方程Cauchy问题是经典的<strong>大题</strong>（如第四大题）。这类题目通常要求你展示<strong>完整的求解流程</strong>——从问题的建立到最终解的表达式，并进一步分析解的渐近性质。以下是标准的完整步骤。</p>
-    </div>
-
-    <h3>标准求解流程（五步法）</h3>
-
-    <div class="box box-definition">
-      <div class="box-title">问题</div>
-      $$\begin{cases} u_t = a^2 u_{xx}, & x \in \RR,\ t > 0, \\ u(x,0) = \varphi(x), & x \in \RR. \end{cases}$$
-    </div>
-
-    <p><strong>第一步：关于 $x$ 做 Fourier 变换。</strong></p>
-    <p>定义 $\hat{u}(\xi, t) = \mathcal{F}[u(\cdot, t)](\xi) = \int_{-\infty}^{+\infty} u(x,t)\,e^{-i\xi x}\,\dd x$。</p>
-    <p>对 PDE 两边关于 $x$ 做 Fourier 变换。利用性质 $\mathcal{F}[u_{xx}] = (i\xi)^2\hat{u} = -\xi^2\hat{u}$，$\mathcal{F}[u_t] = \frac{\dd}{\dd t}\hat{u}$（Fourier变换与 $t$ 无关）：</p>
-    $$\frac{\dd\hat{u}}{\dd t} = -a^2\xi^2\,\hat{u}.$$
-    <p>对初始条件也做变换：$\hat{u}(\xi, 0) = \hat{\varphi}(\xi)$。</p>
-
-    <p><strong>第二步：求解关于 $t$ 的 ODE。</strong>以 $\xi$ 为参数：</p>
-    $$\hat{u}(\xi, t) = \hat{u}(\xi, 0)\,e^{-a^2\xi^2 t} = \hat{\varphi}(\xi)\,e^{-a^2\xi^2 t}.$$
-
-    <p><strong>第三步：做逆 Fourier 变换。</strong></p>
-    $$u(x,t) = \mathcal{F}^{-1}[\hat{\varphi}(\xi)\,e^{-a^2\xi^2 t}](x).$$
-    <p>由卷积定理，乘积的逆变换 = 各自逆变换的卷积。</p>
-
-    <p><strong>第四步：计算 $e^{-a^2\xi^2 t}$ 的逆 Fourier 变换。</strong></p>
-    <p>这是一个经典的Gauss积分：</p>
-    $$\mathcal{F}^{-1}[e^{-a^2\xi^2 t}](x) = \frac{1}{2\pi}\int_{-\infty}^{+\infty} e^{-a^2\xi^2 t}\,e^{i\xi x}\,\dd\xi.$$
-    <p>配方：$-a^2 t \xi^2 + i x \xi = -a^2 t\left(\xi - \frac{ix}{2a^2 t}\right)^2 - \frac{x^2}{4a^2 t}$。利用 $\int_{-\infty}^{+\infty} e^{-\alpha z^2}\dd z = \sqrt{\pi/\alpha}$（$\alpha > 0$）得：</p>
-    $$\mathcal{F}^{-1}[e^{-a^2\xi^2 t}](x) = \frac{1}{2a\sqrt{\pi t}} \exp\!\left(-\frac{x^2}{4a^2 t}\right) = K(x,t).$$
-    <p>这就是<strong>热核</strong>（Heat Kernel / Gauss核）。</p>
-
-    <p><strong>第五步：写出卷积形式的解。</strong></p>
-    <div class="box box-formula">
-      <div class="box-title">热传导方程 Cauchy 问题的完整解</div>
-      $$u(x,t) = (\varphi * K)(x,t) = \int_{-\infty}^{+\infty} \varphi(y) \cdot \frac{1}{2a\sqrt{\pi t}} \exp\!\left(-\frac{(x-y)^2}{4a^2 t}\right)\,\dd y.$$
-    </div>
-
-    <div class="box box-note">
-      <div class="box-title">考试答题时的注释要点</div>
-      <ol>
-        <li>需要说明函数满足 Fourier 变换所需的条件（如 $\varphi \in L^1(\RR)$ 或 $\varphi$ 有界连续）；</li>
-        <li>卷积定理的使用要注明条件（$\hat{\varphi}$ 与 $e^{-a^2\xi^2 t}$ 的乘积在 $L^1$ 中）；</li>
-        <li>如果考试给了具体的 $\varphi(x)$，要<strong>显式计算出</strong> $u(x,t)$ 的表达式（通常需要用到误差函数 $\operatorname{erf}$）；</li>
-        <li>最后一步往往还需要讨论解的渐近行为（见下节 2.8）。</li>
-      </ol>
-    </div>
-
-    <div class="box box-example">
-      <div class="box-title">例题 2.7.1（考试完整大题示例）</div>
-      <p>用 Fourier 变换法求解热传导方程 Cauchy 问题：</p>
-      $$u_t = u_{xx} \quad (x \in \RR, t > 0), \qquad u(x,0) = e^{-x^2}.$$
-      <p>并分析解的渐近性态。</p>
-      <div class="collapsible">
-        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
-        <div class="collapsible-body">
-          <p><strong>解：</strong>$a=1$，$\varphi(x)=e^{-x^2}$。</p>
-          <p>第一步，对 $\varphi$ 做 Fourier 变换：$\hat{\varphi}(\xi) = \int_{-\infty}^{+\infty} e^{-x^2} e^{-i\xi x}\dd x = \sqrt{\pi}\,e^{-\xi^2/4}$（经典 Gauss 积分）。</p>
-          <p>第二步，$\hat{u}(\xi,t) = \hat{\varphi}(\xi) e^{-\xi^2 t} = \sqrt{\pi}\,e^{-\xi^2/4} e^{-\xi^2 t} = \sqrt{\pi}\,e^{-\xi^2(t+1/4)}$。</p>
-          <p>第三步，逆变换：$u(x,t) = \frac{1}{2\pi}\int_{-\infty}^{+\infty} \sqrt{\pi}\,e^{-\xi^2(t+1/4)} e^{i\xi x}\dd\xi$。</p>
-          <p>配方：$-\xi^2(t+1/4) + i\xi x = -(t+1/4)\left(\xi - \frac{ix}{2(t+1/4)}\right)^2 - \frac{x^2}{4(t+1/4)}$。</p>
-          <p>$$\begin{aligned} u(x,t) &= \frac{\sqrt{\pi}}{2\pi} \cdot \sqrt{\frac{\pi}{t+1/4}} \cdot \exp\!\left(-\frac{x^2}{4(t+1/4)}\right) \\ &= \frac{1}{\sqrt{4t+1}} \exp\!\left(-\frac{x^2}{4t+1}\right). \end{aligned}$$</p>
-          <p>验证：$t=0$ 时 $u(x,0) = e^{-x^2}$，满足初始条件。直接求导可验证满足 $u_t = u_{xx}$。</p>
-          <p><strong>渐近分析：</strong></p>
-          <ul>
-            <li>固定 $x$，$t \to +\infty$ 时：$u(x,t) \sim \frac{1}{\sqrt{4t}} e^{-x^2/(4t)} \sim \frac{1}{2\sqrt{t}} \to 0$。温度趋于零的速率为 $O(t^{-1/2})$。</li>
-            <li>固定 $t$，$x \to \pm\infty$ 时：$u(x,t) \sim \frac{1}{\sqrt{4t+1}} e^{-x^2/(4t+1)} \to 0$，Gauss 型指数衰减。</li>
-            <li>总热量守恒：$\int_{-\infty}^{+\infty} u(x,t)\dd x = \sqrt{\pi}$（与 $t$ 无关）：$\int_{-\infty}^{+\infty} \frac{1}{\sqrt{4t+1}} e^{-x^2/(4t+1)}\dd x = \frac{1}{\sqrt{4t+1}} \cdot \sqrt{\pi(4t+1)} = \sqrt{\pi}$。</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==================== 2.8 ==================== -->
-  <div class="section" id="s8">
-    <h2>2.8 解的渐近性态分析</h2>
-
-    <div class="box box-intuition">
-      <div class="box-title">为什么关心渐近行为？</div>
-      <p>在物理和工程中，我们常常不关心 $t=0.01$ 时刻的温度精确值，而更关心：<strong>经过足够长的时间后，系统的最终状态是什么？趋近这个状态的速度有多快？</strong> 这就是渐近分析（asymptotic analysis）要回答的问题。</p>
-    </div>
-
-    <h3>全空间 Cauchy 问题的渐近行为</h3>
-
-    <div class="box box-theorem">
-      <div class="box-title">全空间解的渐近衰减</div>
-      <p>对于 $u_t = a^2 u_{xx}$（$x \in \RR$），初始条件 $u(x,0)=\varphi(x) \in L^1(\RR) \cap L^\infty(\RR)$。则：</p>
-      <ol>
-        <li><strong>逐点衰减：</strong>对每个固定的 $x$，$\displaystyle \lim_{t \to +\infty} u(x,t) = 0$。</li>
-        <li><strong>衰减速率：</strong>$\displaystyle |u(x,t)| \le \frac{\|\varphi\|_{L^1}}{2a\sqrt{\pi t}}$。特别地，$\max_x |u(x,t)|$ 以 $O(t^{-1/2})$ 速率衰减。</li>
-        <li><strong>总热量（或总"质量"）守恒：</strong>$\displaystyle \int_{-\infty}^{+\infty} u(x,t)\,\dd x = \int_{-\infty}^{+\infty} \varphi(x)\,\dd x$（对任意 $t > 0$ 为常数）。</li>
-        <li><strong>渐近 Profile：</strong>当 $t \to +\infty$ 时，解的形态越来越接近热核本身的形状：
-          $$u(x,t) \sim \frac{M}{2a\sqrt{\pi t}} \exp\!\left(-\frac{x^2}{4a^2 t}\right), \quad M = \int_{-\infty}^{+\infty} \varphi(x)\,\dd x.$$
-          即无论初始分布是什么形状，经过足够长的时间后，解都趋于一个中心化的 Gauss 分布。</li>
-      </ol>
-    </div>
-
-    <div class="box box-proof">
-      <div class="box-title">证明思路（逐点衰减估计）</div>
-      <p>由热核公式：</p>
-      $$|u(x,t)| = \left|\int_{-\infty}^{+\infty} \frac{1}{2a\sqrt{\pi t}} e^{-(x-y)^2/(4a^2 t)} \varphi(y)\,\dd y\right| \le \frac{1}{2a\sqrt{\pi t}} \int_{-\infty}^{+\infty} |\varphi(y)|\,\dd y = \frac{\|\varphi\|_{L^1}}{2a\sqrt{\pi t}}.$$
-      <p>因为 $e^{-(x-y)^2/(4a^2 t)} \le 1$，所以直接将指数因子放大为 1，得到这个简单但有用的估计。</p>
-      <p>渐近 Profile 的推导更精细：利用热核的半群性质和尺度分析，将 $y$ 用 $\sqrt{t}$ 重新标度后做 Taylor 展开，首项即给出上述 Gauss 分布。</p>
-    </div>
-
-    <h3>有界杆的渐近行为</h3>
-
-    <div class="box box-theorem">
-      <div class="box-title">有界杆解的大时间行为</div>
-      <p>对于 $u_t = a^2 u_{xx}$（$0 < x < l$），其解为 $u(x,t) = \sum_{n=1}^\infty C_n e^{-a^2(n\pi/l)^2 t} X_n(x)$。</p>
-      <ol>
-        <li><strong>Dirichlet 边值（$u(0,t) = u(l,t) = 0$）：</strong>当 $t \to +\infty$ 时，所有模态都指数衰减到零。主导项为 $n=1$ 模态：$u(x,t) \sim C_1 e^{-a^2(\pi/l)^2 t} \sin\frac{\pi x}{l}$。衰减速率：<strong>指数衰减</strong>，特征时间尺度 $\tau = l^2/(a^2\pi^2)$。</li>
-        <li><strong>Neumann 边值（$u_x(0,t) = u_x(l,t) = 0$）：</strong>当 $t \to +\infty$ 时，解趋于常数——初始平均温度：
-          $$\lim_{t \to +\infty} u(x,t) = \frac{1}{l}\int_0^l \varphi(x)\,\dd x = C_0.$$
-          趋近常数的速率为 $O(e^{-a^2(\pi/l)^2 t})$（由 $n=1$ 模态决定）。</li>
-      </ol>
-    </div>
-
-    <div class="box box-analogy">
-      <div class="box-title">直觉对比：全空间 vs 有界杆</div>
-      <ul>
-        <li><strong>全空间（$\RR$）</strong>：热量可以扩散到无穷远处，没有边界将热量"困住"。因此温度以<strong>代数速率</strong> $O(t^{-1/2})$ 衰减到零——慢慢的，但永远不会停止下降。</li>
-        <li><strong>有界杆（Dirichlet）</strong>：两端恒温为零，热量持续从两端流出。温度以<strong>指数速率</strong> $O(e^{-\lambda_1 t})$ 衰减——非常快，因为有边界帮助"散热"。</li>
-        <li><strong>有界杆（Neumann / 绝热）</strong>：两端无热流通过，总热量被"困住"在杆内。温度最终趋于一个非零常数——平均值，永不衰减到零。趋近速率同样为<strong>指数</strong>。</li>
-      </ul>
-    </div>
-
-    <div class="box box-example">
-      <div class="box-title">例题 2.8.1（考试重点：渐近性态分析）</div>
-      <p>求解热传导方程初值问题：</p>
-      $$u_t = u_{xx} \quad (x \in \RR, t > 0), \qquad u(x,0) = \begin{cases} 1, & |x| \le 1, \\ 0, & |x| > 1. \end{cases}$$
-      <p>分析当 $t \to +\infty$ 时解的渐近性态，并回答：</p>
-      <p>(1) $u(0,t)$ 的衰减速率是多少？</p>
-      <p>(2) 解的渐近 Profile 是什么形状？</p>
-      <div class="collapsible">
-        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
-        <div class="collapsible-body">
-          <p>$a=1$，$\varphi$ 的 $L^1$ 范数 $M = \int_{-1}^1 1\,\dd x = 2$（总热量为 2）。</p>
-          <p><strong>(1) 衰减速率：</strong>由一般估计：</p>
-          $$|u(x,t)| \le \frac{\|\varphi\|_{L^1}}{2\sqrt{\pi t}} = \frac{1}{\sqrt{\pi t}}.$$
-          <p>因此 $|u(0,t)|$ 以 $O(t^{-1/2})$ 的代数速率衰减。更精确地，在 2.2.2 例题中已求得 $u(0,t) = \operatorname{erf}(1/(2\sqrt{t}))$。当 $t$ 很大时，$\operatorname{erf}(z) \sim 2z/\sqrt{\pi}$（$z \ll 1$），故 $u(0,t) \sim \frac{1}{\sqrt{\pi t}}$。</p>
-          <p><strong>(2) 渐近 Profile：</strong>由渐近 Profile 定理，当 $t \to +\infty$ 时：</p>
-          $$u(x,t) \sim \frac{M}{2\sqrt{\pi t}} e^{-x^2/(4t)} = \frac{1}{\sqrt{\pi t}} e^{-x^2/(4t)}.$$
-          <p>即无论初始是矩形脉冲还是其他有界支集函数，经过足够长的时间后，温度分布都趋近于一个宽度为 $O(\sqrt{t})$、高度为 $O(t^{-1/2})$ 的 Gauss 钟形曲线。总热量守恒：$\int_{\RR} \frac{1}{\sqrt{\pi t}} e^{-x^2/(4t)}\dd x = 2 = M$。</p>
-          <p><strong>物理直觉：</strong>初始矩形脉冲的尖锐边缘立即被热传导抹平。随着时间推移，温度分布越来越像 Gauss 分布——这是中心极限定理在 PDE 层面的体现：热核的多次卷积（即长时间热传导）等效于中心极限定理中独立随机变量之和的极限分布。</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- 可视化 · 热传导方程的解 -->
   <div class="section" id="viz-heat">
     <h2>可视化 &middot; 热传导方程初值问题的解</h2>
@@ -1034,15 +998,15 @@
         \text{（全空间Cauchy问题）} & & \text{（有界杆 $[0,l]$）} \\
         \downarrow & & \downarrow \\
         \text{热核} \; K(x,t) = \frac{e^{-x^2/(4a^2 t)}}{2a\sqrt{\pi t}} & & \text{本征展开} \; \sum C_n e^{-a^2\lambda_n t}X_n(x) \\
+        \downarrow & & \downarrow \\
+        \text{渐近分析：全空间代数衰减 } O(t^{-1/2}) & & \text{渐近分析：有界杆指数衰减 } O(e^{-\lambda_1 t})
         \end{array} \\
         \downarrow \\
         \text{延拓法（半无界问题）} \quad \longleftrightarrow \quad \text{极值原理} \\
         \downarrow \qquad \qquad \qquad \qquad \qquad \downarrow \\
         \text{奇延拓(Dirichlet) / 偶延拓(Neumann)} \qquad \text{唯一性·稳定性·不可逆性} \\
         \downarrow \\
-        \text{解的正则性：即时光滑化（$C^\infty$，解析性）} \\
-        \downarrow \\
-        \text{渐近性态分析：衰减速率、渐近Profile、大时间行为}
+        \text{解的正则性：即时光滑化（$C^\infty$，解析性）}
       \end{array}$$</p>
       <p><strong>核心方法：</strong>Fourier变换法、分离变量法、延拓法（反射法）、极值原理（含非齐次情况）、渐近分析方法。</p>
       <p><strong>核心概念：</strong>热核（基本解）、本征值与本征函数、抛物边界、误差函数。</p>
@@ -1054,6 +1018,144 @@
         <li>即时光滑化 vs 忠实传播奇性：初始粗糙被瞬间抹平 vs 解的奇性沿特征线传播；</li>
         <li>不可逆 vs 可逆：方程在时间反演下改变类型 vs 方程在时间反演下不变。</li>
       </ul>
+    </div>
+  </div>
+
+  <!-- ==================== 课后习题 ==================== -->
+  <div class="section" id="exercises">
+    <h2>课后习题</h2>
+    <div class="exercise-list">
+
+      <div class="exercise-item">
+        <div class="exercise-header">
+          <span class="exercise-title">习题 2.1 · Fourier变换法求解Cauchy问题</span>
+          <span class="exercise-tag basic">基础</span>
+          <span class="exercise-tag exam">考试热点</span>
+        </div>
+        <div class="exercise-body">
+          <p>用Fourier变换法求解以下热传导方程Cauchy问题（$a=1$）：</p>
+          $$u_t = u_{xx} \quad (x \in \RR,\ t > 0), \qquad u(x,0) = e^{-x^2/2}.$$
+          <p>给出解的显式表达式，并验证当 $t \to 0^+$ 时解趋于初始条件。</p>
+          <div class="collapsible">
+            <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 参考答案</div>
+            <div class="collapsible-body">
+              <p>对 $\varphi(x)=e^{-x^2/2}$ 做 Fourier 变换：</p>
+              $$\hat{\varphi}(\xi) = \int_{-\infty}^{+\infty} e^{-x^2/2} e^{-i\xi x}\dd x = \sqrt{2\pi}\,e^{-\xi^2/2}.$$
+              <p>则 $\hat{u}(\xi,t) = \sqrt{2\pi}\,e^{-\xi^2/2} e^{-\xi^2 t} = \sqrt{2\pi}\,e^{-\xi^2(t+1/2)}$。</p>
+              <p>逆变换：$u(x,t) = \frac{1}{2\pi} \int_{-\infty}^{+\infty} \sqrt{2\pi}\,e^{-\xi^2(t+1/2)} e^{i\xi x}\dd\xi$。</p>
+              <p>配方后得：</p>
+              $$u(x,t) = \frac{1}{\sqrt{2t+1}} \exp\!\left(-\frac{x^2}{2(2t+1)}\right).$$
+              <p>验证：$t=0$ 时 $u(x,0) = e^{-x^2/2} = \varphi(x)$。直接求导可验证 $u_t = u_{xx}$。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="exercise-item">
+        <div class="exercise-header">
+          <span class="exercise-title">习题 2.2 · 分离变量法求解有界杆热传导</span>
+          <span class="exercise-tag basic">基础</span>
+          <span class="exercise-tag exam">考试热点</span>
+        </div>
+        <div class="exercise-body">
+          <p>求解以下Dirichlet有界杆热传导问题（$a=1$，$l=\pi$）：</p>
+          $$\begin{cases} u_t = u_{xx}, & 0 < x < \pi,\ t > 0, \\ u(0,t) = u(\pi,t) = 0, & t > 0, \\ u(x,0) = x(\pi - x), & 0 \le x \le \pi. \end{cases}$$
+          <p>给出解的Fourier级数表达式，并求 $t \to +\infty$ 时解的渐近主项。</p>
+          <div class="collapsible">
+            <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 参考答案</div>
+            <div class="collapsible-body">
+              <p>分离变量：$u(x,t) = \sum_{n=1}^{\infty} C_n e^{-n^2 t} \sin(nx)$。</p>
+              <p>计算系数：</p>
+              $$C_n = \frac{2}{\pi}\int_0^\pi x(\pi-x)\sin(nx)\,\dd x.$$
+              <p>两次分部积分可得：</p>
+              $$C_n = \begin{cases} \dfrac{8}{\pi n^3}, & n \text{ 为奇数}, \\ 0, & n \text{ 为偶数}. \end{cases}$$
+              <p>因此解为：</p>
+              $$u(x,t) = \frac{8}{\pi}\sum_{k=0}^{\infty} \frac{e^{-(2k+1)^2 t}}{(2k+1)^3}\sin\big((2k+1)x\big).$$
+              <p>当 $t \to +\infty$，主导项为 $n=1$：</p>
+              $$u(x,t) \sim \frac{8}{\pi} e^{-t} \sin x.$$
+              <p>衰减率为指数衰减 $O(e^{-t})$。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="exercise-item">
+        <div class="exercise-header">
+          <span class="exercise-title">习题 2.3 · 半无界问题与延拓法</span>
+          <span class="exercise-tag basic">基础</span>
+        </div>
+        <div class="exercise-body">
+          <p>求解半无界Dirichlet热传导问题（$a=1$）：</p>
+          $$\begin{cases} u_t = u_{xx}, & x > 0,\ t > 0, \\ u(0,t) = 0, & t > 0, \\ u(x,0) = e^{-x}, & x \ge 0. \end{cases}$$
+          <p>用奇延拓法求解，并将解用误差函数表示。</p>
+          <div class="collapsible">
+            <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 参考答案</div>
+            <div class="collapsible-body">
+              <p>奇延拓：$\tilde{\varphi}(x) = e^{-|x|} \cdot \operatorname{sgn}(x)$。</p>
+              <p>由Dirichlet半无界解公式：</p>
+              $$u(x,t) = \frac{1}{2\sqrt{\pi t}}\int_0^{+\infty} e^{-y}\left[e^{-\frac{(x-y)^2}{4t}} - e^{-\frac{(x+y)^2}{4t}}\right]\dd y.$$
+              <p>配方后分离积分：</p>
+              $$\begin{aligned} u(x,t) &= \frac{1}{2\sqrt{\pi t}} e^{t-x} \int_0^{\infty} e^{-\frac{(y-x+2t)^2}{4t}}\dd y - \frac{1}{2\sqrt{\pi t}} e^{t+x} \int_0^{\infty} e^{-\frac{(y+x+2t)^2}{4t}}\dd y \\ &= \frac{1}{2} e^{t-x}\!\left[1 - \operatorname{erf}\!\left(\frac{2t-x}{2\sqrt{t}}\right)\right] - \frac{1}{2} e^{t+x}\!\left[1 - \operatorname{erf}\!\left(\frac{2t+x}{2\sqrt{t}}\right)\right]. \end{aligned}$$
+              <p>验证：$x=0$ 时两项抵消，$u(0,t)=0$；$t \to 0^+$ 时可恢复 $u(x,0)=e^{-x}$。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="exercise-item">
+        <div class="exercise-header">
+          <span class="exercise-title">习题 2.4 · 极值原理与唯一性</span>
+          <span class="exercise-tag proof">证明</span>
+          <span class="exercise-tag exam">考试热点</span>
+        </div>
+        <div class="exercise-body">
+          <p>(1) 写出并证明热传导方程初边值问题的弱极值原理（辅助函数法）。</p>
+          <p>(2) 利用极值原理证明热传导方程初边值问题解的唯一性。</p>
+          <p>(3) 若源项 $f(x,t) \le 0$，证明最大值原理仍成立；若 $f(x,t) \ge 0$，证明最小值原理成立。</p>
+          <div class="collapsible">
+            <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 参考答案</div>
+            <div class="collapsible-body">
+              <p><strong>(1) 弱极值原理（齐次情形）：</strong></p>
+              <p>设 $u \in C(\bar{D}_T) \cap C^2(D_T)$ 满足 $u_t = a^2 u_{xx}$。令抛物边界 $\Gamma = \{(x,0): 0 \le x \le l\} \cup \{(0,t): 0 \le t \le T\} \cup \{(l,t): 0 \le t \le T\}$。</p>
+              <p>证明：设 $M = \max_\Gamma u$。反设存在内点使 $u > M$。引入辅助函数 $v = u - \varepsilon t$（$\varepsilon > 0$），则 $v_t - a^2 v_{xx} = -\varepsilon < 0$。若 $v$ 在内点取极大，则 $v_t \ge 0$，$v_{xx} \le 0$，从而 $v_t - a^2 v_{xx} \ge 0$，矛盾。故 $v$ 的最大值在 $\Gamma$ 上，令 $\varepsilon \to 0^+$ 即得 $u \le M$。</p>
+              <p><strong>(2) 唯一性：</strong>设 $u_1, u_2$ 为两个解，令 $w = u_1 - u_2$。则 $w$ 满足齐次方程和零初边值条件。由极值原理，$w$ 的最大值和最小值都在抛物边界上取到——均为零，故 $w \equiv 0$，即 $u_1 = u_2$。</p>
+              <p><strong>(3) 非齐次情形：</strong>证 $f \le 0$ 时最大值原理。令 $v = u - \varepsilon t$，则 $v_t - a^2 v_{xx} = f - \varepsilon \le -\varepsilon < 0$，后续与 (1) 相同。$f \ge 0$ 时最小值原理对 $-u$ 应用同理可得。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="exercise-item">
+        <div class="exercise-header">
+          <span class="exercise-title">习题 2.5 · 渐近性态与衰减速率</span>
+          <span class="exercise-tag apply">综合</span>
+        </div>
+        <div class="exercise-body">
+          <p>考虑热传导方程Cauchy问题（$a=1$）：</p>
+          $$u_t = u_{xx}\ (x \in \RR,\ t > 0), \qquad u(x,0) = \begin{cases} \cos x, & |x| \le \pi/2, \\ 0, & |x| > \pi/2. \end{cases}$$
+          <p>(1) 求总热量 $M = \int_{-\infty}^{+\infty} \varphi(x)\,\dd x$。</p>
+          <p>(2) 利用渐近Profile定理，写出 $t \to +\infty$ 时解的渐近表达式（首项）。</p>
+          <p>(3) 比较全空间衰减速率 $O(t^{-1/2})$ 与有界杆Dirichlet问题的指数衰减速率 $O(e^{-\lambda_1 t})$，解释为何边界条件对衰减速率有关键影响。</p>
+          <div class="collapsible">
+            <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 参考答案</div>
+            <div class="collapsible-body">
+              <p><strong>(1) 总热量：</strong></p>
+              $$M = \int_{-\pi/2}^{\pi/2} \cos x\,\dd x = \sin x\Big|_{-\pi/2}^{\pi/2} = 2.$$
+              <p><strong>(2) 渐近Profile：</strong>当 $t \to +\infty$，</p>
+              $$u(x,t) \sim \frac{M}{2\sqrt{\pi t}} e^{-x^2/(4t)} = \frac{1}{\sqrt{\pi t}} e^{-x^2/(4t)}.$$
+              <p>无论初始分布如何复杂，经足够长时间后都趋于中心化Gauss分布。</p>
+              <p><strong>(3) 边界影响分析：</strong></p>
+              <ul>
+                <li><strong>全空间（$\RR$）无边界：</strong>热量只能通过向无穷远处扩散来"稀释"，扩散速度为 $O(\sqrt{t})$，温度以代数速率 $O(t^{-1/2})$ 衰减——边界不存在，热量无处"逃逸"，只能无穷稀释。</li>
+                <li><strong>有界杆Dirichlet（$u=0$ 在边界）：</strong>边界像"吸热器"，持续从系统中抽走热量。两端恒温为零等同于强制冷却，热量被边界高效带走，导致指数衰减 $O(e^{-\lambda_1 t})$——比全空间快得多。</li>
+                <li><strong>有界杆Neumann（绝热边界）：</strong>边界不通热流，总热量守恒，温度趋于非零常数。趋近速率为指数 $O(e^{-\lambda_1 t})$，但极限值不为零。</li>
+              </ul>
+              <p>关键洞察：<strong>代数和指数的分野</strong>——无穷域上的衰减是代数级的（"稀释"过程），有界域上的衰减是指数级的（"冷却"过程）。在物理和工程中，指数衰减通常意味着系统在特征时间 $\tau = 1/\lambda_1$ 后基本达到稳态。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 

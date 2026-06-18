@@ -394,6 +394,221 @@
     </div>
   </div>
 
+  <!-- 可视化 · Poisson核与调和函数 -->
+  <div class="section" id="viz-poisson">
+    <h2>可视化 &middot; Poisson 核与调和函数</h2>
+    <div class="interactive-tool">
+      <p class="tool-desc">在圆周上拖动 <strong>8 个控制点</strong> 改变边界条件 $u|_{r=1}=g(\theta)$，圆内部颜色映射显示调和函数 $u(r,\theta)$ 的值。观察：<strong>极值在边界上</strong>、<strong>圆心处 $u(0)$ = 边界平均值</strong>、<strong>Poisson 核的加权平滑效果</strong>。色阶：<span style="color:#2563eb;">蓝</span>（负）→ <span style="color:#fff;background:#333;padding:0 4px;border-radius:3px;">白</span>（零）→ <span style="color:#dc2626;">红</span>（正）。</p>
+      <div class="tool-controls">
+        <button id="poisson-reset" style="padding:0.4rem 1rem;border-radius:6px;border:1px solid var(--border);background:var(--bg-white);cursor:pointer;">重置边界</button>
+        <span style="margin-left:1rem;font-size:0.9rem;color:var(--text-muted);">圆心值 $u(0) = $ <strong id="poisson-center-val" style="color:var(--accent);">0.000</strong></span>
+      </div>
+      <canvas id="canvas-poisson" width="420" height="420" style="display:block;max-width:420px;margin:1rem auto;"></canvas>
+    </div>
+    <script>
+    (function(){
+      var canvas = document.getElementById('canvas-poisson');
+      if(!canvas) return;
+      var ctx = canvas.getContext('2d');
+      var R = 180; // disk radius in pixels
+      var cx = 210, cy = 210;
+      var N = 8;
+      var angles = []; // boundary control point angles
+      var values = []; // boundary values at control points
+      var dragging = -1;
+      var dpr;
+
+      function initBoundary(){
+        angles = []; values = [];
+        for(var i=0;i<N;i++){
+          angles.push(2*Math.PI*i/N);
+          values.push(Math.sin(angles[i]) + 0.3*Math.sin(3*angles[i]));
+        }
+      }
+
+      function resize(){
+        var rect = canvas.getBoundingClientRect();
+        var cw = Math.min(rect.width||420, 420);
+        dpr = window.devicePixelRatio||1;
+        canvas.width = Math.round(cw*dpr);
+        canvas.height = Math.round(cw*dpr);
+        canvas.style.width = cw+'px';
+        canvas.style.height = cw+'px';
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        R = cw*0.43; cx = cw/2; cy = cw/2;
+      }
+
+      // Poisson kernel for unit disk: K(r,theta,phi) = (1-r²)/(2π(1-2r cos(θ-φ)+r²))
+      function poissonKernel(r, th, phi){
+        var d = 1 - 2*r*Math.cos(th-phi) + r*r;
+        return (1-r*r)/(2*Math.PI*Math.max(d,0.001));
+      }
+
+      // Interpolate boundary value at angle phi from control points
+      function boundaryVal(phi){
+        // wrap phi into [0,2π)
+        while(phi<0) phi+=2*Math.PI;
+        while(phi>=2*Math.PI) phi-=2*Math.PI;
+        // find segment
+        for(var i=0;i<N;i++){
+          var j=(i+1)%N;
+          var a1=angles[i], a2=angles[j];
+          if(a2<a1) a2+=2*Math.PI;
+          var ap=phi; if(ap<a1) ap+=2*Math.PI;
+          if(ap>=a1 && ap<=a2){
+            var t = (ap-a1)/(a2-a1);
+            return values[i]*(1-t) + values[j]*t;
+          }
+        }
+        return values[0];
+      }
+
+      // Compute harmonic function u(r,θ) by Poisson integral (numerical)
+      function harmonicU(r, th){
+        var nphi=360, sum=0;
+        var dphi = 2*Math.PI/nphi;
+        for(var k=0;k<nphi;k++){
+          var phi = k*dphi;
+          sum += poissonKernel(r, th, phi) * boundaryVal(phi) * dphi;
+        }
+        return sum;
+      }
+
+      function valueToColor(v){
+        // v range approx [-1.5, 1.5], clamp
+        var t = Math.max(-1, Math.min(1, v/1.5));
+        var r,g,b;
+        if(t<0){ r=37+Math.round((1+t)*200); g=99+Math.round((1+t)*120); b=235; }
+        else if(t>0){ r=220; g=Math.round(38+(1-t)*200); b=Math.round(38+(1-t)*200); }
+        else { r=255; g=255; b=255; }
+        return 'rgb('+r+','+g+','+b+')';
+      }
+
+      function draw(){
+        ctx.clearRect(0,0,canvas.width/dpr,canvas.height/dpr);
+
+        // Draw color-mapped disk (pixel grid)
+        var imgData = ctx.createImageData(Math.round(cx*2), Math.round(cy*2));
+        for(var py=0;py<imgData.height;py++){
+          for(var px=0;px<imgData.width;px++){
+            var dx=px-cx, dy=py-cy;
+            var dist = Math.sqrt(dx*dx+dy*dy);
+            if(dist<R-1){
+              var r = dist/R;
+              var th = Math.atan2(dy,dx);
+              if(th<0) th+=2*Math.PI;
+              var val = harmonicU(r, th);
+              var col = valueToColor(val);
+              // parse rgb
+              var m = col.match(/\d+/g);
+              var idx = (py*imgData.width+px)*4;
+              imgData.data[idx]=parseInt(m[0]); imgData.data[idx+1]=parseInt(m[1]);
+              imgData.data[idx+2]=parseInt(m[2]); imgData.data[idx+3]=255;
+            }
+          }
+        }
+        ctx.putImageData(imgData,0,0);
+
+        // Clip to disk
+        ctx.save();
+        ctx.beginPath(); ctx.arc(cx,cy,R,0,2*Math.PI); ctx.clip();
+        // (disk already drawn via putImageData, but ensure circle edge is clean)
+        ctx.restore();
+
+        // Draw disk boundary circle
+        ctx.beginPath(); ctx.arc(cx,cy,R,0,2*Math.PI);
+        ctx.strokeStyle='#555'; ctx.lineWidth=2; ctx.stroke();
+
+        // Draw boundary value curve (polar plot: r=1, color = value)
+        // Draw as colored ring
+        for(var i=0;i<360;i++){
+          var phi = i*Math.PI/180;
+          var bv = boundaryVal(phi);
+          var r0 = R, r1 = R+14;
+          var x1=cx+r0*Math.cos(phi), y1=cy-r0*Math.sin(phi);
+          var x2=cx+r1*Math.cos(phi), y2=cy-r1*Math.sin(phi);
+          ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2);
+          ctx.strokeStyle=valueToColor(bv); ctx.lineWidth=1.5; ctx.stroke();
+        }
+
+        // Draw control points
+        for(var i=0;i<N;i++){
+          var ax=cx+R*Math.cos(angles[i]), ay=cy-R*Math.sin(angles[i]);
+          var bx=cx+(R+20)*Math.cos(angles[i]), by=cy-(R+20)*Math.sin(angles[i]);
+          // line from boundary to control knob
+          ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by);
+          ctx.strokeStyle='rgba(0,0,0,0.3)'; ctx.lineWidth=1; ctx.stroke();
+          // knob
+          ctx.beginPath(); ctx.arc(bx,by,6,0,2*Math.PI);
+          ctx.fillStyle = valueToColor(values[i]);
+          ctx.strokeStyle = (dragging===i)?'#e63946':'#333';
+          ctx.lineWidth = (dragging===i)?2.5:1.5;
+          ctx.fill(); ctx.stroke();
+        }
+
+        // Show center value
+        var cu = harmonicU(0,0);
+        document.getElementById('poisson-center-val').textContent = cu.toFixed(3);
+      }
+
+      function findDrag(mx,my){
+        for(var i=0;i<N;i++){
+          var bx=cx+(R+20)*Math.cos(angles[i]), by=cy-(R+20)*Math.sin(angles[i]);
+          var dist = Math.sqrt((mx-bx)*(mx-bx)+(my-by)*(my-by));
+          if(dist<10) return i;
+        }
+        return -1;
+      }
+
+      canvas.addEventListener('mousedown',function(e){
+        var rect=canvas.getBoundingClientRect();
+        var mx=(e.clientX-rect.left)*(canvas.width/dpr)/canvas.style.width.replace('px','');
+        var my=(e.clientY-rect.top)*(canvas.height/dpr)/canvas.style.height.replace('px','');
+        dragging = findDrag(mx,my);
+      });
+      canvas.addEventListener('mousemove',function(e){
+        var rect=canvas.getBoundingClientRect();
+        var mx=(e.clientX-rect.left)*(canvas.width/dpr)/parseFloat(canvas.style.width);
+        var my=(e.clientY-rect.top)*(canvas.height/dpr)/parseFloat(canvas.style.height);
+        if(dragging>=0){
+          values[dragging] = Math.max(-1.5, Math.min(1.5, 1.2*(cy-my)/(R+20)));
+        } else {
+          var h = findDrag(mx,my);
+          canvas.style.cursor = h>=0?'grab':'default';
+        }
+      });
+      canvas.addEventListener('mouseup',function(){ dragging=-1; });
+      canvas.addEventListener('mouseleave',function(){ dragging=-1; });
+
+      // Touch support
+      canvas.addEventListener('touchstart',function(e){
+        e.preventDefault();
+        var rect=canvas.getBoundingClientRect();
+        var mx=(e.touches[0].clientX-rect.left)*(canvas.width/dpr)/parseFloat(canvas.style.width);
+        var my=(e.touches[0].clientY-rect.top)*(canvas.height/dpr)/parseFloat(canvas.style.height);
+        dragging = findDrag(mx,my);
+      });
+      canvas.addEventListener('touchmove',function(e){
+        e.preventDefault();
+        if(dragging>=0){
+          var rect=canvas.getBoundingClientRect();
+          var my=(e.touches[0].clientY-rect.top)*(canvas.height/dpr)/parseFloat(canvas.style.height);
+          values[dragging] = Math.max(-1.5, Math.min(1.5, 1.2*(cy-my)/(R+20)));
+        }
+      });
+      canvas.addEventListener('touchend',function(){ dragging=-1; });
+
+      document.getElementById('poisson-reset').addEventListener('click',function(){
+        initBoundary(); dragging=-1;
+      });
+
+      function animate(){ draw(); requestAnimationFrame(animate); }
+      initBoundary(); resize(); animate();
+      window.addEventListener('resize',function(){resize();});
+    })();
+    </script>
+  </div>
+
   <!-- ==================== 3.5 ==================== -->
   <div class="section" id="s5">
     <h2>3.5 极值原理</h2>
@@ -784,6 +999,138 @@
     <p><strong>物理直觉：</strong>调和函数 = 稳态场的数学描述。肥皂膜不会在内部隆起，温度不会自发聚集——极值原理。每一点的值 = 周围值的平均——平均值性质。点电荷的场 = 基本解——Green 函数的基础。镜像法 = 在外部放虚拟电荷抵消边界影响——球上 Green 函数的直观。</p>
     <p style="margin-top:1rem;"><strong>与后续章节的联系：</strong>本章的调和方程是三类经典方程中"最规矩"的椭圆型方程。下一章我们将把三类方程（波动、热传导、调和）统一纳入二阶方程分类的框架中，理解它们之间的本质区别与联系。</p>
   </div>
+
+<div class="section" id="exercises">
+  <h2>课后习题</h2>
+  <p style="color:var(--text-muted);margin-bottom:1.25rem;">以下习题用于自测，建议先独立完成再查看答案。标签说明：<span class="exercise-tag basic">基础</span> <span class="exercise-tag apply">应用</span> <span class="exercise-tag proof">证明</span> <span class="exercise-tag exam">考试热点</span></p>
+
+  <div class="exercise-list">
+
+    <!-- 习题 1 -->
+    <div class="exercise-item">
+      <div class="exercise-header">
+        <span class="exercise-title">习题 3.1 验证调和函数</span>
+        <span class="exercise-tag basic">基础</span>
+      </div>
+      <div class="exercise-body">
+        <p>验证以下函数是 $\RR^2$ 上的调和函数：</p>
+        <p>(a) $u(x,y) = \ln(x^2 + y^2)$（$(x,y) \neq (0,0)$）</p>
+        <p>(b) $u(x,y) = \arctan(y/x)$（$x \gt 0$）</p>
+        <p>(c) $u(x,y) = e^{-x}\cos y$</p>
+        <div class="exercise-answer">
+          <div class="collapsible">
+            <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 查看答案</div>
+            <div class="collapsible-body">
+              <p><strong>(a)</strong> $r = \sqrt{x^2+y^2}$，$\ln r$ 的 Laplacian 在极坐标下为 $\frac{1}{r}\frac{\pd}{\pd r}(r\frac{\pd \ln r}{\pd r}) = 0$（$r \neq 0$）。注意这是二维基本解（差一个常数因子）。</p>
+              <p><strong>(b)</strong> $\theta = \arctan(y/x)$ 是极角。直接求偏导可验证 $\lap\theta = 0$。这是复变函数 $\log z = \ln r + i\theta$ 的虚部。</p>
+              <p><strong>(c)</strong> $u_{xx} = e^{-x}\cos y$，$u_{yy} = -e^{-x}\cos y$，和为 $0$。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 习题 2 -->
+    <div class="exercise-item">
+      <div class="exercise-header">
+        <span class="exercise-title">习题 3.2 分离变量法求解矩形域Laplace方程</span>
+        <span class="exercise-tag basic">基础</span>
+      </div>
+      <div class="exercise-body">
+        <p>用分离变量法求解矩形域上的 Dirichlet 问题：</p>
+        <p>$$\begin{cases} u_{xx} + u_{yy} = 0, & 0 < x < 1,\; 0 < y < 1, \\ u(0,y) = u(1,y) = 0, & 0 \le y \le 1, \\ u(x,0) = 0,\; u(x,1) = \sin(\pi x), & 0 \le x \le 1. \end{cases}$$</p>
+        <div class="exercise-answer">
+          <div class="collapsible">
+            <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 查看答案</div>
+            <div class="collapsible-body">
+              <p>$a=1$，$b=1$。本征函数 $X_n(x) = \sin(n\pi x)$（$n=1,2,\ldots$）。$Y_n(y) = B_n\sinh(n\pi y)$（由 $u(x,0)=0$ 得 $A_n=0$）。</p>
+              <p>$u(x,1) = \sin(\pi x)$ 直接给出 $B_1 = 1/\sinh(\pi)$，其余 $B_n = 0$。</p>
+              <p>故 $u(x,y) = \frac{\sinh(\pi y)}{\sinh(\pi)}\sin(\pi x)$。</p>
+              <p>验证：$u(x,0)=0$，$u(x,1)=\sin(\pi x)$，$u(0,y)=u(1,y)=0$均满足。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 习题 3 -->
+    <div class="exercise-item">
+      <div class="exercise-header">
+        <span class="exercise-title">习题 3.3 Poisson积分公式</span>
+        <span class="exercise-tag apply">应用</span>
+        <span class="exercise-tag exam">考试热点</span>
+      </div>
+      <div class="exercise-body">
+        <p>设 $u$ 是单位球 $B_1(0) \subset \RR^3$ 上的调和函数，边界条件为 $u|_{|x|=1} = z^2$（球坐标下 $z = \cos\theta$）。</p>
+        <p>(1) 求球心处的值 $u(0,0,0)$。</p>
+        <p>(2) 能否不通过完整求解就得到这个值？依据是什么？</p>
+        <div class="exercise-answer">
+          <div class="collapsible">
+            <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 查看答案</div>
+            <div class="collapsible-body">
+              <p><strong>(1)</strong> 由球面平均值性质：</p>
+              <p>$$u(0) = \frac{1}{4\pi}\int_{S^2} z^2\,\dd S = \frac{1}{4\pi}\int_0^{2\pi}\dd\varphi\int_0^{\pi}\cos^2\theta\sin\theta\,\dd\theta = \frac{1}{2}\int_{-1}^1 t^2\,\dd t = \frac{1}{3}.$$</p>
+              <p><strong>(2)</strong> 可以。依据是<strong>调和函数的球面平均值性质</strong>——调和函数在球心的值等于球面上边界值的平均值。这是 Poisson 积分公式的直接推论：当 $x=0$ 时 Poisson 核 $K(0,y) = 1/(4\pi R^2)$。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 习题 4 -->
+    <div class="exercise-item">
+      <div class="exercise-header">
+        <span class="exercise-title">习题 3.4 Neumann问题可解性条件</span>
+        <span class="exercise-tag apply">应用</span>
+        <span class="exercise-tag exam">考试热点</span>
+      </div>
+      <div class="exercise-body">
+        <p>判断以下 Neumann 问题是否可能有解，并说明理由：</p>
+        <p>(a) $\lap u = 0$ in $B_1(0) \subset \RR^3$，$\frac{\pd u}{\pd n}\big|_{\pd B_1} = x$。</p>
+        <p>(b) $\lap u = 0$ in $B_1(0) \subset \RR^3$，$\frac{\pd u}{\pd n}\big|_{\pd B_1} = 1$。</p>
+        <p>(c) $\lap u = 3$ in $B_1(0) \subset \RR^3$，$\frac{\pd u}{\pd n}\big|_{\pd B_1} = 0$。</p>
+        <div class="exercise-answer">
+          <div class="collapsible">
+            <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 查看答案</div>
+            <div class="collapsible-body">
+              <p>Neumann问题的相容性条件：$\int_\Omega \lap u\,\dd x = \int_{\pd\Omega} \frac{\pd u}{\pd n}\,\dd S$（散度定理）。</p>
+              <p><strong>(a)</strong> 左边：$\int_{B_1} 0\,\dd x = 0$。右边：$\int_{\pd B_1} x\,\dd S = 0$（由对称性，上半球面为正、下半球面为负，相互抵消）。相容性条件满足，<strong>可能有解</strong>。</p>
+              <p><strong>(b)</strong> 左边：$0$。右边：$\int_{\pd B_1} 1\,\dd S = 4\pi \neq 0$。<strong>无解</strong>。</p>
+              <p><strong>(c)</strong> 左边：$\int_{B_1} 3\,\dd x = 3 \cdot \frac{4\pi}{3} = 4\pi$。右边：$\int_{\pd B_1} 0\,\dd S = 0$。$4\pi \neq 0$，<strong>无解</strong>。</p>
+              <p><strong>考试口诀：</strong>Laplace方程Neumann问题有解 ⇔ 边界法向导数的面积分为零；Poisson方程Neumann问题有解 ⇔ 源项体积分 = 边界通量面积分。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 习题 5 -->
+    <div class="exercise-item">
+      <div class="exercise-header">
+        <span class="exercise-title">习题 3.5 调和函数的性质应用</span>
+        <span class="exercise-tag proof">证明</span>
+      </div>
+      <div class="exercise-body">
+        <p>设 $u$ 是 $\RR^n$ 上有界的调和函数。利用 Liouville 定理证明 $u$ 必为常数。</p>
+        <p>（提示：这是 Liouville 定理的标准表述，你需要复述证明的核心思路——利用平均值性质和球体体积比的估计。）</p>
+        <div class="exercise-answer">
+          <div class="collapsible">
+            <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 查看答案</div>
+            <div class="collapsible-body">
+              <p><strong>证明思路：</strong></p>
+              <p>设 $|u(x)| \le M$（有界）。取任意两点 $x_0, y_0 \in \RR^n$。考虑充分大的球 $B_R(x_0)$ 和 $B_R(y_0)$。</p>
+              <p>由球体平均值性质：$u(x_0) = \frac{1}{|B_R|}\int_{B_R(x_0)} u\,\dd x$，$u(y_0) = \frac{1}{|B_R|}\int_{B_R(y_0)} u\,\dd x$。</p>
+              <p>两式相减：$|u(x_0) - u(y_0)| = \frac{1}{|B_R|}\big|\int_{B_R(x_0)} u - \int_{B_R(y_0)} u\big| \le \frac{|\text{对称差}|}{|B_R|} \cdot M$。</p>
+              <p>两个半径为 $R$、球心距离为 $d$ 的球的对称差体积 $\sim 2d \cdot |\pd B_R|$（当 $R$ 很大时）。而 $|\pd B_R|/|B_R| \sim n/R$，故对称差与 $|B_R|$ 的比值 $\sim 2d n / R \to 0$（$R \to \infty$）。</p>
+              <p>因此 $|u(x_0) - u(y_0)| = 0$，即 $u(x_0) = u(y_0)$。由 $x_0, y_0$ 的任意性，$u$ 为常数。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /exercise-list -->
+</div>
 
   <div class="chapter-nav">
     <a href="ch2.html" class="prev">第二章 &middot; 热传导方程</a>

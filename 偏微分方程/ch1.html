@@ -581,6 +581,140 @@
     </div>
   </div>
 
+  <div class="section" id="exercises">
+  <h2>课后习题</h2>
+  <p style="color:var(--text-muted);margin-bottom:1.25rem;">以下习题用于自测，建议先独立完成再查看答案。标签说明：<span class="exercise-tag basic">基础</span> <span class="exercise-tag apply">应用</span> <span class="exercise-tag proof">证明</span> <span class="exercise-tag exam">考试热点</span></p>
+
+  <div class="exercise-list">
+
+    <!-- 习题 1 -->
+    <div class="exercise-item">
+      <div class="exercise-header">
+        <span class="exercise-title">习题 1.1 d'Alembert公式应用</span>
+        <span class="exercise-tag basic">基础</span>
+        <span class="exercise-tag exam">考试热点</span>
+      </div>
+      <div class="exercise-body">
+        <p>用 d'Alembert 公式求解以下 Cauchy 问题：</p>
+        <p>$$\begin{cases} u_{tt} = 9 u_{xx}, & x \in \RR,\ t > 0, \\ u(x,0) = \sin x, & x \in \RR, \\ u_t(x,0) = 0, & x \in \RR. \end{cases}$$</p>
+        <div class="exercise-answer">
+          <div class="collapsible">
+            <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 查看答案</div>
+            <div class="collapsible-body">
+              <p>$a = 3$，$\varphi(x) = \sin x$，$\psi(x) = 0$。由 d'Alembert 公式：</p>
+              <p>$$u(x,t) = \frac{1}{2}[\sin(x+3t) + \sin(x-3t)] = \sin x \cos 3t.$$</p>
+              <p>验证：$u_{tt} = -9\sin x \cos 3t$，$u_{xx} = -\sin x \cos 3t$，$u_{tt} = 9u_{xx}$ 成立。$u(x,0)=\sin x$，$u_t(x,0)=0$。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 习题 2 -->
+    <div class="exercise-item">
+      <div class="exercise-header">
+        <span class="exercise-title">习题 1.2 半无界问题——延拓法</span>
+        <span class="exercise-tag basic">基础</span>
+      </div>
+      <div class="exercise-body">
+        <p>求解半无界弦上的波动方程：</p>
+        <p>$$\begin{cases} u_{tt} = 4 u_{xx}, & x > 0,\ t > 0, \\ u(x,0) = 0,\; u_t(x,0) = 1, & x \ge 0, \\ u(0,t) = 0, & t \ge 0. \end{cases}$$</p>
+        <p>（提示：$u(0,t)=0$ 为 Dirichlet 边界条件，应用奇延拓。）</p>
+        <div class="exercise-answer">
+          <div class="collapsible">
+            <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 查看答案</div>
+            <div class="collapsible-body">
+              <p>$a=2$。奇延拓 $\tilde\psi(x) = \operatorname{sgn}(x)$（$x>0$ 时为 $1$，$x<0$ 时为 $-1$）。</p>
+              <p>当 $x \ge 2t$（波前未到边界）：$u(x,t) = \frac{1}{4}\int_{x-2t}^{x+2t} 1\,\dd s = t$。</p>
+              <p>当 $0 \le x \lt 2t$（已反射）：$u(x,t) = \frac{1}{4}\big[\int_0^{x+2t} 1\,\dd s - \int_0^{x-2t} (-1)\,\dd s\big] = \frac{x}{2}$。</p>
+              <p>综合：$u(x,t) = \min(t, x/2)$。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 习题 3 -->
+    <div class="exercise-item">
+      <div class="exercise-header">
+        <span class="exercise-title">习题 1.3 依赖区间与影响区域</span>
+        <span class="exercise-tag apply">应用</span>
+      </div>
+      <div class="exercise-body">
+        <p>考虑波动方程 $u_{tt} = u_{xx}$（$a=1$）。</p>
+        <p>(1) 点 $(x,t) = (3, 2)$ 处的解值依赖于初始线上哪个区间的数据？</p>
+        <p>(2) 初始点 $(x,0) = (1, 0)$ 处的一个扰动，在 $t=4$ 时影响到 $x$ 轴上的哪些点？</p>
+        <p>(3) 在 $(x,t)$ 平面上画出示意图，标出依赖区间、决定区域和影响区域。</p>
+        <div class="exercise-answer">
+          <div class="collapsible">
+            <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 查看答案</div>
+            <div class="collapsible-body">
+              <p><strong>(1) 依赖区间：</strong>$[x - at, x + at] = [3-2, 3+2] = [1, 5]$。点 $(3,2)$ 的解仅依赖于初始数据在区间 $[1, 5]$ 上的值。</p>
+              <p><strong>(2) 影响区域：</strong>过 $(1, 0)$ 作两条特征线 $x - 1 = \pm t$。在 $t=4$ 时，影响区域覆盖 $x \in [1-4, 1+4] = [-3, 5]$。</p>
+              <p><strong>(3) 示意图要点：</strong>依赖区间是 $x$ 轴上的线段，决定区域是过该线段两端点向上作的三角形，影响区域是过初始点向上作的锥形。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 习题 4 -->
+    <div class="exercise-item">
+      <div class="exercise-header">
+        <span class="exercise-title">习题 1.4 分离变量法——有界弦振动</span>
+        <span class="exercise-tag apply">应用</span>
+        <span class="exercise-tag exam">考试热点</span>
+      </div>
+      <div class="exercise-body">
+        <p>用分离变量法求解以下有界弦的振动问题：</p>
+        <p>$$\begin{cases} u_{tt} = u_{xx}, & 0 < x < 2,\ t > 0, \\ u(0,t) = u(2,t) = 0, & t \ge 0, \\ u(x,0) = x(2-x),\; u_t(x,0) = 0, & 0 \le x \le 2. \end{cases}$$</p>
+        <p>写出解的前三项（$n=1,2,3$）的显式表达式。</p>
+        <div class="exercise-answer">
+          <div class="collapsible">
+            <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 查看答案</div>
+            <div class="collapsible-body">
+              <p>$a=1$，$l=2$。本征函数 $X_n(x) = \sin(n\pi x/2)$，$\lambda_n = (n\pi/2)^2$。</p>
+              <p>$\psi(x)=0$，所以 $B_n = 0$。只需计算 $A_n$：</p>
+              <p>$$A_n = \frac{2}{2}\int_0^2 x(2-x)\sin\frac{n\pi x}{2}\,\dd x = \int_0^2 (2x - x^2)\sin\frac{n\pi x}{2}\,\dd x.$$</p>
+              <p>分部积分得：$A_n = \frac{16}{n^3\pi^3}[1 - (-1)^n]$。</p>
+              <p>$n$ 为偶数时 $A_n = 0$；$n$ 为奇数时 $A_n = \frac{32}{n^3\pi^3}$。</p>
+              <p>前三项（$n=1,3,5$）：</p>
+              <p>$$u(x,t) = \frac{32}{\pi^3}\left(\sin\frac{\pi x}{2}\cos\frac{\pi t}{2} + \frac{1}{27}\sin\frac{3\pi x}{2}\cos\frac{3\pi t}{2} + \frac{1}{125}\sin\frac{5\pi x}{2}\cos\frac{5\pi t}{2} + \cdots\right).$$</p>
+              <p>注意系数以 $1/n^3$ 衰减，级数收敛很快。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 习题 5 -->
+    <div class="exercise-item">
+      <div class="exercise-header">
+        <span class="exercise-title">习题 1.5 能量积分与唯一性</span>
+        <span class="exercise-tag proof">证明</span>
+        <span class="exercise-tag exam">考试热点</span>
+      </div>
+      <div class="exercise-body">
+        <p>对一维波动方程 $u_{tt} = a^2 u_{xx}$（$x \in \RR$）：</p>
+        <p>(1) 写出能量积分 $E(t)$ 的定义，并证明 $E(t)$ 守恒（即 $E'(t) = 0$）。</p>
+        <p>(2) 利用能量守恒证明：若两个解具有相同的初始条件，则它们在所有时刻相等（唯一性）。</p>
+        <div class="exercise-answer">
+          <div class="collapsible">
+            <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 查看答案</div>
+            <div class="collapsible-body">
+              <p><strong>(1)</strong> 定义 $E(t) = \frac{1}{2}\int_{-\infty}^{+\infty}[u_t^2(x,t) + a^2 u_x^2(x,t)]\,\dd x$。</p>
+              <p>求导：$E'(t) = \int_{-\infty}^{+\infty}(u_t u_{tt} + a^2 u_x u_{xt})\,\dd x$。代入 $u_{tt} = a^2 u_{xx}$：</p>
+              <p>$E'(t) = a^2\int_{-\infty}^{+\infty}(u_t u_{xx} + u_x u_{xt})\,\dd x = a^2\int_{-\infty}^{+\infty}\frac{\pd}{\pd x}(u_t u_x)\,\dd x = a^2[u_t u_x]_{-\infty}^{+\infty} = 0$（假设解在无穷远处足够快地衰减）。</p>
+              <p><strong>(2)</strong> 设 $u_1, u_2$ 为两个解，$w = u_1 - u_2$ 满足齐次方程和零初始条件。$E_w(0) = 0$（因为 $w(x,0)=0, w_t(x,0)=0$），由能量守恒 $E_w(t) \equiv 0$，故 $w_t \equiv 0, w_x \equiv 0$。又 $w(x,0)=0$，故 $w \equiv 0$，即 $u_1 = u_2$。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /exercise-list -->
+</div>
+
   <div class="chapter-nav">
     <a href="ch0.html" class="prev">第零章 · 预备知识</a>
     <a href="ch2.html" class="next">第二章 · 热传导方程</a>

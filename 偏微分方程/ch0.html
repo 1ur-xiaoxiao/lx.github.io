@@ -521,6 +521,105 @@
     </div>
   </div>
 
+  <div class="section" id="exercises">
+  <h2>课后习题</h2>
+  <p style="color:var(--text-muted);margin-bottom:1.25rem;">以下习题用于自测，建议先独立完成再查看答案。标签说明：<span class="exercise-tag basic">基础</span> <span class="exercise-tag apply">应用</span> <span class="exercise-tag proof">证明</span> <span class="exercise-tag exam">考试热点</span></p>
+
+  <div class="exercise-list">
+
+    <!-- 习题 1 -->
+    <div class="exercise-item">
+      <div class="exercise-header">
+        <span class="exercise-title">习题 0.1 偏导数与Laplace方程</span>
+        <span class="exercise-tag basic">基础</span>
+      </div>
+      <div class="exercise-body">
+        <p>设 $u(x,y) = x^3 - 3xy^2$，验证：(1) 计算 $\frac{\pd u}{\pd x}$，$\frac{\pd u}{\pd y}$，$\frac{\pd^2 u}{\pd x^2}$，$\frac{\pd^2 u}{\pd y^2}$；(2) 验证 $u$ 是否为调和函数（即 $\lap u = 0$）。</p>
+      </div>
+    </div>
+
+    <!-- 习题 2 -->
+    <div class="exercise-item">
+      <div class="exercise-header">
+        <span class="exercise-title">习题 0.2 线性与非线性PDE判定</span>
+        <span class="exercise-tag basic">基础</span>
+        <span class="exercise-tag exam">考试热点</span>
+      </div>
+      <div class="exercise-body">
+        <p>判断以下方程是线性的还是非线性的。若为非线性，进一步判断是拟线性的还是完全非线性的：</p>
+        <p>(a) $u_{xx} + e^x u_{yy} = \sin y$</p>
+        <p>(b) $u_t + u u_x = 0$</p>
+        <p>(c) $u_{xx} + u_{yy} = u^2$</p>
+        <p>(d) $u_x^2 + u_y^2 = 1$（程函方程 / eikonal equation）</p>
+        <div class="exercise-answer">
+          <div class="collapsible">
+            <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 查看答案</div>
+            <div class="collapsible-body">
+              <p><strong>(a) 线性非齐次。</strong>所有含 $u$ 及其导数的项都是一次的，系数 $1$ 和 $e^x$ 仅依赖于自变量，右端 $\sin y$ 不含 $u$。</p>
+              <p><strong>(b) 拟线性。</strong>出现 $u u_x$（$u$ 与其导数的乘积），但最高阶（一阶）导数的系数不含导数。</p>
+              <p><strong>(c) 半线性。</strong>最高阶（二阶）导数的系数为常数 $1$，但零阶项 $u^2$ 非线性地依赖于 $u$。</p>
+              <p><strong>(d) 完全非线性。</strong>一阶导数以平方出现（$u_x^2, u_y^2$），最高阶导数本身是非线性的。</p>
+              <p><strong>口诀回顾：</strong>"导数相乘或幂次，完全非线性无疑；最高阶前系数含低阶导，拟线性写上不犹豫；最高阶系数只依 $x$，低阶 $u$ 随便翻天——这便是半线性的面。"</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 习题 3 -->
+    <div class="exercise-item">
+      <div class="exercise-header">
+        <span class="exercise-title">习题 0.3 适定性判断</span>
+        <span class="exercise-tag apply">应用</span>
+        <span class="exercise-tag exam">考试热点</span>
+      </div>
+      <div class="exercise-body">
+        <p>判断以下定解问题是否适定（well-posed），并说明理由：</p>
+        <p>(a) $u_t = u_{xx}$（$x \in \RR, t > 0$），$u(x,0) = \varphi(x)$，$\varphi \in C(\RR) \cap L^\infty(\RR)$。</p>
+        <p>(b) $u_t = -u_{xx}$（$x \in \RR, t > 0$），$u(x,0) = \sin x$。</p>
+        <p>(c) $\lap u = 0$（$x \in \Omega$），$\frac{\pd u}{\pd n}\big|_{\pd\Omega} = 1$（其中 $\Omega$ 为有界区域）。</p>
+        <div class="exercise-answer">
+          <div class="collapsible">
+            <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 查看答案</div>
+            <div class="collapsible-body">
+              <p><strong>(a) 适定。</strong>热传导方程的Cauchy问题：存在性由热核卷积公式给出（对合理初值），唯一性由极值原理保证，稳定性由最大模估计 $\|u(t)\|_\infty \le \|\varphi\|_\infty$ 保证。</p>
+              <p><strong>(b) 不适定（稳定性不成立）。</strong>这是反向热方程。初始条件 $\sin x$ 形式上给出解 $u(x,t) = e^{t}\sin x$，但若初始条件有微小高频扰动 $\varepsilon\sin(Nx)$，扰动被放大为 $\varepsilon e^{N^2 t}\sin(Nx)$——放大因子随 $N$ 指数增长，故不连续依赖于初始数据。</p>
+              <p><strong>(c) 不适定（存在性不成立）。</strong>Laplace方程Neumann问题有解的必要条件是 $\int_{\pd\Omega} \frac{\pd u}{\pd n}\,\dd S = 0$（由散度定理 $\int_\Omega \lap u\,\dd x = \int_{\pd\Omega} \frac{\pd u}{\pd n}\,\dd S$ 推出，$\lap u=0$ 给出左边为零）。但这里 $\int_{\pd\Omega} 1\,\dd S = |\pd\Omega| \neq 0$，必要条件不满足，故无解。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 习题 4 -->
+    <div class="exercise-item">
+      <div class="exercise-header">
+        <span class="exercise-title">习题 0.4 PDE分类综合</span>
+        <span class="exercise-tag apply">应用</span>
+      </div>
+      <div class="exercise-body">
+        <p>对以下各方程，分别写出其阶数、判断是线性还是非线性（若是非线性，指出具体类型）、齐次还是非齐次：</p>
+        <p>(a) $u_{xx} + u_{yy} = f(x,y)$</p>
+        <p>(b) $u_t + u_{xxx} = 0$（KdV方程，线性化形式）</p>
+        <p>(c) $u_{tt} - u_{xx} + \sin u = 0$（sine-Gordon方程）</p>
+        <p>(d) $u_t + u u_x + u_{xxx} = 0$（KdV方程，完整形式）</p>
+        <div class="exercise-answer">
+          <div class="collapsible">
+            <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 查看答案</div>
+            <div class="collapsible-body">
+              <p><strong>(a)</strong> 二阶，<strong>线性</strong>（系数 $1,1$ 仅依赖于自变量），<strong>非齐次</strong>（右端 $f(x,y)$ 为已知函数）。这是Poisson方程。</p>
+              <p><strong>(b)</strong> 三阶，<strong>线性</strong>（系数为常数），<strong>齐次</strong>。这是KdV方程的线性化版本，描述色散波。</p>
+              <p><strong>(c)</strong> 二阶，<strong>半线性</strong>（最高阶导数 $u_{tt}, u_{xx}$ 的系数为常数，但零阶项 $\sin u$ 非线性依赖于 $u$），<strong>齐次</strong>。</p>
+              <p><strong>(d)</strong> 三阶，<strong>拟线性</strong>（$u u_x$ 中 $u$ 乘以一阶导数，三阶导数 $u_{xxx}$ 的系数为常数），<strong>齐次</strong>。注意这里 $u u_x$ 对最高阶（三阶）导数而言是低阶项，判断"拟线性"的依据是：方程对最高阶导数是线性的。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /exercise-list -->
+</div>
+
   <div class="chapter-nav">
     <a href="index.html" class="prev">课程首页</a>
     <a href="ch1.html" class="next">第一章 · 波动方程</a>
