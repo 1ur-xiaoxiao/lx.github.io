@@ -53,6 +53,7 @@
       <li><a href="#s2">1.2 一维初值问题：d'Alembert公式</a></li>
       <li><a href="#s3">1.3 依赖区间、决定区域与影响区域</a></li>
       <li><a href="#s4">1.4 半无界问题：延拓法（反射法）</a></li>
+      <li><a href="#duhamel">齐次化原理 (Duhamel)</a></li>
       <li><a href="#s5">1.5 有界弦与分离变量法</a></li>
       <li><a href="#s6">1.6 高维波动方程</a></li>
       <li><a href="#s7">1.7 能量积分与唯一性</a></li>
@@ -69,7 +70,8 @@
       <ul>
         <li>从物理定律出发推导波动方程</li>
         <li>用 d'Alembert 公式直接写出无限长弦上任意初始扰动的解</li>
-        <li>用分离变量法求解有界弦的振动</li>
+        <li>用分离变量法求解有界弦的振动（含非齐次方程与边界条件）</li>
+        <li>用齐次化原理和特征函数展开法处理非齐次问题</li>
         <li>理解能量守恒如何保证解的唯一性</li>
       </ul>
     </div>
@@ -671,6 +673,201 @@
         </div>
       </div>
     </div>
+
+    <!-- ===== 非齐次方程 + 特征函数展开法 ===== -->
+    <h3>补充：非齐次方程与非齐次边界条件</h3>
+
+    <p>前面的分离变量法只处理了<strong>齐次方程、齐次边界条件</strong>的情况。现在考虑更一般的问题：</p>
+
+    <div class="box box-motivation">
+      <div class="box-title">两类非齐次性</div>
+      <ol>
+        <li><strong>非齐次方程</strong>（有源项）：$u_{tt} = a^2 u_{xx} + f(x,t)$</li>
+        <li><strong>非齐次边界条件</strong>：如 $u(0,t) = \mu(t),\; u(l,t) = \nu(t)$</li>
+      </ol>
+      <p>通常两种非齐次性同时存在。处理策略是"<strong>先转化边界，再展开方程</strong>"。</p>
+    </div>
+
+    <h4>第一步：非齐次边界条件 → 齐次化</h4>
+
+    <p>设边界条件为 $u(0,t) = \mu(t)$，$u(l,t) = \nu(t)$。寻找一个辅助函数 $w(x,t)$（称为<strong>边界提升函数</strong>），使：</p>
+    $$w(0,t) = \mu(t), \quad w(l,t) = \nu(t).$$
+
+    <p>最简选择——<strong>线性插值</strong>：</p>
+    $$w(x,t) = \mu(t) + \frac{x}{l}\bigl[\nu(t) - \mu(t)\bigr] = \left(1 - \frac{x}{l}\right)\mu(t) + \frac{x}{l}\nu(t).$$
+
+    <p>令 $v(x,t) = u(x,t) - w(x,t)$，则 $v$ 满足<strong>齐次边界条件</strong> $v(0,t) = v(l,t) = 0$。但 PDE 会引入额外的非齐次项：</p>
+    $$v_{tt} = a^2 v_{xx} + \underbrace{\bigl[f(x,t) - w_{tt} + a^2 w_{xx}\bigr]}_{\tilde{f}(x,t)}.$$
+
+    <div class="box box-warning">
+      <div class="box-title">注意</div>
+      <p>边界提升函数 $w(x,t)$ 的选择不唯一——只要边界条件满足即可。选择简单的形式（如线性插值）能减少后续计算量。对于 $w_{xx}=0$ 的线性 $w$，修正源项简化为 $\tilde{f} = f - w_{tt}$。</p>
+    </div>
+
+    <h4>第二步：特征函数展开法（处理非齐次方程）</h4>
+
+    <p>现在问题化为<strong>齐次边界条件 + 非齐次方程</strong>：</p>
+    $$\begin{cases}
+    v_{tt} = a^2 v_{xx} + \tilde{f}(x,t), & 0 < x < l,\; t > 0,\\[2pt]
+    v(0,t) = v(l,t) = 0, \\[2pt]
+    v(x,0) = \tilde{\varphi}(x), \quad v_t(x,0) = \tilde{\psi}(x).
+    \end{cases}$$
+
+    <div class="box box-method">
+      <div class="box-title">核心思想：特征函数展开</div>
+      <p>将 $v(x,t)$ 和 $\tilde{f}(x,t)$ 都按<strong>齐次边界条件对应的本征函数系</strong>展开。对于 Dirichlet 边界条件 $v(0,t)=v(l,t)=0$，本征函数系为 $\{\sin\frac{n\pi x}{l}\}_{n=1}^\infty$：</p>
+      $$v(x,t) = \sum_{n=1}^{\infty} T_n(t) \sin\frac{n\pi x}{l}, \qquad
+        \tilde{f}(x,t) = \sum_{n=1}^{\infty} f_n(t) \sin\frac{n\pi x}{l}.$$
+      <p>其中 $f_n(t)$ 由 Fourier 正弦系数公式给出（将 $t$ 视为参数）：</p>
+      $$f_n(t) = \frac{2}{l}\int_0^l \tilde{f}(x,t)\,\sin\frac{n\pi x}{l}\,\dd x.$$
+    </div>
+
+    <p><strong>代入 PDE</strong>：将级数代入 $v_{tt} = a^2 v_{xx} + \tilde{f}$，利用 $\frac{\dd^2}{\dd x^2}\sin\frac{n\pi x}{l} = -(\frac{n\pi}{l})^2\sin\frac{n\pi x}{l}$：</p>
+    $$\sum_{n=1}^{\infty} T_n''(t) \sin\frac{n\pi x}{l}
+      = \sum_{n=1}^{\infty} \left[-a^2\left(\frac{n\pi}{l}\right)^2 T_n(t) + f_n(t)\right] \sin\frac{n\pi x}{l}.$$
+
+    <p>比较 $\sin\frac{n\pi x}{l}$ 的系数（由本征函数的正交性，等式两边各 Fourier 系数必须相等），得到一族<strong>解耦的常微分方程</strong>：</p>
+
+    <div class="box box-formula">
+      <div class="box-title">特征函数展开法 · ODE 系统</div>
+      $$\boxed{T_n''(t) + \omega_n^2 T_n(t) = f_n(t), \qquad \omega_n = \frac{n\pi a}{l}}$$
+      <p>初始条件由 $v(x,0)$ 和 $v_t(x,0)$ 的 Fourier 展开给出：</p>
+      $$T_n(0) = \tilde{A}_n = \frac{2}{l}\int_0^l \tilde{\varphi}(x)\,\sin\frac{n\pi x}{l}\,\dd x,$$
+      $$T_n'(0) = \tilde{B}_n = \frac{2}{l}\int_0^l \tilde{\psi}(x)\,\sin\frac{n\pi x}{l}\,\dd x.$$
+    </div>
+
+    <p>这是关于 $T_n(t)$ 的<strong>常系数二阶非齐次线性 ODE</strong>。由常微分方程理论，其通解为齐次通解 + 非齐次特解。齐次通解为 $T_n^{(h)}(t) = C_1\cos\omega_n t + C_2\sin\omega_n t$。非齐次特解可由<strong>常数变易法</strong>（或 Duhamel 积分）得到：</p>
+    $$T_n^{(p)}(t) = \frac{1}{\omega_n}\int_0^t f_n(\tau)\,\sin\bigl(\omega_n(t-\tau)\bigr)\,\dd\tau.$$
+
+    <p>匹配初始条件后，得到完整的系数函数：</p>
+
+    <div class="box box-formula">
+      <div class="box-title">特征函数展开法 · 完整解</div>
+      $$T_n(t) = \tilde{A}_n\cos(\omega_n t) + \frac{\tilde{B}_n}{\omega_n}\sin(\omega_n t) + \frac{1}{\omega_n}\int_0^t f_n(\tau)\,\sin\bigl(\omega_n(t-\tau)\bigr)\,\dd\tau.$$
+      <p>最终解为 $u(x,t) = w(x,t) + \sum_{n=1}^{\infty} T_n(t)\sin\frac{n\pi x}{l}$.</p>
+    </div>
+
+    <div class="box box-intuition">
+      <div class="box-title">物理解释</div>
+      <p>前两项是<strong>自由振动</strong>（初始位移和初始速度激发的本征模态振荡），第三项 Duhamel 积分是<strong>受迫振动</strong>——外力 $f(x,t)$ 在时刻 $\tau$ 产生的瞬时冲量，经过时间 $(t-\tau)$ 后对第 $n$ 号模态的累积贡献。整个解 = 边界提升 + 自由振动 + 受迫振动，体现了叠加原理的层层递进。</p>
+    </div>
+
+    <h4>方法总结：非齐次问题的标准流程</h4>
+
+    <table class="method-table">
+      <tr>
+        <td><strong>第 1 步</strong></td>
+        <td><strong>边界齐次化</strong></td>
+        <td>构造 $w(x,t)$ 满足非齐次边界条件，令 $v = u - w$</td>
+        <td>线性插值（最简选择）</td>
+      </tr>
+      <tr>
+        <td><strong>第 2 步</strong></td>
+        <td><strong>求本征函数系</strong></td>
+        <td>解齐次问题的 Sturm-Liouville 特征值问题，得到 $\{X_n(x)\}$ 和 $\{\lambda_n\}$</td>
+        <td>Dirichlet 边界 → $\sin(n\pi x/l)$<br>Neumann 边界 → $\cos(n\pi x/l)$</td>
+      </tr>
+      <tr>
+        <td><strong>第 3 步</strong></td>
+        <td><strong>展开源项</strong></td>
+        <td>计算 $f_n(t) = \frac{2}{l}\int_0^l \tilde{f}(x,t) X_n(x)\,\dd x$</td>
+        <td>利用本征函数的正交性</td>
+      </tr>
+      <tr>
+        <td><strong>第 4 步</strong></td>
+        <td><strong>解 ODE</strong></td>
+        <td>$T_n'' + \omega_n^2 T_n = f_n(t)$，初始条件由 $\tilde{\varphi}, \tilde{\psi}$ 的 Fourier 系数决定</td>
+        <td>齐次通解 + Duhamel 积分</td>
+      </tr>
+      <tr>
+        <td><strong>第 5 步</strong></td>
+        <td><strong>叠加还原</strong></td>
+        <td>$u(x,t) = w(x,t) + \sum T_n(t)X_n(x)$</td>
+        <td>验证解满足原方程和全部定解条件</td>
+      </tr>
+    </table>
+
+    <!-- 例题 -->
+    <div class="box box-example">
+      <div class="box-title">例题 1.5.3（非齐次方程 + 齐次边界条件）</div>
+      <p>求解 $u_{tt} = u_{xx} + \sin x$（$0 < x < \pi$），$u(0,t)=u(\pi,t)=0$，$u(x,0)=0$，$u_t(x,0)=0$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p><strong>分析</strong>：边界条件已是齐次的，无需第 1 步。$a=1$，$l=\pi$，本征函数系 $\{\sin nx\}_{n=1}^\infty$，$\omega_n = n$。</p>
+          <p><strong>展开源项</strong>：$f(x,t) = \sin x$ 恰好已经是本征函数！比较 $\sin x = 1\cdot\sin(1x) + 0\cdot\sin(2x) + \cdots$，直接读出：</p>
+          $$f_1(t) = 1, \qquad f_n(t) = 0 \;\; (n \ge 2).$$
+          <p><strong>写 ODE 系统</strong>：零初始条件意味着 $T_n(0)=T_n'(0)=0$。</p>
+          <ul>
+            <li>$n = 1$：$T_1'' + T_1 = 1$，$T_1(0)=T_1'(0)=0$。</li>
+            <li>$n \ge 2$：$T_n'' + n^2 T_n = 0$，$T_n(0)=T_n'(0)=0$ ⇒ $T_n(t) \equiv 0$。</li>
+          </ul>
+          <p>解 $T_1$ 的 ODE：齐次通解 $T_1^{(h)} = C_1\cos t + C_2\sin t$，特解设为常数 $T_1^{(p)} = A$，代入得 $A=1$。故 $T_1(t) = C_1\cos t + C_2\sin t + 1$。由 $T_1(0)=0$ 得 $C_1+1=0$ ⇒ $C_1=-1$。由 $T_1'(0)=0$ 得 $C_2=0$。因此：</p>
+          $$T_1(t) = 1 - \cos t.$$
+          <p><strong>最终解</strong>：</p>
+          $$u(x,t) = (1 - \cos t)\sin x.$$
+          <p><strong>物理解释</strong>：外力 $\sin x$ 恰好匹配基频本征函数的空间形状，因此只激发 $n=1$ 模态。解在平衡位置 $u=\sin x$ 附近以频率 $\omega_1=1$ 做简谐振荡——这好比以 $\sin x$ 形状的力持续推动弦的基频模态，使其在平衡点附近来回摆动。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 1.5.4（非齐次边界条件）</div>
+      <p>求解 $u_{tt} = u_{xx}$（$0 < x < 1$），$u(0,t)=0$，$u(1,t)=\sin t$，$u(x,0)=0$，$u_t(x,0)=0$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p><strong>第 1 步 · 边界齐次化</strong>：$l=1$，$\mu(t)=0$，$\nu(t)=\sin t$。构造线性提升函数：</p>
+          $$w(x,t) = (1-x)\cdot 0 + x\cdot\sin t = x\sin t.$$
+          <p>令 $v = u - w$，则 $v(0,t)=v(1,t)=0$（齐次）。计算 $w_{tt} = -x\sin t$，$w_{xx}=0$。新方程：</p>
+          $$v_{tt} = v_{xx} - w_{tt} = v_{xx} + x\sin t.$$
+          <p>新初始条件：$v(x,0) = u(x,0) - w(x,0) = 0 - x\cdot 0 = 0$，$v_t(x,0) = u_t(x,0) - w_t(x,0) = 0 - x\cos 0 = -x$.</p>
+          <p><strong>第 2 步</strong>：本征函数系 $\{\sin n\pi x\}_{n=1}^\infty$（因为 $l=1$），$\omega_n = n\pi$。</p>
+          <p><strong>第 3 步 · 展开源项</strong>：$\tilde{f}(x,t) = x\sin t$。</p>
+          $$f_n(t) = 2\int_0^1 x\sin t \cdot \sin(n\pi x)\,\dd x = 2\sin t\int_0^1 x\sin(n\pi x)\,\dd x.$$
+          <p>利用例题 1.5.2 的积分结果 $\int_0^1 x\sin(n\pi x)\dd x = \frac{(-1)^{n+1}}{n\pi}$：</p>
+          $$f_n(t) = \frac{2(-1)^{n+1}}{n\pi}\sin t.$$
+          <p>展开初始条件：$\tilde{\varphi}(x)=0$ ⇒ $\tilde{A}_n=0$。$\tilde{\psi}(x) = -x$ ⇒</p>
+          $$\tilde{B}_n = 2\int_0^1 (-x)\sin(n\pi x)\,\dd x = -\frac{2(-1)^{n+1}}{n\pi}.$$
+          <p><strong>第 4 步 · 解 ODE</strong>：$T_n'' + (n\pi)^2 T_n = \frac{2(-1)^{n+1}}{n\pi}\sin t$，$T_n(0)=0$，$T_n'(0)=\tilde{B}_n$。</p>
+          <p>齐次通解：$T_n^{(h)} = C_1\cos(n\pi t) + C_2\sin(n\pi t)$。非齐次特解：右端 $\sin t$ 频率为 1，当 $n\pi \neq 1$（即 $n \neq 1/\pi$，对所有正整数 $n$ 均成立，因 $\pi \notin \mathbb{Q}$ 的倒数不是整数），无共振。设特解 $T_n^{(p)} = K\sin t$，代入得：</p>
+          $$(-K + (n\pi)^2 K)\sin t = \frac{2(-1)^{n+1}}{n\pi}\sin t \;\Longrightarrow\; K = \frac{2(-1)^{n+1}}{n\pi[(n\pi)^2-1]}.$$
+          <p>匹配初始条件：$T_n(0)=C_1=0$。$T_n'(t) = C_2 n\pi\cos(n\pi t) + K\cos t$，$T_n'(0) = C_2 n\pi + K = \tilde{B}_n = -\frac{2(-1)^{n+1}}{n\pi}$。因此：</p>
+          $$C_2 = \frac{1}{n\pi}\left(-\frac{2(-1)^{n+1}}{n\pi} - K\right) = -\frac{2(-1)^{n+1}}{n\pi}\cdot\frac{1}{n\pi}\left[1 + \frac{1}{(n\pi)^2-1}\right].$$
+          <p><strong>第 5 步</strong>：$u(x,t) = x\sin t + \sum_{n=1}^\infty T_n(t)\sin(n\pi x)$。</p>
+          <p>此例展示了非齐次边界条件处理的完整流程。实际计算中，级数通常只取前几项近似。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-analogy">
+      <div class="box-title">与 Cauchy 问题方法的对照</div>
+      <p>学过前面各节后，我们现在有处理一维波动方程的两套完整工具：</p>
+      <table style="width:100%;margin-top:0.5rem;">
+        <tr>
+          <th></th>
+          <th>Cauchy 问题（无界）</th>
+          <th>初边值问题（有界）</th>
+        </tr>
+        <tr>
+          <td><strong>齐次方程</strong></td>
+          <td>d'Alembert 公式</td>
+          <td>分离变量法</td>
+        </tr>
+        <tr>
+          <td><strong>非齐次方程</strong></td>
+          <td>齐次化原理（Duhamel 积分）</td>
+          <td>特征函数展开法（ODE 的 Duhamel 积分）</td>
+        </tr>
+        <tr>
+          <td><strong>半无界</strong></td>
+          <td>延拓法（奇/偶延拓）</td>
+          <td>—（边界已含在定解条件中）</td>
+        </tr>
+      </table>
+      <p>注意两种场景中 Duhamel 原理的不同表现形式：Cauchy 问题中是 PDE 层面的积分，有界问题中是 ODE 层面的积分——但其物理本质相同：都是"瞬时冲量效果的累积"。</p>
+    </div>
+
   </div>
 
   <!-- JS可视化 -->

@@ -53,8 +53,8 @@
       <li><a href="#s2">3.2 Green公式与Green函数</a></li>
       <li><a href="#s3">3.3 分离变量法解Laplace方程</a></li>
       <li><a href="#s4">3.4 球上的Dirichlet问题与Poisson积分公式</a></li>
-      <li><a href="#s5">3.5 极值原理与Neumann问题的可解性条件</a></li>
-      <li><a href="#s6">3.6 调和函数的深刻性质</a></li>
+      <li><a href="#s5">3.5 极值原理、Hopf引理与Neumann可解性条件</a></li>
+      <li><a href="#s6">3.6 调和函数的深刻性质（含Dirichlet原理、可去奇点）</a></li>
       <li><a href="#s7">3.7 半空间的Green函数与镜像法</a></li>
       <li><a href="#s8">3.8 外问题与无穷远处的边界条件</a></li>
     </ol>
@@ -68,7 +68,8 @@
       <li>掌握 Green 函数方法，利用"镜像法"求解 Dirichlet 问题</li>
       <li>用分离变量法求解矩形域和圆域上的 Laplace 方程</li>
       <li>通过 Poisson 积分公式写出球上 Dirichlet 问题的显式解</li>
-      <li>用极值原理证明解的适定性，并用 Liouville 定理等深刻结论分析调和函数</li>
+      <li>用极值原理（含Hopf引理）证明解的适定性，并通过Dirichlet原理理解变分结构</li>
+      <li>掌握可去奇点定理等调和函数的深刻性质，并用Liouville定理分析全局行为</li>
     </ul>
   </div>
 
@@ -696,6 +697,47 @@
       $$\begin{cases} \lap u = 0 & \text{in } \Omega \\ \frac{\pd u}{\pd n} = \psi & \text{on } \pd\Omega \end{cases}$$
       <p>即使相容性条件满足，解仍<strong>不唯一</strong>：若 $u$ 为解，则 $u + C$（$C$ 为任意常数）也是解。这与 Dirichlet 问题有本质区别——Dirichlet 问题固定了边界的值（"把铁丝固定"），而 Neumann 问题只固定了边界的法向导数（"只控制斜率"），允许整体上下平移。要恢复唯一性，通常需要附加额外条件，如固定某点的值或要求 $\int_\Omega u = 0$。</p>
     </div>
+
+    <h3>Hopf 极值原理（边界点引理）</h3>
+
+    <p>弱极值原理告诉我们，调和函数的最大值在边界上达到。但一个自然的问题是：<strong>在边界最大值点处，函数是如何"进入"区域内部的？</strong>Hopf 引理给出了精确的答案——在边界最大值点处，如果存在内法向，外法向导数必须严格为正（除非函数为常数）。</p>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 3.5.4 (Hopf 引理 / 强极值原理的边界形式)</div>
+      <p>设 $\Omega \subset \RR^n$ 为有界区域，$u \in C^2(\Omega) \cap C^1(\overline{\Omega})$ 在 $\Omega$ 内调和。若存在 $x_0 \in \pd\Omega$ 使得：</p>
+      <ul>
+        <li>$u(x_0) > u(x)$ 对一切 $x \in \Omega$（严格最大值在 $x_0$ 处达到）；</li>
+        <li>$\Omega$ 在 $x_0$ 处满足<strong>内球条件</strong>（存在球 $B \subset \Omega$ 使得 $\overline{B} \cap \pd\Omega = \{x_0\}$）。</li>
+      </ul>
+      <p>则沿 $x_0$ 处的<strong>外法向</strong> $n$：</p>
+      $$\frac{\pd u}{\pd n}(x_0) > 0.$$
+      <p>即调和函数在边界严格最大值点处的法向导数<strong>严格大于零</strong>——函数一定在向内方向上升。</p>
+    </div>
+
+    <div class="box box-intuition">
+      <div class="box-title">Hopf 引理的直观理解</div>
+      <p>调和函数是"最光滑"的函数——它不能有内部的峰。如果最大值在边界点 $x_0$ 处达到，那么从 $x_0$ 进入区域内部时，函数值必须<strong>严格下降</strong>。如果 $\frac{\pd u}{\pd n}(x_0) = 0$，则势必在内部产生一个不光滑的"平台"，这与调和函数的解析性矛盾。</p>
+      <p>Hopf 引理排除了边界最大值点处出现水平切线的可能性——就像一颗球在碗的边缘达到最高点，它必须沿着碗壁向下滑，而不可能在边缘处"平着"保持高度。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">Hopf 引理的关键推论：强极值原理</div>
+      <p>若 $\Omega$ 连通且 $u$ 在 $\Omega$ 内调和，则 $u$ 在内部<strong>不可能</strong>达到最大值或最小值，除非 $u$ 恒为常数。</p>
+      <p>换句话说，非常数调和函数的最大值和最小值<strong>严格地</strong>只能在边界上达到。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 3.5.2（Hopf引理的应用——边界梯度估计）</div>
+      <p>设 $\Omega = B_1(0) \subset \RR^2$ 为单位圆盘，$u(x,y) = 1 - x^2 - y^2$。验证 $u$ 在整个圆盘上满足 $\lap u \le 0$（下调和），并检验 Hopf 引理的结论。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>虽然严格说 $u$ 不是调和函数（$\lap u = -4 \neq 0$），它是<strong>下调和</strong>函数。Hopf 引理对下调和函数同样成立（结论对下调和函数为 $\frac{\pd u}{\pd n}(x_0) > 0$ 当 $u(x_0)$ 为最大值时）。</p>
+          <p>$\lap u = -4 \le 0$，$u$ 下调和。$u$ 的最大值在原点 $(0,0)$ 达到——这是内部最大值，因此 $u$ 必须是常数（这在直观上当然不对——但这是因为 $u$ 不是上调和的）。对于上调和的版本：若 $u$ 上调和（$\lap u \ge 0$）且在内部达到最小值，则 $u$ 为常数。</p>
+          <p>真正的调和函数例子：$u(x,y) = x$ 在 $B_1(0)$ 上调和。最大值在边界点 $(1,0)$ 达到，值为 $1$。在该点处外法向 $\frac{\pd}{\pd n} = \frac{\pd}{\pd x}$，$\frac{\pd u}{\pd x}(1,0) = 1 > 0$——验证 Hopf 引理。</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ==================== 3.6 ==================== -->
@@ -827,6 +869,86 @@
         <li><strong>调和方程</strong>：解在区域内部<strong>无条件</strong>光滑，甚至解析——椭圆方程是最"规矩"的。</li>
       </ul>
       <p>这一区别源于三类方程的物理本质：椭圆方程描述的是已经"安顿下来"的稳态，所有信息已经在区域内充分传播和平均化了。</p>
+    </div>
+
+    <h3>3.6.5 Dirichlet原理（变分原理）</h3>
+
+    <p>调和方程的解不仅可以用 PDE 方法刻画，还有一个深刻的<strong>变分刻画</strong>——它是 Dirichlet 能量泛函的极小化子。这一观察不仅是理论上的优美结果，也是有限元方法等数值方法的基础。</p>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 3.6.5 (Dirichlet 原理)</div>
+      <p>设 $\Omega \subset \RR^n$ 为有界区域，$\varphi \in C(\pd\Omega)$。考虑 Dirichlet 问题：</p>
+      $$\begin{cases} \lap u = 0 & \text{in } \Omega, \\ u = \varphi & \text{on } \pd\Omega. \end{cases}$$
+      <p>在所有满足边界条件 $v|_{\pd\Omega} = \varphi$ 的函数 $v \in C^1(\overline{\Omega})$ 中，<strong>调和函数 $u$ 是 Dirichlet 能量泛函的唯一极小化子</strong>：</p>
+      $$E[v] = \frac{1}{2}\int_\Omega |\grad v|^2\,\dd x.$$
+      <p>即 $E[u] = \min\{E[v] : v|_{\pd\Omega} = \varphi\}$，且极小化子是唯一的。</p>
+    </div>
+
+    <div class="box box-intuition">
+      <div class="box-title">物理直觉：肥皂膜</div>
+      <p>考虑二维情况 $\Omega \subset \RR^2$，$u$ 表示薄膜的高度。$|\grad u|^2 \approx$ 面积元的增量（在小梯度近似下）。因此 $E[u]$ 近似等于<strong>薄膜的总面积</strong>。Dirichlet 原理说：紧绷在铁丝上的肥皂膜在所有可能形状中面积最小。这是自然界"最小作用量原理"在静力学中的体现。</p>
+    </div>
+
+    <p><strong>证明概要：</strong></p>
+    <p>设 $u$ 为调和函数（即满足 $\lap u = 0$），$v$ 为任意满足相同边界条件的函数。令 $w = v - u$，则 $w|_{\pd\Omega} = 0$。展开：</p>
+    $$\begin{aligned}
+    E[v] &= \frac{1}{2}\int_\Omega |\grad(u+w)|^2\,\dd x \\
+         &= \frac{1}{2}\int_\Omega |\grad u|^2\,\dd x + \int_\Omega \grad u \cdot \grad w\,\dd x + \frac{1}{2}\int_\Omega |\grad w|^2\,\dd x \\
+         &= E[u] + \underbrace{\int_\Omega \grad u \cdot \grad w\,\dd x}_{(*)} + \frac{1}{2}\int_\Omega |\grad w|^2\,\dd x.
+    \end{aligned}$$
+
+    <p>关键步骤：对 $(*)$ 项使用 Green 第一公式（分部积分）：</p>
+    $$\int_\Omega \grad u \cdot \grad w\,\dd x = \int_{\pd\Omega} w\,\frac{\pd u}{\pd n}\,\dd S - \int_\Omega w\,\lap u\,\dd x.$$
+
+    <p>因为 $\lap u = 0$（调和）且 $w|_{\pd\Omega} = 0$，两项全为零！因此：</p>
+    $$E[v] = E[u] + \frac{1}{2}\int_\Omega |\grad w|^2\,\dd x \ge E[u],$$
+    <p>且等号成立当且仅当 $|\grad w| \equiv 0$，即 $w \equiv \text{常数}$。由于 $w|_{\pd\Omega} = 0$，常数必须为零，故 $w \equiv 0$，$v = u$。$\square$</p>
+
+    <div class="box box-formula">
+      <div class="box-title">Dirichlet 原理的等价表述</div>
+      <p>Dirichlet 问题的解 $u$ 等价于下面的<strong>变分问题</strong>的解：</p>
+      $$\min_{v \in H_0^1(\Omega)} \left\{\frac{1}{2}\int_\Omega |\grad v|^2\,\dd x - \int_\Omega f v\,\dd x\right\} \quad\text{对应}\quad -\lap u = f.$$
+      <p>对于调和方程（$f = 0$），就是单纯的能量极小化。对于 Poisson 方程，多了一个线性项（外力做功）。</p>
+    </div>
+
+    <div class="box box-analogy">
+      <div class="box-title">Dirichlet 原理的深远意义</div>
+      <ul>
+        <li><strong>理论意义：</strong>将 PDE 的边值问题转化为泛函极值问题，提供了<strong>弱解</strong>和<strong>存在性</strong>理论的基础（直接变分法 / 极小化序列）。</li>
+        <li><strong>数值意义：</strong>有限元方法（FEM）的本质——在有限维子空间中极小化 Dirichlet 能量，得到 PDE 的数值近似解。</li>
+        <li><strong>与极值原理的关系：</strong>Dirichlet 原理给出的是解的"能量极小化"特征，极值原理给出的是解的"点点界"特征。两者都是椭圆型方程的标志性性质，但来自不同的角度。</li>
+      </ul>
+    </div>
+
+    <h3>3.6.6 可去奇点定理</h3>
+
+    <p>调和函数在孤立点处如果有界，则该奇点可以"移除"——函数在该点可以定义延拓为整个区域上的调和函数。这一结论在复分析中有著名的对应物（Riemann 可去奇点定理），在 PDE 中同样成立。</p>
+
+    <div class="box box-theorem">
+      <div class="box-title">定理 3.6.6 (调和函数的可去奇点定理)</div>
+      <p>设 $\Omega \subset \RR^n$（$n \ge 2$）为区域，$x_0 \in \Omega$。若 $u$ 在 $\Omega \setminus \{x_0\}$ 上调和，且当 $x \to x_0$ 时满足：</p>
+      $$u(x) = o\bigl(|x - x_0|^{2-n}\bigr) \quad (n \ge 3), \qquad u(x) = o\bigl(|\ln|x - x_0||\bigr) \quad (n = 2).$$
+      <p>（即 $u$ 在 $x_0$ 附近的增长比基本解慢），则 $u$ 可延拓为 $\Omega$ 上的调和函数。</p>
+      <p><strong>特别地</strong>，若 $u$ 在 $x_0$ 附近<strong>有界</strong>，则 $x_0$ 必为可去奇点。</p>
+    </div>
+
+    <div class="box box-intuition">
+      <div class="box-title">为何增长条件是"基本解"的倒数？</div>
+      <p>基本解 $\Phi(x - x_0)$ 是"最弱"的在 $x_0$ 处有奇性的调和函数。如果 $u$ 在 $x_0$ 附近的增长比基本解慢，意味着它不可能"携带"点电荷——该点处没有"源"。因此奇性是虚假的，可以光滑地填补。</p>
+      <p>二维情况用到对数 $\ln r$ 是因为二维基本解是 $\frac{1}{2\pi}\ln\frac{1}{r}$。作为参考：$x \to 0$ 时 $\ln\frac{1}{|x|} \to +\infty$，而一个有界的 $u$ 当然增长得比 $\ln$ 慢。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 3.6.3（可去奇点的验证）</div>
+      <p>设 $u(x,y) = \frac{x}{x^2+y^2}$ 在 $\RR^2 \setminus \{(0,0)\}$ 上。验证 $u$ 是调和的，但原点是否为可去奇点？</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>直接验证 $\lap u = 0$（$u$ 是 $\frac{1}{z}$ 的实部，解析函数的实部调和的）。</p>
+          <p>当 $(x,y) \to (0,0)$ 时：$|u(x,y)| = \frac{|x|}{x^2+y^2} \le \frac{\sqrt{x^2+y^2}}{x^2+y^2} = \frac{1}{r}$。当 $r \to 0$ 时 $|u| = O(1/r)$。二维基本解的增长阶为 $O(\ln(1/r))$，而 $1/r \gg \ln(1/r)$（当 $r \to 0$ 时），因此 $u$ 的增长<strong>快于</strong>基本解——原点<strong>不是</strong>可去奇点。事实上，$u$ 在原点的极限不存在（沿 $x$ 轴趋于原点时 $u \to \pm\infty$），奇性不可去。</p>
+          <p><strong>对照：</strong>若 $u$ 在原点附近有界（比如 $u(x,y) = \sin(x^2+y^2)$——虽然这在整个平面上调和条件不一定成立，仅作类比），则原点为可去奇点。更典型的例子：$u = \frac{x^3-3xy^2}{r^6}$ 增长为 $O(1/r^3)$，也不可去。只有增长慢于基本解时才能延拓。</p>
+        </div>
+      </div>
     </div>
   </div>
 

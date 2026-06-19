@@ -55,8 +55,8 @@
       <li><a href="#s4">4.4 化标准型</a></li>
       <li><a href="#s5">4.5 叠加原理与Duhamel原理</a></li>
       <li><a href="#s6">4.6 Sturm-Liouville理论</a></li>
-      <li><a href="#s7">4.7 三类方程的统一视角</a></li>
-      <li><a href="#s8">4.8 能量估计方法</a></li>
+      <li><a href="#s7">4.7 三类方程的统一视角（含适定性、叠加原理深度对比）</a></li>
+      <li><a href="#s8">4.8 能量估计方法（含三类方程统一先验估计框架）</a></li>
     </ol>
   </div>
 
@@ -494,6 +494,81 @@
       <div class="box-title">一句话总结</div>
       <p><strong>分类不是目的，而是手段。</strong>知道了一个二阶线性PDE的类型，你就知道了该用什么方法求解、该期待什么样的解的行为。双曲→特征线法+能量守恒，抛物→积分变换+极值衰减，椭圆→Green函数+调和性质。这个框架是所有后续学习的基础。</p>
     </div>
+
+    <h3>深度对比：适定性与叠加原理</h3>
+
+    <div class="box box-summary">
+      <div class="box-title">Hadamard 适定性的对比</div>
+      <p>一个 PDE 问题称为<strong>适定的</strong>（well-posed），当且仅当它同时满足三个条件：<strong>存在性、唯一性、稳定性</strong>（解连续依赖于数据）。三类方程的行为截然不同：</p>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>适定性维度</th><th>双曲型（波动方程）</th><th>抛物型（热方程）</th><th>椭圆型（Laplace方程）</th></tr>
+          <tr>
+            <td><strong>存在性</strong></td>
+            <td>d'Alembert 公式保证（Cauchy问题）；分离变量法保证（初边值问题）</td>
+            <td>Fourier变换/热核保证（Cauchy问题）；分离变量法保证（初边值问题）</td>
+            <td>Green函数法、Poisson积分公式、变分法保证（Dirichlet问题）</td>
+          </tr>
+          <tr>
+            <td><strong>唯一性</strong></td>
+            <td>能量积分 ⇒ 唯一</td>
+            <td>极值原理 ⇒ 唯一</td>
+            <td>极值原理 ⇒ 唯一（Dirichlet）；相差常数（Neumann）</td>
+          </tr>
+          <tr>
+            <td><strong>稳定性</strong></td>
+            <td>能量估计 ⇒ $\|u(t)\| \le C(T)\|u(0)\|$</td>
+            <td>极值原理 ⇒ $\sup|u| \le \sup|\varphi|+\sup|f|$</td>
+            <td>极值原理 ⇒ $\sup|u| \le \sup_{\pd\Omega}|\varphi|$</td>
+          </tr>
+          <tr>
+            <td><strong>对时间反演</strong></td>
+            <td>适定（方程在 $t \to -t$ 下不变）</td>
+            <td><strong>不适定</strong>（倒向热方程极度不稳定）</td>
+            <td>不适用（稳态，无时间变量）</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="box box-summary">
+      <div class="box-title">叠加原理的适用范围对比</div>
+      <p>叠加原理（线性组合仍是解）对所有<strong>线性</strong>PDE 都成立，但三类方程中叠加的"效果"和"可操作性"有显著差异：</p>
+      <ul>
+        <li><strong>双曲型：</strong>Cauchy 问题中，齐次解 + 非齐次特解（Duhamel 积分）的叠加最为自然。有界域中，本征模态的叠加（Fourier 级数）永不衰减——所有模态长期共存。</li>
+        <li><strong>抛物型：</strong>本征模态的叠加中，高频模态指数衰减，长期只剩基频。这意味着抛物型叠加是"有效截断"的——数值计算中只需取前几项即可。</li>
+        <li><strong>椭圆型：</strong>叠加主要用于构造复杂边界条件下的解（如用 Green 函数表示解为边界积分）。不存在"衰减 vs 保留"的时间竞争，各 Fourier 分量仅在不同空间尺度上贡献。</li>
+      </ul>
+    </div>
+
+    <div class="box box-summary">
+      <div class="box-title">三大原理的统一视角</div>
+      <p>三类方程的解有各自的核心定性工具，它们分别是三个"大原理"在不同类型方程上的体现：</p>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>原理</th><th>波动方程（双曲型）</th><th>热传导方程（抛物型）</th><th>调和方程（椭圆型）</th></tr>
+          <tr>
+            <td><strong>极值原理</strong></td>
+            <td>一般不成立（波可在内部达到更大的振幅）</td>
+            <td><strong>成立</strong>：温度的最大/最小值在初始时刻或边界上达到</td>
+            <td><strong>成立</strong>：调和函数的最大/最小值在边界上达到</td>
+          </tr>
+          <tr>
+            <td><strong>能量估计</strong></td>
+            <td>能量守恒（无阻尼）或衰减（有阻尼）——推出唯一性和稳定性</td>
+            <td>能量 $E(t) = \frac{1}{2}\int u^2 dx$ 单调递减——推出衰减估计</td>
+            <td>Dirichlet 能量极小化——推出变分特征和存在性</td>
+          </tr>
+          <tr>
+            <td><strong>Duhamel/叠加</strong></td>
+            <td>将外力 $f$ 的效果分解为瞬时冲量的叠加（PDE 层面）</td>
+            <td>同样适用 Duhamel 原理（ODE/特征函数层面）</td>
+            <td>Green 函数 = 点源的叠加（空间层面而非时间层面）</td>
+          </tr>
+        </table>
+      </div>
+      <p style="margin-top:1rem;">这三个原理构成了 PDE 定性理论的<strong>三角支柱</strong>。在考试中，证明题（唯一性、稳定性、渐近估计）几乎总是从这三者之一出发。</p>
+    </div>
   </div>
 
   <!-- ==================== 4.8 ==================== -->
@@ -640,6 +715,82 @@
         </table>
       </div>
       <p style="margin-top:1rem;">能量方法不依赖于显式解的存在——它只需要PDE本身和适当的函数空间。这使得它可以应用于<strong>无法显式求解</strong>的方程（如变系数方程、非线性方程），是现代PDE理论不可或缺的工具。</p>
+    </div>
+
+    <h3>统一先验估计框架：三类方程的能量方法</h3>
+
+    <p>前文已展示了双曲型（波动方程）的能量估计。以下展示抛物型和椭圆型方程的能量方法，完成三类方程能量估计的统一图景。</p>
+
+    <h4>抛物型方程的能量估计</h4>
+
+    <div class="box box-formula">
+      <div class="box-title">热传导方程的能量与衰减估计</div>
+      <p>对于 $u_t = a^2 u_{xx}$（$0 < x < l$，Dirichlet 零边界），定义能量：</p>
+      $$E(t) = \frac{1}{2}\int_0^l u^2(x,t)\,\dd x.$$
+      <p>求导并代入方程：</p>
+      $$E'(t) = \int_0^l u u_t\,\dd x = \int_0^l u \cdot a^2 u_{xx}\,\dd x.$$
+      <p>分部积分（利用 $u(0,t)=u(l,t)=0$）：</p>
+      $$E'(t) = a^2\Bigl[u u_x\Bigr]_0^l - a^2\int_0^l u_x^2\,\dd x = -a^2\int_0^l u_x^2\,\dd x \le 0.$$
+      <p>利用 Poincaré 不等式 $\int_0^l u_x^2\,\dd x \ge \frac{\pi^2}{l^2}\int_0^l u^2\,\dd x = \frac{2\pi^2}{l^2}E(t)$，得：</p>
+      $$E'(t) \le -\frac{2a^2\pi^2}{l^2}E(t) \;\Longrightarrow\; E(t) \le E(0)\,e^{-\frac{2a^2\pi^2}{l^2}t}.$$
+      <p>这给出了<strong>能量的指数衰减估计</strong>——与分离变量法基频模态 $e^{-a^2(\pi/l)^2 t}$ 的主导项结论一致，但能量方法<strong>无需显式求解</strong>。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 4.8.3（抛物型能量估计——唯一性）</div>
+      <p>对热传导方程的初边值问题 $u_t = a^2 u_{xx} + f(x,t)$（$0 < x < l$，$u(0,t)=u(l,t)=0$），用能量方法证明解的唯一性。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>令 $w = u_1 - u_2$，则 $w_t = a^2 w_{xx}$，$w(0,t)=w(l,t)=0$，$w(x,0)=0$。</p>
+          <p>考虑 $E(t) = \frac{1}{2}\int_0^l w^2\,\dd x$。同上计算：$E'(t) = -a^2\int_0^l w_x^2\,\dd x \le 0$。</p>
+          <p>$E(0)=0$，$E(t) \ge 0$，$E'(t) \le 0$ ⇒ $E(t) \equiv 0$ ⇒ $w \equiv 0$ ⇒ $u_1 = u_2$。</p>
+          <p>与波动方程不同之处：热方程能量 $E(t)$ 只含 $u^2$（一阶时间导数），不需要 $u_t^2$ 和 $u_x^2$。原因是代入后 $u_t = a^2 u_{xx}$ 直接产生 $-u_x^2$ 的耗散项。</p>
+        </div>
+      </div>
+    </div>
+
+    <h4>椭圆型方程的能量估计（先验估计）</h4>
+
+    <div class="box box-formula">
+      <div class="box-title">Poisson 方程的先验 $H^1$ 估计</div>
+      <p>对 Dirichlet 问题 $-\lap u = f$ in $\Omega$，$u|_{\pd\Omega} = 0$。以 $u$ 乘方程两端并在 $\Omega$ 上积分：</p>
+      $$-\int_\Omega u\lap u\,\dd x = \int_\Omega f u\,\dd x.$$
+      <p>左边用 Green 第一公式（分部积分，$u|_{\pd\Omega}=0$）：</p>
+      $$-\int_\Omega u\lap u\,\dd x = \int_\Omega |\grad u|^2\,\dd x - \int_{\pd\Omega} u\frac{\pd u}{\pd n}\,\dd S = \int_\Omega |\grad u|^2\,\dd x.$$
+      <p>于是：</p>
+      $$\int_\Omega |\grad u|^2\,\dd x = \int_\Omega f u\,\dd x \le \|f\|_{L^2}\|u\|_{L^2} \quad\text{(Cauchy-Schwarz).}$$
+      <p>结合 Poincaré 不等式 $\|u\|_{L^2}^2 \le C_P\|\grad u\|_{L^2}^2$（$C_P$ 依赖于 $\Omega$），得<strong>先验估计</strong>：</p>
+      $$\boxed{\|\grad u\|_{L^2(\Omega)} \le C_P\|f\|_{L^2(\Omega)}}.$$
+      <p>这一定量地表明：<strong>源项 $f$ 的大小控制了了解的梯度（从而也控制了解本身）的大小</strong>。这是椭圆方程稳定性分析的基础。</p>
+    </div>
+
+    <div class="box box-summary">
+      <div class="box-title">三类方程能量估计的统一结构</div>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>方程类型</th><th>能量泛函 $E$</th><th>能量等式/不等式</th><th>关键工具</th></tr>
+          <tr>
+            <td><strong>双曲型</strong></td>
+            <td>$\frac{1}{2}\int(u_t^2 + a^2|\grad u|^2)$</td>
+            <td>$E'(t) = 0$（守恒）或 $\le CE$（有低阶项时）</td>
+            <td>分部积分消去交叉项 + Gronwall</td>
+          </tr>
+          <tr>
+            <td><strong>抛物型</strong></td>
+            <td>$\frac{1}{2}\int u^2$</td>
+            <td>$E'(t) = -a^2\int|\grad u|^2 \le 0$（耗散）</td>
+            <td>分部积分 + Poincaré 不等式</td>
+          </tr>
+          <tr>
+            <td><strong>椭圆型</strong></td>
+            <td>$\int|\grad u|^2$</td>
+            <td>$\int|\grad u|^2 = \int f u$（平衡）</td>
+            <td>Green 公式 + Cauchy-Schwarz + Poincaré</td>
+          </tr>
+        </table>
+      </div>
+      <p style="margin-top:1rem;"><strong>统一模式：</strong>用解（或其导数）乘方程 → 在区域上积分 → 分部积分（利用边界条件消去边界项）→ 用不等式放缩低阶项 → 得到关于能量泛函的微分等式或不等式。这一<strong>乘子法（multiplier method）</strong>是 PDE 能量估计的通行范式，不依赖于具体的方程类型。</p>
     </div>
   </div>
 

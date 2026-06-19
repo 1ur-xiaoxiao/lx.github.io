@@ -548,6 +548,67 @@
         <li><strong>有界杆（Neumann / 绝热）</strong>：两端无热流通过，总热量被"困住"在杆内。温度最终趋于一个非零常数——平均值，永不衰减到零。趋近速率同样为<strong>指数</strong>。</li>
       </ul>
     </div>
+
+    <h3>Robin边值问题（第三类边界条件）</h3>
+
+    <p>在实际传热问题中，杆的端点通常不是理想绝热或恒温，而是通过<strong>对流</strong>与环境交换热量。<strong>Newton 冷却定律</strong>指出：端点的热流密度正比于端点温度与环境温度的差。当环境温度为零时，边界条件为：</p>
+    $$\begin{cases} u_x(0,t) - h\,u(0,t) = 0, & h \ge 0,\\[2pt] u_x(l,t) + H\,u(l,t) = 0, & H \ge 0. \end{cases}$$
+    <p>参数 $h, H$ 称为<strong>换热系数</strong>（或 Biot 数）。$h=0$ 退化为 Neumann（绝热），$h \to +\infty$ 退化为 Dirichlet（恒温）。Robin 条件是这两类理想化条件的<strong>插值</strong>。</p>
+
+    <p>分离变量后，空间部分 $X(x)$ 满足的 Sturm-Liouville 问题为：</p>
+    $$X''(x) + \lambda X(x) = 0, \quad X'(0) - hX(0) = 0, \quad X'(l) + HX(l) = 0.$$
+
+    <p>此处 $\lambda \le 0$ 的情况经过边界条件检验只给出零解（证明略），故只需考虑 $\lambda = \omega^2 \gt 0$。通解为：</p>
+    $$X(x) = A\cos\omega x + B\sin\omega x.$$
+
+    <p>由 $X'(0) - hX(0) = 0$：$B\omega - hA = 0$，故 $B = \frac{h}{\omega}A$。取 $A = \omega$（任意常数因子），得：</p>
+    $$X(x) = \omega\cos\omega x + h\sin\omega x.$$
+
+    <p>由 $x = l$ 处的边界条件 $X'(l) + HX(l) = 0$ 给出特征值方程：</p>
+
+    <div class="box box-formula">
+      <div class="box-title">Robin边值的本征值方程</div>
+      $$\boxed{\tan(\omega l) = \frac{\omega(h + H)}{\omega^2 - hH}}$$
+      <p>此超越方程的根 $\{\omega_n\}_{n=1}^\infty$ 给出本征值 $\lambda_n = \omega_n^2$，对应的本征函数为 $X_n(x) = \omega_n\cos\omega_n x + h\sin\omega_n x$。</p>
+    </div>
+
+    <div class="box box-intuition">
+      <div class="box-title">本征值的定性分析</div>
+      <ul>
+        <li>当 $h$ 和 $H$ 都很小（接近绝热）：$\tan(\omega l) \approx 0$，故 $\omega_n \approx \frac{(n-1)\pi}{l}$，$n = 1, 2, \ldots$——接近 Neumann 情况。</li>
+        <li>当 $h$ 和 $H$ 都很大（接近恒温）：$\tan(\omega l) \to \infty$，故 $\omega_n \approx \frac{(n-\frac{1}{2})\pi}{l}$——接近 Dirichlet 情况（$n\pi/l$ 偏移了 $\pi/(2l)$）。</li>
+        <li>一般情况：本征值落在 Neumann 和 Dirichlet 之间，需要通过数值（或图解法）求解超越方程。</li>
+      </ul>
+    </div>
+
+    <p>本征函数系 $\{X_n(x)\}$ 在 $[0,l]$ 上仍满足<strong>正交性</strong>（这是 Sturm-Liouville 理论的一般结论），但不再是简单的正弦或余弦。正交权为 1（标准 Sturm-Liouville 形式）：</p>
+    $$\int_0^l X_m(x)X_n(x)\,\dd x = 0 \quad (m \neq n).$$
+
+    <p>范数 $\|X_n\|^2 = \int_0^l X_n^2(x)\,\dd x$ 可通过积分公式计算（此处从略）。Fourier 系数由下式给出：</p>
+    $$C_n = \frac{1}{\|X_n\|^2}\int_0^l \varphi(x)X_n(x)\,\dd x.$$
+
+    <p>时间部分同前：$T_n(t) = e^{-a^2\omega_n^2 t}$。最终解为：</p>
+    $$u(x,t) = \sum_{n=1}^{\infty} C_n e^{-a^2\omega_n^2 t}\,X_n(x).$$
+
+    <div class="box box-example">
+      <div class="box-title">例题 2.3.3（Robin边值条件下解的渐近行为）</div>
+      <p>考虑 $u_t = u_{xx}$（$0 < x < 1$），Robin 边界条件 $u_x(0,t) - u(0,t) = 0$，$u_x(1,t) + u(1,t) = 0$。不具体求解，分析 $t \to +\infty$ 时解的渐近行为。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>$h = H = 1$，本征值方程为 $\tan\omega = \frac{2\omega}{\omega^2 - 1}$。</p>
+          <p><strong>求最小本征值 $\omega_1$：</strong>用图解法。$y = \tan\omega$ 与 $y = 2\omega/(\omega^2-1)$ 的交点。$\omega=0$ 时右端为 0；$\omega$ 从 0 增大时右端单调递增直至 $\omega=1$ 处的渐近线。$\tan\omega$ 从 0 开始增长。两条曲线在 $(0, \pi/2)$ 内有唯一交点，数值约为 $\omega_1 \approx 1.307$。</p>
+          <p>对应的衰减指数为 $e^{-\omega_1^2 t} \approx e^{-1.708 t}$。</p>
+          <p><strong>对比：</strong></p>
+          <ul>
+            <li>若为 Dirichlet（恒温零度）：$\omega_1 = \pi \approx 3.142$，衰减 $e^{-\pi^2 t} \approx e^{-9.870 t}$。</li>
+            <li>若为 Neumann（绝热）：$\omega_1 = 0$，温度趋于非零常数。</li>
+            <li>Robin（对流散热）：$e^{-1.708 t}$——衰减速度介于 Neumann（不衰减）和 Dirichlet（快速衰减）<strong>之间</strong>。换热系数越小（越接近绝热），衰减越慢；系数越大（越接近恒温），衰减越快。这是符合物理直觉的。</li>
+          </ul>
+          <p>当 $t \to +\infty$：$u(x,t) \sim C_1 e^{-1.708 t}(\cos 1.307x + \frac{1}{1.307}\sin 1.307x) \to 0$——对流散热导致杆最终冷却到环境温度（零度），但比两端直接接触零度热源的 Dirichlet 情况慢得多。</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ==================== 2.4 ==================== -->
