@@ -311,6 +311,119 @@
     </div>
   </div>
 
+  <!-- ==================== 齐次化原理 ==================== -->
+  <div class="section" id="duhamel">
+    <h2>齐次化原理（Duhamel 原理）—— 非齐次波动方程的 Cauchy 问题</h2>
+
+    <p>d'Alembert 公式解决了<strong>齐次</strong>波动方程 $u_{tt}=a^2u_{xx}$ 的 Cauchy 问题。但在实际中，弦上可能作用着<strong>外力</strong>（如重力、风力等），导致方程变为非齐次的：</p>
+    $$u_{tt} = a^2 u_{xx} + f(x,t).$$
+    <p>$f(x,t)$ 称为<strong>源项</strong>，表示 $t$ 时刻在 $x$ 处单位质量所受的外力。本节介绍处理这类问题的核心方法——<strong>齐次化原理</strong>（又称 Duhamel 原理），它将非齐次问题转化为一系列齐次问题的叠加。更一般的 Duhamel 原理在<a href="ch4.html#s5" style="color:var(--accent);font-weight:600;">第四章 §4.5</a>中统一论述。</p>
+
+    <h3>问题陈述</h3>
+    <div class="box box-formula">
+      <div class="box-title">非齐次波动方程的 Cauchy 问题</div>
+      $$\begin{cases} u_{tt} = a^2 u_{xx} + f(x,t), & x \in \RR,\ t > 0, \\ u(x,0) = \varphi(x),\; u_t(x,0) = \psi(x), & x \in \RR. \end{cases}$$
+      <p>由叠加原理，解可写成 $u = u_h + u_p$，其中：</p>
+      <ul>
+        <li>$u_h$ 是齐次方程（$f \equiv 0$）满足初始条件 $(\varphi, \psi)$ 的解——直接由<strong> d'Alembert 公式</strong>给出。</li>
+        <li>$u_p$ 是非齐次方程满足<strong>零初始条件</strong>的解——这正是齐次化原理要解决的部分。</li>
+      </ul>
+    </div>
+
+    <p>因此，只需集中精力求解零初始条件下的非齐次问题：</p>
+    $$\begin{cases} u_{tt} = a^2 u_{xx} + f(x,t), & x \in \RR,\ t > 0, \\ u(x,0) = 0,\; u_t(x,0) = 0, & x \in \RR. \end{cases}$$
+
+    <!-- 核心思想 -->
+    <h3>核心思想：把外力看作"一连串瞬时冲量"</h3>
+    <div class="box box-intuition">
+      <div class="box-title">物理直觉</div>
+      <p>想象弦上的外力 $f(x,t)$ 是由无穷多个"瞬时敲击"组成的：在时刻 $\tau$，弦在位置 $x$ 处被敲了一下，获得一个瞬时速度增量 $f(x,\tau)\,\dd\tau$（冲量 = 力 × 时间微元）。之后的每一瞬间弦都自由振动（没有外力了），但<strong>敲击产生的扰动会传播和叠加</strong>。</p>
+      <p>因此，总效果 = 将 $\tau=0$ 到 $\tau=t$ 之间所有时刻的敲击所引起的自由振动<strong>全部叠加起来</strong>。</p>
+    </div>
+
+    <!-- 关键辅助问题 -->
+    <h3>关键辅助问题</h3>
+    <p>设 $\tau \ge 0$ 为固定时刻。考虑下面这个<strong>辅助齐次问题</strong>：</p>
+    <div class="box box-formula">
+      <div class="box-title">辅助问题 $v(x,t;\tau)$</div>
+      $$\begin{cases} v_{tt} = a^2 v_{xx}, & x \in \RR,\ t > \tau, \\ v(x,\tau;\tau) = 0,\; v_t(x,\tau;\tau) = f(x,\tau), & x \in \RR. \end{cases}$$
+      <p>这描述的是：在时刻 $\tau$，弦获得了一个瞬时速度分布 $f(x,\tau)$（初始位移为零），之后自由振动。由 d'Alembert 公式（将时间原点平移到 $\tau$，即令 $t' = t-\tau$）：</p>
+      $$v(x,t;\tau) = \frac{1}{2a}\int_{x-a(t-\tau)}^{x+a(t-\tau)} f(s,\tau)\,\dd s.$$
+    </div>
+
+    <p>对 $v$ 的公式的理解：从 $\tau$ 时刻开始到 $t$ 时刻，扰动的传播距离为 $a(t-\tau)$。$f(s,\tau)$ 只在以 $x$ 为中心、半径 $a(t-\tau)$ 的区间内影响 $v(x,t;\tau)$——这正是波动有限传播速度 $a$ 的体现。</p>
+
+    <!-- 叠加 → 最终公式 -->
+    <h3>齐次化原理 → 叠加所有瞬时冲量</h3>
+    <p>齐次化原理断言：原问题（零初始条件）的解是辅助问题解关于 $\tau$ 的叠加（积分）：</p>
+    $$u_p(x,t) = \int_0^t v(x,t;\tau)\,\dd\tau.$$
+    <p>这个结论的数学依据是：对 $u_p(x,t) = \int_0^t v(x,t;\tau)\,\dd\tau$ 求导（使用含参积分求导的 Leibniz 法则），可以验证它确实满足非齐次方程和零初始条件（验证过程见下方）。</p>
+
+    <p>代入 $v$ 的 d'Alembert 表达式，得到最终公式：</p>
+    <div class="box box-formula">
+      <div class="box-title">非齐次波动方程 Cauchy 问题的解（零初始条件）</div>
+      $$u_p(x,t) = \frac{1}{2a}\int_0^t\int_{x-a(t-\tau)}^{x+a(t-\tau)} f(s,\tau)\,\dd s\,\dd\tau.$$
+      <p>几何意义：积分区域是 $(s,\tau)$ 平面上的特征三角形（以 $(x,t)$ 为顶点的向后特征锥截出的区域）。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">验证：$u_p$ 确实满足非齐次方程</div>
+      <p>由含参积分求导的 Leibniz 公式：</p>
+      $$\begin{aligned} \frac{\pd u_p}{\pd t} &= v(x,t;t) + \int_0^t \frac{\pd v}{\pd t}(x,t;\tau)\,\dd\tau \\ &= 0 + \int_0^t v_t(x,t;\tau)\,\dd\tau \quad (\text{因为 } v(x,t;t)=0), \\ \frac{\pd^2 u_p}{\pd t^2} &= v_t(x,t;t) + \int_0^t v_{tt}(x,t;\tau)\,\dd\tau \\ &= f(x,t) + \int_0^t a^2 v_{xx}(x,t;\tau)\,\dd\tau \quad (\text{用 } v_t(x,t;t)=f(x,t),\; v_{tt}=a^2v_{xx}), \\ &= f(x,t) + a^2 \frac{\pd^2 u_p}{\pd x^2}. \end{aligned}$$
+      <p>故 $u_{tt} = a^2 u_{xx} + f$。初始条件 $u_p(x,0)=0$（积分区间长度为零）、$\frac{\pd u_p}{\pd t}(x,0)=0$ 显然成立。$\square$</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">完整解（齐次化原理 + d'Alembert 叠加）</div>
+      <p>将齐次解（d'Alembert）和非齐次特解（Duhamel 积分）叠加，得到<strong>最一般的 Cauchy 问题的解</strong>：</p>
+      $$u(x,t) = \underbrace{\frac{1}{2}[\varphi(x+at) + \varphi(x-at)] + \frac{1}{2a}\int_{x-at}^{x+at}\psi(s)\,\dd s}_{\text{d'Alembert（齐次部分）}} + \underbrace{\frac{1}{2a}\int_0^t\int_{x-a(t-\tau)}^{x+a(t-\tau)} f(s,\tau)\,\dd s\,\dd\tau}_{\text{Duhamel 积分（非齐次部分）}}.$$
+      <p>这就是一维波动方程 Cauchy 问题的<strong>完全解公式</strong>。从此非齐次波动方程在无界区域上的求解有了标准流程。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">与 Duhamel 原理的一般形式的关系</div>
+      <p>这里的推导是 Duhamel 原理在波动方程中的<strong>特例</strong>。更一般地，若 $L$ 是线性算子，$u(x,t)$ 满足 $Lu = f$ 和齐次定解条件，则 $u = \int_0^t v(\cdot,t;\tau)\,\dd\tau$，其中 $v$ 满足 $Lv = 0$ 且 $v|_{t=\tau}=0$，$\pd_t v|_{t=\tau} = f(\cdot,\tau)$（对波动方程）或 $v|_{t=\tau} = f(\cdot,\tau)$（对热传导方程）。系统性的讨论参见<a href="ch4.html#s5" style="color:var(--accent);font-weight:600;">第四章 §4.5（Duhamel 原理）</a>。</p>
+    </div>
+
+    <!-- 例题 -->
+    <div class="box box-example">
+      <div class="box-title">例题 1.4.3（非齐次波动方程）</div>
+      <p>求解 $u_{tt} = u_{xx} + xt$（$x \in \RR, t>0$），$u(x,0) = 0$，$u_t(x,0) = 0$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>$a=1$，$f(x,t)=xt$。零初始条件，直接用 Duhamel 积分：</p>
+          $$u(x,t) = \frac{1}{2}\int_0^t\int_{x-(t-\tau)}^{x+(t-\tau)} s\tau\,\dd s\,\dd\tau.$$
+          <p>先对 $s$ 积分（$\tau$ 固定）：</p>
+          $$\int_{x-(t-\tau)}^{x+(t-\tau)} s\tau\,\dd s = \tau\left[\frac{s^2}{2}\right]_{x-(t-\tau)}^{x+(t-\tau)} = \frac{\tau}{2}\Big[(x+(t-\tau))^2 - (x-(t-\tau))^2\Big].$$
+          <p>利用 $(A+B)^2-(A-B)^2 = 4AB$（取 $A=x$, $B=t-\tau$）：</p>
+          $$= \frac{\tau}{2} \cdot 4x(t-\tau) = 2x\tau(t-\tau).$$
+          <p>再对 $\tau$ 积分：</p>
+          $$u(x,t) = \frac{1}{2}\int_0^t 2x\tau(t-\tau)\,\dd\tau = x\int_0^t (t\tau - \tau^2)\,\dd\tau = x\left[t\cdot\frac{t^2}{2} - \frac{t^3}{3}\right] = x\left(\frac{t^3}{2} - \frac{t^3}{3}\right) = \frac{xt^3}{6}.$$
+          <p><strong>验证</strong>：$u(x,0)=0$，$u_t(x,0)=0$。$u_{tt} = xt$，$u_{xx} = 0$，$u_{tt} - u_{xx} = xt = f(x,t)$。✓</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">例题 1.4.4（非齐次 + 非零初始条件，叠加求解）</div>
+      <p>求解 $u_{tt} = u_{xx} + \cos x$（$x \in \RR, t>0$），$u(x,0) = \sin x$，$u_t(x,0) = 0$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p><strong>方法：叠加原理（齐次部分 + 非齐次特解）。</strong></p>
+          <p><strong>齐次部分</strong> $u_h$：$u_{tt}=u_{xx}$，$u(x,0)=\sin x$，$u_t(x,0)=0$。由 d'Alembert：</p>
+          $$u_h(x,t) = \frac{1}{2}[\sin(x+t) + \sin(x-t)] = \sin x\cos t.$$
+          <p><strong>非齐次特解</strong> $u_p$：$u_{tt}=u_{xx}+\cos x$，零初始条件。$f(x,t)=\cos x$ 与 $t$ 无关。</p>
+          <p>用 Duhamel 积分（$a=1$）：</p>
+          $$\begin{aligned} u_p(x,t) &= \frac{1}{2}\int_0^t\int_{x-(t-\tau)}^{x+(t-\tau)} \cos s\,\dd s\,\dd\tau \\ &= \frac{1}{2}\int_0^t [\sin(x+(t-\tau)) - \sin(x-(t-\tau))]\,\dd\tau \\ &= \frac{1}{2}\int_0^t 2\cos x\sin(t-\tau)\,\dd\tau \quad (\sin(A+B)-\sin(A-B)=2\cos A\sin B) \\ &= \cos x\int_0^t \sin(t-\tau)\,\dd\tau = \cos x\Big[\cos(t-\tau)\Big]_{\tau=0}^{\tau=t} \\ &= \cos x\,(\cos 0 - \cos t) = \cos x\,(1 - \cos t). \end{aligned}$$
+          <p><strong>完整解</strong>：$u(x,t) = u_h + u_p = \sin x\cos t + \cos x\,(1-\cos t)$。</p>
+          <p><strong>验证</strong>：$u(x,0)=\sin x$。$u_t(x,0)=0$。$u_{tt}-u_{xx} = (-\sin x\cos t - \cos x\cos t) - (-\sin x\cos t + \cos x(1-\cos t))$。重新整理：$u_{tt} = -\sin x\cos t + \cos x\cos t$，$u_{xx} = -\sin x\cos t - \cos x(1-\cos t)$，差 $= \cos x(\cos t + 1 - \cos t) = \cos x = f$。✓</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ==================== 1.5 ==================== -->
   <div class="section" id="s5">
     <h2>1.5 有界弦与分离变量法</h2>
