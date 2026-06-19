@@ -245,7 +245,7 @@
     <p><strong>奇延拓</strong>：$\tilde{\varphi}(x) = \begin{cases} \varphi(x), & x \ge 0, \\ -\varphi(-x), & x < 0, \end{cases} \quad \tilde{\psi}(x) = \begin{cases} \psi(x), & x \ge 0, \\ -\psi(-x), & x < 0. \end{cases}$</p>
     <p>当 $x - at \ge 0$（尚未到达边界）：直接用 d'Alembert 公式；</p>
     <p>当 $x - at < 0$（已反射）：</p>
-    $$u(x,t) = \frac{1}{2}[\varphi(x+at) - \varphi(at-x)] + \frac{1}{2a}\left[\int_0^{x+at}\psi(s)\,\dd s + \int_0^{at-x}\psi(s)\,\dd s\right].$$
+    $$u(x,t) = \frac{1}{2}[\varphi(x+at) - \varphi(at-x)] + \frac{1}{2a}\left[\int_0^{x+at}\psi(s)\,\dd s - \int_0^{at-x}\psi(s)\,\dd s\right].$$
 
     <h3>Neumann 条件（自由端点）</h3>
     <p>若 $u_x(0,t)=0$（自由端），用<strong>偶延拓</strong>：$\tilde{\varphi}(x) = \varphi(|x|)$，$\tilde{\psi}(x) = \psi(|x|)$。物理上，波在自由端反射时不发生相位翻转。</p>
