@@ -315,51 +315,246 @@
   <div class="section" id="s5">
     <h2>1.5 有界弦与分离变量法</h2>
 
-    <p>当弦的长度有限且两端固定时，d'Alembert 公式不再直接适用。这时我们需要<strong>分离变量法</strong>——这是求解有界区域上PDE最基础也最重要的方法。</p>
+    <p>当弦的长度有限且两端固定时，波在边界处不断反射，d'Alembert 公式不再直接适用。这时我们需要<strong>分离变量法</strong>——这是求解有界区域上 PDE 最基础也最重要的方法，也是 Fourier 分析在 PDE 中最经典的应用。</p>
 
     <div class="box box-intuition">
-      <div class="box-title">核心思想</div>
-      <p>假设解可以写成 $u(x,t) = X(x) \cdot T(t)$（位置和时间的函数分离）。代入方程后，关于 $X$ 和关于 $T$ 的项可以分开——这意味着本征模态的存在。弦的振动是所有本征模态的<strong>叠加</strong>。</p>
+      <div class="box-title">核心思想：把复杂运动分解为"纯音"的叠加</div>
+      <p>一根两端固定的弦，它的振动不是任意的——只有特定频率、特定形状的振动才能稳定存在。这些稳定的振动模式称为<strong>本征模态</strong>（固有模态）。分离变量法的核心思路是：</p>
+      <ol>
+        <li>假设解可以写成 $u(x,t) = X(x) \cdot T(t)$（空间形状 × 时间演化）；</li>
+        <li>代入方程，把 PDE 拆成两个关于 $X$ 和 $T$ 的<strong>常微分方程</strong>（ODE）；</li>
+        <li>先解 $X$ 的 ODE（含边界条件），得到所有可能的"空间形状"（本征函数）；</li>
+        <li>再对每个空间形状，解 $T$ 的 ODE 得到时间演化；</li>
+        <li>最后用<strong>叠加原理</strong>把所有模态组合起来，用初始条件确定组合系数。</li>
+      </ol>
+      <p>这正是 Fourier 分析的物理起源——弦的音色由各谐波的相对强度（Fourier 系数）决定。（关于 Fourier 级数的完整讲解，见<a href="appendix.html#sA" style="color:var(--accent);font-weight:600;">附录 A 节 · 傅里叶级数</a>。）</p>
     </div>
 
-    <h3>两端固定弦的自由振动</h3>
-    $$\begin{cases} u_{tt} = a^2 u_{xx}, & 0 < x < l,\ t > 0, \\ u(0,t) = u(l,t) = 0, & t \ge 0, \\ u(x,0) = \varphi(x),\; u_t(x,0) = \psi(x), & 0 \le x \le l. \end{cases}$$
+    <h3>问题陈述：两端固定弦的自由振动</h3>
+    <div class="box box-formula">
+      <div class="box-title">定解问题</div>
+      $$\begin{cases} u_{tt} = a^2 u_{xx}, & 0 < x < l,\ t > 0, \\ u(0,t) = u(l,t) = 0, & t \ge 0, \\ u(x,0) = \varphi(x),\; u_t(x,0) = \psi(x), & 0 \le x \le l. \end{cases}$$
+      <p>其中 $a = \sqrt{T/\rho}$ 是波速（$T$ 为张力，$\rho$ 为线密度）。边界条件 $u(0,t)=u(l,t)=0$ 表示两端固定。</p>
+    </div>
 
-    <p><strong>第一步：分离变量。</strong>设 $u(x,t) = X(x)T(t)$，代入方程：</p>
-    $$X(x)T''(t) = a^2 X''(x)T(t) \implies \frac{T''(t)}{a^2 T(t)} = \frac{X''(x)}{X(x)} = -\lambda.$$
-    <p>左边只依赖于 $t$，右边只依赖于 $x$，故两者必等于同一常数 $-\lambda$。</p>
+    <!-- 第一步 -->
+    <h3>第一步：分离变量——将 PDE 拆为两个 ODE</h3>
+    <p>设解的形式为乘积：</p>
+    $$u(x,t) = X(x)\,T(t),$$
+    <p>其中 $X$ 只依赖于 $x$，$T$ 只依赖于 $t$。代入波动方程 $u_{tt} = a^2 u_{xx}$：</p>
+    $$X(x)T''(t) = a^2 X''(x)T(t).$$
+    <p>两边同除以 $a^2 X(x)T(t)$（假设 $X \neq 0, T \neq 0$）：</p>
+    $$\frac{T''(t)}{a^2 T(t)} = \frac{X''(x)}{X(x)}.$$
+    <p><strong>关键观察</strong>：等式左边只依赖于 $t$，右边只依赖于 $x$。要使它们对所有 $(x,t)$ 都相等，唯一的可能是两边都等于同一个<strong>常数</strong>。记这个常数为 $-\lambda$（取负号是为了后面得到振荡解，$\lambda$ 本身预期为正）：</p>
+    $$\frac{T''(t)}{a^2 T(t)} = \frac{X''(x)}{X(x)} = -\lambda.$$
+    <p>于是我们得到了<strong>两个独立的常微分方程</strong>：</p>
+    <div class="box box-formula">
+      <div class="box-title">分离后的 ODE 系统</div>
+      $$\begin{aligned} X''(x) + \lambda X(x) &= 0, \quad 0 < x < l, \\ T''(t) + a^2\lambda\, T(t) &= 0, \quad t > 0. \end{aligned}$$
+    </div>
+    <p>边界条件 $u(0,t)=X(0)T(t)=0$ 和 $u(l,t)=X(l)T(t)=0$ 对所有 $t$ 成立，而 $T(t) \not\equiv 0$（否则解恒为零），故必须有：</p>
+    $$X(0) = 0,\quad X(l) = 0.$$
+    <p>至此，我们得到了 $X(x)$ 的一个<strong>齐次边界值问题</strong>——也称为<strong>本征值问题</strong>。</p>
 
-    <p><strong>第二步：求解 $X$ 的本征值问题。</strong></p>
-    $$X''(x) + \lambda X(x) = 0, \quad X(0) = X(l) = 0.$$
-    <p>分析可得：只有当 $\lambda > 0$ 时才有非平凡解。令 $\lambda = \omega^2$（$\omega > 0$），$X(x) = C_1\cos\omega x + C_2\sin\omega x$。由 $X(0)=0$ 得 $C_1=0$；由 $X(l)=0$ 得 $\sin\omega l = 0$，即 $\omega l = n\pi$。</p>
+    <!-- 第二步 -->
+    <h3>第二步：求解 $X(x)$ 的本征值问题——完整分类讨论</h3>
+    <p>现在求解常微分方程边值问题：</p>
+    $$X''(x) + \lambda X(x) = 0,\quad X(0)=0,\; X(l)=0.$$
+    <p>这是一个<strong>二阶线性常系数齐次 ODE</strong>。其解法是写特征方程 $r^2 + \lambda = 0$，根据 $\lambda$ 的符号分为三种情况。<strong>唯一有非零解的情况才对应物理上可以存在的振动模态。</strong></p>
+
+    <div class="box box-definition">
+      <div class="box-title">情况一：$\lambda < 0$（设 $\lambda = -\mu^2$，$\mu > 0$）</div>
+      <p>特征方程：$r^2 - \mu^2 = 0$，根 $r = \pm\mu$（两个不相等的实根）。</p>
+      <p>通解：$X(x) = C_1 e^{\mu x} + C_2 e^{-\mu x}$，或等价地 $X(x) = A\cosh\mu x + B\sinh\mu x$。</p>
+      <p>施加边界条件：</p>
+      $$\begin{aligned} X(0) &= C_1 + C_2 = 0 \;\Longrightarrow\; C_2 = -C_1, \\ X(l) &= C_1(e^{\mu l} - e^{-\mu l}) = 2C_1\sinh\mu l = 0. \end{aligned}$$
+      <p>由于 $\mu > 0$，$\sinh\mu l > 0$，故 $C_1 = 0$，进而 $C_2 = 0$。<strong>只有平凡解 $X(x) \equiv 0$</strong>。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">情况二：$\lambda = 0$</div>
+      <p>此时方程为 $X''(x) = 0$。积分两次得通解：$X(x) = Ax + B$。</p>
+      <p>施加边界条件：</p>
+      $$\begin{aligned} X(0) &= B = 0, \\ X(l) &= A l = 0 \;\Longrightarrow\; A = 0. \end{aligned}$$
+      <p><strong>只有平凡解 $X(x) \equiv 0$</strong>。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">情况三：$\lambda > 0$（设 $\lambda = \omega^2$，$\omega > 0$）&nbsp;&nbsp;⭐ 唯一有非平凡解的情况</div>
+      <p>特征方程：$r^2 + \omega^2 = 0$，根 $r = \pm i\omega$（一对共轭复根）。</p>
+      <p>由 ODE 理论（见<a href="appendix.html#sA" style="color:var(--accent);font-weight:600;">附录 A.3 节</a>中关于正弦/余弦函数的讨论），复根 $r = \pm i\omega$ 对应的通解为：</p>
+      $$X(x) = C_1\cos\omega x + C_2\sin\omega x.$$
+      <p>（推导依据：Euler 公式 $e^{\pm i\omega x} = \cos\omega x \pm i\sin\omega x$，取实线性组合即得上述形式。）</p>
+      <p>施加第一个边界条件 $X(0) = 0$：</p>
+      $$X(0) = C_1\cos 0 + C_2\sin 0 = C_1 = 0.$$
+      <p>故 $X(x) = C_2\sin\omega x$。施加第二个边界条件 $X(l) = 0$：</p>
+      $$X(l) = C_2\sin\omega l = 0.$$
+      <p>如果 $C_2 = 0$，则又回到平凡解。为了得到<strong>非平凡解</strong>，必须有：</p>
+      $$\sin\omega l = 0 \;\Longrightarrow\; \omega l = n\pi,\quad n = 1, 2, 3, \ldots$$
+      <p>（$n=0$ 给出 $\omega=0$ 即 $\lambda=0$，对应平凡解；$n$ 取负整数给出相同的函数只差一个符号，归入正的 $n$。）</p>
+      <p>于是我们得到<strong>可数无穷多个</strong>满足边界条件的非平凡解：</p>
+      $$\omega_n = \frac{n\pi}{l},\quad n = 1, 2, 3, \ldots$$
+    </div>
 
     <div class="box box-formula">
       <div class="box-title">本征值与本征函数</div>
-      $$\lambda_n = \left(\frac{n\pi}{l}\right)^2, \quad X_n(x) = \sin\frac{n\pi x}{l}, \quad n = 1, 2, 3, \ldots$$
-      <p>$\lambda_n$ 就是弦的<strong>固有频率</strong>（的平方除以 $a^2$）。$n=1$ 对应<strong>基频</strong>，$n \ge 2$ 对应<strong>泛音</strong>（谐波）。</p>
+      $$\lambda_n = \left(\frac{n\pi}{l}\right)^2,\qquad X_n(x) = \sin\frac{n\pi x}{l},\quad n = 1, 2, 3, \ldots$$
+      <p>$\lambda_n$ 称为<strong>本征值</strong>（eigenvalue），$X_n(x)$ 称为<strong>本征函数</strong>（eigenfunction）。数学上这属于 <strong>Sturm-Liouville 理论</strong>的特例（详见<a href="ch4.html#s7" style="color:var(--accent);font-weight:600;">第四章 §4.7</a>）。</p>
+      <p><strong>物理意义</strong>：$\omega_n = n\pi a/l$ 是弦的<strong>固有角频率</strong>。$n=1$ 对应<strong>基频</strong>（fundamental frequency），$n \ge 2$ 对应<strong>泛音</strong>（overtone / harmonic）。基频决定音高，泛音的相对强度决定音色。</p>
     </div>
 
-    <p><strong>第三步：求解 $T$ 的方程。</strong>$T''(t) + a^2\lambda_n T(t) = 0$，通解：</p>
-    $$T_n(t) = A_n \cos\frac{n\pi a t}{l} + B_n \sin\frac{n\pi a t}{l}.$$
+    <!-- 第三步 -->
+    <h3>第三步：求解 $T(t)$ 的方程——每个模态的时间演化</h3>
+    <p>对每个本征值 $\lambda_n = (n\pi/l)^2$，$T_n(t)$ 满足二阶线性常系数 ODE：</p>
+    $$T_n''(t) + \frac{n^2\pi^2 a^2}{l^2}\,T_n(t) = 0.$$
+    <p>记 $\omega_n = n\pi a/l$（第 $n$ 个固有角频率），方程写作：</p>
+    $$T_n''(t) + \omega_n^2\,T_n(t) = 0.$$
 
-    <p><strong>第四步：叠加。</strong>$u(x,t) = \sum_{n=1}^{\infty} \left(A_n \cos\frac{n\pi a t}{l} + B_n \sin\frac{n\pi a t}{l}\right) \sin\frac{n\pi x}{l}.$</p>
+    <div class="box box-definition">
+      <div class="box-title">解法：特征方程法</div>
+      <p>这是 <strong>简谐振动方程</strong>（simple harmonic oscillator）——常数系数二阶线性 ODE。</p>
+      <p><strong>Step 1</strong>：写出特征方程 $r^2 + \omega_n^2 = 0$。</p>
+      <p><strong>Step 2</strong>：求特征根 $r = \pm i\omega_n$（一对纯虚根）。</p>
+      <p><strong>Step 3</strong>：由 ODE 标准结论——当特征根为 $\alpha \pm i\beta$ 时，通解为 $e^{\alpha t}(C_1\cos\beta t + C_2\sin\beta t)$。此处 $\alpha=0, \beta=\omega_n$，故：</p>
+      $$T_n(t) = A_n\cos\omega_n t + B_n\sin\omega_n t,$$
+      <p>其中 $A_n, B_n$ 为任意常数。等价地，也可写成 $T_n(t) = R_n\cos(\omega_n t - \delta_n)$（振幅-相位形式），其中 $R_n = \sqrt{A_n^2 + B_n^2}$，$\tan\delta_n = B_n/A_n$。</p>
+    </div>
 
-    <p><strong>第五步：由初始条件确定系数。</strong>利用正弦函数的正交性 $\int_0^l \sin\frac{m\pi x}{l}\sin\frac{n\pi x}{l}\,\dd x = \frac{l}{2}\delta_{mn}$：</p>
-    $$A_n = \frac{2}{l}\int_0^l \varphi(x)\sin\frac{n\pi x}{l}\,\dd x, \quad B_n = \frac{2}{n\pi a}\int_0^l \psi(x)\sin\frac{n\pi x}{l}\,\dd x.$$
+    <p>这里用到的 ODE 知识：二阶线性常系数齐次方程 $y'' + py' + qy = 0$ 的解法——写特征方程 $r^2 + pr + q = 0$，根据根的判别式 $\Delta = p^2-4q$ 区分三种情况（两实根 / 重根 / 复根）写通解。详见任何常微分方程教材中"线性常系数方程"章节。</p>
+
+    <div class="box box-note">
+      <div class="box-title">为什么 $T_n$ 不衰减？</div>
+      <p>注意到 $T_n(t)$ 是纯振荡的（振幅不变）——这说明理想弦模型中没有阻尼。如果考虑空气阻力或内摩擦，方程中会出现 $u_t$ 项（一阶导数），OED 特征根会有负实部，导致振幅随时间指数衰减（见<a href="ch4.html#s8" style="color:var(--accent);font-weight:600;">第四章 §4.8 阻尼波动方程</a>）。</p>
+    </div>
+
+    <!-- 第四步 -->
+    <h3>第四步：叠加原理——组合所有模态</h3>
+    <p>由线性齐次方程的<strong>叠加原理</strong>，任意有限个解的线性组合仍是解。推广到无穷级数（在适当的收敛条件下），我们把所有本征模态叠加起来：</p>
+    $$u(x,t) = \sum_{n=1}^{\infty} X_n(x)T_n(t) = \sum_{n=1}^{\infty} \left(A_n \cos\frac{n\pi a t}{l} + B_n \sin\frac{n\pi a t}{l}\right) \sin\frac{n\pi x}{l}.$$
+    <p>其中系数 $A_n, B_n$ 尚未确定——它们将由初始条件 $\varphi(x), \psi(x)$ 来唯一确定。</p>
+
+    <p>从数学上看，这恰好是把解 $u(x,t)$ 在每个固定时刻 $t$ 展开成了关于 $\{\sin(n\pi x/l)\}_{n=1}^\infty$ 的<strong>Fourier 正弦级数</strong>。关于三角级数展开的系统理论，见<a href="appendix.html#sA" style="color:var(--accent);font-weight:600;">附录 A.2–A.4 节</a>。</p>
+
+    <!-- 第五步 -->
+    <h3>第五步：由初始条件确定 Fourier 系数</h3>
+    <p>现在利用初始条件来确定所有的 $A_n$ 和 $B_n$。</p>
+
+    <p><strong>由 $u(x,0) = \varphi(x)$</strong>：令 $t=0$，$\cos 0 = 1$，$\sin 0 = 0$：</p>
+    $$\varphi(x) = u(x,0) = \sum_{n=1}^{\infty} A_n \sin\frac{n\pi x}{l}. \tag{★}$$
+    <p><strong>由 $u_t(x,0) = \psi(x)$</strong>：先对 $u$ 关于 $t$ 求偏导：</p>
+    $$u_t(x,t) = \sum_{n=1}^{\infty} \frac{n\pi a}{l}\left(-A_n \sin\frac{n\pi a t}{l} + B_n \cos\frac{n\pi a t}{l}\right) \sin\frac{n\pi x}{l}.$$
+    <p>令 $t=0$：</p>
+    $$\psi(x) = u_t(x,0) = \sum_{n=1}^{\infty} \frac{n\pi a}{l}B_n \sin\frac{n\pi x}{l}. \tag{★★}$$
+
+    <p>至此，问题转化为：<strong>如何把已知函数 $\varphi(x)$ 和 $\psi(x)$ 展开为正弦级数？</strong>如果 $\varphi$ 和 $\psi$ 恰好已经是若干 $\sin(n\pi x/l)$ 的线性组合，则系数可以直接读出（如例题 1.5.1）。一般情况下，需要用到 <strong>Fourier 系数的积分公式</strong>，其推导依赖于正弦函数的<strong>正交性</strong>。</p>
+
+    <!-- 正交性推导 -->
+    <div class="box box-definition">
+      <div class="box-title">正弦函数的正交性——Fourier 系数公式的核心</div>
+      <p>在区间 $[0, l]$ 上，考察两个不同频率的正弦函数的乘积积分：</p>
+      $$\begin{aligned} \int_0^l \sin\frac{m\pi x}{l}\sin\frac{n\pi x}{l}\,\dd x &= \frac{1}{2}\int_0^l \left[\cos\frac{(m-n)\pi x}{l} - \cos\frac{(m+n)\pi x}{l}\right]\dd x \quad\text{（积化和差）}\\ &= \frac{1}{2}\left[\frac{l}{(m-n)\pi}\sin\frac{(m-n)\pi x}{l} - \frac{l}{(m+n)\pi}\sin\frac{(m+n)\pi x}{l}\right]_0^l. \end{aligned}$$
+      <p>当 $m \neq n$ 时：两个正弦项在 $x=0$ 和 $x=l$ 处均为零（因为 $\sin(k\pi)=0$），故积分 $=0$。</p>
+      <p>当 $m = n$ 时：$\cos(0) = 1$，$\cos\frac{2n\pi x}{l}$ 在一个周期上的积分为零：</p>
+      $$\int_0^l \sin^2\frac{n\pi x}{l}\,\dd x = \frac{1}{2}\int_0^l \left(1 - \cos\frac{2n\pi x}{l}\right)\dd x = \frac{1}{2}\left[x - \frac{l}{2n\pi}\sin\frac{2n\pi x}{l}\right]_0^l = \frac{l}{2}.$$
+      <p>综上，<strong>正交关系</strong>为：</p>
+      $$\int_0^l \sin\frac{m\pi x}{l}\sin\frac{n\pi x}{l}\,\dd x = \begin{cases} 0, & m \neq n, \\[4pt] \dfrac{l}{2}, & m = n. \end{cases}$$
+      <p>这可以紧凑地写成 $\displaystyle\int_0^l \sin\frac{m\pi x}{l}\sin\frac{n\pi x}{l}\,\dd x = \frac{l}{2}\,\delta_{mn}$，其中 $\delta_{mn}$ 是 Kronecker delta（$m=n$ 时为 1，否则为 0）。关于正交性的更多讨论，见<a href="appendix.html#sA" style="color:var(--accent);font-weight:600;">附录 A.3 节（三角函数的正交性）</a>。</p>
+    </div>
+
+    <p>利用正交性，从 (★) 式求 $A_n$：将 (★) 两边同乘以 $\sin\frac{m\pi x}{l}$，在 $[0,l]$ 上积分：</p>
+    $$\begin{aligned} \int_0^l \varphi(x)\sin\frac{m\pi x}{l}\,\dd x &= \int_0^l \left[\sum_{n=1}^{\infty} A_n \sin\frac{n\pi x}{l}\right]\sin\frac{m\pi x}{l}\,\dd x \\ &= \sum_{n=1}^{\infty} A_n \int_0^l \sin\frac{n\pi x}{l}\sin\frac{m\pi x}{l}\,\dd x \\ &= A_m \cdot \frac{l}{2} \quad\text{（所有 } n \neq m \text{ 的项积分为零）}. \end{aligned}$$
+    <p>（这里假设了级数可以逐项积分——对于连续或分段连续的 $\varphi$，这是成立的。）</p>
+
+    <p>同理，从 (★★) 式求 $B_n$：将 (★★) 两边同乘以 $\sin\frac{m\pi x}{l}$ 并积分：</p>
+    $$\int_0^l \psi(x)\sin\frac{m\pi x}{l}\,\dd x = \frac{m\pi a}{l}B_m \cdot \frac{l}{2} = \frac{m\pi a}{2}B_m.$$
+
+    <div class="box box-formula">
+      <div class="box-title">Fourier 系数公式（分离变量法的最终答案）</div>
+      $$A_n = \frac{2}{l}\int_0^l \varphi(x)\sin\frac{n\pi x}{l}\,\dd x, \quad n = 1, 2, 3, \ldots$$
+      $$B_n = \frac{2}{n\pi a}\int_0^l \psi(x)\sin\frac{n\pi x}{l}\,\dd x, \quad n = 1, 2, 3, \ldots$$
+      <p>这就是<strong>Fourier 正弦级数的系数公式</strong>。$A_n$ 由初始位移 $\varphi(x)$ 决定，$B_n$ 由初始速度 $\psi(x)$ 决定。完整解为：</p>
+      $$u(x,t) = \sum_{n=1}^{\infty} \left(A_n \cos\frac{n\pi a t}{l} + B_n \sin\frac{n\pi a t}{l}\right) \sin\frac{n\pi x}{l}.$$
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">关于 Fourier 系数的计算与收敛性</div>
+      <p>计算 $A_n, B_n$ 时需要计算定积分 $\int_0^l \varphi(x)\sin\frac{n\pi x}{l}\dd x$。常用的技巧包括分部积分和三角恒等式。如果你对 Fourier 系数的计算还不熟练，强烈建议先看<a href="appendix.html#sA" style="color:var(--accent);font-weight:600;">附录 A.5–A.6 节</a>的完整计算例题。</p>
+      <p>关于级数的收敛性：如果 $\varphi \in C^2$ 且满足相容性条件 $\varphi(0)=\varphi(l)=0$，则 Fourier 级数一致收敛到 $\varphi$，解的级数表示也是古典解。更一般的收敛条件见附录 A.7 节。</p>
+    </div>
+
+    <!-- 完整流程总结 -->
+    <div class="box box-summary">
+      <div class="box-title">分离变量法五步走 · 完整流程</div>
+      <table>
+        <tr><th>步骤</th><th>做什么</th><th>关键数学工具</th></tr>
+        <tr>
+          <td><strong>① 分离</strong></td>
+          <td>设 $u=XT$，代入 PDE，分离变量得 $X''/X = T''/(a^2T) = -\lambda$</td>
+          <td>偏导数、代数整理</td>
+        </tr>
+        <tr>
+          <td><strong>② 本征值问题</strong></td>
+          <td>解 $X''+\lambda X=0$，$X(0)=X(l)=0$，对 $\lambda \lessgtr 0$ 分类讨论，得 $\lambda_n=(n\pi/l)^2$，$X_n=\sin(n\pi x/l)$</td>
+          <td>二阶线性常系数 ODE（特征方程法）、三角函数</td>
+        </tr>
+        <tr>
+          <td><strong>③ 时间演化</strong></td>
+          <td>对每个 $n$，解 $T_n''+\omega_n^2 T_n=0$ 得 $T_n=A_n\cos\omega_n t+B_n\sin\omega_n t$</td>
+          <td>简谐振动 ODE（特征方程：$r^2+\omega_n^2=0$）</td>
+        </tr>
+        <tr>
+          <td><strong>④ 叠加</strong></td>
+          <td>$u=\sum_{n=1}^\infty X_n T_n$（无穷级数叠加）</td>
+          <td>叠加原理、Fourier 级数</td>
+        </tr>
+        <tr>
+          <td><strong>⑤ 定系数</strong></td>
+          <td>用初始条件 + 正弦函数正交性求 $A_n, B_n$ 的积分公式</td>
+          <td>三角函数的正交性、定积分、Fourier 系数公式</td>
+        </tr>
+      </table>
+    </div>
 
     <div class="box box-analogy">
       <div class="box-title">音乐家的视角</div>
-      <p>分离变量法揭示：弦的振动是各种"纯音"（正弦本征模态）的叠加。钢琴、小提琴的音色差异正是由于不同谐波（泛音）的相对强度不同——即 Fourier 系数 $A_n, B_n$ 的分布不同。这就是 Fourier 分析的物理起源！如果你对 Fourier 级数的计算和正交性还不太熟悉，可以参考<a href="appendix.html#sA" style="color:var(--accent);font-weight:600;">附录 A 节 · 傅里叶级数</a>的系统讲解。</p>
+      <p>分离变量法揭示：弦的振动是各种"纯音"（正弦本征模态）的叠加。钢琴、小提琴的音色差异正是由于不同谐波（泛音）的相对强度不同——即 Fourier 系数 $A_n, B_n$ 的分布不同。这就是 <strong>Fourier 分析的物理起源</strong>！如果你对 Fourier 级数的计算和正交性还不太熟悉，可以参考<a href="appendix.html#sA" style="color:var(--accent);font-weight:600;">附录 A 节 · 傅里叶级数</a>的系统讲解。</p>
     </div>
 
+    <!-- 例题 1.5.1 -->
     <div class="box box-example">
-      <div class="box-title">例题 1.5.1</div>
-      <p>求解 $u_{tt} = u_{xx}$（$0<x<\pi$），$u(0,t)=u(\pi,t)=0$，$u(x,0)=\sin x + \frac{1}{2}\sin 3x$，$u_t(x,0)=0$。</p>
+      <div class="box-title">例题 1.5.1（初始条件已是本征函数的组合——系数直接读出）</div>
+      <p>求解 $u_{tt} = u_{xx}$（$0 < x < \pi$），$u(0,t)=u(\pi,t)=0$，$u(x,0)=\sin x + \frac{1}{2}\sin 3x$，$u_t(x,0)=0$。</p>
       <div class="collapsible">
         <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
         <div class="collapsible-body">
-          <p>$a=1, l=\pi$。由初始条件 $\varphi(x) = \sin x + \frac{1}{2}\sin 3x$ 直接读出 Fourier 系数：$A_1=1, A_3=\frac{1}{2}$，其余 $A_n=0$。$B_n=0$（因为 $\psi=0$）。</p>
-          <p>故 $u(x,t) = \sin x \cos t + \frac{1}{2}\sin 3x \cos 3t$。注意 $n=3$ 的模态频率是 $n=1$ 的三倍（泛音）。</p>
+          <p><strong>识别参数</strong>：$a=1$，$l=\pi$。本征函数 $X_n(x) = \sin nx$（因为 $\sin(n\pi x/\pi) = \sin nx$），本征值 $\lambda_n = n^2$，固有频率 $\omega_n = n$。</p>
+          <p><strong>初始位移</strong>：$\varphi(x) = \sin x + \frac{1}{2}\sin 3x$。与 Fourier 正弦级数 $\sum A_n\sin nx$ 对比，直接读出：</p>
+          $$A_1 = 1,\quad A_3 = \frac{1}{2},\quad \text{其余 } A_n = 0.$$
+          <p>（不需要计算积分！因为 $\varphi$ 已经展开成了 $\sin nx$ 的线性组合。这正是 Fourier 级数的"坐标表示"——$\varphi$ 在本征函数基底下的坐标就是 $(0,1,0,\frac{1}{2},0,0,\ldots)$。）</p>
+          <p><strong>初始速度</strong>：$\psi(x) = 0$，故所有 $B_n = 0$。</p>
+          <p><strong>叠加得解</strong>：</p>
+          $$u(x,t) = \sin x \cos t + \frac{1}{2}\sin 3x \cos 3t.$$
+          <p><strong>分析</strong>：解由基频模态（$n=1$，角频率 $\omega_1=1$）和第三泛音（$n=3$，角频率 $\omega_3=3$）叠加而成。注意 $n=3$ 的振动频率是 $n=1$ 的三倍——这正是音乐中"纯五度+八度"的音程关系。$n=2$ 的模态在本例中未被激发。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 例题 1.5.2 -->
+    <div class="box box-example">
+      <div class="box-title">例题 1.5.2（需要计算 Fourier 积分求系数）</div>
+      <p>求解 $u_{tt} = u_{xx}$（$0 < x < \pi$），$u(0,t)=u(\pi,t)=0$，$u(x,0)=0$，$u_t(x,0)=x$。</p>
+      <div class="collapsible">
+        <div class="collapsible-header"><span class="toggle-icon">&#9654;</span> 详细解答</div>
+        <div class="collapsible-body">
+          <p>$a=1$，$l=\pi$。$\varphi(x)=0$ 故所有 $A_n=0$。需要计算 $B_n$：</p>
+          $$B_n = \frac{2}{n\pi}\int_0^\pi x\sin nx\,\dd x.$$
+          <p><strong>计算积分</strong>：用分部积分法，令 $u=x, \dd v=\sin nx\,\dd x$，则 $\dd u=\dd x, v=-\frac{1}{n}\cos nx$：</p>
+          $$\begin{aligned} \int_0^\pi x\sin nx\,\dd x &= \left[-\frac{x}{n}\cos nx\right]_0^\pi + \frac{1}{n}\int_0^\pi \cos nx\,\dd x \\ &= -\frac{\pi}{n}\cos n\pi - 0 + \frac{1}{n}\left[\frac{\sin nx}{n}\right]_0^\pi \\ &= -\frac{\pi}{n}(-1)^n + 0 = \frac{\pi(-1)^{n+1}}{n}. \end{aligned}$$
+          <p>因此：</p>
+          $$B_n = \frac{2}{n\pi} \cdot \frac{\pi(-1)^{n+1}}{n} = \frac{2(-1)^{n+1}}{n^2}.$$
+          <p><strong>叠加得解</strong>：</p>
+          $$u(x,t) = \sum_{n=1}^{\infty} \frac{2(-1)^{n+1}}{n^2} \sin(nt) \sin(nx).$$
+          <p>由于系数按 $1/n^2$ 衰减，级数收敛很快。$n=1$ 模态 $2\sin t\sin x$ 占主导地位。</p>
         </div>
       </div>
     </div>
