@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>附录2 · 必备公式与解题套路</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}', CC: '\\mathbb{C}', NN: '\\mathbb{N}', ZZ: '\\mathbb{Z}',
+          dd: '\\mathrm{d}', pd: '\\partial', lap: '\\Delta', grad: '\\nabla',
+          div: '\\mathrm{div}', rot: '\\mathrm{rot}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;margin-right:12px;">&larr; 总览</a>
+  <a href="index.html" class="nav-brand">偏微分方程教程</a>
+  <button class="nav-toggle" aria-label="菜单">&equiv;</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch0.html">第零章</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="appendix.html">附录</a></li>
+    <li><a href="appendix2.html" style="color:#ffd966;">附录2</a></li>
+    <li><a href="mock-exams.html">模拟题</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>附录2 &middot; 必备公式与解题套路</h1>
+    <p>考前速查——前四章核心公式汇总 + 每类方程的标准化解题流程 + 证明题常见思路</p>
+  </div>
+
+  <div class="toc">
+    <h3>目录</h3>
+    <ol>
+      <li><a href="#sA">A. PDE分类与结构（第零章 + 第四章）</a></li>
+      <li><a href="#sB">B. 波动方程（第一章）</a></li>
+      <li><a href="#sC">C. 热传导方程（第二章）</a></li>
+      <li><a href="#sD">D. 调和方程（第三章）</a></li>
+      <li><a href="#sE">E. 解题套路总结——看到什么题走什么路</a></li>
+      <li><a href="#sF">F. 证明题常见思路速查</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== A ==================== -->
+  <div class="section" id="sA">
+    <h2>A. PDE 分类与结构（第零章 + 第四章）</h2>
+
+    <h3>A.1 三类典型方程</h3>
+    <div class="box box-formula">
+      <div class="box-title">三大经典方程的标准形式</div>
+      <table>
+        <tr><th>方程</th><th>标准形式</th><th>类型</th><th>物理背景</th></tr>
+        <tr><td>波动方程</td><td>$u_{tt} = a^2 \lap u$</td><td>双曲型</td><td>弦振动、声波、电磁波</td></tr>
+        <tr><td>热传导方程</td><td>$u_t = a^2 \lap u$</td><td>抛物型</td><td>热扩散、扩散过程</td></tr>
+        <tr><td>Laplace 方程</td><td>$\lap u = 0$</td><td>椭圆型</td><td>稳态温度、静电场、不可压缩流</td></tr>
+        <tr><td>Poisson 方程</td><td>$\lap u = f$</td><td>椭圆型</td><td>有源稳态问题</td></tr>
+      </table>
+    </div>
+
+    <h3>A.2 PDE 分类（按线性性）</h3>
+    <div class="box box-definition">
+      <div class="box-title">二阶PDE一般形式</div>
+      $$a_{11}u_{xx} + 2a_{12}u_{xy} + a_{22}u_{yy} + F(x,y,u,u_x,u_y) = 0$$
+      <ul>
+        <li><strong>线性</strong>：$a_{ij}$ 只依赖于 $(x,y)$，$F = b_1 u_x + b_2 u_y + c u + f$（$u$ 及其导数都是一次的）</li>
+        <li><strong>半线性</strong>：$a_{ij}$ 只依赖于 $(x,y)$，$F$ 可非线性依赖于 $u$（而不依赖于 $u$ 的各阶导数）</li>
+        <li><strong>拟线性</strong>：$a_{ij}$ 可依赖于 $u$ 及其一阶导数，但最高阶导数仍是线性的</li>
+        <li><strong>完全非线性</strong>：最高阶导数以非线性形式出现</li>
+      </ul>
+    </div>
+
+    <h3>A.3 二阶方程判别式分类（第四章核心）</h3>
+    <div class="box box-formula">
+      <div class="box-title">判别式 $\Delta = a_{12}^2 - a_{11}a_{22}$</div>
+      <table>
+        <tr><th>判别式</th><th>类型</th><th>标准型</th><th>代表性方程</th></tr>
+        <tr><td>$\Delta > 0$</td><td>双曲型</td><td>$u_{\xi\eta}$ 或 $u_{\xi\xi} - u_{\eta\eta}$</td><td>$u_{tt} = a^2 u_{xx}$</td></tr>
+        <tr><td>$\Delta = 0$</td><td>抛物型</td><td>$u_{\xi\xi}$</td><td>$u_t = a^2 u_{xx}$</td></tr>
+        <tr><td>$\Delta < 0$</td><td>椭圆型</td><td>$u_{\xi\xi} + u_{\eta\eta}$</td><td>$u_{xx} + u_{yy} = 0$</td></tr>
+      </table>
+    </div>
+
+    <h3>A.4 化标准型步骤</h3>
+    <div class="box box-formula">
+      <div class="box-title">两步走</div>
+      <ol>
+        <li><strong>求特征方程</strong>：$a_{11}(\dd y)^2 - 2a_{12}\dd x\dd y + a_{22}(\dd x)^2 = 0$，解得特征曲线 $\varphi(x,y)=C_1, \psi(x,y)=C_2$。</li>
+        <li><strong>变量代换</strong>：令 $\xi = \varphi(x,y), \eta = \psi(x,y)$，代入原方程化简。
+          <ul>
+            <li>双曲型（$\Delta>0$）：两族实特征线 → 标准型 $u_{\xi\eta} = \cdots$</li>
+            <li>抛物型（$\Delta=0$）：一族实特征线 → 标准型 $u_{\xi\xi} = \cdots$（再取 $\eta$ 使 Jacobi $\neq 0$）</li>
+            <li>椭圆型（$\Delta<0$）：复特征线 → 取实部和虚部 → 标准型 $u_{\xi\xi}+u_{\eta\eta} = \cdots$</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+
+    <h3>A.5 定解条件</h3>
+    <div class="box box-definition">
+      <div class="box-title">三类边界条件</div>
+      <table>
+        <tr><th>类型</th><th>形式</th><th>物理含义</th></tr>
+        <tr><td>Dirichlet（第一类）</td><td>$u|_{\pd\Omega} = g$</td><td>边界值已知（固定端、恒温边界）</td></tr>
+        <tr><td>Neumann（第二类）</td><td>$\frac{\pd u}{\pd n}\big|_{\pd\Omega} = g$</td><td>边界法向导数已知（自由端、绝热边界）</td></tr>
+        <tr><td>Robin（第三类）</td><td>$\big(\frac{\pd u}{\pd n} + \alpha u\big)\big|_{\pd\Omega} = g$</td><td>边界热交换（牛顿冷却定律）</td></tr>
+      </table>
+    </div>
+
+    <h3>A.6 适定性（Hadamard）</h3>
+    <p>一个PDE问题是<strong>适定</strong>的，当且仅当：</p>
+    <ol>
+      <li><strong>解存在</strong>（Existence）</li>
+      <li><strong>解唯一</strong>（Uniqueness）</li>
+      <li><strong>解连续依赖于定解条件</strong>（Stability）</li>
+    </ol>
+    <p>三者缺一不可。反例：Laplace方程的反问题（已知边界法向导数求内部值）是不适定的。</p>
+  </div>
+
+  <!-- ==================== B ==================== -->
+  <div class="section" id="sB">
+    <h2>B. 波动方程（第一章）</h2>
+
+    <h3>B.1 一维波动方程 Cauchy 问题</h3>
+    <div class="box box-formula">
+      <div class="box-title">d'Alembert 公式（全空间）</div>
+      $$\begin{cases} u_{tt} = a^2 u_{xx}, & x \in \RR,\ t > 0, \\ u(x,0) = \varphi(x),\; u_t(x,0) = \psi(x), & x \in \RR. \end{cases}$$
+      $$u(x,t) = \frac{1}{2}[\varphi(x+at) + \varphi(x-at)] + \frac{1}{2a}\int_{x-at}^{x+at} \psi(s)\,\dd s.$$
+      <p>解由<strong>右行波</strong> $\varphi(x-at)$ 和<strong>左行波</strong> $\varphi(x+at)$ 叠加而成。</p>
+    </div>
+
+    <h3>B.2 半无界问题——延拓法（反射法）</h3>
+    <div class="box box-formula">
+      <div class="box-title">Dirichlet 条件 $u(0,t)=0$（固定端）→ <strong>奇延拓</strong></div>
+      <p><strong>奇延拓</strong>：$\tilde{\varphi}(x) = \begin{cases} \varphi(x), & x \ge 0 \\ -\varphi(-x), & x < 0 \end{cases}$，$\tilde{\psi}$ 同理。</p>
+      <p>当 $x - at < 0$（已反射）：</p>
+      $$u(x,t) = \frac{1}{2}[\varphi(x+at) - \varphi(at-x)] + \frac{1}{2a}\left[\int_0^{x+at}\psi(s)\,\dd s - \int_0^{at-x}\psi(s)\,\dd s\right].$$
+      <p>物理上，波<strong>反相</strong>反射（波峰变波谷）。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">Neumann 条件 $u_x(0,t)=0$（自由端）→ <strong>偶延拓</strong></div>
+      <p><strong>偶延拓</strong>：$\tilde{\varphi}(x) = \begin{cases} \varphi(x), & x \ge 0 \\ \varphi(-x), & x < 0 \end{cases}$（不加负号！），$\tilde{\psi}$ 同理。</p>
+      <p>当 $x - at < 0$（已反射）：</p>
+      $$u(x,t) = \frac{1}{2}[\varphi(x+at) + \varphi(at-x)] + \frac{1}{2a}\left[\int_0^{x+at}\psi(s)\,\dd s + \int_0^{at-x}\psi(s)\,\dd s\right].$$
+      <p>物理上，波<strong>同相</strong>反射（波峰仍是波峰）。</p>
+    </div>
+
+    <h3>B.3 有界弦——分离变量法</h3>
+    <div class="box box-formula">
+      <div class="box-title">两端固定弦的自由振动</div>
+      $$\begin{cases} u_{tt} = a^2 u_{xx}, & 0 < x < l,\ t > 0, \\ u(0,t) = u(l,t) = 0, & t \ge 0, \\ u(x,0) = \varphi(x),\; u_t(x,0) = \psi(x), & 0 \le x \le l. \end{cases}$$
+      <p><strong>本征值</strong>：$\lambda_n = \left(\frac{n\pi}{l}\right)^2$，<strong>本征函数</strong>：$X_n(x) = \sin\frac{n\pi x}{l}$（$n=1,2,3,\ldots$）</p>
+      <p><strong>通解</strong>：</p>
+      $$u(x,t) = \sum_{n=1}^{\infty} \left(A_n \cos\frac{n\pi a t}{l} + B_n \sin\frac{n\pi a t}{l}\right) \sin\frac{n\pi x}{l}.$$
+      <p><strong>Fourier 系数</strong>：</p>
+      $$A_n = \frac{2}{l}\int_0^l \varphi(x)\sin\frac{n\pi x}{l}\,\dd x, \quad B_n = \frac{2}{n\pi a}\int_0^l \psi(x)\sin\frac{n\pi x}{l}\,\dd x.$$
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">分离变量法五步走</div>
+      <ol>
+        <li><strong>设解</strong>：$u(x,t) = X(x)T(t)$</li>
+        <li><strong>分离</strong>：$\frac{T''}{a^2 T} = \frac{X''}{X} = -\lambda$</li>
+        <li><strong>解 $X$ 的本征值问题</strong>：$X'' + \lambda X = 0$ + 齐次边界条件 → $\lambda_n, X_n$</li>
+        <li><strong>解 $T$ 的ODE</strong>：$T'' + a^2\lambda_n T = 0$ → $T_n(t)$</li>
+        <li><strong>叠加 + 初始条件定系数</strong>：$u = \sum X_n T_n$，用正交性求系数</li>
+      </ol>
+    </div>
+
+    <h3>B.4 特征线、依赖区间与影响区域</h3>
+    <div class="box box-formula">
+      <div class="box-title">特征线与信息传播</div>
+      <ul>
+        <li><strong>特征线</strong>：$x \pm at = \text{const}$，是波前和信息传播的轨迹。</li>
+        <li><strong>依赖区间</strong>：解 $u(x_0, t_0)$ 只依赖于初始数据在 $[x_0-at_0, x_0+at_0]$ 上的值。</li>
+        <li><strong>决定区域</strong>：初始点 $(x_0, 0)$ 的值只影响锥形区域 $|x-x_0| \le a t$ 内的解。</li>
+        <li><strong>有限传播速度</strong>：信息以速度 $a$ 传播——双曲型方程的标志性质。</li>
+      </ul>
+    </div>
+
+    <h3>B.5 能量积分与唯一性</h3>
+    <div class="box box-formula">
+      <div class="box-title">能量积分</div>
+      $$E(t) = \frac{1}{2}\int (u_t^2 + a^2 u_x^2)\,\dd x.$$
+      <p>对于齐次波动方程，$E'(t) = 0$（能量守恒）。若有阻尼项 $-\gamma u_t$，则 $E'(t) \le 0$（能量衰减）。</p>
+      <p>由能量积分可直接证明解的唯一性和稳定性。</p>
+    </div>
+  </div>
+
+  <!-- ==================== C ==================== -->
+  <div class="section" id="sC">
+    <h2>C. 热传导方程（第二章）</h2>
+
+    <h3>C.1 全空间 Cauchy 问题——Fourier 变换法</h3>
+    <div class="box box-formula">
+      <div class="box-title">热核（基本解）</div>
+      $$\begin{cases} u_t = a^2 u_{xx}, & x \in \RR,\ t > 0, \\ u(x,0) = \varphi(x), & x \in \RR. \end{cases}$$
+      <p><strong>Poisson 公式（热核表示）</strong>：</p>
+      $$u(x,t) = \int_{-\infty}^{+\infty} \Phi(x-y, t)\,\varphi(y)\,\dd y, \quad \Phi(x,t) = \frac{1}{2a\sqrt{\pi t}} e^{-\frac{x^2}{4a^2 t}}.$$
+      <p>$\Phi(x,t)$ 称为<strong>热核</strong>（Gauss 核），是热传导方程的基本解。$\Phi(x,t) > 0$ 对所有 $x,t$。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">Fourier 变换法步骤</div>
+      <ol>
+        <li>对 $x$ 做 Fourier 变换：$\hat{u}(\xi,t) = \int_{-\infty}^{+\infty} u(x,t) e^{-i\xi x}\,\dd x$</li>
+        <li>ODE：$\hat{u}_t = -a^2\xi^2 \hat{u}$ → $\hat{u}(\xi,t) = \hat{\varphi}(\xi) e^{-a^2\xi^2 t}$</li>
+        <li>Fourier 逆变换：$u(x,t) = \frac{1}{2\pi}\int_{-\infty}^{+\infty} \hat{\varphi}(\xi) e^{-a^2\xi^2 t} e^{i\xi x}\,\dd\xi$</li>
+        <li>利用卷积定理即得 Poisson 公式。</li>
+      </ol>
+    </div>
+
+    <h3>C.2 半无界问题——延拓法</h3>
+    <div class="box box-formula">
+      <div class="box-title">半无界热传导的延拓</div>
+      <table>
+        <tr><th>边界条件</th><th>延拓方式</th><th>解公式</th></tr>
+        <tr>
+          <td>$u(0,t)=0$<br>（Dirichlet）</td>
+          <td>奇延拓</td>
+          <td>$u(x,t) = \int_0^{+\infty} [\Phi(x-y,t) - \Phi(x+y,t)]\,\varphi(y)\,\dd y$</td>
+        </tr>
+        <tr>
+          <td>$u_x(0,t)=0$<br>（Neumann）</td>
+          <td>偶延拓</td>
+          <td>$u(x,t) = \int_0^{+\infty} [\Phi(x-y,t) + \Phi(x+y,t)]\,\varphi(y)\,\dd y$</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3>C.3 有界杆——分离变量法</h3>
+    <div class="box box-formula">
+      <div class="box-title">两端固定温度 $u(0,t)=u(l,t)=0$</div>
+      $$\begin{cases} u_t = a^2 u_{xx}, & 0 < x < l,\ t > 0, \\ u(0,t) = u(l,t) = 0, & t \ge 0, \\ u(x,0) = \varphi(x), & 0 \le x \le l. \end{cases}$$
+      <p><strong>本征值</strong>：$\lambda_n = \left(\frac{n\pi}{l}\right)^2$，<strong>本征函数</strong>：$X_n(x) = \sin\frac{n\pi x}{l}$</p>
+      <p><strong>通解</strong>：</p>
+      $$u(x,t) = \sum_{n=1}^{\infty} A_n e^{-a^2\left(\frac{n\pi}{l}\right)^2 t} \sin\frac{n\pi x}{l}, \quad A_n = \frac{2}{l}\int_0^l \varphi(x)\sin\frac{n\pi x}{l}\,\dd x.$$
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">两端绝热 $u_x(0,t)=u_x(l,t)=0$</div>
+      <p><strong>本征函数</strong>：$X_n(x) = \cos\frac{n\pi x}{l}$（$n=0,1,2,\ldots$，注意包含 $n=0$）</p>
+      <p><strong>通解</strong>：</p>
+      $$u(x,t) = \frac{A_0}{2} + \sum_{n=1}^{\infty} A_n e^{-a^2\left(\frac{n\pi}{l}\right)^2 t} \cos\frac{n\pi x}{l}, \quad A_n = \frac{2}{l}\int_0^l \varphi(x)\cos\frac{n\pi x}{l}\,\dd x.$$
+      <p>当 $t \to \infty$ 时，$u(x,t) \to \frac{A_0}{2} = \frac{1}{l}\int_0^l \varphi(x)\,\dd x$（温度趋于初始平均温度）。</p>
+    </div>
+
+    <h3>C.4 极值原理</h3>
+    <div class="box box-formula">
+      <div class="box-title">极值原理（热传导方程的核心性质）</div>
+      <p><strong>弱极值原理</strong>：热传导方程的解在区域 $\bar{Q}_T = [0,l] \times [0,T]$ 上的最大值和最小值必在<strong>抛物边界</strong> $\{t=0\} \cup \{x=0\} \cup \{x=l\}$ 上达到。</p>
+      <p><strong>强极值原理</strong>：若解在内部点达到最大值，则解为常数。</p>
+      <p><strong>推论（比较原理）</strong>：若 $u, v$ 均为热传导方程的解，且 $u \le v$ 在抛物边界上成立，则在 $\bar{Q}_T$ 上处处有 $u \le v$。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">极值原理的用途</div>
+      <ul>
+        <li><strong>唯一性</strong>：若 $u_1, u_2$ 满足相同方程和定解条件，则 $w = u_1 - u_2$ 在抛物边界上为零，由极值原理 $w \equiv 0$。</li>
+        <li><strong>稳定性</strong>：初值改变 $\varepsilon$ 导致解改变不超过 $\varepsilon$。</li>
+        <li><strong>保号性</strong>：若初值非负，则解处处非负（$\Phi > 0$ 也保证了这一点）。</li>
+      </ul>
+    </div>
+
+    <h3>C.5 即时光滑化（无限传播速度）</h3>
+    <div class="box box-formula">
+      <div class="box-title">热传导 vs 波动的传播速度对比</div>
+      <ul>
+        <li><strong>热传导</strong>：初始扰动<strong>瞬间</strong>传遍全空间（$\Phi(x,t) > 0$ 对所有 $x$ 成立）。不论初值 $\varphi$ 光滑与否，$t>0$ 时解 $u(x,t)$ 都 $C^\infty$ 光滑。</li>
+        <li><strong>波动</strong>：扰动以<strong>有限速度</strong> $a$ 传播（特征线内有影响，特征线外无影响）。初值的光滑性会传递到解中。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ==================== D ==================== -->
+  <div class="section" id="sD">
+    <h2>D. 调和方程（第三章）</h2>
+
+    <h3>D.1 基本解</h3>
+    <div class="box box-formula">
+      <div class="box-title">Laplace 方程的基本解</div>
+      <p><strong>二维</strong>：$\displaystyle \Gamma(x,y) = \frac{1}{2\pi}\ln\frac{1}{\sqrt{x^2+y^2}} = -\frac{1}{2\pi}\ln r$</p>
+      <p><strong>三维</strong>：$\displaystyle \Gamma(x,y,z) = \frac{1}{4\pi}\frac{1}{\sqrt{x^2+y^2+z^2}} = \frac{1}{4\pi r}$</p>
+      <p>基本解满足 $\lap \Gamma = -\delta$（在分布意义下），是 Green 函数法的基础。</p>
+    </div>
+
+    <h3>D.2 Green 函数法</h3>
+    <div class="box box-formula">
+      <div class="box-title">Green 函数的一般构造</div>
+      <p>对于区域 $\Omega$ 上的 Dirichlet 问题 $\lap u = f$（$\Omega$ 内），$u|_{\pd\Omega} = g$：</p>
+      <p>$\displaystyle G(x,x_0) = \Gamma(x-x_0) + h(x)$，其中 $h$ 是调和函数，满足 $h(x) = -\Gamma(x-x_0)$ 在 $\pd\Omega$ 上。</p>
+      <p><strong>Green 表示公式</strong>：</p>
+      $$u(x_0) = \iint_\Omega G(x,x_0)\,f(x)\,\dd x + \int_{\pd\Omega} g(x)\,\frac{\pd G}{\pd n}\,\dd S.$$
+    </div>
+
+    <h3>D.3 圆/球上的 Poisson 积分公式</h3>
+    <div class="box box-formula">
+      <div class="box-title">圆域 Dirichlet 问题（二维）</div>
+      $$\begin{cases} \lap u = 0, & r < R, \\ u(R,\theta) = f(\theta), & 0 \le \theta < 2\pi. \end{cases}$$
+      <p><strong>Poisson 积分公式</strong>：</p>
+      $$u(r,\theta) = \frac{1}{2\pi}\int_0^{2\pi} \frac{R^2 - r^2}{R^2 - 2Rr\cos(\theta-\phi) + r^2}\,f(\phi)\,\dd\phi.$$
+      <p>Poisson 核：$P(r,\theta-\phi) = \frac{R^2 - r^2}{R^2 - 2Rr\cos(\theta-\phi) + r^2} > 0$。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">球域 Dirichlet 问题（三维）</div>
+      $$u(\mathbf{x}_0) = \frac{1}{4\pi R}\iint_{|\mathbf{x}|=R} \frac{R^2 - |\mathbf{x}_0|^2}{|\mathbf{x} - \mathbf{x}_0|^3}\,f(\mathbf{x})\,\dd S.$$
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">上半平面 Dirichlet 问题</div>
+      $$\begin{cases} u_{xx} + u_{yy} = 0, & y > 0, \\ u(x,0) = f(x), & x \in \RR. \end{cases}$$
+      $$u(x,y) = \frac{1}{\pi}\int_{-\infty}^{+\infty} \frac{y}{(x-\xi)^2 + y^2}\,f(\xi)\,\dd\xi.$$
+      <p>上半平面 Poisson 核：$P(x-\xi, y) = \frac{1}{\pi}\frac{y}{(x-\xi)^2 + y^2}$。</p>
+    </div>
+
+    <h3>D.4 调和函数的核心性质</h3>
+    <div class="box box-formula">
+      <div class="box-title">调和函数的五大性质</div>
+      <ol>
+        <li><strong>平均值定理</strong>：调和函数在任意球面上的平均值等于球心处的函数值，在任意球体内的平均值也等于球心处的函数值。</li>
+        <li><strong>极值原理</strong>：非常数调和函数在区域内部取不到最大值和最小值。</li>
+        <li><strong>Liouville 定理</strong>：在全空间上有界的调和函数必为常数。</li>
+        <li><strong>Harnack 不等式</strong>：非负调和函数在紧子集上的值被其最小值控制：$\sup_K u \le C_K \inf_K u$。</li>
+        <li><strong>解析性</strong>：调和函数是 $C^\omega$（实解析）的。</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ==================== E ==================== -->
+  <div class="section" id="sE">
+    <h2>E. 解题套路总结——看到什么题走什么路</h2>
+
+    <h3>E.1 题目类型的快速识别</h3>
+    <div class="box box-roadmap">
+      <div class="box-title">第一步：看方程类型</div>
+      <table>
+        <tr><th>方程特征</th><th>方程类型</th><th>首选方法</th></tr>
+        <tr><td>$u_{tt} = a^2 u_{xx}$</td><td>波动方程（双曲型）</td><td>d'Alembert / 延拓法 / 分离变量</td></tr>
+        <tr><td>$u_t = a^2 u_{xx}$</td><td>热传导（抛物型）</td><td>Fourier 变换 / 分离变量 / 延拓法</td></tr>
+        <tr><td>$u_{xx} + u_{yy} = 0$</td><td>Laplace（椭圆型）</td><td>Green 函数 / Poisson 公式 / 分离变量</td></tr>
+        <tr><td>$u_{xx} + u_{yy} = f$</td><td>Poisson（椭圆型）</td><td>特解 + 齐次化 / Green 函数</td></tr>
+      </table>
+    </div>
+
+    <div class="box box-roadmap">
+      <div class="box-title">第二步：看空间区域</div>
+      <table>
+        <tr><th>区域类型</th><th>波动方程</th><th>热传导方程</th></tr>
+        <tr><td>全空间 $x \in \RR$</td><td><strong>d'Alembert 公式</strong></td><td><strong>Fourier 变换 → Poisson 公式</strong></td></tr>
+        <tr><td>半无界 $x > 0$</td><td><strong>延拓法</strong>（奇/偶）</td><td><strong>延拓法</strong>（奇/偶）+ Poisson 公式</td></tr>
+        <tr><td>有界区间 $[0,l]$</td><td><strong>分离变量法</strong></td><td><strong>分离变量法</strong></td></tr>
+        <tr><td>圆域/球域</td><td>—</td><td>—</td></tr>
+        <tr><td>上半平面</td><td>—</td><td>—</td></tr>
+      </table>
+      <p style="margin-top:0.5rem;">对于调和方程：圆域→Poisson积分；上半平面→Poisson积分；一般区域→Green函数法或分离变量法。</p>
+    </div>
+
+    <h3>E.2 波动方程的解题路线图</h3>
+    <div class="concept-map" style="flex-direction:column;align-items:flex-start;gap:0.25rem;">
+      <div class="concept-node" style="background:var(--accent);color:#fff;border-color:var(--accent);">看到 $u_{tt} = a^2 u_{xx}$</div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin:0.25rem 0;">
+        <div class="concept-node">$x \in \RR$<br>→ d'Alembert</div>
+        <div class="concept-node">$x>0$，$u(0,t)=0$<br>→ 奇延拓</div>
+        <div class="concept-node">$x>0$，$u_x(0,t)=0$<br>→ 偶延拓</div>
+        <div class="concept-node">$x \in [0,l]$<br>→ 分离变量</div>
+      </div>
+      <div style="font-size:0.82rem;color:var(--text-muted);margin-top:0.25rem;">关键判断：有界还是无界？齐次边界条件类型？决定了你用什么方法。</div>
+    </div>
+
+    <h3>E.3 热传导方程的解题路线图</h3>
+    <div class="concept-map" style="flex-direction:column;align-items:flex-start;gap:0.25rem;">
+      <div class="concept-node" style="background:var(--accent);color:#fff;border-color:var(--accent);">看到 $u_t = a^2 u_{xx}$</div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin:0.25rem 0;">
+        <div class="concept-node">$x \in \RR$<br>→ Fourier 变换<br>→ Poisson 公式</div>
+        <div class="concept-node">$x>0$<br>→ 延拓 +<br>Poisson 公式</div>
+        <div class="concept-node">$x \in [0,l]$<br>→ 分离变量<br>→ Fourier 级数</div>
+      </div>
+      <div style="font-size:0.82rem;color:var(--text-muted);margin-top:0.25rem;">热传导方程中，$t \to \infty$ 的渐进行为也是常见考点。</div>
+    </div>
+
+    <h3>E.4 调和方程的解题路线图</h3>
+    <div class="concept-map" style="flex-direction:column;align-items:flex-start;gap:0.25rem;">
+      <div class="concept-node" style="background:var(--accent);color:#fff;border-color:var(--accent);">看到 $\lap u = 0$ 或 $\lap u = f$</div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin:0.25rem 0;">
+        <div class="concept-node">圆域 Dirichlet<br>→ Poisson 积分</div>
+        <div class="concept-node">上半平面 Dirichlet<br>→ Poisson 积分</div>
+        <div class="concept-node">矩形域<br>→ 分离变量</div>
+        <div class="concept-node">一般区域<br>→ Green 函数</div>
+        <div class="concept-node">性质证明<br>→ 平均值定理<br>+ 极值原理</div>
+      </div>
+    </div>
+
+    <h3>E.5 证明唯一性/稳定性的统一套路</h3>
+    <div class="box box-roadmap">
+      <div class="box-title">三种方程的三大证明工具</div>
+      <table>
+        <tr><th>方程类型</th><th>证明唯一性/稳定性的方法</th></tr>
+        <tr><td>波动方程</td><td><strong>能量积分法</strong> — 定义 $E(t) = \frac{1}{2}\int(u_t^2 + a^2u_x^2)\dd x$，证明 $E'(t) \le 0$，从而 $E(t) \le E(0)$</td></tr>
+        <tr><td>热传导方程</td><td><strong>极值原理</strong> — 两解之差在抛物边界上为零 $\implies$ 内部处处为零</td></tr>
+        <tr><td>调和方程</td><td><strong>极值原理</strong> — 两解之差在边界上为零 $\implies$ 内部处处为零</td></tr>
+      </table>
+      <p style="margin-top:0.5rem;"><strong>注意</strong>：能量积分法对波动方程最自然（能量守恒有明确物理意义），极值原理对抛物/椭圆型方程最自然。<strong>不要混淆</strong>——热传导方程一般不用能量法，波动方程也不用极值原理。</p>
+    </div>
+  </div>
+
+  <!-- ==================== F ==================== -->
+  <div class="section" id="sF">
+    <h2>F. 证明题常见思路速查</h2>
+
+    <h3>F.1 证明唯一性</h3>
+    <div class="box box-definition">
+      <div class="box-title">标准模板</div>
+      <ol>
+        <li>设 $u_1, u_2$ 为两个解，令 $w = u_1 - u_2$。</li>
+        <li>$w$ 满足齐次方程 + 零初边值条件。</li>
+        <li>用对应工具（能量积分 / 极值原理）证明 $w \equiv 0$。</li>
+        <li>故 $u_1 = u_2$。</li>
+      </ol>
+    </div>
+
+    <h3>F.2 证明稳定性和连续依赖性</h3>
+    <p>基本思路：证明 $\|u\| \le C\|初始数据\|$ 或 $\|u\| \le C\|f\|$ 这类不等式。</p>
+    <ul>
+      <li><strong>波动方程</strong>：用能量不等式 $E(t) \le E(0)$ 或 $E(t) \le E(0)e^{Ct}$（阻尼情形）。</li>
+      <li><strong>热传导</strong>：用极值原理得 $\sup|u| \le \sup|\varphi|$。</li>
+      <li><strong>调和方程</strong>：用极值原理得 $\sup|u| \le \sup|g|$，或用能量估计 $\int|\grad u|^2 \le C\int f^2$。</li>
+    </ul>
+
+    <h3>F.3 证明调和函数的性质</h3>
+    <div class="box box-note">
+      <div class="box-title">关键工具链</div>
+      <p>平均值定理 → 极值原理 → (Liouville / Harnack / 梯度估计等)</p>
+      <p>大部分调和函数的深度性质都从平均值定理出发。记住：<strong>平均值定理是调和函数理论的基石</strong>。</p>
+    </div>
+
+    <h3>F.4 证明解的非负性 / 保号性</h3>
+    <ul>
+      <li><strong>热传导</strong>：Poisson 公式中热核 $\Phi > 0$ → 初值非负 → 解处处非负。或用极值原理。</li>
+      <li><strong>调和方程</strong>：Poisson 核 $P > 0$ → 边界值非负 → 内部处处非负。Harnack 不等式。</li>
+    </ul>
+
+    <h3>F.5 能量估计的标准推导</h3>
+    <div class="box box-formula">
+      <div class="box-title">能量法推导模板</div>
+      <p>1. 定义合适的能量泛函 $E(t)$。</p>
+      <p>2. 对 $t$ 求导：$E'(t) = \int(u_t u_{tt} + \cdots)\,\dd x$。</p>
+      <p>3. 用原方程代入 $u_{tt}$（或 $u_t$），利用分部积分处理交叉项。</p>
+      <p>4. 边界项处理：无穷远处或边界条件使其为零。</p>
+      <p>5. 用 Cauchy-Schwarz / Cauchy 不等式进行估计。</p>
+      <p>6. 得 Gronwall 型不等式：$E'(t) \le C E(t) + F(t)$ → $E(t) \le E(0)e^{Ct} + \int_0^t F(\tau)e^{C(t-\tau)}\dd\tau$。</p>
+    </div>
+
+    <h3>F.6 Sturm-Liouville 理论与本征函数展开</h3>
+    <div class="box box-formula">
+      <div class="box-title">S-L 问题的标准形式</div>
+      $$-(p(x)y')' + q(x)y = \lambda w(x)y, \quad x \in (a,b)$$
+      <p>+ 齐次边界条件（Dirichlet / Neumann / Robin）。</p>
+      <p><strong>核心结论</strong>：</p>
+      <ul>
+        <li>本征值 $\lambda_n$ 是实的，且 $\lambda_n \to +\infty$。</li>
+        <li>本征函数 $\{y_n\}$ 关于权函数 $w(x)$ 正交：$\int_a^b y_m y_n w\,\dd x = 0$（$m \neq n$）。</li>
+        <li>任意光滑函数可按 $\{y_n\}$ 展开：$f(x) = \sum c_n y_n(x)$，$c_n = \frac{\int f y_n w\,\dd x}{\int y_n^2 w\,\dd x}$。</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>附录2 · 必备公式与解题套路 · 考前速查专用 · 建议打印携带</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">&uarr;</button>
+<script src="js/main.js"></script>
+</body>
+</html>
