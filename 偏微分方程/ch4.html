@@ -574,8 +574,7 @@
           <p><strong>(2) 唯一性：</strong></p>
           <p>设 $u_1, u_2$ 为两个解，$w = u_1 - u_2$ 满足齐次方程和零初始条件 $w(x,0)=0, w_t(x,0)=0$。$E_w(0)=0$，由 $E'(t) \le 0$ 得 $E(t) \le E(0) = 0$。但 $E(t) \ge 0$，故 $E(t) \equiv 0$，从而 $w_t \equiv 0, w_x \equiv 0$，$w \equiv \text{const} = 0$（由 $w(x,0)=0$）。即 $u_1 = u_2$。</p>
           <p><strong>(3) 精确估计：</strong></p>
-          <p>由 $E'(t) = -\gamma\int u_t^2\,\dd x \ge -2\gamma E(t)$（因为 $\int u_t^2 \le \int(u_t^2 + a^2 u_x^2) = 2E$）。这给出 $E'(t) \ge -2\gamma E(t)$，即 $E(t) \ge E(0) e^{-2\gamma t}$。</p>
-          <p>另一方面，由直接估计可进一步得 $E(t) \le E(0) e^{-2\gamma t}$（在适当的边界条件下），故 $E(t) \le E(0) e^{-2\gamma t}$——能量以指数速率衰减。</p>
+          <p>由 $E'(t) = -\gamma\int u_t^2\,\dd x \ge -2\gamma E(t)$（因为 $\int u_t^2 \le \int(u_t^2 + a^2 u_x^2) = 2E$）。这给出 $E'(t) \ge -2\gamma E(t)$，积分得 $E(t) \ge E(0) e^{-2\gamma t}$——能量不会衰减得比指数速率更快（这是一个下界估计）。</p>
         </div>
       </div>
     </div>
