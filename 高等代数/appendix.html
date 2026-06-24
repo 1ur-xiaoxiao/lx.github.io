@@ -47,6 +47,10 @@
     <li><a href="ch4.html">第四章</a></li>
     <li><a href="ch5.html">第五章</a></li>
     <li><a href="ch6.html">第六章</a></li>
+    <li><a href="ch7.html">第七章</a></li>
+    <li><a href="ch8.html">第八章</a></li>
+    <li><a href="ch9.html">第九章</a></li>
+    <li><a href="ch10.html">第十章</a></li>
     <li><a href="appendix.html" style="color:#ffd966;">附录</a></li>
   </ul>
 </nav>
@@ -55,7 +59,7 @@
 
   <div class="chapter-header">
     <h1>附录 &middot; 常用公式与定理速查</h1>
-    <p>考前速查手册——涵盖全部六章的核心公式、定理与解题套路，适合系统性复习与快速检索</p>
+    <p>考前速查手册——涵盖全部十章的核心公式、定理与解题套路，适合系统性复习与快速检索</p>
   </div>
 
   <div class="toc">
@@ -67,6 +71,10 @@
       <li><a href="#sD">D. 线性方程组公式速查</a></li>
       <li><a href="#sE">E. 线性空间公式速查</a></li>
       <li><a href="#sF">F. 线性变换公式速查</a></li>
+      <li><a href="#sI">I. λ-矩阵公式速查</a></li>
+      <li><a href="#sJ">J. 欧几里得空间与酉空间公式速查</a></li>
+      <li><a href="#sK">K. 双线性函数与辛空间公式速查</a></li>
+      <li><a href="#sL">L. 二次型公式速查</a></li>
       <li><a href="#sG">G. 常用解题套路</a></li>
       <li><a href="#sH">H. 常见证明思路</a></li>
     </ol>
@@ -520,6 +528,202 @@
       <div class="box-title">F.10 有理标准形（Frobenius 标准形）</div>
       <p>任何方阵相似于由友矩阵组成的分块对角阵：$P^{-1}AP = \diag(C(f_1), \ldots, C(f_k))$。</p>
       <p>在任意域上成立（不要求代数闭域）。$f_1 \mid f_2 \mid \cdots \mid f_k$，$f_k$ 为最小多项式。</p>
+    </div>
+  </div>
+
+  <!-- ==================== I. λ-矩阵 ==================== -->
+  <div class="section" id="sI">
+    <h2>I. λ-矩阵 · 公式速查</h2>
+
+    <div class="box box-formula">
+      <div class="box-title">I.1 λ-矩阵的等价</div>
+      <p>$A(\lambda)$ 与 $B(\lambda)$ 等价 $\iff$ 存在可逆 λ-矩阵 $P(\lambda)$, $Q(\lambda)$ 使得 $B = P A Q$。</p>
+      <p>等价充要条件：有相同的 Smith 标准形（即相同的不变因子）。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">I.2 Smith 标准形</div>
+      <p>任意 $m \times n$ 的 λ-矩阵 $A(\lambda)$ 可经初等变换化为：</p>
+      $$\diag(d_1(\lambda), d_2(\lambda), \ldots, d_r(\lambda), 0, \ldots, 0)$$
+      <p>其中 $d_i(\lambda)$ 为首一多项式，且 $d_1 \mid d_2 \mid \cdots \mid d_r$（称为不变因子）。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">I.3 行列式因子与不变因子的关系</div>
+      <p>行列式因子 $D_k(\lambda)$ = 所有 $k$ 阶子式的首一最大公因式（$D_0 = 1$）。</p>
+      $$d_k(\lambda) = \frac{D_k(\lambda)}{D_{k-1}(\lambda)}$$
+      $$D_k(\lambda) = d_1(\lambda) d_2(\lambda) \cdots d_k(\lambda)$$
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">I.4 初等因子</div>
+      <p>将每个不变因子 $d_i(\lambda)$ 在 $\CC$ 上分解为不可约因式幂的乘积：</p>
+      $$d_i(\lambda) = (\lambda - \lambda_1)^{e_{i1}} (\lambda - \lambda_2)^{e_{i2}} \cdots (\lambda - \lambda_s)^{e_{is}}$$
+      <p>其中每个 $(\lambda - \lambda_j)^{e_{ij}}$（$e_{ij} \geq 1$）称为<strong>初等因子</strong>。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">I.5 矩阵相似判定（复数域）</div>
+      <p>$A, B \in \CC^{n \times n}$ 相似 $\iff$ $\lambda I - A$ 与 $\lambda I - B$ 等价</p>
+      <p>$\iff$ 有相同的不变因子 $\iff$ 有相同的初等因子。</p>
+      <p>在任意域 $\FF$ 上：$A \sim B \iff$ $\lambda I - A$ 与 $\lambda I - B$ 有相同的不变因子。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">I.6 初等因子 → Jordan 块</div>
+      <p>每个初等因子 $(\lambda - \lambda_j)^e$ 对应一个 $e \times e$ 的 Jordan 块 $J_e(\lambda_j)$。</p>
+      <p>所有初等因子对应的 Jordan 块拼成 Jordan 标准形。</p>
+    </div>
+  </div>
+
+  <!-- ==================== J. 欧几里得空间与酉空间 ==================== -->
+  <div class="section" id="sJ">
+    <h2>J. 欧几里得空间与酉空间 · 公式速查</h2>
+
+    <div class="box box-formula">
+      <div class="box-title">J.1 内积公理</div>
+      <p>欧几里得空间：实线性空间 $V$ 上满足对称性、线性性、正定性的二元运算 $(\alpha, \beta) \in \RR$。</p>
+      <p>酉空间：复线性空间 $V$ 上满足共轭对称性 $(\alpha,\beta) = \overline{(\beta,\alpha)}$、线性性、正定性的内积。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">J.2 Gram 矩阵</div>
+      <p>设基 $\varepsilon_1, \ldots, \varepsilon_n$，Gram 矩阵 $G = ((\varepsilon_i, \varepsilon_j))_{n \times n}$。</p>
+      <p>$(\alpha, \beta) = X^T G Y$（欧氏空间）；$(\alpha, \beta) = X^* G Y$（酉空间）。</p>
+      <p>$G$ 正定（欧氏空间）或 Hermite 正定（酉空间）。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">J.3 Gram-Schmidt 正交化</div>
+      <p>由线性无关组 $\alpha_1, \ldots, \alpha_n$ 构造标准正交基：</p>
+      $$\beta_k = \alpha_k - \sum_{i=1}^{k-1} \frac{(\alpha_k, \beta_i)}{(\beta_i, \beta_i)} \beta_i, \quad \varepsilon_k = \frac{\beta_k}{\|\beta_k\|}$$
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">J.4 正交补的维数公式</div>
+      <p>$W^\perp = \{\alpha \in V : (\alpha, \beta) = 0,\ \forall \beta \in W\}$。</p>
+      <p>$\dim W + \dim W^\perp = \dim V$，$V = W \oplus W^\perp$。</p>
+      <p>正交投影：$P_W(\alpha) = \sum_{i=1}^k (\alpha, \varepsilon_i) \varepsilon_i$，其中 $\{\varepsilon_i\}$ 为 $W$ 的标准正交基。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">J.5 正交变换的等价刻画（欧氏空间）</div>
+      <p>线性变换 $\mathcal{A}$ 满足 $(\mathcal{A}\alpha, \mathcal{A}\beta) = (\alpha, \beta)$ $\iff$ 在标准正交基下的矩阵 $A$ 是正交矩阵（$A^T A = I$）。</p>
+      <p>等价条件：保范（$\|\mathcal{A}\alpha\| = \|\alpha\|$）；将标准正交基映为标准正交基。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">J.6 对称变换的谱定理（实）</div>
+      <p>实对称矩阵 $A = A^T \in \RR^{n \times n}$：</p>
+      <ul>
+        <li>特征值全为实数</li>
+        <li>不同特征值的特征向量正交</li>
+        <li>存在正交矩阵 $T$ 使 $T^{-1}AT = \diag(\lambda_1, \ldots, \lambda_n)$</li>
+      </ul>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">J.7 正规变换与谱定理（复）</div>
+      <p>$\mathcal{A}$ 正规 $\iff$ $\mathcal{A}\mathcal{A}^* = \mathcal{A}^*\mathcal{A}$ $\iff$ 存在标准正交基使矩阵对角。</p>
+      <p>Hermite 矩阵（$A^* = A$）：特征值全实数，可酉对角化。</p>
+      <p>酉矩阵（$A^* A = I$）：特征值模为 1，可酉对角化。</p>
+    </div>
+  </div>
+
+  <!-- ==================== K. 双线性函数与辛空间 ==================== -->
+  <div class="section" id="sK">
+    <h2>K. 双线性函数与辛空间 · 公式速查</h2>
+
+    <div class="box box-formula">
+      <div class="box-title">K.1 双线性函数的矩阵表示</div>
+      <p>$f(\alpha, \beta) = X^T A Y$，其中 $a_{ij} = f(\varepsilon_i, \varepsilon_j)$。</p>
+      <p>基变换 $(\varepsilon_1', \ldots, \varepsilon_n') = (\varepsilon_1, \ldots, \varepsilon_n) P$ 下：$B = P^T A P$（合同变换）。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">K.2 秩与根</div>
+      <p>$\rank f = \rank A$。左根 $L_f = \{\alpha : f(\alpha,\beta)=0,\ \forall\beta\}$，右根 $R_f$。</p>
+      <p>$\dim L_f = \dim R_f = n - \rank f$。</p>
+      <p>$f$ 非退化 $\iff$ $\rank f = n$ $\iff$ $A$ 可逆。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">K.3 对称双线性函数的标准形</div>
+      <p>秩为 $r$ 的对称双线性函数可对角化：$\diag(d_1, \ldots, d_r, 0, \ldots, 0)$。</p>
+      <p>复数域：$\diag(I_r, 0)$。实数域：$\diag(I_p, -I_q, 0)$，$(p, q)$ 为惯性指数。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">K.4 反对称双线性函数的标准形</div>
+      <p>秩为 $2m$ 的反对称双线性函数可化为 $m$ 个 $\begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}$ 块 + 零块。</p>
+      <p>反对称矩阵的秩必为偶数。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">K.5 辛空间的性质</div>
+      <p>辛空间 = 带有非退化反对称双线性函数的线性空间。</p>
+      <p>$\dim V = 2m$（偶维数）。辛基存在定理：总存在基使 $f$ 的矩阵为 $J = \begin{pmatrix} 0 & I_m \\ -I_m & 0 \end{pmatrix}$。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">K.6 辛矩阵</div>
+      <p>$A$ 是辛矩阵 $\iff$ $A^T J A = J$（其中 $J$ 为标准辛矩阵）。</p>
+      <p>性质：$\det A = 1$；$A^{-1} = J^{-1} A^T J$；若 $\lambda$ 是特征值则 $\lambda^{-1}$ 也是。</p>
+    </div>
+  </div>
+
+  <!-- ==================== L. 二次型 ==================== -->
+  <div class="section" id="sL">
+    <h2>L. 二次型 · 公式速查</h2>
+
+    <div class="box box-formula">
+      <div class="box-title">L.1 二次型的矩阵表示</div>
+      <p>$Q(X) = X^T A X$，其中 $A = A^T$（对称矩阵）。</p>
+      <p>平方项系数 → 对角线；交叉项系数平分：$a_{ij} = a_{ji} = \frac{1}{2} b_{ij}$。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">L.2 变量替换</div>
+      <p>可逆替换 $X = PY$：$Q = X^T A X = Y^T (P^T A P) Y$。新矩阵 $B = P^T A P$。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">L.3 化标准形的三种方法</div>
+      <ol>
+        <li><strong>配方法</strong>（Lagrange）：逐次配方消去交叉项</li>
+        <li><strong>初等变换法</strong>：对 $(A \mid I)$ 同时作行列合同变换</li>
+        <li><strong>正交变换法</strong>：$T^T A T = \diag(\lambda_1, \ldots, \lambda_n)$，$T$ 正交</li>
+      </ol>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">L.4 Sylvester 惯性定理</div>
+      <p>实二次型可化为唯一规范形：$y_1^2 + \cdots + y_p^2 - y_{p+1}^2 - \cdots - y_r^2$。</p>
+      <p>$r = \rank A$（秩），$p$ = 正惯性指数，$q = r - p$ = 负惯性指数，$s = p - q$ = 符号差。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">L.5 正定性的判定（Sylvester 判别法）</div>
+      <p>$A$ 正定 $\iff$ 所有顺序主子式 $\Delta_k > 0$（$k = 1, \ldots, n$）</p>
+      <p>$\iff$ 正惯性指数 $p = n$ $\iff$ 所有特征值 $> 0$ $\iff$ $A = C^T C$（$C$ 可逆）。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">L.6 实二次型的合同分类</div>
+      <p>两个 $n$ 元实二次型合同 $\iff$ 秩相同且正惯性指数相同。</p>
+      <p>合同分类的完全不变量：$(\rank, p)$ 或 $(\rank, s)$。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">L.7 正定矩阵的充要条件</div>
+      <p>以下等价：（1）$A$ 正定；（2）合同于 $I$；（3）所有特征值 $> 0$；（4）所有顺序主子式 $> 0$；（5）$A = C^T C$（$C$ 可逆）；（6）$p = n$。</p>
+      <p>负定：$(-1)^k \Delta_k > 0$（顺序主子式交替变号）。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">L.8 主轴定理</div>
+      <p>实对称矩阵 $A$ 存在正交矩阵 $T$ 使得 $T^{-1}AT = \diag(\lambda_1, \ldots, \lambda_n)$。</p>
+      <p>正交变换 $X = TY$ 将二次型 $X^T A X$ 化为 $\lambda_1 y_1^2 + \cdots + \lambda_n y_n^2$。</p>
     </div>
   </div>
 

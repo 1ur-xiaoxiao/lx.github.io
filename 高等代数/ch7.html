@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第七章 · λ-矩阵</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          QQ: '\\mathbb{Q}',
+          CC: '\\mathbb{C}',
+          FF: '\\mathbb{F}',
+          rank: '\\mathrm{rank}',
+          det: '\\mathrm{det}',
+          tr: '\\mathrm{tr}',
+          diag: '\\mathrm{diag}',
+          dim: '\\mathrm{dim}',
+          ker: '\\mathrm{ker}',
+          Im: '\\mathrm{Im}',
+          dd: '\\mathrm{d}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">高等代数</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+    <li><a href="ch7.html">第七章</a></li>
+    <li><a href="ch8.html">第八章</a></li>
+    <li><a href="ch9.html">第九章</a></li>
+    <li><a href="ch10.html">第十章</a></li>
+    <li><a href="appendix.html">附录</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第七章 · λ-矩阵</h1>
+    <p>以多项式为元素的矩阵——λ-矩阵的标准形理论是研究矩阵相似分类的有力工具，也是Jordan标准形和有理标准形的统一理论基础。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">λ-矩阵的基本概念</a></li>
+      <li><a href="#s2">λ-矩阵的初等变换与标准形</a></li>
+      <li><a href="#s3">行列式因子与不变因子</a></li>
+      <li><a href="#s4">初等因子</a></li>
+      <li><a href="#s5">λ-矩阵与矩阵相似性</a></li>
+      <li><a href="#s6">初等因子与 Jordan 标准形</a></li>
+      <li><a href="#s7">不变因子与有理标准形</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 7.1 基本概念 ==================== -->
+  <div class="section" id="s1">
+    <h2>7.1 λ-矩阵的基本概念</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · λ-矩阵</div>
+      <p>设 $\FF$ 是一个数域，以 $\FF[\lambda]$ 中的多项式为元素的 $m \times n$ 矩阵</p>
+      $$A(\lambda) = (a_{ij}(\lambda))_{m \times n}, \qquad a_{ij}(\lambda) \in \FF[\lambda]$$
+      <p>称为一个 <strong>λ-矩阵</strong>（或多项式矩阵）。$\FF[\lambda]^{m \times n}$ 表示所有 $m \times n$ λ-矩阵的集合。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · λ-矩阵的秩</div>
+      <p>$A(\lambda)$ 的秩定义为其中<strong>不恒为零</strong>的子式的最大阶数。</p>
+      <p>等价地：将 $A(\lambda)$ 视为 $\FF(\lambda)$（有理函数域）上的矩阵，其秩即为 λ-矩阵的秩。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 可逆λ-矩阵</div>
+      <p>$n$ 阶 λ-矩阵 $A(\lambda)$ 称为<strong>可逆</strong>，若存在 $n$ 阶 λ-矩阵 $B(\lambda)$ 使得</p>
+      $$A(\lambda) B(\lambda) = B(\lambda) A(\lambda) = I$$
+      <p><strong>充要条件</strong>：$A(\lambda)$ 可逆 $\iff$ $\det A(\lambda)$ 是一个非零常数（即零次多项式）。</p>
+      <p>这是因为 $\det(A(\lambda))\det(B(\lambda)) = 1$，而两个多项式的乘积为 $1$ 意味着它们都是非零常数。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">可逆λ-矩阵的例子</div>
+      <p>$A(\lambda) = \begin{pmatrix} \lambda & 1 \\ 1 & 0 \end{pmatrix}$ 可逆：$\det A(\lambda) = -1$（常数）。</p>
+      <p>$B(\lambda) = \begin{pmatrix} \lambda & 1 \\ \lambda^2-1 & \lambda \end{pmatrix}$ 不可逆：$\det B(\lambda) = 1$，但 $\det$ 要为非零常数才可逆——这里 $\det B = 1$ 确实是常数，所以 $B$ 可逆。重新举例：$\begin{pmatrix} \lambda & 0 \\ 0 & \lambda \end{pmatrix}$ 不可逆，因为 $\det = \lambda^2$ 不是常数。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 7.2 初等变换与标准形 ==================== -->
+  <div class="section" id="s2">
+    <h2>7.2 λ-矩阵的初等变换与标准形</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · λ-矩阵的初等变换</div>
+      <p>λ-矩阵有三种<strong>初等行（列）变换</strong>：</p>
+      <ol>
+        <li>交换两行（列）</li>
+        <li>某行（列）乘以<strong>非零常数</strong> $c \in \FF$（注意：不能乘以非常数多项式）</li>
+        <li>某行（列）加上另一行（列）的 $\varphi(\lambda)$ 倍，其中 $\varphi(\lambda) \in \FF[\lambda]$</li>
+      </ol>
+      <p>对应的初等 λ-矩阵都是可逆的（因其行列式为非零常数）。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">Smith 标准形定理</div>
+      <p>设 $A(\lambda)$ 是 $m \times n$ λ-矩阵，$\rank A(\lambda) = r$。则 $A(\lambda)$ 可通过初等变换化为如下标准形：</p>
+      <div class="formula-highlight">
+        $$\begin{pmatrix} d_1(\lambda) & & & & & \\ & d_2(\lambda) & & & & \\ & & \ddots & & & \\ & & & d_r(\lambda) & & \\ & & & & 0 & \\ & & & & & \ddots \end{pmatrix}$$
+      </div>
+      <p>其中 $d_i(\lambda)$ 是<strong>首一</strong>多项式，且满足整除关系：</p>
+      <div class="formula-highlight">
+        $$d_1(\lambda) \mid d_2(\lambda) \mid \cdots \mid d_r(\lambda)$$
+      </div>
+      <p>这一形式称为 $A(\lambda)$ 的 <strong>Smith 标准形</strong>。$d_1(\lambda), \ldots, d_r(\lambda)$ 由 $A(\lambda)$ 唯一确定。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">Smith 标准形的存在性证明思路</div>
+      <p>证明使用归纳法：在所有非零元素中取次数最低者，通过辗转相除将同行同列的其他元素消为更低次，最终将该元素化为所在行和列的唯一非零元。然后对子矩阵重复此过程。整除关系的成立源于最小公因式的性质。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 7.3 行列式因子与不变因子 ==================== -->
+  <div class="section" id="s3">
+    <h2>7.3 行列式因子与不变因子</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 行列式因子</div>
+      <p>设 $\rank A(\lambda) = r$。对 $k = 1, 2, \ldots, r$，$A(\lambda)$ 的所有 $k$ 阶子式的<strong>首一最大公因式</strong>称为 $A(\lambda)$ 的第 $k$ 个<strong>行列式因子</strong>，记为 $D_k(\lambda)$。</p>
+      <p>注意：$D_k(\lambda)$ 取首一多项式。规定 $D_0(\lambda) = 1$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">行列式因子的基本性质</div>
+      <ol>
+        <li>$D_k(\lambda)$ 在初等变换下不变（因为初等变换最多乘一个非零常数）</li>
+        <li>$D_{k-1}(\lambda) \mid D_k(\lambda)$（因为每个 $k$ 阶子式可按行展开为 $k-1$ 阶子式的组合）</li>
+        <li>$D_k(\lambda) = d_1(\lambda) d_2(\lambda) \cdots d_k(\lambda)$</li>
+      </ol>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 不变因子</div>
+      <p>$A(\lambda)$ 的 Smith 标准形中的 $d_1(\lambda), d_2(\lambda), \ldots, d_r(\lambda)$ 称为 $A(\lambda)$ 的<strong>不变因子</strong>。</p>
+      <p>不变因子与行列式因子的关系：</p>
+      <div class="formula-highlight">
+        $$d_k(\lambda) = \frac{D_k(\lambda)}{D_{k-1}(\lambda)}, \qquad k = 1, 2, \ldots, r$$
+      </div>
+      <p>其中 $D_0(\lambda) = 1$。此公式提供了计算不变因子的实用方法（无需先求 Smith 标准形）。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 求 Smith 标准形</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：求 $A(\lambda) = \begin{pmatrix} \lambda & 1 \\ 0 & \lambda \end{pmatrix}$ 的 Smith 标准形和不变因子。</p>
+        <p><strong>解</strong>：</p>
+        <p>第一步：交换第1列和第2列 → $\begin{pmatrix} 1 & \lambda \\ \lambda & 0 \end{pmatrix}$</p>
+        <p>第二步：第2列减去第1列的 $\lambda$ 倍 → $\begin{pmatrix} 1 & 0 \\ \lambda & -\lambda^2 \end{pmatrix}$</p>
+        <p>第三步：第2行减去第1行的 $\lambda$ 倍 → $\begin{pmatrix} 1 & 0 \\ 0 & -\lambda^2 \end{pmatrix}$</p>
+        <p>第四步：第2行乘以 $-1$ → $\begin{pmatrix} 1 & 0 \\ 0 & \lambda^2 \end{pmatrix}$</p>
+        <p>Smith 标准形：$\diag(1, \lambda^2)$。不变因子：$d_1(\lambda) = 1$, $d_2(\lambda) = \lambda^2$。</p>
+        <p>也可用行列式因子法：$D_1 = 1$（所有1阶子式的gcd），$D_2 = \lambda^2$（唯一的2阶子式），故 $d_1 = D_1/D_0 = 1$, $d_2 = D_2/D_1 = \lambda^2$。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 7.4 初等因子 ==================== -->
+  <div class="section" id="s4">
+    <h2>7.4 初等因子</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 初等因子</div>
+      <p>将每个不变因子 $d_i(\lambda)$ 在 $\FF$ 上分解为不可约多项式的幂的乘积：</p>
+      $$d_i(\lambda) = p_1(\lambda)^{e_{i1}} p_2(\lambda)^{e_{i2}} \cdots p_s(\lambda)^{e_{is}}$$
+      <p>其中 $e_{ij} \geq 0$。所有满足 $e_{ij} > 0$ 的 $p_j(\lambda)^{e_{ij}}$ 称为 $A(\lambda)$ 的<strong>初等因子</strong>（计重数）。</p>
+      <p>换言之：初等因子 = 不变因子的不可约幂因子全体。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">初等因子的性质</div>
+      <ol>
+        <li>不变因子唯一确定初等因子（分解即可）</li>
+        <li>初等因子 + 秩也唯一确定不变因子：将初等因子按整除关系"串"成不变因子</li>
+        <li>初等因子在初等变换下不变</li>
+        <li>若 $A(\lambda) = \diag(f_1(\lambda), \ldots, f_r(\lambda), 0, \ldots, 0)$（不要求整除关系），则将每个 $f_i(\lambda)$ 分解为不可约幂因子的乘积，这些不可约幂因子的全体（计重数）就是 $A(\lambda)$ 的初等因子（但需要按一定规则合并得到不变因子才算完整）</li>
+      </ol>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">初等因子与不变因子的互相确定</div>
+      <p>给定秩 $r$ 和初等因子组，可按以下方法恢复不变因子：</p>
+      <ol>
+        <li>将所有初等因子按涉及的不可约多项式分类</li>
+        <li>对每个不可约多项式 $p(\lambda)$，将其各幂次从高到低排列</li>
+        <li>第 $k$ 个不变因子 $d_{r-k+1}(\lambda)$ = 每个不可约多项式类中第 $k$ 高的幂的乘积（不足的补 $1$）</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ==================== 7.5 λ-矩阵与矩阵相似性 ==================== -->
+  <div class="section" id="s5">
+    <h2>7.5 λ-矩阵与矩阵相似性</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">矩阵相似的关键定理</div>
+      <p>设 $A, B$ 为数域 $\FF$ 上的 $n$ 阶方阵。则以下等价：</p>
+      <ol>
+        <li>$A$ 与 $B$ 相似</li>
+        <li>特征矩阵 $\lambda I - A$ 与 $\lambda I - B$ 等价（即可通过初等变换互化）</li>
+        <li>$\lambda I - A$ 与 $\lambda I - B$ 有相同的 Smith 标准形</li>
+        <li>$\lambda I - A$ 与 $\lambda I - B$ 有相同的不变因子</li>
+        <li>$\lambda I - A$ 与 $\lambda I - B$ 有相同的初等因子（在 $\FF$ 的代数扩域上）</li>
+      </ol>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">证明思路</div>
+      <p>$(1) \Rightarrow (2)$：若 $B = P^{-1}AP$，则 $\lambda I - B = P^{-1}(\lambda I - A)P$，而 $P^{-1}$ 和 $P$ 作为常数矩阵也是可逆 λ-矩阵。</p>
+      <p>$(2) \Rightarrow (1)$：需要证明 $\lambda I - A$ 与 $\lambda I - B$ 等价时 $A$ 与 $B$ 相似。这需要更深入的分析。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 矩阵 $A$ 的不变因子与初等因子</div>
+      <p>$A$ 的<strong>不变因子</strong> = $\lambda I - A$ 的不变因子。</p>
+      <p>$A$ 的<strong>初等因子</strong> = $\lambda I - A$ 的初等因子。</p>
+      <p>$A$ 的特征多项式 $f(\lambda) = \det(\lambda I - A) = D_n(\lambda) = \prod_{i=1}^n d_i(\lambda)$。</p>
+      <p>$A$ 的最小多项式 $m(\lambda) = d_n(\lambda)$（最后一个不变因子）。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">几个关键结论</div>
+      <ol>
+        <li>特征多项式 = 所有不变因子的乘积</li>
+        <li>最小多项式 = 最大的不变因子</li>
+        <li>$A$ 可对角化 $\iff$ $A$ 的初等因子全为一次式</li>
+        <li>$\lambda I - A$ 的 Smith 标准形中 $d_1 \cdots d_n$ 的乘积 = 特征多项式</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ==================== 7.6 初等因子与 Jordan 标准形 ==================== -->
+  <div class="section" id="s6">
+    <h2>7.6 初等因子与 Jordan 标准形</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">Jordan 块与初等因子的对应关系</div>
+      <p>对 Jordan 块 $J_k(\lambda_0)$（$k$ 阶，特征值 $\lambda_0$）：</p>
+      <div class="formula-highlight">
+        $$\lambda I - J_k(\lambda_0) \text{ 的初等因子为 } (\lambda - \lambda_0)^k$$
+      </div>
+      <p>因此，$A$ 的初等因子与 $A$ 的 Jordan 标准形之间有如下一一对应：</p>
+      <p><strong>初等因子 $(\lambda - \lambda_0)^k$ $\longleftrightarrow$ 一个 $k$ 阶 Jordan 块 $J_k(\lambda_0)$</strong></p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">由初等因子写出 Jordan 标准形的步骤</div>
+      <ol>
+        <li>求 $\lambda I - A$ 的初等因子（通过行列式因子或直接初等变换求 Smith 标准形）</li>
+        <li>每个初等因子 $(\lambda - \lambda_0)^k$ 对应一个 $k$ 阶 Jordan 块 $J_k(\lambda_0)$</li>
+        <li>将所有 Jordan 块按任意顺序排列（通常按特征值分组），即得 $A$ 的 Jordan 标准形</li>
+      </ol>
+      <p>此方法的优点：完全代数化（不需要解特征方程和求特征向量），适合理论分析。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 用λ-矩阵方法求 Jordan 标准形</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：用初等因子法求 $A = \begin{pmatrix} 1 & 1 & 0 \\ 0 & 1 & 1 \\ 0 & 0 & 1 \end{pmatrix}$ 的 Jordan 标准形。</p>
+        <p><strong>解</strong>：写出 $\lambda I - A = \begin{pmatrix} \lambda-1 & -1 & 0 \\ 0 & \lambda-1 & -1 \\ 0 & 0 & \lambda-1 \end{pmatrix}$</p>
+        <p>计算行列式因子：</p>
+        <p>$D_3(\lambda) = \det(\lambda I - A) = (\lambda-1)^3$</p>
+        <p>$D_2(\lambda)$ = 所有2阶子式的gcd。2阶子式包括 $(\lambda-1)^2$, $\lambda-1$, $1$ 等，gcd = $1$。</p>
+        <p>$D_1(\lambda)$ = 所有1阶子式的gcd = $1$。</p>
+        <p>不变因子：$d_1 = D_1/D_0 = 1$, $d_2 = D_2/D_1 = 1$, $d_3 = D_3/D_2 = (\lambda-1)^3$。</p>
+        <p>初等因子：$(\lambda-1)^3$。对应一个3阶 Jordan 块 $J_3(1)$。</p>
+        <p>Jordan 标准形：$\begin{pmatrix} 1 & 1 & 0 \\ 0 & 1 & 1 \\ 0 & 0 & 1 \end{pmatrix}$（和原矩阵相同——它已经是 Jordan 块）。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 7.7 不变因子与有理标准形 ==================== -->
+  <div class="section" id="s7">
+    <h2>7.7 不变因子与有理标准形</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">不变因子与友矩阵</div>
+      <p>设 $A$ 的不变因子为 $d_1(\lambda), d_2(\lambda), \ldots, d_n(\lambda)$（去掉等于 $1$ 的）。</p>
+      <p>对于非常数不变因子 $d(\lambda) = \lambda^k + a_{k-1}\lambda^{k-1} + \cdots + a_1\lambda + a_0$，构造其<strong>友矩阵</strong>：</p>
+      $$C(d) = \begin{pmatrix} 0 & 0 & \cdots & 0 & -a_0 \\ 1 & 0 & \cdots & 0 & -a_1 \\ 0 & 1 & \cdots & 0 & -a_2 \\ \vdots & \vdots & \ddots & \vdots & \vdots \\ 0 & 0 & \cdots & 1 & -a_{k-1} \end{pmatrix}$$
+      <p>则 $A$ 相似于分块对角矩阵 $\diag(C(d_1), C(d_2), \ldots, C(d_t))$（$t$ 为非常数不变因子的个数）。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">有理标准形（Frobenius 标准形）</div>
+      <p>$A$ 的<strong>有理标准形</strong>定义为</p>
+      <div class="formula-highlight">
+        $$F = \diag(C(d_{i_1}), C(d_{i_2}), \ldots, C(d_{i_t}))$$
+      </div>
+      <p>其中 $d_{i_1} \mid d_{i_2} \mid \cdots \mid d_{i_t}$ 是 $A$ 的非常数不变因子。</p>
+      <p><strong>优点</strong>：有理标准形在任何域上都存在（不要求代数闭域）。Jordan 标准形是有理标准形在代数闭域上的进一步细化。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">Jordan 标准形 vs 有理标准形</div>
+      <table>
+        <tr><th>标准形</th><th>分类依据</th><th>适用域</th><th>块的形式</th></tr>
+        <tr><td>Jordan 标准形</td><td>初等因子（不可约幂因子）</td><td>代数闭域（如 $\CC$）</td><td>Jordan 块</td></tr>
+        <tr><td>有理标准形</td><td>不变因子</td><td>任意域</td><td>友矩阵块</td></tr>
+      </table>
+      <p>关系：将每个友矩阵块在代数闭域上进一步分解 → 得到对应的 Jordan 块。不变因子分解为初等因子 → 每个初等因子 $(\lambda-\lambda_0)^k$ 对应一个 $k$ 阶 Jordan 块。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">本章解题技巧总结</div>
+      <ol>
+        <li><strong>求 Smith 标准形</strong>：用初等变换逐步化简，注意变换规则（第2类只能乘非零常数）。</li>
+        <li><strong>求行列式因子</strong>：对所有 $k$ 阶子式求首一gcd。通常 $D_1$ 好求，$D_n = \det$，中间的 $D_k$ 需要一些技巧。</li>
+        <li><strong>求初等因子</strong>：先求不变因子再分解；或直接从特征矩阵的 Smith 标准形读取。</li>
+        <li><strong>判断相似</strong>：两个矩阵相似 $\iff$ 它们的特征矩阵有相同的初等因子（在代数闭域上）$\iff$ 有相同的不变因子。</li>
+        <li><strong>求 Jordan 标准形</strong>：初等因子法是最系统的方法——求 $\lambda I - A$ 的初等因子，每个 $(\lambda-\lambda_0)^k$ 对应一个 $J_k(\lambda_0)$。</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="chapter-nav">
+    <a href="ch6.html" class="prev">第六章</a>
+    <a href="ch8.html" class="next">第八章</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>高等代数复习指南 · 基于丘维声教材与北大石生明第五版 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

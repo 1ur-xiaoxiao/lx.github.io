@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第八章 · 欧几里得空间与酉空间</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        macros: {
+          RR: '\\mathbb{R}',
+          NN: '\\mathbb{N}',
+          QQ: '\\mathbb{Q}',
+          CC: '\\mathbb{C}',
+          FF: '\\mathbb{F}',
+          rank: '\\mathrm{rank}',
+          det: '\\mathrm{det}',
+          tr: '\\mathrm{tr}',
+          diag: '\\mathrm{diag}',
+          dim: '\\mathrm{dim}',
+          ker: '\\mathrm{ker}',
+          Im: '\\mathrm{Im}',
+          dd: '\\mathrm{d}',
+          span: '\\mathrm{span}'
+        }
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">高等代数</a>
+  <button class="nav-toggle" aria-label="菜单">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="ch1.html">第一章</a></li>
+    <li><a href="ch2.html">第二章</a></li>
+    <li><a href="ch3.html">第三章</a></li>
+    <li><a href="ch4.html">第四章</a></li>
+    <li><a href="ch5.html">第五章</a></li>
+    <li><a href="ch6.html">第六章</a></li>
+    <li><a href="ch7.html">第七章</a></li>
+    <li><a href="ch8.html">第八章</a></li>
+    <li><a href="ch9.html">第九章</a></li>
+    <li><a href="ch10.html">第十章</a></li>
+    <li><a href="appendix.html">附录</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+  <div class="chapter-header">
+    <h1>第八章 · 欧几里得空间与酉空间</h1>
+    <p>在线性空间中引入"度量"结构：内积使我们可以讨论长度、角度和正交性，这是几何与代数深度融合的篇章。</p>
+  </div>
+
+  <div class="toc">
+    <h3>本章目录</h3>
+    <ol>
+      <li><a href="#s1">欧几里得空间的定义</a></li>
+      <li><a href="#s2">标准正交基</a></li>
+      <li><a href="#s3">正交补与正交投影</a></li>
+      <li><a href="#s4">正交变换与正交矩阵</a></li>
+      <li><a href="#s5">对称变换与实对称矩阵</a></li>
+      <li><a href="#s6">酉空间</a></li>
+      <li><a href="#s7">正规变换与谱定理</a></li>
+    </ol>
+  </div>
+
+  <!-- ==================== 8.1 定义 ==================== -->
+  <div class="section" id="s1">
+    <h2>8.1 欧几里得空间的定义</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 内积与欧几里得空间</div>
+      <p>设 $V$ 是 $\RR$ 上的线性空间。映射 $(\cdot, \cdot): V \times V \to \RR$ 若满足：</p>
+      <ol>
+        <li><strong>对称性</strong>：$(\alpha, \beta) = (\beta, \alpha)$</li>
+        <li><strong>线性性</strong>：$(k_1\alpha_1+k_2\alpha_2, \beta) = k_1(\alpha_1,\beta) + k_2(\alpha_2,\beta)$</li>
+        <li><strong>正定性</strong>：$(\alpha, \alpha) \geq 0$，且 $(\alpha, \alpha) = 0 \iff \alpha = 0$</li>
+      </ol>
+      <p>则称 $(\cdot, \cdot)$ 为 $V$ 上的一个<strong>内积</strong>，$V$ 连同此内积称为<strong>欧几里得空间</strong>（内积空间）。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">标准内积</div>
+      <p>在 $\RR^n$ 中，$(\alpha, \beta) = \alpha^T \beta = x_1y_1 + x_2y_2 + \cdots + x_ny_n$。</p>
+      <p>更一般地，对正定对称矩阵 $A$，$(\alpha, \beta) = \alpha^T A \beta$ 也是一个内积。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">内积的基本性质</div>
+      <p><strong>长度（范数）</strong>：$\|\alpha\| = \sqrt{(\alpha, \alpha)}$</p>
+      <p><strong>Cauchy-Schwarz 不等式</strong>：$|(\alpha, \beta)| \leq \|\alpha\| \cdot \|\beta\|$</p>
+      <p>等号成立 $\iff \alpha$ 与 $\beta$ 线性相关。</p>
+      <p><strong>三角不等式</strong>：$\|\alpha + \beta\| \leq \|\alpha\| + \|\beta\|$</p>
+      <p><strong>夹角</strong>（$\alpha, \beta \neq 0$）：$\cos \theta = \dfrac{(\alpha, \beta)}{\|\alpha\| \|\beta\|}$</p>
+    </div>
+  </div>
+
+  <!-- ==================== 8.2 标准正交基 ==================== -->
+  <div class="section" id="s2">
+    <h2>8.2 标准正交基</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 正交与标准正交基</div>
+      <p>若 $(\alpha, \beta) = 0$，称 $\alpha$ 与 $\beta$ <strong>正交</strong>，记为 $\alpha \perp \beta$。</p>
+      <p>一组两两正交的非零向量称为<strong>正交组</strong>。单位长度的正交组称为<strong>标准正交组</strong>。</p>
+      <p>由标准正交组构成的基称为<strong>标准正交基</strong>。此时 $(\varepsilon_i, \varepsilon_j) = \delta_{ij}$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">Gram-Schmidt 正交化</div>
+      <p>设 $\alpha_1, \ldots, \alpha_m$ 线性无关，构造正交组 $\beta_1, \ldots, \beta_m$：</p>
+      <div class="formula-highlight">
+        $$\beta_1 = \alpha_1, \qquad \beta_k = \alpha_k - \sum_{i=1}^{k-1} \frac{(\alpha_k, \beta_i)}{(\beta_i, \beta_i)} \beta_i \quad (k \geq 2)$$
+      </div>
+      <p>再单位化：$\eta_i = \beta_i / \|\beta_i\|$，即得标准正交组。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">标准正交基的性质</div>
+      <ol>
+        <li>标准正交基下的内积坐标公式：若 $\alpha, \beta$ 在标准正交基 $\varepsilon_1, \ldots, \varepsilon_n$ 下的坐标分别为 $X, Y$，则 $(\alpha, \beta) = X^T Y$。</li>
+        <li>任何线性无关向量组都可以扩充为标准正交基。</li>
+        <li>两组标准正交基之间的过渡矩阵是<strong>正交矩阵</strong>。</li>
+      </ol>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · Gram-Schmidt 正交化</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：在 $\RR^3$ 中将 $\alpha_1 = (1,1,0)^T$, $\alpha_2 = (1,0,1)^T$, $\alpha_3 = (0,1,1)^T$ 化为标准正交基。</p>
+        <p><strong>解</strong>：</p>
+        <p>$\beta_1 = \alpha_1 = (1,1,0)^T$</p>
+        <p>$\beta_2 = \alpha_2 - \frac{(\alpha_2,\beta_1)}{(\beta_1,\beta_1)}\beta_1 = (1,0,1)^T - \frac{1}{2}(1,1,0)^T = (\frac{1}{2}, -\frac{1}{2}, 1)^T$</p>
+        <p>$\beta_3 = \alpha_3 - \frac{(\alpha_3,\beta_1)}{(\beta_1,\beta_1)}\beta_1 - \frac{(\alpha_3,\beta_2)}{(\beta_2,\beta_2)}\beta_2$</p>
+        <p>$= (0,1,1)^T - \frac{1}{2}(1,1,0)^T - \frac{1/2}{3/2}(\frac{1}{2}, -\frac{1}{2}, 1)^T = (-\frac{2}{3}, \frac{2}{3}, \frac{2}{3})^T$</p>
+        <p>单位化后得标准正交基。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 8.3 正交补与投影 ==================== -->
+  <div class="section" id="s3">
+    <h2>8.3 正交补与正交投影</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 正交补</div>
+      <p>$V$ 的子集 $S$ 的<strong>正交补</strong>定义为</p>
+      $$S^\perp = \{\alpha \in V : (\alpha, \beta) = 0 \text{ 对所有 } \beta \in S\}$$
+      <p>$S^\perp$ 是 $V$ 的子空间，且 $V = W \oplus W^\perp$（对任意子空间 $W$）。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">正交补的性质</div>
+      <ol>
+        <li>$(W^\perp)^\perp = W$</li>
+        <li>$W_1 \subseteq W_2 \Rightarrow W_2^\perp \subseteq W_1^\perp$</li>
+        <li>$\dim W^\perp = \dim V - \dim W$</li>
+        <li>$(W_1 + W_2)^\perp = W_1^\perp \cap W_2^\perp$，$(W_1 \cap W_2)^\perp = W_1^\perp + W_2^\perp$</li>
+      </ol>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 正交投影</div>
+      <p>设 $V = W \oplus W^\perp$，对任意 $\alpha \in V$，有唯一分解 $\alpha = \alpha_1 + \alpha_2$（$\alpha_1 \in W, \alpha_2 \in W^\perp$）。</p>
+      <p>映射 $P_W: V \to V$，$\alpha \mapsto \alpha_1$ 称为到 $W$ 的<strong>正交投影</strong>。</p>
+      <p>若 $\varepsilon_1, \ldots, \varepsilon_k$ 是 $W$ 的标准正交基，则</p>
+      <div class="formula-highlight">
+        $$P_W(\alpha) = \sum_{i=1}^k (\alpha, \varepsilon_i) \varepsilon_i$$
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 8.4 正交变换 ==================== -->
+  <div class="section" id="s4">
+    <h2>8.4 正交变换与正交矩阵</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 正交变换</div>
+      <p>欧几里得空间 $V$ 上的线性变换 $\mathcal{A}$ 若保持内积：</p>
+      $$(\mathcal{A}\alpha, \mathcal{A}\beta) = (\alpha, \beta), \qquad \forall \alpha, \beta \in V$$
+      <p>则称 $\mathcal{A}$ 为<strong>正交变换</strong>。等价条件：$\|\mathcal{A}\alpha\| = \|\alpha\|$（保持长度）。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">正交变换的等价刻画</div>
+      <p>设 $\mathcal{A}$ 在标准正交基下的矩阵为 $Q$。以下等价：</p>
+      <ol>
+        <li>$\mathcal{A}$ 是正交变换</li>
+        <li>$Q^T Q = I$（$Q$ 是正交矩阵）</li>
+        <li>$Q$ 的行（列）向量组是标准正交基</li>
+        <li>$\mathcal{A}$ 将标准正交基映为标准正交基</li>
+        <li>$\det Q = \pm 1$（必要条件，非充要）</li>
+      </ol>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">正交变换的几何意义</div>
+      <p>$\RR^2$ 中的正交变换只有两类：</p>
+      <ul>
+        <li>$\det = +1$：旋转（绕原点旋转某角度 $\theta$）</li>
+        <li>$\det = -1$：反射（关于某条过原点的直线对称）</li>
+      </ul>
+      <p>$\RR^3$ 中的正交变换包括旋转、反射、以及旋转与反射的复合。$\det = +1$ 的正交变换对应三维空间的旋转。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 8.5 对称变换 ==================== -->
+  <div class="section" id="s5">
+    <h2>8.5 对称变换与实对称矩阵</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 对称变换（自伴变换）</div>
+      <p>欧几里得空间 $V$ 上的线性变换 $\mathcal{A}$ 若满足</p>
+      $$(\mathcal{A}\alpha, \beta) = (\alpha, \mathcal{A}\beta), \qquad \forall \alpha, \beta \in V$$
+      <p>则称 $\mathcal{A}$ 为<strong>对称变换</strong>。在标准正交基下，对称变换的矩阵是<strong>实对称矩阵</strong>（$A^T = A$）。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">实对称矩阵的性质</div>
+      <ol>
+        <li>特征值全为<strong>实数</strong>（包括计重数）</li>
+        <li>不同特征值的特征向量<strong>正交</strong></li>
+        <li>必可<strong>正交对角化</strong>：存在正交矩阵 $Q$ 使得 $Q^T A Q = \diag(\lambda_1, \ldots, \lambda_n)$</li>
+        <li>$A$ 是正定的 $\iff$ 所有特征值 $> 0$</li>
+      </ol>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">正交对角化的证明思路</div>
+      <p>对维数归纳：取 $A$ 的一个特征值 $\lambda_1$（实数），取单位特征向量 $\xi_1$。将 $\xi_1$ 扩充为 $\RR^n$ 的标准正交基 $\xi_1, \eta_2, \ldots, \eta_n$，构造正交矩阵 $Q_1 = (\xi_1, \eta_2, \ldots, \eta_n)$。则 $Q_1^T A Q_1 = \begin{pmatrix} \lambda_1 & 0 \\ 0 & A_1 \end{pmatrix}$，$A_1$ 仍为对称矩阵。由归纳假设得证。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 8.6 酉空间 ==================== -->
+  <div class="section" id="s6">
+    <h2>8.6 酉空间</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 复内积与酉空间</div>
+      <p>设 $V$ 是 $\CC$ 上的线性空间。映射 $(\cdot, \cdot): V \times V \to \CC$ 若满足：</p>
+      <ol>
+        <li><strong>共轭对称性</strong>：$(\alpha, \beta) = \overline{(\beta, \alpha)}$</li>
+        <li><strong>线性性</strong>（对第一个变量）：$(k_1\alpha_1+k_2\alpha_2, \beta) = k_1(\alpha_1,\beta) + k_2(\alpha_2,\beta)$</li>
+        <li><strong>共轭线性性</strong>（对第二个变量）：$(\alpha, k_1\beta_1+k_2\beta_2) = \overline{k_1}(\alpha,\beta_1) + \overline{k_2}(\alpha,\beta_2)$</li>
+        <li><strong>正定性</strong>：$(\alpha, \alpha) \in \RR_{\geq 0}$，且 $(\alpha, \alpha) = 0 \iff \alpha = 0$</li>
+      </ol>
+      <p>则称 $V$ 为<strong>酉空间</strong>（复内积空间）。</p>
+    </div>
+
+    <div class="box box-example">
+      <div class="box-title">标准复内积</div>
+      <p>在 $\CC^n$ 中，$(\alpha, \beta) = \alpha^* \beta = \overline{x_1}y_1 + \cdots + \overline{x_n}y_n$（$\alpha^* = \bar{\alpha}^T$ 为共轭转置）。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 酉变换与酉矩阵</div>
+      <p>$V$ 上的线性变换 $\mathcal{A}$ 若保持复内积，称为<strong>酉变换</strong>。</p>
+      <p>标准正交基下酉变换的矩阵 $U$ 满足 $U^* U = I$，称为<strong>酉矩阵</strong>（unitary matrix）。</p>
+      <p>性质：酉矩阵的特征值的模为 $1$。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · Hermite 变换与 Hermite 矩阵</div>
+      <p>$V$ 上的线性变换 $\mathcal{A}$ 若满足 $(\mathcal{A}\alpha, \beta) = (\alpha, \mathcal{A}\beta)$，称为<strong>Hermite 变换</strong>。</p>
+      <p>标准正交基下 Hermite 变换的矩阵 $H$ 满足 $H^* = H$，称为<strong>Hermite 矩阵</strong>。</p>
+      <p>Hermite 矩阵的特征值全为<strong>实数</strong>（与实对称矩阵类似）。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 8.7 正规变换与谱定理 ==================== -->
+  <div class="section" id="s7">
+    <h2>8.7 正规变换与谱定理</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 正规变换与正规矩阵</div>
+      <p>设 $V$ 是酉空间。线性变换 $\mathcal{A}$ 若满足 $\mathcal{A}\mathcal{A}^* = \mathcal{A}^*\mathcal{A}$，则称 $\mathcal{A}$ 为<strong>正规变换</strong>。</p>
+      <p>其中 $\mathcal{A}^*$ 是 $\mathcal{A}$ 的<strong>伴随变换</strong>：$(\mathcal{A}\alpha, \beta) = (\alpha, \mathcal{A}^*\beta)$。</p>
+      <p>矩阵形式：$A A^* = A^* A$，称 $A$ 为<strong>正规矩阵</strong>。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">谱定理（Spectral Theorem）</div>
+      <p>设 $V$ 是有限维酉空间，$\mathcal{A}$ 是 $V$ 上的线性变换。则</p>
+      <div class="formula-highlight">
+        $$\text{$\mathcal{A}$ 可酉对角化} \iff \text{$\mathcal{A}$ 是正规变换}$$
+      </div>
+      <p>即存在标准正交基使得 $\mathcal{A}$ 的矩阵为对角形 $\iff \mathcal{A}\mathcal{A}^* = \mathcal{A}^*\mathcal{A}$。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">正规矩阵的分类</div>
+      <table>
+        <tr><th>类型</th><th>条件</th><th>特征值</th><th>酉对角化？</th></tr>
+        <tr><td>Hermite</td><td>$A^* = A$</td><td>实数</td><td>✓</td></tr>
+        <tr><td>斜 Hermite</td><td>$A^* = -A$</td><td>纯虚数</td><td>✓</td></tr>
+        <tr><td>酉矩阵</td><td>$A^* A = I$</td><td>模为 $1$</td><td>✓</td></tr>
+        <tr><td>正规</td><td>$A A^* = A^* A$</td><td>任意复数</td><td>✓</td></tr>
+      </table>
+      <p>注意：Hermite、斜 Hermite、酉矩阵都是正规矩阵的特例。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">实空间的对应</div>
+      <table>
+        <tr><th>酉空间（复）</th><th>欧几里得空间（实）</th></tr>
+        <tr><td>内积 $x^* y$</td><td>内积 $x^T y$</td></tr>
+        <tr><td>酉矩阵 $U^* = U^{-1}$</td><td>正交矩阵 $Q^T = Q^{-1}$</td></tr>
+        <tr><td>Hermite 矩阵 $A^* = A$</td><td>对称矩阵 $A^T = A$</td></tr>
+        <tr><td>正规矩阵 $A A^* = A^* A$</td><td>$A A^T = A^T A$（无特殊名称）</td></tr>
+        <tr><td>谱定理：正规⇔酉对角化</td><td>实对称⇔正交对角化（实情形更强的条件）</td></tr>
+      </table>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">本章解题技巧总结</div>
+      <ol>
+        <li><strong>Gram-Schmidt 正交化</strong>：从线性无关组出发，逐个减去在之前向量上的投影。</li>
+        <li><strong>正交补</strong>：$V = W \oplus W^\perp$ 是核心分解，把"几何分解"用于代数问题。</li>
+        <li><strong>实对称矩阵对角化</strong>：找特征值和特征向量，正交化（不同特征值自动正交），单位化，构造正交矩阵 $Q$。</li>
+        <li><strong>酉空间的对角化</strong>：Hermite 矩阵和酉矩阵都可以酉对角化（谱定理）。</li>
+        <li><strong>正规性检验</strong>：$A A^* = A^* A$ 是酉对角化的充要条件（复数情形）。</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="chapter-nav">
+    <a href="ch7.html" class="prev">第七章</a>
+    <a href="ch9.html" class="next">第九章</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>高等代数复习指南 · 基于丘维声教材与北大石生明第五版 · 仅供学习参考</p>
+</footer>
+
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>
