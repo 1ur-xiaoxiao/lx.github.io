@@ -13,6 +13,8 @@
         macros: {
           RR: '\\mathbb{R}',
           NN: '\\mathbb{N}',
+          QQ: '\\mathbb{Q}',
+          CC: '\\mathbb{C}',
           FF: '\\mathbb{F}',
           rank: '\\mathrm{rank}',
           det: '\\mathrm{det}',
@@ -279,7 +281,7 @@
       <div class="box-title">补空间</div>
       <p>设 $W$ 是 $V$ 的子空间，若存在子空间 $U$ 使得 $V = W \oplus U$，则称 $U$ 为 $W$ 在 $V$ 中的<strong>补空间</strong>。</p>
       <p><strong>存在性</strong>：任意子空间都有补空间（将 $W$ 的基扩充为 $V$ 的基，新加的基向量张成的空间即为补空间）。</p>
-      <p><strong>不唯一性</strong>：补空间一般不唯一（除非 $W = \{0\}$ 或 $W = V$）。例如在 $\RR^2$ 中，$x$ 轴的补空间可以是任何不过原点的直线外的方向——实际上，$\RR^2$ 中任何不与 $x$ 轴重合的过原点直线都是 $x$ 轴的补空间。</p>
+      <p><strong>不唯一性</strong>：补空间一般不唯一（除非 $W = \{0\}$ 或 $W = V$）。例如在 $\RR^2$ 中，$x$ 轴的补空间可以是任何不与 $x$ 轴重合的过原点直线（即 $y = kx$，$k \in \RR$），它们都是一维子空间且与 $x$ 轴的交只有原点。</p>
     </div>
 
     <div class="box box-note">
