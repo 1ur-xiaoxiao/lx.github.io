@@ -42,6 +42,7 @@
     <li><a href="ch4.html">第四章</a></li>
     <li><a href="ch5.html">第五章</a></li>
     <li><a href="ch6.html">第六章</a></li>
+    <li><a href="appendix.html">附录</a></li>
   </ul>
 </nav>
 
@@ -229,6 +230,63 @@
     </div>
   </div>
 
+  <!-- ==================== 1.5 补充：有理根与不可约判定 ==================== -->
+  <div class="section" id="s5b">
+    <h2>1.5 补充 · 有理根定理与 Eisenstein 判别法</h2>
+
+    <div class="box box-theorem">
+      <div class="box-title">有理根定理</div>
+      <p>设 $f(x) = a_n x^n + a_{n-1}x^{n-1} + \cdots + a_1 x + a_0 \in \ZZ[x]$（整数系数），$a_n \neq 0$，$a_0 \neq 0$。</p>
+      <p>若有理数 $\dfrac{p}{q}$（$\gcd(p,q)=1$，$q>0$）是 $f(x)$ 的根，则</p>
+      <div class="formula-highlight">
+        $$p \mid a_0, \qquad q \mid a_n$$
+      </div>
+      <p>特别地，若 $f(x)$ 是<strong>首一</strong>多项式（$a_n = 1$），则它的有理根必为整数且是 $a_0$ 的因子。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 有理根定理</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：求 $f(x) = 2x^3 - 3x^2 - 3x + 2$ 的所有有理根。</p>
+        <p><strong>解</strong>：$a_3 = 2$，$a_0 = 2$。</p>
+        <p>$p \mid 2 \Rightarrow p = \pm 1, \pm 2$；$q \mid 2 \Rightarrow q = 1, 2$。</p>
+        <p>所有可能的有理根：$\pm 1, \pm 2, \pm \dfrac{1}{2}$。</p>
+        <p>验证：$f(1) = -2$，$f(-1) = 0$ → $x = -1$ 是根。</p>
+        <p>$f(-1/2) = -1/4 $ → $x = -\dfrac{1}{2}$ 也是根。</p>
+        <p>分解：$f(x) = (x+1)(2x+1)(x-2)$。</p>
+      </div>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">Eisenstein 判别法</div>
+      <p>设 $f(x) = a_n x^n + a_{n-1}x^{n-1} + \cdots + a_1 x + a_0 \in \ZZ[x]$。若存在素数 $p$ 使得：</p>
+      <ol>
+        <li>$p \mid a_i$（$i = 0, 1, \ldots, n-1$）——除首项外所有系数都被 $p$ 整除</li>
+        <li>$p \nmid a_n$——首项系数不被 $p$ 整除</li>
+        <li>$p^2 \nmid a_0$——常数项不被 $p^2$ 整除</li>
+      </ol>
+      <p>则 $f(x)$ 在 $\QQ[x]$ 中<strong>不可约</strong>。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · Eisenstein 判别法</div>
+      <div class="collapsible-body">
+        <p><strong>题目</strong>：证明 $f(x) = x^4 + 2x^3 + 4x^2 + 6x + 2$ 在 $\QQ[x]$ 中不可约。</p>
+        <p><strong>解</strong>：取素数 $p = 2$。</p>
+        <p>$2 \mid 2, 6, 4, 2$ ✓；$2 \nmid 1$（首项系数）✓；$2^2 = 4 \nmid 2$（常数项）✓。</p>
+        <p>由 Eisenstein 判别法，$f(x)$ 在 $\QQ[x]$ 中不可约。</p>
+      </div>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">Gauss 引理</div>
+      <p><strong>本原多项式</strong>：系数互素的整数系数多项式（即系数的最大公因数为 $1$）。</p>
+      <p><strong>Gauss 引理</strong>：两个本原多项式的乘积仍是本原多项式。</p>
+      <p><strong>推论</strong>：若 $f(x) \in \ZZ[x]$ 在 $\ZZ[x]$ 中不可约（即不能分解为两个次数更低的整系数多项式之积），则 $f(x)$ 在 $\QQ[x]$ 中也不可约。</p>
+      <p>因此，Eisenstein 判别法 + Gauss 引理给出了 $\QQ[x]$ 中不可约性的一个实用判定工具。</p>
+    </div>
+  </div>
+
   <!-- ==================== 1.6 重因式与根 ==================== -->
   <div class="section" id="s6">
     <h2>1.6 重因式与根</h2>
@@ -237,6 +295,26 @@
       <div class="box-title">定义 · 重因式与重数</div>
       <p>在 $f(x)$ 的分解中，若 $p(x)^k \mid f$ 但 $p(x)^{k+1} \nmid f$，则称 $p(x)$ 为 $f(x)$ 的 $k$ <strong>重因式</strong>。</p>
       <p>特别地，若 $p(x) = x - a$，则 $a$ 为 $f(x)$ 的 $k$ <strong>重根</strong>。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">多项式的形式导数</div>
+      <p>对于 $f(x) = \sum_{k=0}^n a_k x^k$，定义其<strong>形式导数</strong>为</p>
+      $$f'(x) = \sum_{k=1}^n k a_k x^{k-1}$$
+      <p>形式导数是一个纯代数定义（不涉及极限），满足：</p>
+      <ol>
+        <li>$(f+g)' = f' + g'$</li>
+        <li>$(fg)' = f'g + fg'$（Leibniz 规则）</li>
+        <li>$(f^k)' = k f^{k-1} f'$</li>
+        <li>若 $\deg f = n \geq 1$，则 $\deg f' = n-1$（在特征 $0$ 的域上）</li>
+      </ol>
+      <p><strong>注意</strong>：在有限域上，形式导数与普通导数的行为可能不同（例如 $x^p$ 的形式导数为 $0$）。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">多项式函数与形式多项式的区别</div>
+      <p>在无限域（如 $\QQ, \RR, \CC$）上，多项式 $f(x)$ 与多项式函数 $a \mapsto f(a)$ 之间存在一一对应：$f = g$ 作为多项式 $\iff$ $f(a) = g(a)$ 对所有 $a \in \FF$ 成立。</p>
+      <p>但在<strong>有限域</strong>上，这一一对应不成立！例如在 $\FF_2 = \{0,1\}$ 上，多项式 $x^2 + x$ 作为函数恒为零，但作为多项式非零。因此，在高等代数中我们始终将多项式视为<strong>形式的代数表达式</strong>，而非函数。</p>
     </div>
 
     <div class="box box-theorem">

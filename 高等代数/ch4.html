@@ -42,6 +42,7 @@
     <li><a href="ch4.html">第四章</a></li>
     <li><a href="ch5.html">第五章</a></li>
     <li><a href="ch6.html">第六章</a></li>
+    <li><a href="appendix.html">附录</a></li>
   </ul>
 </nav>
 
@@ -96,6 +97,56 @@
     </div>
   </div>
 
+  <!-- ==================== 4.1 补充：特殊矩阵 ==================== -->
+  <div class="section" id="s1b">
+    <h2>4.1 补充 · 几类重要的特殊矩阵</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">特殊矩阵一览</div>
+      <table>
+        <tr><th>名称</th><th>定义</th><th>关键性质</th></tr>
+        <tr>
+          <td><strong>对称矩阵</strong></td>
+          <td>$A^T = A$</td>
+          <td>特征值全为实数；不同特征值的特征向量正交；可正交对角化</td>
+        </tr>
+        <tr>
+          <td><strong>反对称矩阵</strong></td>
+          <td>$A^T = -A$</td>
+          <td>对角元全为零；奇数阶行列式为零；非零特征值为纯虚数（成对共轭）</td>
+        </tr>
+        <tr>
+          <td><strong>正交矩阵</strong></td>
+          <td>$A^T A = A A^T = I$</td>
+          <td>行列（列）向量组为标准正交基；$\det A = \pm 1$；特征值的模为 $1$</td>
+        </tr>
+        <tr>
+          <td><strong>幂等矩阵</strong></td>
+          <td>$A^2 = A$</td>
+          <td>特征值只有 $0$ 和 $1$；$\tr A = \rank A$；对应投影变换</td>
+        </tr>
+        <tr>
+          <td><strong>幂零矩阵</strong></td>
+          <td>$A^k = O$（某 $k$）</td>
+          <td>所有特征值全为零；$\tr A = 0$；指数 $\leq n$</td>
+        </tr>
+        <tr>
+          <td><strong>对合矩阵</strong></td>
+          <td>$A^2 = I$</td>
+          <td>$A^{-1} = A$；特征值只有 $\pm 1$；对应反射变换</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">任意方阵的对称-反对称分解</div>
+      <p>任意方阵 $A$ 可以唯一地写为对称矩阵与反对称矩阵之和：</p>
+      <div class="formula-highlight">
+        $$A = \underbrace{\frac{A + A^T}{2}}_{\text{对称部分}} + \underbrace{\frac{A - A^T}{2}}_{\text{反对称部分}}$$
+      </div>
+    </div>
+  </div>
+
   <!-- ==================== 4.2 逆矩阵 ==================== -->
   <div class="section" id="s2">
     <h2>4.2 逆矩阵</h2>
@@ -138,6 +189,19 @@
         <p>$A^{-1} = \dfrac{1}{-1}\begin{pmatrix} 5 & -2 \\ -3 & 1 \end{pmatrix} = \begin{pmatrix} -5 & 2 \\ 3 & -1 \end{pmatrix}$</p>
         <p>验证：$\begin{pmatrix} 1 & 2 \\ 3 & 5 \end{pmatrix}\begin{pmatrix} -5 & 2 \\ 3 & -1 \end{pmatrix} = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$ ✓</p>
       </div>
+    </div>
+    <div class="box box-theorem">
+      <div class="box-title">正交矩阵的等价刻画</div>
+      <p>对 $n$ 阶实方阵 $A$，以下条件等价：</p>
+      <ol>
+        <li>$A$ 是正交矩阵（$A^T A = I$）</li>
+        <li>$A$ 的行向量组是 $\RR^n$ 的标准正交基（即各行向量单位正交）</li>
+        <li>$A$ 的列向量组是 $\RR^n$ 的标准正交基</li>
+        <li>$A$ 保持内积：对任意 $x, y \in \RR^n$，$(Ax, Ay) = (x, y)$</li>
+        <li>$A$ 保持长度：对任意 $x \in \RR^n$，$\|Ax\| = \|x\|$</li>
+        <li>$A^{-1} = A^T$</li>
+      </ol>
+      <p>正交矩阵的全体构成<strong>正交群</strong>，记为 $O(n)$。$\det A = +1$ 的正交矩阵构成<strong>特殊正交群</strong> $SO(n)$（对应旋转）。</p>
     </div>
   </div>
 
@@ -187,6 +251,19 @@
       <p>$\tr A = \sum_{i=1}^n a_{ii}$（对角元素之和）。</p>
       <p>性质：$\tr(A+B) = \tr A + \tr B$，$\tr(kA) = k\tr A$，$\tr(AB) = \tr(BA)$。</p>
     </div>
+    <div class="box box-theorem">
+      <div class="box-title">矩阵的等价标准形与合同标准形</div>
+      <p><strong>等价标准形</strong>：对任意 $m \times n$ 矩阵 $A$（$\rank A = r$），存在可逆矩阵 $P$（$m$ 阶）和 $Q$（$n$ 阶）使得</p>
+      <div class="formula-highlight">
+        $$P A Q = \begin{pmatrix} I_r & O \\ O & O \end{pmatrix}$$
+      </div>
+      <p>即 $A$ 等价于秩为 $r$ 的"规范形"。两个矩阵等价 $\iff$ 秩相等。</p>
+      <p><strong>合同标准形</strong>（对于实对称矩阵）：对任意 $n$ 阶实对称矩阵 $A$，存在可逆矩阵 $P$ 使得</p>
+      <div class="formula-highlight">
+        $$P^T A P = \diag(\underbrace{1,\ldots,1}_{p}, \underbrace{-1,\ldots,-1}_{q}, \underbrace{0,\ldots,0}_{n-p-q})$$
+      </div>
+      <p>其中 $(p, q)$ 称为 $A$ 的<strong>惯性指数</strong>。<strong>Sylvester 惯性定理</strong>断言：$p$（正惯性指数）和 $q$（负惯性指数）在合同变换下是唯一确定的。</p>
+    </div>
   </div>
 
   <!-- ==================== 4.5 分块矩阵 ==================== -->
@@ -202,6 +279,20 @@
       <div class="box-title">分块对角矩阵</div>
       <p>$A = \diag(A_1, A_2, \ldots, A_k) = \begin{pmatrix} A_1 & & \\ & A_2 & \\ & & \ddots & \\ & & & A_k \end{pmatrix}$</p>
       <p>$\det A = \det A_1 \cdot \det A_2 \cdots \det A_k$，$A$ 可逆 $\iff$ 每个 $A_i$ 可逆，$A^{-1} = \diag(A_1^{-1}, \ldots, A_k^{-1})$。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">分块矩阵的初等变换（打洞技巧）</div>
+      <p>利用分块矩阵的初等变换可以消去非对角块（"打洞"），核心公式：</p>
+      <ol>
+        <li><strong>消去 $B$</strong>（用 $A$ 消）：
+          $$\begin{pmatrix} I & O \\ -CA^{-1} & I \end{pmatrix} \begin{pmatrix} A & B \\ C & D \end{pmatrix} = \begin{pmatrix} A & B \\ O & D - CA^{-1}B \end{pmatrix}$$</li>
+        <li><strong>消去 $C$</strong>（用 $A$ 消）：
+          $$\begin{pmatrix} A & B \\ C & D \end{pmatrix} \begin{pmatrix} I & -A^{-1}B \\ O & I \end{pmatrix} = \begin{pmatrix} A & O \\ C & D - CA^{-1}B \end{pmatrix}$$</li>
+        <li><strong>同时消去 $B$ 和 $C$</strong>：
+          $$\begin{pmatrix} I & O \\ -CA^{-1} & I \end{pmatrix} \begin{pmatrix} A & B \\ C & D \end{pmatrix} \begin{pmatrix} I & -A^{-1}B \\ O & I \end{pmatrix} = \begin{pmatrix} A & O \\ O & D - CA^{-1}B \end{pmatrix}$$</li>
+      </ol>
+      <p>此技巧在证明行列式公式、求逆矩阵（分块求逆公式）和秩不等式中非常有用。</p>
     </div>
 
     <div class="box box-note">

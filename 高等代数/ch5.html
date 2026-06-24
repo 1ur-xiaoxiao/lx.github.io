@@ -42,6 +42,7 @@
     <li><a href="ch4.html">第四章</a></li>
     <li><a href="ch5.html">第五章</a></li>
     <li><a href="ch6.html">第六章</a></li>
+    <li><a href="appendix.html">附录</a></li>
   </ul>
 </nav>
 
@@ -124,6 +125,32 @@
     <div class="box box-note">
       <div class="box-title">基扩充定理</div>
       <p>$V$ 中任意线性无关向量组都可以扩充为 $V$ 的一组基。等价地：$\dim V = n$ 时，$V$ 中任意 $n$ 个线性无关向量都是 $V$ 的基。</p>
+    </div>
+  </div>
+
+  <!-- ==================== 5.2 补充：线性空间的同构 ==================== -->
+  <div class="section" id="s2b">
+    <h2>5.2 补充 · 线性空间的同构</h2>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 同构映射</div>
+      <p>设 $V, W$ 是 $\FF$ 上的线性空间。映射 $\varphi: V \to W$ 若满足：</p>
+      <ol>
+        <li>$\varphi$ 是双射（一一对应）</li>
+        <li>$\varphi$ 是线性映射：$\varphi(\alpha+\beta) = \varphi(\alpha) + \varphi(\beta)$，$\varphi(k\alpha) = k\varphi(\alpha)$</li>
+      </ol>
+      <p>则称 $\varphi$ 为 $V$ 到 $W$ 的<strong>同构映射</strong>，$V$ 与 $W$ <strong>同构</strong>，记为 $V \cong W$。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">同构的充要条件</div>
+      <p>两个有限维线性空间同构 $\iff$ 它们的维数相同：$\dim V = \dim W$。</p>
+      <p>特别地，$\FF$ 上任意 $n$ 维线性空间都同构于 $\FF^n$。这解释了为什么我们可以在抽象空间和坐标空间 $\FF^n$ 之间自由切换。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">同构的意义</div>
+      <p>同构的线性空间在代数结构上"完全相同"——维数是区分有限维线性空间的唯一不变量。一旦选定一组基，抽象空间中的计算就可以转化为 $\FF^n$ 中的坐标运算。</p>
     </div>
   </div>
 
@@ -213,6 +240,46 @@
       <div class="box-title">直和的意义</div>
       <p>直和分解将一个空间"拆"成互不重叠的子空间。例如 $\RR^3 = \{(x,y,0)\} \oplus \{(0,0,z)\}$，每个向量 $(x,y,z)$ 的分解唯一。</p>
       <p>直和是后续对角化、Jordan 标准形等理论的基础。</p>
+    </div>
+
+    <div class="box box-theorem">
+      <div class="box-title">多个子空间的直和</div>
+      <p>将直和概念推广到 $k$ 个子空间 $W_1, W_2, \ldots, W_k$：</p>
+      <p>$W_1 + W_2 + \cdots + W_k$ 是<strong>直和</strong>（记为 $W_1 \oplus W_2 \oplus \cdots \oplus W_k$），若以下等价条件之一成立：</p>
+      <ol>
+        <li>零向量的表示唯一（只有全零组合）</li>
+        <li>每个 $W_i \cap \sum_{j \neq i} W_j = \{0\}$</li>
+        <li>$\dim(\sum W_i) = \sum \dim W_i$</li>
+        <li>将各 $W_i$ 的基合起来构成 $\sum W_i$ 的基</li>
+      </ol>
+      <p><strong>注意</strong>：对于 $k \geq 3$，两两交为零（$W_i \cap W_j = \{0\}$ 对所有 $i \neq j$）<strong>不足以保证</strong>直和！还需加上每个子空间与其余子空间之和的交为零。</p>
+    </div>
+
+    <div class="box box-definition">
+      <div class="box-title">定义 · 商空间</div>
+      <p>设 $W$ 是 $V$ 的子空间。定义 $V$ 上的等价关系：$\alpha \sim \beta \iff \alpha - \beta \in W$。</p>
+      <p>等价类 $\bar{\alpha} = \alpha + W = \{\alpha + w : w \in W\}$ 称为 $\alpha$ 的<strong>陪集</strong>。</p>
+      <p>所有陪集构成的集合 $V/W = \{\alpha + W : \alpha \in V\}$ 在如下运算下构成线性空间：</p>
+      <ul>
+        <li>$(\alpha + W) + (\beta + W) = (\alpha + \beta) + W$</li>
+        <li>$k(\alpha + W) = k\alpha + W$</li>
+      </ul>
+      <p>$V/W$ 称为 $V$ 关于 $W$ 的<strong>商空间</strong>。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">商空间的维数公式</div>
+      <div class="formula-highlight">
+        $$\dim(V/W) = \dim V - \dim W$$
+      </div>
+      <p>这与维数定理 $\dim(\ker \mathcal{A}) + \dim(\Im \mathcal{A}) = \dim V$ 有深刻联系：$\Im \mathcal{A} \cong V / \ker \mathcal{A}$（第一同构定理）。</p>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">补空间</div>
+      <p>设 $W$ 是 $V$ 的子空间，若存在子空间 $U$ 使得 $V = W \oplus U$，则称 $U$ 为 $W$ 在 $V$ 中的<strong>补空间</strong>。</p>
+      <p><strong>存在性</strong>：任意子空间都有补空间（将 $W$ 的基扩充为 $V$ 的基，新加的基向量张成的空间即为补空间）。</p>
+      <p><strong>不唯一性</strong>：补空间一般不唯一（除非 $W = \{0\}$ 或 $W = V$）。例如在 $\RR^2$ 中，$x$ 轴的补空间可以是任何不过原点的直线外的方向——实际上，$\RR^2$ 中任何不与 $x$ 轴重合的过原点直线都是 $x$ 轴的补空间。</p>
     </div>
 
     <div class="box box-note">

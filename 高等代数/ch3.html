@@ -42,6 +42,7 @@
     <li><a href="ch4.html">第四章</a></li>
     <li><a href="ch5.html">第五章</a></li>
     <li><a href="ch6.html">第六章</a></li>
+    <li><a href="appendix.html">附录</a></li>
   </ul>
 </nav>
 
@@ -197,6 +198,15 @@
         <li>初等变换不改变矩阵的秩</li>
       </ol>
     </div>
+    <div class="box box-theorem">
+      <div class="box-title">满秩分解</div>
+      <p>设 $\rank A = r > 0$，则存在列满秩矩阵 $B$（$m \times r$，$\rank B = r$）和行满秩矩阵 $C$（$r \times n$，$\rank C = r$）使得</p>
+      <div class="formula-highlight">
+        $$A = BC$$
+      </div>
+      <p>这称为 $A$ 的<strong>满秩分解</strong>。构造方法：取 $A$ 的列向量组的极大线性无关组作为 $B$ 的列，取 $A$ 的行阶梯形中非零行对应的系数构成 $C$。</p>
+      <p>满秩分解在研究秩的不等式（如 Sylvester 不等式）和广义逆矩阵时非常有用。</p>
+    </div>
   </div>
 
   <!-- ==================== 3.6 解的结构 ==================== -->
@@ -241,6 +251,31 @@
         <p>$x = -t$，$y = -t$，基础解系 $\xi = (-1, -1, 1)^T$</p>
         <p>通解：$X = t(-1, -1, 1)^T$</p>
       </div>
+    </div>
+
+    <div class="box box-note">
+      <div class="box-title">线性方程组解的几何解释</div>
+      <p>从几何角度看线性方程组：</p>
+      <ul>
+        <li><strong>齐次方程组 $AX = 0$</strong>：解空间 $\ker A$ 是 $\FF^n$ 的一个子空间（过原点的"平面"），维数为 $n - \rank A$。</li>
+        <li><strong>非齐次方程组 $AX = b$（$b \neq 0$）</strong>：解集是 $\ker A$ 的一个<strong>陪集</strong>（平移），即 $\gamma_0 + \ker A$。这是一个不过原点的"仿射子空间"，维数与 $\ker A$ 相同。</li>
+      </ul>
+      <p>因此，非齐次方程组的通解 = 一个特解（确定位置）+ 齐次方程组的通解（确定方向）。</p>
+    </div>
+
+    <div class="box box-formula">
+      <div class="box-title">最小二乘解</div>
+      <p>当 $AX = b$ <strong>无解</strong>时（即 $b \notin \Im A$），可求<strong>最小二乘解</strong>：找 $X$ 使得 $\|AX - b\|$ 最小。</p>
+      <p>最小二乘解满足<strong>正规方程</strong>：</p>
+      <div class="formula-highlight">
+        $$A^T A X = A^T b$$
+      </div>
+      <p>性质：</p>
+      <ol>
+        <li>$A^T A X = A^T b$ 一定有解（对任意 $b$）</li>
+        <li>若 $\rank A = n$（列满秩），则 $A^T A$ 可逆，最小二乘解唯一：$X = (A^T A)^{-1} A^T b$</li>
+        <li>当 $AX = b$ 本身有解时，最小二乘解与精确解一致</li>
+      </ol>
     </div>
 
     <div class="box box-note">
