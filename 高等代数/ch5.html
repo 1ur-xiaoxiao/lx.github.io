@@ -154,6 +154,16 @@
       <p>特别地，$\FF$ 上任意 $n$ 维线性空间都同构于 $\FF^n$。这解释了为什么我们可以在抽象空间和坐标空间 $\FF^n$ 之间自由切换。</p>
     </div>
 
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 证明 · 同构的充要条件</div>
+      <div class="collapsible-body">
+        <p><strong>证明</strong>：</p>
+        <p>($\Rightarrow$) 设 $\varphi: V \to W$ 是同构映射。由于 $\varphi$ 是双射且线性的，它将 $V$ 的基映为 $W$ 的基（双射性保证像集是 $W$ 的一组基，线性性保证保持线性无关性和张成性）。因此 $\dim V = \dim W$。</p>
+        <p>($\Leftarrow$) 若 $\dim V = \dim W = n$，取 $V$ 的基 $\{\alpha_1,\ldots,\alpha_n\}$ 和 $W$ 的基 $\{\beta_1,\ldots,\beta_n\}$。定义映射 $\varphi(\sum_{i=1}^n x_i\alpha_i) = \sum_{i=1}^n x_i\beta_i$。此映射显然是线性的。若 $\varphi(\alpha) = 0$，则 $\sum x_i\beta_i = 0$，由 $\{\beta_i\}$ 线性无关知所有 $x_i = 0$，故 $\alpha = 0$，$\varphi$ 是单射。又对任意 $\beta = \sum y_i\beta_i \in W$，取 $\alpha = \sum y_i\alpha_i$ 即有 $\varphi(\alpha) = \beta$，故 $\varphi$ 是满射。因此 $\varphi$ 是同构映射。</p>
+        <p style="text-align:right;margin-top:8px;">∎</p>
+      </div>
+    </div>
+
     <div class="box box-note">
       <div class="box-title">同构的意义</div>
       <p>同构的线性空间在代数结构上"完全相同"——维数是区分有限维线性空间的唯一不变量。一旦选定一组基，抽象空间中的计算就可以转化为 $\FF^n$ 中的坐标运算。</p>
@@ -218,6 +228,22 @@
       </div>
       <p>类比：$|A \cup B| = |A| + |B| - |A \cap B|$（容斥原理）。</p>
     </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 证明 · 维数公式</div>
+      <div class="collapsible-body">
+        <p><strong>证明</strong>：</p>
+        <p>设 $\dim(W_1 \cap W_2) = r$。取 $W_1 \cap W_2$ 的一组基 $\alpha_1,\ldots,\alpha_r$。</p>
+        <p>将其扩充为 $W_1$ 的基：$\alpha_1,\ldots,\alpha_r,\beta_1,\ldots,\beta_s$，其中 $\dim W_1 = r+s$。</p>
+        <p>将其扩充为 $W_2$ 的基：$\alpha_1,\ldots,\alpha_r,\gamma_1,\ldots,\gamma_t$，其中 $\dim W_2 = r+t$。</p>
+        <p><strong>断言</strong>：$\alpha_1,\ldots,\alpha_r,\beta_1,\ldots,\beta_s,\gamma_1,\ldots,\gamma_t$ 是 $W_1+W_2$ 的一组基。</p>
+        <p><strong>张成性</strong>：任取 $w \in W_1+W_2$，可写 $w = w_1 + w_2$，其中 $w_1 \in W_1$, $w_2 \in W_2$。将 $w_1$ 用 $W_1$ 的基表示，$w_2$ 用 $W_2$ 的基表示，则 $w$ 可由该向量组线性表出。故该组张成 $W_1+W_2$。</p>
+        <p><strong>线性无关性</strong>：设 $\sum_{i=1}^r a_i\alpha_i + \sum_{j=1}^s b_j\beta_j + \sum_{k=1}^t c_k\gamma_k = 0$。则 $\sum_{k=1}^t c_k\gamma_k = -\bigl(\sum_{i=1}^r a_i\alpha_i + \sum_{j=1}^s b_j\beta_j\bigr) \in W_1$。但 $\sum c_k\gamma_k \in W_2$，故 $\sum c_k\gamma_k \in W_1 \cap W_2$。于是 $\sum_{k=1}^t c_k\gamma_k = \sum_{i=1}^r d_i\alpha_i$ 对某组 $d_i$ 成立。由于 $\alpha_1,\ldots,\alpha_r,\gamma_1,\ldots,\gamma_t$ 是 $W_2$ 的基，线性无关，故所有 $c_k = 0$，进而所有 $d_i = 0$。代回原式得 $\sum a_i\alpha_i + \sum b_j\beta_j = 0$，由 $W_1$ 的基的线性无关性知所有 $a_i, b_j = 0$。</p>
+        <p>因此</p>
+        $$\dim(W_1+W_2) = r + s + t = (r+s) + (r+t) - r = \dim W_1 + \dim W_2 - \dim(W_1 \cap W_2).$$
+        <p style="text-align:right;margin-top:8px;">∎</p>
+      </div>
+    </div>
   </div>
 
   <!-- ==================== 5.6 直和 ==================== -->
@@ -240,6 +266,19 @@
         <li>$\dim(W_1 + W_2) = \dim W_1 + \dim W_2$</li>
         <li>$W_1$ 的基与 $W_2$ 的基合起来是 $W_1 + W_2$ 的基</li>
       </ol>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 证明 · 直和条件的等价性</div>
+      <div class="collapsible-body">
+        <p><strong>证明</strong>（(1) $\Rightarrow$ (2) $\Rightarrow$ (3) $\Rightarrow$ (4) $\Rightarrow$ (5) $\Rightarrow$ (1)）：</p>
+        <p><strong>(1) $\Rightarrow$ (2)</strong>：若 $W_1+W_2$ 是直和，由定义知 $W_1 \cap W_2 = \{0\}$。</p>
+        <p><strong>(2) $\Rightarrow$ (3)</strong>：设 $0 = \alpha_1 + \alpha_2$，其中 $\alpha_i \in W_i$。则 $\alpha_1 = -\alpha_2 \in W_1 \cap W_2 = \{0\}$，故 $\alpha_1 = \alpha_2 = 0$。因此零向量的表示唯一（只有 $0+0$ 这一种表示）。</p>
+        <p><strong>(3) $\Rightarrow$ (4)</strong>：由维数公式 $\dim(W_1+W_2) = \dim W_1 + \dim W_2 - \dim(W_1 \cap W_2)$。只需证 $\dim(W_1 \cap W_2) = 0$。若存在 $\alpha \in W_1 \cap W_2$ 且 $\alpha \neq 0$，则 $0 = \alpha + (-\alpha)$ 给出了零向量的另一种表示（除 $0+0$ 外），与 (3) 矛盾。因此 $W_1 \cap W_2 = \{0\}$，从而 $\dim(W_1 \cap W_2) = 0$。代入维数公式得 $\dim(W_1+W_2) = \dim W_1 + \dim W_2$。</p>
+        <p><strong>(4) $\Rightarrow$ (5)</strong>：将 $W_1$ 的基与 $W_2$ 的基合并，共 $\dim W_1 + \dim W_2 = \dim(W_1+W_2)$ 个向量。它们张成 $W_1+W_2$（因为每个子空间的基中的向量都属于 $W_1+W_2$，且 $W_1+W_2$ 中任意向量都可表示为两个子空间中向量的和）。向量个数恰好等于维数，因此构成 $W_1+W_2$ 的基。</p>
+        <p><strong>(5) $\Rightarrow$ (1)</strong>：若 $W_1$ 的基与 $W_2$ 的基合并构成 $W_1+W_2$ 的基，则任取 $\alpha \in W_1 \cap W_2$，$\alpha$ 既可用 $W_1$ 的基表示，又可用 $W_2$ 的基表示。由基表示的唯一性，$\alpha = 0$。故 $W_1 \cap W_2 = \{0\}$，即 $W_1+W_2$ 是直和。</p>
+        <p style="text-align:right;margin-top:8px;">∎</p>
+      </div>
     </div>
 
     <div class="box box-note">
@@ -279,6 +318,19 @@
         $$\dim(V/W) = \dim V - \dim W$$
       </div>
       <p>这与维数定理 $\dim(\ker \mathcal{A}) + \dim(\Im \mathcal{A}) = \dim V$ 有深刻联系：$\Im \mathcal{A} \cong V / \ker \mathcal{A}$（第一同构定理）。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 证明 · 商空间的维数公式</div>
+      <div class="collapsible-body">
+        <p><strong>证明</strong>：</p>
+        <p>设 $\dim V = n$，$\dim W = r$。取 $W$ 的一组基 $\alpha_1,\ldots,\alpha_r$，将其扩充为 $V$ 的基 $\alpha_1,\ldots,\alpha_r,\alpha_{r+1},\ldots,\alpha_n$。</p>
+        <p>令 $\bar{\alpha}_{r+1} = \alpha_{r+1} + W,\ \ldots,\ \bar{\alpha}_n = \alpha_n + W$。我们证明 $\{\bar{\alpha}_{r+1}, \ldots, \bar{\alpha}_n\}$ 是 $V/W$ 的一组基。</p>
+        <p><strong>线性无关</strong>：设 $\sum_{i=r+1}^n c_i \bar{\alpha}_i = \bar{0}$（零陪集，即 $W$）。则 $\sum_{i=r+1}^n c_i \alpha_i \in W$，故 $\sum_{i=r+1}^n c_i \alpha_i = \sum_{j=1}^r d_j \alpha_j$ 对某组 $d_j$ 成立。移项得 $\sum_{j=1}^r (-d_j)\alpha_j + \sum_{i=r+1}^n c_i \alpha_i = 0$。由 $V$ 的基 $\{\alpha_1,\ldots,\alpha_n\}$ 的线性无关性，所有系数为零，特别地所有 $c_i = 0$。</p>
+        <p><strong>张成性</strong>：任取 $\bar{\alpha} = \alpha + W \in V/W$，将 $\alpha$ 用 $V$ 的基表示为 $\alpha = \sum_{i=1}^n x_i \alpha_i$。则 $\bar{\alpha} = \bigl(\sum_{i=1}^n x_i \alpha_i\bigr) + W = \sum_{i=1}^n x_i (\alpha_i + W) = \sum_{i=r+1}^n x_i \bar{\alpha}_i$（因为 $\alpha_1,\ldots,\alpha_r \in W$，故 $\alpha_j + W = W = \bar{0}$，$j = 1,\ldots,r$）。</p>
+        <p>因此 $\dim(V/W) = n - r = \dim V - \dim W$。</p>
+        <p style="text-align:right;margin-top:8px;">∎</p>
+      </div>
     </div>
 
     <div class="box box-note">

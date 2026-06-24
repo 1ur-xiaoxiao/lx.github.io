@@ -132,6 +132,18 @@
       <p>这一形式称为 $A(\lambda)$ 的 <strong>Smith 标准形</strong>。$d_1(\lambda), \ldots, d_r(\lambda)$ 由 $A(\lambda)$ 唯一确定。</p>
     </div>
 
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 证明 · Smith 标准形存在性</div>
+      <div class="collapsible-body">
+        <p><strong>证明</strong>：</p>
+        <p>对矩阵大小进行归纳。在所有尚未化为标准形的元素中，选取次数最小的一个。通过行列交换将其移到 $(1,1)$ 位置，记为 $a(\lambda)$。</p>
+        <p>对第 1 行或第 1 列的任意其他元素 $b(\lambda)$，作带余除法：$b(\lambda) = q(\lambda)a(\lambda) + r(\lambda)$，其中 $\deg r &lt; \deg a$。若 $r \neq 0$，用列（或行）变换将 $b$ 替换为 $r$，得到一个次数更小的主元。重复此过程，直至第 1 行和第 1 列的所有非对角元素都为 $0$。</p>
+        <p>此时 $a(\lambda)$ 必须整除剩余的所有元素（否则用带余除法又会产生次数更小的非零元素，矛盾）。对右下角子矩阵递归应用相同过程。</p>
+        <p><strong>唯一性</strong>来源于行列式因子 $D_k(\lambda)$ 在初等变换下的不变性。</p>
+        <p style="text-align:right;margin-top:8px;">∎</p>
+      </div>
+    </div>
+
     <div class="box box-note">
       <div class="box-title">Smith 标准形的存在性证明思路</div>
       <p>证明使用归纳法：在所有非零元素中取次数最低者，通过辗转相除将同行同列的其他元素消为更低次，最终将该元素化为所在行和列的唯一非零元。然后对子矩阵重复此过程。整除关系的成立源于最小公因式的性质。</p>
@@ -155,6 +167,17 @@
         <li>$D_{k-1}(\lambda) \mid D_k(\lambda)$（因为每个 $k$ 阶子式可按行展开为 $k-1$ 阶子式的组合）</li>
         <li>$D_k(\lambda) = d_1(\lambda) d_2(\lambda) \cdots d_k(\lambda)$</li>
       </ol>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 证明 · $D_k(\lambda) = d_1(\lambda)\cdots d_k(\lambda)$</div>
+      <div class="collapsible-body">
+        <p><strong>证明</strong>：</p>
+        <p>将 $A(\lambda)$ 化为 Smith 标准形 $\diag(d_1, \ldots, d_r, 0, \ldots, 0)$ 后，任意 $k$ 阶子式要么包含某个全零行/列（行列式为 $0$），要么选自 $k$ 个对角元 $d_{i_1}, \ldots, d_{i_k}$。</p>
+        <p>非零的 $k$ 阶子式等于某 $k$ 个互异 $d_j$ 的乘积。由于满足整除关系 $d_1 \mid d_2 \mid \cdots \mid d_r$，在整除意义下最小的非零 $k$ 阶子式是 $d_1 d_2 \cdots d_k$，而所有非零 $k$ 阶子式都是它的倍数。</p>
+        <p>因此它们的首一最大公因式 $D_k(\lambda) = d_1(\lambda) d_2(\lambda) \cdots d_k(\lambda)$（相差一个非零常数因子，取首一化）。进而 $d_k(\lambda) = D_k(\lambda) / D_{k-1}(\lambda)$。</p>
+        <p style="text-align:right;margin-top:8px;">∎</p>
+      </div>
     </div>
 
     <div class="box box-definition">
@@ -229,6 +252,20 @@
         <li>$\lambda I - A$ 与 $\lambda I - B$ 有相同的不变因子</li>
         <li>$\lambda I - A$ 与 $\lambda I - B$ 有相同的初等因子（在 $\FF$ 的代数扩域上）</li>
       </ol>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 证明 · 相似等价于特征矩阵等价</div>
+      <div class="collapsible-body">
+        <p><strong>证明</strong>：</p>
+        <p><strong>(1) $\Rightarrow$ (2)</strong>：若 $B = P^{-1}AP$，则</p>
+        $$\lambda I - B = \lambda I - P^{-1}AP = P^{-1}(\lambda I - A)P$$
+        <p>由于 $P$ 和 $P^{-1}$ 均为常数矩阵（从而是可逆 $\lambda$-矩阵），故 $\lambda I - A$ 与 $\lambda I - B$ 等价。</p>
+        <p><strong>(2) $\Rightarrow$ (1)</strong>：设 $\lambda I - A = P(\lambda)(\lambda I - B) Q(\lambda)$，其中 $P(\lambda), Q(\lambda)$ 为可逆 $\lambda$-矩阵（幺模矩阵）。关键引理：存在多项式矩阵 $S(\lambda), T(\lambda)$ 和常数矩阵 $P_0, Q_0$，使得</p>
+        $$P(\lambda) = (\lambda I - A) S(\lambda) + P_0, \qquad Q(\lambda) = T(\lambda)(\lambda I - B) + Q_0$$
+        <p>将这两式代入等价关系，展开并比较 $\lambda$ 的各次幂的系数，得到 $P_0 A Q_0 = B$（或等价的相似关系），从而 $A$ 与 $B$ 相似。</p>
+        <p style="text-align:right;margin-top:8px;">∎</p>
+      </div>
     </div>
 
     <div class="box box-note">

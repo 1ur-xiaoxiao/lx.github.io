@@ -102,6 +102,19 @@
       <p><strong>三角不等式</strong>：$\|\alpha + \beta\| \leq \|\alpha\| + \|\beta\|$</p>
       <p><strong>夹角</strong>（$\alpha, \beta \neq 0$）：$\cos \theta = \dfrac{(\alpha, \beta)}{\|\alpha\| \|\beta\|}$</p>
     </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 证明 · Cauchy-Schwarz 不等式</div>
+      <div class="collapsible-body">
+        <p><strong>证明</strong>：</p>
+        <p>对任意 $t \in \RR$，考虑 $\|\alpha + t\beta\|^2 \geq 0$：</p>
+        $$0 \leq (\alpha+t\beta,\; \alpha+t\beta) = (\alpha,\alpha) + 2t(\alpha,\beta) + t^2(\beta,\beta) = \|\alpha\|^2 + 2t(\alpha,\beta) + t^2\|\beta\|^2$$
+        <p>上述关于 $t$ 的二次式对一切 $t$ 均非负，故其判别式 $\Delta \leq 0$：</p>
+        $$4(\alpha,\beta)^2 - 4\|\alpha\|^2\|\beta\|^2 \leq 0 \quad\Longrightarrow\quad |(\alpha,\beta)| \leq \|\alpha\|\;\|\beta\|$$
+        <p><strong>等号成立条件</strong>：判别式 $= 0$，此时存在某个 $t_0$ 使得 $\|\alpha + t_0\beta\|^2 = 0$，即 $\alpha + t_0\beta = 0$，故 $\alpha$ 与 $\beta$ 线性相关。</p>
+        <p style="text-align:right;margin-top:8px;">∎</p>
+      </div>
+    </div>
   </div>
 
   <!-- ==================== 8.2 标准正交基 ==================== -->
@@ -122,6 +135,22 @@
         $$\beta_1 = \alpha_1, \qquad \beta_k = \alpha_k - \sum_{i=1}^{k-1} \frac{(\alpha_k, \beta_i)}{(\beta_i, \beta_i)} \beta_i \quad (k \geq 2)$$
       </div>
       <p>再单位化：$\eta_i = \beta_i / \|\beta_i\|$，即得标准正交组。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 证明 · Gram-Schmidt 正交化的正确性</div>
+      <div class="collapsible-body">
+        <p><strong>证明</strong>：</p>
+        <p>对 $k$ 进行归纳，证明 $\beta_1, \ldots, \beta_k$ 两两正交且 $\span\{\beta_1,\ldots,\beta_k\} = \span\{\alpha_1,\ldots,\alpha_k\}$。</p>
+        <p>$k=1$：$\beta_1 = \alpha_1$，平凡成立。假设对 $k-1$ 成立。则</p>
+        $$\beta_k = \alpha_k - \sum_{i=1}^{k-1} \frac{(\alpha_k, \beta_i)}{(\beta_i, \beta_i)} \beta_i$$
+        <p>对任意 $j &lt; k$，计算：</p>
+        $$(\beta_k, \beta_j) = (\alpha_k, \beta_j) - \sum_{i=1}^{k-1} \frac{(\alpha_k, \beta_i)}{(\beta_i, \beta_i)} (\beta_i, \beta_j)$$
+        <p>由归纳假设，$i \neq j$ 时 $(\beta_i, \beta_j) = 0$，故求和式中仅 $i=j$ 一项非零：</p>
+        $$(\beta_k, \beta_j) = (\alpha_k, \beta_j) - \frac{(\alpha_k, \beta_j)}{(\beta_j, \beta_j)} (\beta_j, \beta_j) = 0$$
+        <p>因此 $\beta_k \perp \span\{\beta_1, \ldots, \beta_{k-1}\}$。又 $\beta_k \neq 0$，因为 $\alpha_k \notin \span\{\alpha_1,\ldots,\alpha_{k-1}\} = \span\{\beta_1,\ldots,\beta_{k-1}\}$，减去投影不会使其为零。显然 $\beta_k$ 是 $\alpha_k$ 与 $\beta_1,\ldots,\beta_{k-1}$ 的线性组合，故张成的子空间相同。单位化后 $\eta_i = \beta_i / \|\beta_i\|$ 即得标准正交组。</p>
+        <p style="text-align:right;margin-top:8px;">∎</p>
+      </div>
     </div>
 
     <div class="box box-theorem">
@@ -234,6 +263,23 @@
       </ol>
     </div>
 
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 证明 · 实对称矩阵的性质</div>
+      <div class="collapsible-body">
+        <p><strong>证明（特征值全为实数）</strong>：</p>
+        <p>设 $A$ 为实对称矩阵，$\lambda$ 为特征值，$\mathbf{x}$ 为对应的特征向量。考虑 $x^* A x$（共轭转置）：</p>
+        $$x^* A x = x^*(A x) = x^*(\lambda x) = \lambda\, x^* x = \lambda \|\mathbf{x}\|^2$$
+        <p>另一方面，利用 $A = A^T = \overline{A}$（$A$ 为实对称）：</p>
+        $$x^* A x = (x^* A) x = (A x)^* x = (\lambda x)^* x = \overline{\lambda}\, x^* x = \overline{\lambda} \|\mathbf{x}\|^2$$
+        <p>于是 $\lambda \|\mathbf{x}\|^2 = \overline{\lambda} \|\mathbf{x}\|^2$。由 $\|\mathbf{x}\|^2 \neq 0$（$\mathbf{x}$ 为特征向量），得 $\lambda = \overline{\lambda}$，故 $\lambda \in \RR$。</p>
+        <p><strong>证明（不同特征值的特征向量正交）</strong>：</p>
+        <p>设 $A\alpha = \lambda\alpha$, $A\beta = \mu\beta$，且 $\lambda \neq \mu$。则：</p>
+        $$\lambda(\alpha, \beta) = (A\alpha, \beta) = (A\alpha)^T \beta = \alpha^T A^T \beta = \alpha^T (A\beta) = \alpha^T (\mu\beta) = \mu(\alpha, \beta)$$
+        <p>于是 $(\lambda - \mu)(\alpha, \beta) = 0$。由 $\lambda \neq \mu$，必有 $(\alpha, \beta) = 0$，即 $\alpha \perp \beta$。</p>
+        <p style="text-align:right;margin-top:8px;">∎</p>
+      </div>
+    </div>
+
     <div class="box box-note">
       <div class="box-title">正交对角化的证明思路</div>
       <p>对维数归纳：取 $A$ 的一个特征值 $\lambda_1$（实数），取单位特征向量 $\xi_1$。将 $\xi_1$ 扩充为 $\RR^n$ 的标准正交基 $\xi_1, \eta_2, \ldots, \eta_n$，构造正交矩阵 $Q_1 = (\xi_1, \eta_2, \ldots, \eta_n)$。则 $Q_1^T A Q_1 = \begin{pmatrix} \lambda_1 & 0 \\ 0 & A_1 \end{pmatrix}$，$A_1$ 仍为对称矩阵。由归纳假设得证。</p>
@@ -294,6 +340,22 @@
         $$\text{$\mathcal{A}$ 可酉对角化} \iff \text{$\mathcal{A}$ 是正规变换}$$
       </div>
       <p>即存在标准正交基使得 $\mathcal{A}$ 的矩阵为对角形 $\iff \mathcal{A}\mathcal{A}^* = \mathcal{A}^*\mathcal{A}$。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 证明 · 谱定理（正规⇔酉对角化）</div>
+      <div class="collapsible-body">
+        <p><strong>证明</strong>：</p>
+        <p><strong>($\Leftarrow$) 正规⇐酉对角化</strong>：若 $A = U\Lambda U^*$，其中 $U$ 为酉矩阵、$\Lambda$ 为对角阵，则 $A^* = U\overline{\Lambda}U^*$，于是</p>
+        $$AA^* = U\Lambda\overline{\Lambda}U^* = U\overline{\Lambda}\Lambda U^* = A^*A$$
+        <p>故 $A$ 为正规矩阵。</p>
+        <p><strong>($\Rightarrow$) 正规⇒酉对角化</strong>：利用 Schur 定理，存在酉矩阵 $U$ 使得 $A = UTU^*$，其中 $T$ 为上三角矩阵。由 $A$ 的正规性：</p>
+        $$TT^* = U^*AA^*U = U^*A^*AU = T^*T$$
+        <p>对于上三角矩阵 $T$，比较 $TT^*$ 与 $T^*T$ 的对角元：设 $T = (t_{ij})$（$i &gt; j$ 时 $t_{ij}=0$），则</p>
+        $$(TT^*)_{ii} = \sum_{k=i}^{n} |t_{ik}|^2, \qquad (T^*T)_{ii} = \sum_{k=1}^{i} |t_{ki}|^2$$
+        <p>$(TT^*)_{11} = (T^*T)_{11}$ 迫使第一行所有非对角元为 $0$；逐行递推，得 $T$ 必为对角矩阵。故 $A$ 可酉对角化。</p>
+        <p style="text-align:right;margin-top:8px;">∎</p>
+      </div>
     </div>
 
     <div class="box box-formula">

@@ -175,6 +175,16 @@
       </ol>
     </div>
 
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 证明 · 反对称矩阵的秩必为偶数</div>
+      <div class="collapsible-body">
+        <p><strong>证明</strong>：</p>
+        <p>设 $A$ 是 $n \times n$ 反对称矩阵（$A^T = -A$），定义在特征 $\mathrm{char}(\mathbb{F}) \neq 2$ 的数域上。将 $A$ 视为双线性函数的度量矩阵。若 $\rank(A) = r$，由反对称双线性函数的标准形理论，存在可逆矩阵 $P$ 使得 $P^T A P$ 化为分块对角标准形：由 $r/2$ 个 $\begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}$ 块和零块组成。因此 $r$ 必为偶数。</p>
+        <p>另一证法（实矩阵）：实反对称矩阵的非零特征值成对出现为纯虚共轭对 $\pm i\mu$，每对贡献秩 $2$，故秩为偶数。</p>
+        <p style="text-align:right;margin-top:8px;">∎</p>
+      </div>
+    </div>
+
     <div class="box box-note">
       <div class="box-title">对称与反对称的直和分解</div>
       <p>$V$ 上的任意双线性函数 $f$ 可以唯一地分解为一个对称双线性函数 $f_s$ 与一个反对称双线性函数 $f_a$ 的和：</p>
@@ -205,6 +215,17 @@
       <p>设 $f$ 是 $V$ 上秩为 $2m$ 的反对称双线性函数。则存在 $V$ 的一组基，使得 $f$ 的度量矩阵为分块对角形：</p>
       $$A = \diag\left(\begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}, \ldots, \begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}, 0, \ldots, 0\right)$$
       <p>其中有 $m$ 个 $\begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}$ 块。</p>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 证明 · 反对称双线性函数的标准形</div>
+      <div class="collapsible-body">
+        <p><strong>证明</strong>：</p>
+        <p>对 $\dim V$ 归纳。设 $f$ 是秩 $> 0$ 的反对称双线性函数。取 $\alpha_1, \beta_1$ 使得 $f(\alpha_1, \beta_1) \neq 0$（由 $f \neq 0$ 知存在）。缩放 $\beta_1$ 可使 $f(\alpha_1, \beta_1) = 1$。由交错性，$f(\alpha_1, \alpha_1) = f(\beta_1, \beta_1) = 0$。令 $W_1 = \mathrm{span}\{\alpha_1, \beta_1\}$。</p>
+        <p>对任意 $\gamma \in V$，定义 $\gamma' = \gamma - f(\gamma, \beta_1)\alpha_1 + f(\gamma, \alpha_1)\beta_1$。直接验证 $f(\gamma', \alpha_1) = f(\gamma', \beta_1) = 0$，故 $\gamma' \in W_1^\perp$。由此得 $V = W_1 \oplus W_1^\perp$。</p>
+        <p>$f$ 在 $W_1$ 上的限制以 $\begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}$ 为度量矩阵。由归纳假设，$W_1^\perp$ 类似分解。因此 $f$ 的矩阵为 $r/2$ 个 $\begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}$ 块的直和加一个零块。</p>
+        <p style="text-align:right;margin-top:8px;">∎</p>
+      </div>
     </div>
 
     <div class="box box-note">
@@ -337,6 +358,16 @@
     </div>
 
     <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 证明 · 辛基存在定理</div>
+      <div class="collapsible-body">
+        <p><strong>证明</strong>：</p>
+        <p>此结论由非退化反对称双线性函数的标准形直接推出。由于 $f$ 非退化，$\rank(f) = \dim V = 2m$。由反对称形式的标准形定理，存在一组基使得 $f$ 的度量矩阵为 $\mathrm{diag}\!\left(\begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}, \ldots, \begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}\right)$（含 $m$ 个块）。</p>
+        <p>将此基重新排序为 $\varepsilon_1, \ldots, \varepsilon_m, \eta_1, \ldots, \eta_m$（取每个块的第一列向量为 $\varepsilon_i$，第二列为 $\eta_i$），则辛形式的矩阵化为 $\begin{pmatrix} 0 & I_m \\ -I_m & 0 \end{pmatrix}$，此即辛基。</p>
+        <p style="text-align:right;margin-top:8px;">∎</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
       <div class="collapsible-header"><span class="toggle-icon">▶</span> 例题 · 构造辛基</div>
       <div class="collapsible-body">
         <p><strong>题目</strong>：在 $\RR^4$ 上定义辛形式 $f(\alpha, \beta) = x_1 y_3 + x_2 y_4 - x_3 y_1 - x_4 y_2$，求一组辛基。</p>
@@ -377,6 +408,17 @@
         <li><strong>特征值</strong>：若 $\lambda$ 是辛矩阵的特征值，则 $\lambda^{-1}$ 也是其特征值</li>
         <li><strong>特征多项式</strong>辛矩阵的特征多项式是自反的：$f(\lambda) = \lambda^{2m} f(1/\lambda)$</li>
       </ol>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header"><span class="toggle-icon">▶</span> 证明 · 辛矩阵的行列式为 1</div>
+      <div class="collapsible-body">
+        <p><strong>证明</strong>：</p>
+        <p>辛矩阵 $A$ 满足 $A^T J A = J$。两边取行列式：$\det(A^T)\det(J)\det(A) = \det(J)$，即 $(\det A)^2 \det(J) = \det(J)$。</p>
+        <p>由于 $J = \begin{pmatrix} 0 & I_m \\ -I_m & 0 \end{pmatrix}$，$\det(J) = 1$（交换行可得），故 $(\det A)^2 = 1$，即 $\det A = \pm 1$。</p>
+        <p>证 $\det A = 1$（而非 $-1$）需借助 Pfaffian：对任意辛矩阵，$\mathrm{Pf}(A^T J A) = \det(A) \cdot \mathrm{Pf}(J)$。由 $A^T J A = J$ 得 $\det(A) \cdot \mathrm{Pf}(J) = \mathrm{Pf}(J)$。而 $\mathrm{Pf}(J) = (-1)^{m(m-1)/2} \neq 0$，故 $\det(A) = 1$。</p>
+        <p style="text-align:right;margin-top:8px;">∎</p>
+      </div>
     </div>
 
     <div class="box box-theorem">
